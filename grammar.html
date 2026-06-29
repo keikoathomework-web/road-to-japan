@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — Grammar Lessons</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #1c2230;
+  --gold: #ffd700; --gold2: #ffaa00;
+  --cyan: #00e5ff; --green: #00e676; --red: #ff3a5c;
+  --purple: #a855f7; --orange: #ff6b2b; --teal: #00bfa5;
+  --white: #fff; --gray: #7a8099; --text: #d0d4e8;
+  --border: rgba(255,255,255,0.07);
+}
+html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); }
+
+/* ── NAV ── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100; height: 56px;
+  display: flex; align-items: center; gap: 12px; padding: 0 20px;
+  background: rgba(13,17,23,0.97); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-back { display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);color:rgba(255,255,255,0.75);font-size:0.82rem;font-weight:800;text-decoration:none;transition:all 0.2s; }
+.nav-back:hover { background:rgba(255,255,255,0.1);color:#fff; }
+.nav-logo { font-family:'Bangers',cursive;font-size:1.15rem;letter-spacing:3px;background:linear-gradient(90deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.nav-spacer { flex:1; }
+.nav-xp { padding:6px 14px;border-radius:20px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.25);font-family:'Orbitron',sans-serif;font-size:0.72rem;font-weight:900;color:var(--purple); }
+
+/* ── LAYOUT ── */
+.layout { display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 56px); }
+@media(max-width:700px) { .layout { grid-template-columns:1fr; } .sidebar { display:none; } }
+
+/* ── SIDEBAR ── */
+.sidebar { position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;background:var(--bg2);border-right:1px solid var(--border);padding:16px 12px; }
+.sb-title { font-size:0.65rem;font-weight:900;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;padding:0 6px;margin-bottom:10px; }
+.sb-item {
+  display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
+  cursor:pointer;transition:all 0.2s;margin-bottom:4px;
+}
+.sb-item:hover { background:rgba(255,255,255,0.05); }
+.sb-item.active { background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.2); }
+.sb-particle { font-family:'Bangers',cursive;font-size:1.2rem;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.sb-info { flex:1; }
+.sb-name { font-size:0.8rem;font-weight:900;color:var(--white); }
+.sb-role { font-size:0.62rem;color:var(--gray); }
+.sb-check { font-size:0.75rem; }
+
+/* ── MAIN ── */
+.main { padding:28px 24px 60px; }
+@media(max-width:700px) { .main { padding:20px 14px 50px; } }
+.page-header { margin-bottom:28px; }
+.ph-tag { display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.25);color:var(--purple);font-size:0.68rem;font-weight:900;letter-spacing:1px;margin-bottom:10px; }
+.ph-title { font-family:'Bangers',cursive;font-size:2rem;letter-spacing:3px;color:var(--white);margin-bottom:6px; }
+.ph-sub { font-size:0.85rem;line-height:1.7;color:var(--text);max-width:560px; }
+
+/* ── LESSON CARD ── */
+.lesson-section { display:none; }
+.lesson-section.active { display:block; }
+
+.particle-hero {
+  border-radius:20px;padding:28px;margin-bottom:20px;position:relative;overflow:hidden;
+}
+.particle-hero::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 0%,rgba(255,255,255,0.06),transparent 60%); }
+.ph-particle-big { font-family:'Bangers',cursive;font-size:5rem;position:absolute;right:20px;top:50%;transform:translateY(-50%);opacity:0.12;letter-spacing:4px; }
+.ph-row { position:relative;z-index:1; }
+.ph-particle-display { font-family:'Bangers',cursive;font-size:3rem;color:var(--white);margin-bottom:6px;display:flex;align-items:center;gap:12px; }
+.ph-particle-rom { font-size:1rem;color:var(--gray);font-family:'Nunito',sans-serif;font-weight:900; }
+.ph-particle-name { font-size:0.8rem;font-weight:900;color:var(--white);margin-bottom:8px; }
+.ph-particle-desc { font-size:0.88rem;line-height:1.75;max-width:480px; }
+.particle-badge { display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:900;margin-top:10px; }
+
+/* ── RULE CARDS ── */
+.rules-grid { display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px; }
+@media(max-width:600px) { .rules-grid { grid-template-columns:1fr; } }
+.rule-card { border-radius:14px;padding:16px;background:var(--bg2);border:1px solid var(--border);transition:border-color 0.2s; }
+.rule-card:hover { border-color:rgba(255,255,255,0.14); }
+.rule-emoji { font-size:1.4rem;margin-bottom:6px; }
+.rule-title { font-weight:900;font-size:0.85rem;color:var(--white);margin-bottom:6px; }
+.rule-desc { font-size:0.78rem;line-height:1.65;color:var(--text); }
+
+/* ── SENTENCE BUILDER ── */
+.sentence-section { border-radius:18px;background:var(--bg2);border:1px solid var(--border);padding:20px;margin-bottom:20px; }
+.ss-title { font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--white);margin-bottom:14px;display:flex;align-items:center;gap:8px; }
+.sentence-box {
+  border-radius:14px;padding:18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+  margin-bottom:12px;
+}
+.sentence-jp { font-size:1.5rem;font-weight:900;color:var(--white);margin-bottom:6px;line-height:1.4; }
+.sentence-jp .particle { padding:2px 6px;border-radius:6px;font-size:1.3rem;display:inline-block;margin:0 1px; }
+.sentence-rom { font-size:0.82rem;color:var(--teal);font-weight:900;margin-bottom:4px; }
+.sentence-en { font-size:0.85rem;color:var(--text); }
+.sentence-note { font-size:0.75rem;color:var(--gray);margin-top:6px;padding-top:6px;border-top:1px solid var(--border); }
+.say-btn {
+  display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--text);
+  font-size:0.72rem;font-weight:900;cursor:pointer;margin-top:8px;transition:all 0.2s;
+}
+.say-btn:hover { background:rgba(255,255,255,0.1); }
+
+/* ── QUIZ ── */
+.quiz-section { border-radius:18px;background:var(--bg2);border:1px solid rgba(168,85,247,0.2);padding:22px;margin-bottom:20px; }
+.quiz-title { font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--purple);margin-bottom:6px; }
+.quiz-counter { font-size:0.7rem;color:var(--gray);font-weight:900;margin-bottom:16px; }
+.quiz-q { font-size:1rem;font-weight:900;color:var(--white);margin-bottom:14px;line-height:1.6; }
+.quiz-jp-display { font-size:1.6rem;color:var(--white);margin-bottom:4px; }
+.quiz-hint { font-size:0.78rem;color:var(--gray);margin-bottom:14px; }
+.quiz-options { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px; }
+@media(max-width:480px) { .quiz-options { grid-template-columns:1fr; } }
+.quiz-opt {
+  padding:12px 14px;border-radius:12px;background:rgba(255,255,255,0.04);
+  border:1.5px solid rgba(255,255,255,0.08);color:var(--text);font-size:0.85rem;
+  font-weight:800;cursor:pointer;transition:all 0.2s;text-align:left;
+}
+.quiz-opt:hover:not(:disabled) { background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.35); }
+.quiz-opt.correct { background:rgba(0,230,118,0.12);border-color:rgba(0,230,118,0.4);color:var(--green); }
+.quiz-opt.wrong { background:rgba(255,58,92,0.1);border-color:rgba(255,58,92,0.35);color:var(--red); }
+.quiz-opt:disabled { cursor:default; }
+.quiz-feedback { border-radius:12px;padding:12px 16px;font-size:0.82rem;font-weight:800;display:none;margin-bottom:10px; }
+.quiz-feedback.show { display:block; }
+.quiz-feedback.correct { background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.25);color:var(--green); }
+.quiz-feedback.wrong { background:rgba(255,58,92,0.08);border:1px solid rgba(255,58,92,0.2);color:var(--red); }
+.quiz-next { padding:10px 22px;border-radius:12px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);color:var(--purple);font-size:0.82rem;font-weight:900;cursor:pointer;transition:all 0.2s; }
+.quiz-next:hover { background:rgba(168,85,247,0.25); }
+.quiz-result { text-align:center;padding:20px; }
+.qr-score { font-family:'Bangers',cursive;font-size:3rem;letter-spacing:3px;color:var(--gold);margin-bottom:8px; }
+.qr-msg { font-size:0.9rem;color:var(--text);margin-bottom:16px; }
+.qr-retry { padding:10px 22px;border-radius:12px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#000;font-size:0.85rem;font-weight:900;cursor:pointer;border:none; }
+
+/* ── NAV BUTTONS ── */
+.lesson-nav { display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border); }
+.lnav-btn { padding:11px 22px;border-radius:12px;font-size:0.85rem;font-weight:900;cursor:pointer;transition:all 0.2s;border:none; }
+.lnav-prev { background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text); }
+.lnav-prev:hover { background:rgba(255,255,255,0.1); }
+.lnav-next { background:linear-gradient(135deg,var(--purple),#7c3aed);color:#fff; }
+.lnav-next:hover { filter:brightness(1.1);transform:translateY(-1px); }
+
+/* ── TOAST ── */
+@keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a class="nav-back" href="home.html">← Home</a>
+  <div class="nav-logo">📝 GRAMMAR</div>
+  <div class="nav-spacer"></div>
+  <div class="nav-xp" id="xpDisplay">+0 XP earned</div>
+</div>
+
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <div class="sidebar">
+    <div class="sb-title">Grammar Particles</div>
+    <div id="sidebarItems"></div>
+    <div style="margin-top:20px;padding:12px;border-radius:12px;background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.1)">
+      <div style="font-size:0.65rem;font-weight:900;color:var(--gold);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">💡 Remember</div>
+      <div style="font-size:0.72rem;line-height:1.6;color:var(--text)">Particles come AFTER the word they modify — opposite to English prepositions!</div>
+    </div>
+  </div>
+
+  <!-- ── MAIN ── -->
+  <div class="main">
+    <div class="page-header">
+      <div class="ph-tag">📝 Month 8 · Grammar</div>
+      <div class="ph-title">JAPANESE GRAMMAR PARTICLES</div>
+      <div class="ph-sub">Particles are the tiny but mighty words that give Japanese sentences their meaning. Learn these 8 particles and you can build thousands of sentences! 🚀</div>
+    </div>
+
+    <div id="lessonContent"></div>
+  </div>
+
+</div>
+
+<script>
+// ── PARTICLE DATA ──
+const PARTICLES = [
+  {
+    particle: 'は', rom: 'wa', color: '#a855f7', bg: 'linear-gradient(135deg,#2d1b69,#1a0d3a)',
+    name: 'Topic Marker',
+    desc: 'は marks the TOPIC of the sentence — what you\'re talking about. It\'s like saying "As for ___..." or "Speaking of ___..."',
+    badge: { text: 'Most Common!', color: '#a855f7' },
+    rules: [
+      { emoji: '💬', title: 'Marks the topic', desc: 'Tells the listener what the sentence is about. The topic is often already known or being introduced.' },
+      { emoji: '🔄', title: 'Can replace が or を', desc: 'When you want to emphasize contrast or set a topic, は often replaces が or を.' },
+      { emoji: '⚠️', title: 'Pronounced "wa" not "ha"', desc: 'Even though は is the hiragana for "ha", as a particle it is always pronounced "wa"!' },
+      { emoji: '🌟', title: 'Sets the stage', desc: 'Think of it as the curtain rising on a stage — は introduces what we\'re about to talk about.' },
+    ],
+    sentences: [
+      { jp: ['わたし', 'は', 'がくせい', 'です'], rom: 'Watashi wa gakusei desu.', en: 'I am a student.', note: 'は marks 私 (I) as the topic of the sentence.' },
+      { jp: ['ねこ', 'は', 'かわいい', 'です'], rom: 'Neko wa kawaii desu.', en: 'Cats are cute.', note: 'は marks 猫 (cat) as the topic.' },
+      { jp: ['きょう', 'は', 'あつい', 'です'], rom: 'Kyō wa atsui desu.', en: 'Today is hot.', note: '今日 (today) is the topic.' },
+    ],
+    quiz: [
+      { q: 'Which particle marks the TOPIC of a sentence?', jp: 'わたし ___ がくせいです。', hint: 'I am a student.', opts: ['は', 'を', 'が', 'に'], answer: 'は', exp: '✅ は marks the topic! "As for me, I am a student."' },
+      { q: 'How is は pronounced when used as a particle?', jp: '私 は 学生です', hint: '', opts: ['"ha"', '"wa"', '"ba"', '"pa"'], answer: '"wa"', exp: '✅ Correct! は as a particle is always pronounced "wa", not "ha"!' },
+      { q: 'Complete the sentence: "Tokyo is big."', jp: '東京 ___ 大きいです。', hint: 'We\'re talking about Tokyo.', opts: ['は', 'を', 'で', 'の'], answer: 'は', exp: '✅ は marks 東京 as the topic of our sentence!' },
+    ],
+  },
+  {
+    particle: 'が', rom: 'ga', color: '#00e5ff', bg: 'linear-gradient(135deg,#0d2a3a,#0a1a2e)',
+    name: 'Subject Marker',
+    desc: 'が marks the SUBJECT — the one performing the action or the one being described. It answers "WHO?" or "WHAT?" is doing something.',
+    badge: { text: 'Subject Focus', color: '#00e5ff' },
+    rules: [
+      { emoji: '🎯', title: 'Points to the doer', desc: 'が specifically identifies WHO is doing the action — it puts a spotlight on the subject.' },
+      { emoji: '❓', title: 'Answers "Who/What?"', desc: 'When you want to specify exactly WHO likes something or WHO did something, use が.' },
+      { emoji: '🆚', title: 'は vs が', desc: 'は introduces a general topic. が points to a specific subject. "As for me (は), IT IS I (が) who likes sushi!"' },
+      { emoji: '😍', title: 'With feelings & ability', desc: 'Use が with words like すき (like), きらい (dislike), できる (can do), わかる (understand).' },
+    ],
+    sentences: [
+      { jp: ['ねこ', 'が', 'いる'], rom: 'Neko ga iru.', en: 'There is a cat. / A cat exists.', note: 'が marks 猫 as the specific subject that exists.' },
+      { jp: ['だれ', 'が', 'きた？'], rom: 'Dare ga kita?', en: 'Who came?', note: 'が is used in questions asking "who?" as the subject.' },
+      { jp: ['にほんご', 'が', 'すき', 'です'], rom: 'Nihongo ga suki desu.', en: 'I like Japanese (language).', note: 'が is always used with すき (like).' },
+    ],
+    quiz: [
+      { q: 'Fill in the blank: "Who came?"', jp: 'だれ ___ きた？', hint: 'We\'re asking about the subject (who).', opts: ['は', 'が', 'を', 'で'], answer: 'が', exp: '✅ が is used to ask WHO did something!' },
+      { q: 'Which particle goes with "like" (すき)?', jp: 'にほんご ___ すきです。', hint: 'I like Japanese.', opts: ['は', 'を', 'が', 'に'], answer: 'が', exp: '✅ が is always paired with すき (like), きらい (dislike), and できる (can do)!' },
+      { q: 'Fill in: "There is a dog."', jp: 'いぬ ___ います。', hint: 'The dog exists/is there.', opts: ['は', 'が', 'を', 'と'], answer: 'が', exp: '✅ が marks いぬ as the specific subject that exists!' },
+    ],
+  },
+  {
+    particle: 'を', rom: 'wo/o', color: '#ff6b2b', bg: 'linear-gradient(135deg,#3a1500,#1a0d00)',
+    name: 'Object Marker',
+    desc: 'を marks the DIRECT OBJECT — the thing being acted upon. It answers "WHAT?" after an action verb.',
+    badge: { text: 'Action Target', color: '#ff6b2b' },
+    rules: [
+      { emoji: '🎯', title: 'Marks what is acted upon', desc: 'を points to the thing receiving the action. "I eat SUSHI" — sushi is を.' },
+      { emoji: '🔤', title: 'Pronounced "o"', desc: 'を is the hiragana for "wo" but as a particle it is always pronounced "o" (like in "orange").' },
+      { emoji: '🏃', title: 'Used with action verbs', desc: 'を appears before verbs like 食べる (eat), 飲む (drink), 見る (see), する (do), 勉強する (study).' },
+      { emoji: '📍', title: 'Also marks movement through', desc: 'を also marks the path of movement: 公園を歩く = "walk THROUGH the park".' },
+    ],
+    sentences: [
+      { jp: ['すし', 'を', 'たべます'], rom: 'Sushi wo tabemasu.', en: 'I eat sushi.', note: 'を marks すし as the thing being eaten.' },
+      { jp: ['みず', 'を', 'のみます'], rom: 'Mizu wo nomimasu.', en: 'I drink water.', note: 'を marks みず as the thing being drunk.' },
+      { jp: ['にほんご', 'を', 'べんきょう', 'します'], rom: 'Nihongo wo benkyou shimasu.', en: 'I study Japanese.', note: 'を marks にほんご as what is being studied.' },
+    ],
+    quiz: [
+      { q: 'Fill in: "I eat sushi."', jp: 'すし ___ たべます。', hint: 'Sushi is the thing being eaten.', opts: ['は', 'が', 'を', 'で'], answer: 'を', exp: '✅ を marks the direct object — the thing being acted upon!' },
+      { q: 'How is を pronounced as a particle?', jp: 'りんご を たべる', hint: '', opts: ['"wo"', '"o"', '"u"', '"ko"'], answer: '"o"', exp: '✅ を as a particle is always pronounced "o" (like in orange)!' },
+      { q: 'Which particle marks "what is being studied"?', jp: 'にほんご ___ べんきょうします。', hint: 'Japanese is the object of studying.', opts: ['は', 'が', 'を', 'に'], answer: 'を', exp: '✅ を marks にほんご as the direct object of 勉強します!' },
+    ],
+  },
+  {
+    particle: 'に', rom: 'ni', color: '#00e676', bg: 'linear-gradient(135deg,#0a2a10,#0a1a0a)',
+    name: 'Direction / Time / Location',
+    desc: 'に is a versatile particle marking DESTINATION, SPECIFIC TIME, or the LOCATION of existence.',
+    badge: { text: 'Multi-Use!', color: '#00e676' },
+    rules: [
+      { emoji: '➡️', title: 'Direction of movement', desc: 'に marks WHERE you are going TO. 学校に行く = "go TO school". It\'s the destination.' },
+      { emoji: '📅', title: 'Specific time', desc: 'に marks specific time points: 3時に (at 3 o\'clock), 月曜日に (on Monday), 1月に (in January).' },
+      { emoji: '📍', title: 'Location of existence', desc: 'に marks WHERE something exists (with います/あります): 公園にいる = "is IN the park".' },
+      { emoji: '🎁', title: 'Indirect object', desc: 'に marks the receiver of giving: ともだちにあげる = "give TO a friend".' },
+    ],
+    sentences: [
+      { jp: ['がっこう', 'に', 'いきます'], rom: 'Gakkō ni ikimasu.', en: 'I go to school.', note: 'に marks 学校 as the destination.' },
+      { jp: ['３じ', 'に', 'おきます'], rom: 'Sanji ni okimasu.', en: 'I wake up at 3 o\'clock.', note: 'に marks ３時 as the specific time.' },
+      { jp: ['こうえん', 'に', 'ねこ', 'が', 'います'], rom: 'Kōen ni neko ga imasu.', en: 'There is a cat in the park.', note: 'に marks 公園 as the location of existence.' },
+    ],
+    quiz: [
+      { q: 'Fill in: "I go to Tokyo."', jp: 'とうきょう ___ いきます。', hint: 'Tokyo is the destination.', opts: ['は', 'で', 'に', 'を'], answer: 'に', exp: '✅ に marks the destination of movement!' },
+      { q: 'Fill in: "I wake up at 7."', jp: '７じ ___ おきます。', hint: '7 o\'clock is a specific time point.', opts: ['に', 'は', 'が', 'を'], answer: 'に', exp: '✅ に marks specific time points like clock times and days!' },
+      { q: 'Fill in: "There is a dog in the park."', jp: 'こうえん ___ いぬ が います。', hint: 'The park is where the dog exists.', opts: ['は', 'に', 'を', 'で'], answer: 'に', exp: '✅ に marks the location of existence (with います/あります)!' },
+    ],
+  },
+  {
+    particle: 'で', rom: 'de', color: '#ffd700', bg: 'linear-gradient(135deg,#2a1a00,#1a1000)',
+    name: 'Location of Action / Means',
+    desc: 'で marks WHERE an action takes place, or BY WHAT MEANS something is done.',
+    badge: { text: 'Action Spot', color: '#ffd700' },
+    rules: [
+      { emoji: '🏟️', title: 'Where the action happens', desc: 'で marks the SCENE of an action. 図書館で勉強する = "study AT the library".' },
+      { emoji: '🚌', title: 'Means of transport', desc: 'で marks HOW you travel: バスで行く = "go BY bus", 電車で = "by train".' },
+      { emoji: '🛠️', title: 'Tool or method', desc: 'で marks the tool or method: はしで食べる = "eat WITH chopsticks".' },
+      { emoji: '🆚', title: 'に vs で', desc: 'に = WHERE something EXISTS (static). で = WHERE the ACTION happens (dynamic). "The book IS IN the library" (に) vs "I STUDY AT the library" (で).' },
+    ],
+    sentences: [
+      { jp: ['としょかん', 'で', 'べんきょうします'], rom: 'Toshokan de benkyou shimasu.', en: 'I study at the library.', note: 'で marks 図書館 as the place of action.' },
+      { jp: ['でんしゃ', 'で', 'いきます'], rom: 'Densha de ikimasu.', en: 'I go by train.', note: 'で marks 電車 as the means of transport.' },
+      { jp: ['はし', 'で', 'たべます'], rom: 'Hashi de tabemasu.', en: 'I eat with chopsticks.', note: 'で marks はし as the tool used.' },
+    ],
+    quiz: [
+      { q: 'Fill in: "I study AT school."', jp: 'がっこう ___ べんきょうします。', hint: 'School is where the action happens.', opts: ['に', 'で', 'を', 'は'], answer: 'で', exp: '✅ で marks the location of an action (dynamic)!' },
+      { q: 'Fill in: "I go BY bus."', jp: 'バス ___ いきます。', hint: 'Bus is the means of transport.', opts: ['に', 'が', 'で', 'は'], answer: 'で', exp: '✅ で marks the means or method!' },
+      { q: '"Book EXISTS in the library" — which particle for the library?', jp: 'としょかん ___ ほんがあります。', hint: 'The book exists/is located (static).', opts: ['で', 'を', 'は', 'に'], answer: 'に', exp: '✅ に (not で!) marks the location of EXISTENCE with あります/います.' },
+    ],
+  },
+  {
+    particle: 'も', rom: 'mo', color: '#ff6eb4', bg: 'linear-gradient(135deg,#3a0a2a,#1a0a1a)',
+    name: '"Also" / "Too" Marker',
+    desc: 'も means "also" or "too" — it adds something to what was already mentioned.',
+    badge: { text: 'Inclusive!', color: '#ff6eb4' },
+    rules: [
+      { emoji: '➕', title: 'Adds to the topic', desc: 'も replaces は or が to say "this one too!" or "also this." わたしもそうです = "Me too!"' },
+      { emoji: '🚫', title: 'With negatives = "either"', desc: 'In negative sentences, も means "either": 私も行かない = "I\'m not going either."' },
+      { emoji: '🔢', title: 'Stacking も も', desc: 'You can stack two も: AもBも = "both A and B". ねこもいぬも好き = "I like both cats and dogs."' },
+      { emoji: '🔄', title: 'Replaces は/が/を', desc: 'も takes the place of は, が, or を. Never use them together!' },
+    ],
+    sentences: [
+      { jp: ['わたし', 'も', 'がくせい', 'です'], rom: 'Watashi mo gakusei desu.', en: 'I am also a student.', note: 'も replaces は to mean "also / too".' },
+      { jp: ['ねこ', 'も', 'いぬ', 'も', 'すき'], rom: 'Neko mo inu mo suki.', en: 'I like both cats and dogs.', note: 'Double も means "both A and B".' },
+      { jp: ['わたし', 'も', 'いきません'], rom: 'Watashi mo ikimasen.', en: 'I\'m not going either.', note: 'In negatives, も means "either".' },
+    ],
+    quiz: [
+      { q: 'Fill in: "I am ALSO a student."', jp: 'わたし ___ がくせいです。', hint: '"Also" or "too"', opts: ['は', 'が', 'も', 'に'], answer: 'も', exp: '✅ も means "also" / "too" — it replaces は here!' },
+      { q: 'Fill in to mean "I like BOTH cats and dogs."', jp: 'ねこ ___ いぬ ___ すきです。', hint: 'Both A and B structure.', opts: ['は・は', 'も・も', 'が・が', 'を・を'], answer: 'も・も', exp: '✅ Aも Bも = "both A and B"!' },
+      { q: 'In a negative sentence も means:', jp: 'わたしもいきません。', hint: 'I\'m not going ___', opts: ['"also"', '"either"', '"but"', '"only"'], answer: '"either"', exp: '✅ In negatives, も means "either" — "I\'m not going either!"' },
+    ],
+  },
+  {
+    particle: 'と', rom: 'to', color: '#00bfa5', bg: 'linear-gradient(135deg,#0a2a28,#0a1a18)',
+    name: '"And" / "With" Connector',
+    desc: 'と connects nouns (meaning "and") or marks who you do something WITH.',
+    badge: { text: 'Connector!', color: '#00bfa5' },
+    rules: [
+      { emoji: '🔗', title: 'Connects nouns (and)', desc: 'AとB = "A and B". Only connects nouns, not sentences. ねことさかな = "cats and fish".' },
+      { emoji: '👫', title: 'Marks a companion (with)', desc: 'ともだちと行く = "go WITH a friend". と shows who you\'re with.' },
+      { emoji: '🆚', title: 'と vs も', desc: 'も is "also/too" — adds to a list one by one. と is "and" — lists things together as a unit.' },
+      { emoji: '💬', title: 'Quote marker', desc: 'と also marks quoted speech or thoughts: 「おいしい」と言った = said "It\'s delicious".' },
+    ],
+    sentences: [
+      { jp: ['すし', 'と', 'ラーメン', 'が', 'すき'], rom: 'Sushi to rāmen ga suki.', en: 'I like sushi AND ramen.', note: 'と connects two nouns: sushi and ramen.' },
+      { jp: ['ともだち', 'と', 'いきます'], rom: 'Tomodachi to ikimasu.', en: 'I go WITH a friend.', note: 'と marks the companion (going together).' },
+      { jp: ['「おいしい」', 'と', 'いいました'], rom: '"Oishii" to iimashita.', en: 'Said "It\'s delicious."', note: 'と marks the quoted speech.' },
+    ],
+    quiz: [
+      { q: 'Fill in: "sushi AND ramen"', jp: 'すし ___ ラーメン', hint: 'Connecting two nouns.', opts: ['も', 'と', 'に', 'が'], answer: 'と', exp: '✅ と connects nouns as "and"!' },
+      { q: 'Fill in: "I go WITH my friend."', jp: 'ともだち ___ いきます。', hint: 'With = going together.', opts: ['に', 'で', 'と', 'が'], answer: 'と', exp: '✅ と marks the companion — "go WITH a friend"!' },
+      { q: 'What else does と mark besides "and/with"?', jp: '「こんにちは」___ いいました', hint: 'He said "Hello."', opts: ['A direct object', 'Quoted speech', 'Destination', 'A topic'], answer: 'Quoted speech', exp: '✅ と is also a quote marker! 「___」と言う = say "___".' },
+    ],
+  },
+  {
+    particle: 'の', rom: 'no', color: '#2979ff', bg: 'linear-gradient(135deg,#0a1a3a,#0a0d2a)',
+    name: 'Possessive / Noun Connector',
+    desc: 'の connects nouns to show possession ("\'s") or to describe one noun with another.',
+    badge: { text: 'Possessive!', color: '#2979ff' },
+    rules: [
+      { emoji: '👤', title: 'Shows possession (\'s)', desc: 'わたしのほん = "my book" (literally: "I\'s book"). の works like apostrophe-s in English!' },
+      { emoji: '🏷️', title: 'Noun + の + noun', desc: 'の connects two nouns: にほんごのほん = "a book OF Japanese" / "a Japanese-language book".' },
+      { emoji: '❓', title: 'だれの? = Whose?', desc: 'To ask "whose?", use だれの: これはだれのかばんですか？ = "Whose bag is this?"' },
+      { emoji: '🔄', title: 'Can replace a noun', desc: 'の can stand in for a repeated noun: 赤いのをください = "Please give me the red one (の = one)."' },
+    ],
+    sentences: [
+      { jp: ['これ', 'は', 'わたし', 'の', 'ほん', 'です'], rom: 'Kore wa watashi no hon desu.', en: 'This is MY book.', note: 'の shows possession — "I\'s book" = my book.' },
+      { jp: ['にほん', 'の', 'たべもの', 'が', 'すき'], rom: 'Nihon no tabemono ga suki.', en: 'I like Japanese food.', note: 'の connects 日本 (Japan) and 食べ物 (food).' },
+      { jp: ['これ', 'は', 'だれ', 'の', 'かばん？'], rom: 'Kore wa dare no kaban?', en: 'Whose bag is this?', note: 'だれの = "whose?" — の after a question word.' },
+    ],
+    quiz: [
+      { q: 'Fill in: "MY book"', jp: 'わたし ___ ほん', hint: 'Possession — "I\'s book"', opts: ['は', 'が', 'の', 'を'], answer: 'の', exp: '✅ の shows possession, like English apostrophe-s!' },
+      { q: 'Fill in: "Japanese food"', jp: 'にほん ___ たべもの', hint: 'Japan\'s food / food of Japan', opts: ['に', 'で', 'の', 'と'], answer: 'の', exp: '✅ の connects two nouns — にほんのたべもの = Japanese food!' },
+      { q: 'How do you say "Whose bag?"', jp: '___ かばん？', hint: 'Whose = ?+の', opts: ['なにの', 'だれの', 'どこの', 'いつの'], answer: 'だれの', exp: '✅ だれ = who, だれの = whose! だれのかばん？= Whose bag?' },
+    ],
+  },
+];
+
+let currentLesson = 0;
+let sessionXP = 0;
+let quizState = {};
+
+// ── BUILD SIDEBAR ──
+function buildSidebar() {
+  const el = document.getElementById('sidebarItems');
+  el.innerHTML = PARTICLES.map((p, i) => `
+    <div class="sb-item ${i===0?'active':''}" id="sb-${i}" onclick="goLesson(${i})">
+      <div class="sb-particle" style="background:${p.bg};color:${p.color}">${p.particle}</div>
+      <div class="sb-info">
+        <div class="sb-name">${p.particle} (${p.rom})</div>
+        <div class="sb-role">${p.name}</div>
+      </div>
+      <div class="sb-check" id="sb-check-${i}">○</div>
+    </div>
+  `).join('');
+}
+
+// ── BUILD LESSON ──
+function buildLesson(idx) {
+  const p = PARTICLES[idx];
+  const sentencesHtml = p.sentences.map((s, si) => {
+    const jpHtml = s.jp.map((w, wi) => {
+      const isParticle = w === p.particle;
+      return isParticle
+        ? `<span class="particle" style="background:${p.color}22;color:${p.color};border:1px solid ${p.color}44">${w}</span>`
+        : `<span>${w}</span>`;
+    }).join(' ');
+    return `
+      <div class="sentence-box">
+        <div class="sentence-jp">${jpHtml}</div>
+        <div class="sentence-rom">${s.rom}</div>
+        <div class="sentence-en">${s.en}</div>
+        <div class="sentence-note">💡 ${s.note}</div>
+        <button class="say-btn" onclick="speak('${s.rom}')">🔊 Hear it</button>
+      </div>
+    `;
+  }).join('');
+
+  const rulesHtml = p.rules.map(r => `
+    <div class="rule-card">
+      <div class="rule-emoji">${r.emoji}</div>
+      <div class="rule-title">${r.title}</div>
+      <div class="rule-desc">${r.desc}</div>
+    </div>
+  `).join('');
+
+  quizState[idx] = { current: 0, correct: 0, done: false };
+
+  const content = document.getElementById('lessonContent');
+  content.innerHTML = `
+    <div class="lesson-section active" id="lesson-${idx}">
+
+      <div class="particle-hero" style="background:${p.bg}">
+        <div class="ph-particle-big">${p.particle}${p.particle}${p.particle}</div>
+        <div class="ph-row">
+          <div class="ph-particle-display">
+            <span style="color:${p.color}">${p.particle}</span>
+            <span class="ph-particle-rom">(${p.rom})</span>
+          </div>
+          <div class="ph-particle-name" style="color:${p.color}">— ${p.name}</div>
+          <div class="ph-particle-desc">${p.desc}</div>
+          <div class="particle-badge" style="background:${p.color}22;border:1px solid ${p.color}44;color:${p.color}">${p.badge.text}</div>
+        </div>
+      </div>
+
+      <div class="rules-grid">${rulesHtml}</div>
+
+      <div class="sentence-section">
+        <div class="ss-title">📖 Example Sentences <span style="font-size:0.75rem;color:var(--gray);font-family:'Nunito',sans-serif;font-weight:700">— ${p.particle} is highlighted</span></div>
+        ${sentencesHtml}
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-title">🧠 QUIZ TIME!</div>
+        <div class="quiz-counter" id="qCounter-${idx}">Question 1 / ${p.quiz.length}</div>
+        <div id="quizBody-${idx}"></div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="lnav-btn lnav-prev" onclick="goLesson(${idx-1})" ${idx===0?'disabled style="opacity:0.3"':''}>← Previous</button>
+        <div style="font-size:0.72rem;color:var(--gray);align-self:center">${idx+1} / ${PARTICLES.length}</div>
+        <button class="lnav-btn lnav-next" onclick="goLesson(${idx+1})" ${idx===PARTICLES.length-1?'disabled style="opacity:0.3"':''}>Next →</button>
+      </div>
+
+    </div>
+  `;
+
+  renderQuiz(idx);
+}
+
+// ── QUIZ ──
+function renderQuiz(idx) {
+  const qs = quizState[idx];
+  const p  = PARTICLES[idx];
+  const body = document.getElementById(`quizBody-${idx}`);
+  document.getElementById(`qCounter-${idx}`).textContent = `Question ${qs.current+1} / ${p.quiz.length}`;
+
+  if (qs.done) {
+    const score = qs.correct;
+    const total = p.quiz.length;
+    const pct   = Math.round(score/total*100);
+    const msg   = pct===100 ? '🌟 Perfect! You mastered '+p.particle+'!' : pct>=66 ? '👍 Great work! Almost perfect!' : '💪 Keep practicing — you\'ve got this!';
+    body.innerHTML = `
+      <div class="quiz-result">
+        <div class="qr-score">${score} / ${total}</div>
+        <div class="qr-msg">${msg}</div>
+        <button class="qr-retry" onclick="resetQuiz(${idx})">🔄 Try Again</button>
+      </div>
+    `;
+    return;
+  }
+
+  const q = p.quiz[qs.current];
+  const optsHtml = q.opts.map(o => `
+    <button class="quiz-opt" onclick="checkAnswer(${idx},'${o.replace(/'/g,"\\'")}',this)">${o}</button>
+  `).join('');
+
+  body.innerHTML = `
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-jp-display">${q.jp}</div>
+    ${q.hint ? `<div class="quiz-hint">💡 Hint: ${q.hint}</div>` : ''}
+    <div class="quiz-options">${optsHtml}</div>
+    <div class="quiz-feedback" id="qFeedback-${idx}"></div>
+    <button class="quiz-next" id="qNext-${idx}" style="display:none" onclick="nextQuiz(${idx})">
+      ${qs.current < p.quiz.length-1 ? 'Next Question →' : 'See Results 🏆'}
+    </button>
+  `;
+}
+
+function checkAnswer(idx, answer, btn) {
+  const q = PARTICLES[idx].quiz[quizState[idx].current];
+  const isCorrect = answer === q.answer;
+  const fb = document.getElementById(`qFeedback-${idx}`);
+
+  document.querySelectorAll(`#quizBody-${idx} .quiz-opt`).forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    fb.textContent = q.exp;
+    fb.className = 'quiz-feedback show correct';
+    quizState[idx].correct++;
+    addXP(20);
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = '❌ ' + q.exp;
+    fb.className = 'quiz-feedback show wrong';
+  }
+
+  document.getElementById(`qNext-${idx}`).style.display = 'inline-block';
+}
+
+function nextQuiz(idx) {
+  quizState[idx].current++;
+  if (quizState[idx].current >= PARTICLES[idx].quiz.length) quizState[idx].done = true;
+  renderQuiz(idx);
+}
+
+function resetQuiz(idx) {
+  quizState[idx] = { current: 0, correct: 0, done: false };
+  renderQuiz(idx);
+}
+
+// ── NAVIGATION ──
+function goLesson(idx) {
+  if (idx < 0 || idx >= PARTICLES.length) return;
+  document.querySelectorAll('.sb-item').forEach((el, i) => el.classList.toggle('active', i===idx));
+  currentLesson = idx;
+  buildLesson(idx);
+  window.scrollTo({ top: 56, behavior: 'smooth' });
+}
+
+// ── SPEECH ──
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ja-JP'; u.rate = 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+// ── XP ──
+function addXP(pts) {
+  sessionXP += pts;
+  document.getElementById('xpDisplay').textContent = `+${sessionXP} XP earned`;
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.35);color:#a855f7;padding:10px 16px;border-radius:12px;font-size:0.82rem;font-weight:900;animation:slideUp 0.3s ease;';
+  t.textContent = `+${pts} XP! 🧠`;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2000);
+}
+
+// ── INIT ──
+window.addEventListener('load', () => { buildSidebar(); buildLesson(0); });
+</script>
+</body>
+</html>

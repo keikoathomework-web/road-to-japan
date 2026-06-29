@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — Katakana Master</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#08090f;--bg2:#0d0f1e;--card:rgba(255,255,255,0.04);--card2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08);
+  --gold:#ffd700;--gold2:#ffaa00;--red:#ff3a5c;
+  --cyan:#00e5ff;--purple:#a855f7;--pink:#ff6eb4;--green:#00e676;
+  --white:#fff;--gray:#7a8099;--text:#d0d4e8;
+  /* Katakana accent: cyan/purple */
+  --acc1:#00e5ff;--acc2:#a855f7;--acc-glow:rgba(0,229,255,0.2);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--white);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px}
+
+/* ===== HEADER ===== */
+.top-bar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;gap:12px;padding:0 20px;height:60px;
+  background:rgba(8,9,15,0.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(168,85,247,0.15);
+}
+.back-link{
+  display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  color:var(--gray);font-size:0.8rem;font-weight:800;text-decoration:none;
+  transition:all 0.2s;
+}
+.back-link:hover{color:var(--white);border-color:rgba(255,255,255,0.2)}
+
+.top-title{
+  font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.top-spacer{flex:1}
+.top-chip{
+  display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;
+  font-family:'Orbitron',sans-serif;font-size:0.78rem;font-weight:900;
+}
+.chip-purple{background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.25);color:var(--purple)}
+.chip-cyan{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.18);color:var(--cyan)}
+.chip-green{background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.18);color:var(--green)}
+
+/* ===== BADGE: Hiragana link ===== */
+.hira-link{
+  display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;
+  background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);
+  color:var(--gold);font-size:0.78rem;font-weight:900;text-decoration:none;
+  transition:all 0.2s;
+}
+.hira-link:hover{background:rgba(255,215,0,0.12)}
+
+/* ===== LAYOUT ===== */
+.page-wrap{display:flex;min-height:100vh;padding-top:60px}
+
+/* ===== LEFT SIDEBAR ===== */
+.left-panel{
+  width:220px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);
+  overflow-y:auto;padding:20px 12px;
+  background:rgba(8,9,15,0.7);border-right:1px solid rgba(168,85,247,0.12);
+  display:flex;flex-direction:column;gap:4px;
+}
+.row-label{
+  font-size:0.65rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gray);padding:10px 8px 4px;opacity:0.5;
+}
+.row-btn{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
+  color:var(--gray);font-weight:800;font-size:0.88rem;cursor:pointer;
+  transition:all 0.2s;border:1px solid transparent;background:none;text-align:left;width:100%;
+}
+.row-btn:hover{color:var(--white);background:var(--card2)}
+.row-btn.active{color:var(--cyan);background:rgba(0,229,255,0.07);border-color:rgba(0,229,255,0.2)}
+.row-jp{font-size:1rem;width:22px;text-align:center;flex-shrink:0}
+.row-progress{margin-left:auto;width:36px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.row-fill{height:100%;border-radius:2px;background:var(--cyan);transition:width 0.4s}
+
+/* LOANWORD CATEGORY PILLS */
+.lw-section{padding:8px 12px 4px}
+.lw-pill{
+  display:inline-flex;align-items:center;gap:4px;padding:3px 10px;margin:3px 2px;
+  border-radius:20px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);
+  color:var(--purple);font-size:0.72rem;font-weight:900;cursor:pointer;transition:all 0.2s;
+}
+.lw-pill:hover,.lw-pill.active{background:rgba(168,85,247,0.18);border-color:var(--purple)}
+
+/* ===== MAIN ===== */
+.main{flex:1;padding:24px;max-width:960px}
+
+/* ===== COMPARE BANNER ===== */
+.compare-banner{
+  background:linear-gradient(135deg,rgba(0,229,255,0.06),rgba(168,85,247,0.06));
+  border:1px solid rgba(168,85,247,0.2);border-radius:16px;padding:14px 20px;
+  margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.cb-char{
+  display:flex;flex-direction:column;align-items:center;
+  font-size:2.4rem;line-height:1;
+}
+.cb-char .cb-label{font-size:0.65rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-top:4px;opacity:0.5}
+.cb-arrow{font-size:1.4rem;color:var(--gray)}
+.cb-info{flex:1;font-size:0.85rem;color:var(--text);line-height:1.6}
+.cb-info strong{color:var(--cyan)}
+
+/* ===== MODE TABS ===== */
+.mode-tabs{display:flex;gap:8px;margin-bottom:24px;background:rgba(255,255,255,0.03);border:1px solid rgba(168,85,247,0.12);border-radius:16px;padding:6px}
+.mode-tab{
+  flex:1;padding:10px;border-radius:12px;border:none;background:transparent;
+  color:var(--gray);font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;
+  cursor:pointer;transition:all 0.25s;
+}
+.mode-tab.active{background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(168,85,247,0.1));color:var(--cyan);border:1px solid rgba(0,229,255,0.25)}
+.mode-tab:hover:not(.active){color:var(--text);background:var(--card2)}
+
+/* ===== HERO CARD ===== */
+.hero-section{display:flex;gap:16px;margin-bottom:24px}
+.hero-card{
+  background:var(--card);border:1px solid rgba(0,229,255,0.2);
+  border-radius:24px;padding:28px;flex:0 0 200px;
+  text-align:center;position:relative;overflow:hidden;transition:all 0.35s;
+}
+.hero-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,229,255,0.07),transparent 70%);
+}
+.hero-char{
+  font-size:6rem;line-height:1;display:block;margin-bottom:8px;
+  background:linear-gradient(135deg,#fff,var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 20px rgba(0,229,255,0.25));
+}
+.hero-rom{font-family:'Bangers',cursive;font-size:2rem;letter-spacing:3px;color:var(--cyan);margin-bottom:4px}
+
+/* Pair display */
+.hero-pair{
+  display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px;
+  padding:8px;background:rgba(255,255,255,0.04);border-radius:10px;
+}
+.pair-item{text-align:center}
+.pair-char{font-size:1.6rem;line-height:1}
+.pair-label{font-size:0.6rem;font-weight:900;color:var(--gray);letter-spacing:1px}
+.pair-sep{font-size:1rem;color:var(--border)}
+
+.hero-example{font-size:0.82rem;color:var(--text);line-height:1.6;margin-bottom:16px}
+.hero-audio-btn{
+  padding:10px 20px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);
+  border-radius:10px;color:var(--cyan);font-weight:900;font-size:0.85rem;
+  cursor:pointer;transition:all 0.2s;width:100%;
+}
+.hero-audio-btn:hover{background:rgba(0,229,255,0.16);transform:scale(1.02)}
+.hero-audio-btn.playing{background:rgba(168,85,247,0.1);border-color:var(--purple);color:var(--purple)}
+
+.hero-info{flex:1;display:flex;flex-direction:column;gap:12px}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 20px}
+.info-label{font-size:0.65rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:6px}
+.info-value{font-size:0.9rem;color:var(--text);line-height:1.6}
+.info-value strong{color:var(--white)}
+
+/* Loanword tag */
+.lw-badge{
+  display:inline-flex;align-items:center;gap:5px;padding:3px 10px;
+  border-radius:10px;font-size:0.72rem;font-weight:900;
+  background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.25);color:var(--purple);
+}
+
+/* SRS status */
+.srs-status{display:flex;gap:6px;flex-wrap:wrap}
+.srs-tag{padding:3px 10px;border-radius:10px;font-size:0.72rem;font-weight:900}
+.srs-new{background:rgba(0,229,255,0.1);color:var(--cyan);border:1px solid rgba(0,229,255,0.2)}
+.srs-learning{background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.2)}
+.srs-review{background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.2)}
+.srs-mastered{background:rgba(0,230,118,0.1);color:var(--green);border:1px solid rgba(0,230,118,0.2)}
+
+/* ===== CHAR GRID ===== */
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.section-head h2{font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px}
+.section-head .subtitle{font-size:0.8rem;color:var(--gray)}
+
+.char-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:24px}
+.char-tile{
+  aspect-ratio:1;border-radius:14px;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;padding:4px;
+}
+.char-tile:hover{transform:translateY(-3px);border-color:rgba(0,229,255,0.35);box-shadow:0 10px 24px rgba(0,229,255,0.08)}
+.char-tile.selected{border-color:var(--cyan);background:rgba(0,229,255,0.06);box-shadow:0 0 20px rgba(0,229,255,0.12)}
+.char-tile.mastered{border-color:rgba(0,230,118,0.3);background:rgba(0,230,118,0.04)}
+.char-tile.learning{border-color:rgba(168,85,247,0.2);background:rgba(168,85,247,0.04)}
+.char-tile.empty{background:transparent;border:none;cursor:default}
+.char-tile.empty:hover{transform:none;box-shadow:none}
+
+.tile-jp{font-size:clamp(1.3rem,3vw,1.9rem);color:var(--white);line-height:1;margin-bottom:2px}
+.tile-rom{font-size:0.65rem;font-weight:900;letter-spacing:0.5px;color:var(--gray)}
+.char-tile.selected .tile-jp{color:var(--cyan)}
+.char-tile.selected .tile-rom{color:rgba(0,229,255,0.8)}
+.char-tile.mastered .tile-jp{color:var(--green)}
+.char-tile.mastered .tile-rom{color:rgba(0,230,118,0.7)}
+.tile-check{
+  position:absolute;top:4px;right:4px;width:14px;height:14px;border-radius:50%;
+  background:var(--green);display:flex;align-items:center;justify-content:center;
+  font-size:0.55rem;color:#000;font-weight:900;opacity:0;transition:opacity 0.3s;
+}
+.char-tile.mastered .tile-check{opacity:1}
+
+/* ===== PROGRESS ===== */
+.progress-overview{
+  background:var(--card);border:1px solid rgba(168,85,247,0.12);
+  border-radius:20px;padding:20px 24px;margin-bottom:24px;
+}
+.prog-title{font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;margin-bottom:14px}
+.prog-bars{display:flex;flex-direction:column;gap:10px}
+.prog-row{display:flex;align-items:center;gap:12px}
+.prog-row-label{font-size:0.78rem;font-weight:800;color:var(--gray);width:80px;flex-shrink:0}
+.prog-bar-wrap{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-bar-fill{height:100%;border-radius:4px;transition:width 0.8s ease}
+.prog-count{font-size:0.75rem;font-weight:900;width:50px;text-align:right;flex-shrink:0}
+
+/* LOANWORD EXPLORER */
+.lw-explorer{
+  background:var(--card);border:1px solid rgba(168,85,247,0.15);
+  border-radius:20px;padding:20px 24px;margin-bottom:24px;
+}
+.lw-explorer-title{font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;margin-bottom:4px}
+.lw-explorer-sub{font-size:0.82rem;color:var(--gray);margin-bottom:16px}
+.lw-categories{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.lw-cat-btn{
+  padding:7px 16px;border-radius:20px;font-weight:800;font-size:0.82rem;cursor:pointer;
+  border:1px solid var(--border);background:var(--card);color:var(--gray);transition:all 0.2s;
+}
+.lw-cat-btn:hover{color:var(--white);border-color:rgba(168,85,247,0.4)}
+.lw-cat-btn.active{background:rgba(168,85,247,0.12);border-color:rgba(168,85,247,0.35);color:var(--purple)}
+.lw-words{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.lw-word-card{
+  padding:12px 14px;border-radius:12px;background:rgba(168,85,247,0.05);
+  border:1px solid rgba(168,85,247,0.12);transition:all 0.2s;cursor:pointer;
+}
+.lw-word-card:hover{background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.3);transform:translateY(-2px)}
+.lw-katakana{font-size:1.2rem;color:var(--white);margin-bottom:2px}
+.lw-romaji{font-size:0.72rem;color:var(--cyan);font-weight:900;margin-bottom:1px}
+.lw-english{font-size:0.72rem;color:var(--gray)}
+.lw-origin{font-size:0.65rem;color:var(--purple);font-weight:700;opacity:0.7}
+
+/* ===== QUIZ MODE ===== */
+#quizMode{display:none}
+#quizMode.active{display:block}
+.quiz-setup{background:var(--card);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:28px;margin-bottom:20px;display:flex;flex-direction:column;align-items:center;gap:20px}
+.quiz-row-select{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;width:100%}
+.qrs-btn{padding:10px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;cursor:pointer;transition:all 0.2s;text-align:center}
+.qrs-btn.sel{border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.06);color:var(--cyan)}
+.qrs-btn:hover{border-color:rgba(255,255,255,0.2)}
+.start-quiz-btn{padding:14px 48px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#000;font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px;border:none;border-radius:50px;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 0 #006080}
+.start-quiz-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #006080}
+
+/* Quiz toggle: hira comparison mode */
+.quiz-toggle-row{display:flex;align-items:center;gap:12px;font-size:0.85rem;color:var(--text)}
+.toggle-switch{position:relative;width:44px;height:24px;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:12px;cursor:pointer;transition:0.3s}
+.toggle-slider:before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#666;border-radius:50%;transition:0.3s}
+.toggle-switch input:checked + .toggle-slider{background:rgba(0,229,255,0.3);border:1px solid var(--cyan)}
+.toggle-switch input:checked + .toggle-slider:before{background:var(--cyan);transform:translateX(20px)}
+
+.active-quiz{background:var(--card);border:1px solid rgba(0,229,255,0.15);border-radius:24px;padding:32px;text-align:center}
+.aq-progress-bar{height:5px;background:var(--border);border-radius:3px;margin-bottom:20px;overflow:hidden}
+.aq-progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--purple));transition:width 0.4s}
+.aq-label{font-size:0.7rem;font-weight:900;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;margin-bottom:6px}
+.aq-question{font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:2px;margin-bottom:8px}
+.aq-char{font-size:7rem;display:block;margin:10px 0;background:linear-gradient(135deg,#fff,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;filter:drop-shadow(0 4px 16px rgba(0,229,255,0.2))}
+.aq-hint{font-size:0.85rem;color:var(--gray);margin-bottom:24px}
+.aq-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.aq-opt{padding:16px;border-radius:14px;background:var(--card);border:1px solid var(--border);cursor:pointer;transition:all 0.25s;font-family:'Bangers',cursive;font-size:1.8rem;letter-spacing:1px;color:var(--white)}
+.aq-opt:hover{background:rgba(0,229,255,0.06);border-color:rgba(0,229,255,0.3);transform:scale(1.03)}
+.aq-opt.correct{background:rgba(0,230,118,0.15)!important;border-color:var(--green)!important;color:var(--green);animation:pop 0.35s ease}
+.aq-opt.wrong{background:rgba(255,58,92,0.12)!important;border-color:var(--red)!important;color:var(--red);animation:wshake 0.35s ease}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes wshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.aq-score-row{display:flex;align-items:center;justify-content:center;gap:20px;font-size:0.82rem;color:var(--gray);font-weight:700}
+.aq-score-item{display:flex;align-items:center;gap:5px}
+.aq-score-num{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900}
+
+/* hira comparison in quiz */
+.aq-hira-compare{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:6px 14px;border-radius:10px;
+  background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);
+  font-size:0.82rem;color:var(--gold);font-weight:700;margin-bottom:16px;
+}
+
+/* Quiz result */
+.quiz-result{background:var(--card);border:1px solid rgba(0,229,255,0.2);border-radius:24px;padding:40px 32px;text-align:center}
+.qr-emoji{font-size:4rem;display:block;margin-bottom:12px}
+.qr-title{font-family:'Bangers',cursive;font-size:2.4rem;letter-spacing:3px;margin-bottom:8px}
+.qr-sub{font-size:0.9rem;color:var(--text);line-height:1.6;margin-bottom:24px}
+.qr-stats{display:flex;gap:0;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px}
+.qr-stat{flex:1;padding:16px;text-align:center;border-right:1px solid var(--border)}
+.qr-stat:last-child{border-right:none}
+.qr-num{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;color:var(--cyan)}
+.qr-lbl{font-size:0.7rem;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.qr-btn{padding:14px 40px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#000;font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;border:none;border-radius:14px;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 0 #006080;margin-right:10px}
+.qr-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #006080}
+.qr-btn-sec{padding:14px 28px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;border-radius:14px;cursor:pointer;transition:all 0.2s}
+.qr-btn-sec:hover{border-color:var(--white);color:var(--white)}
+
+/* ===== REVIEW MODE ===== */
+#reviewMode{display:none}
+#reviewMode.active{display:block}
+.flip-card{width:100%;max-width:360px;margin:0 auto 24px;perspective:800px;cursor:pointer}
+.flip-inner{width:100%;aspect-ratio:3/2;position:relative;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);border-radius:24px}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.flip-front{background:linear-gradient(135deg,rgba(0,229,255,0.05),rgba(168,85,247,0.04));border:1px solid rgba(0,229,255,0.2)}
+.flip-char{background:linear-gradient(135deg,#fff,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:5rem;line-height:1}
+.flip-sub{font-size:0.82rem;color:rgba(255,255,255,0.2);font-weight:700;margin-top:8px}
+.flip-hira-hint{font-size:0.78rem;color:rgba(255,215,0,0.4);font-weight:700;margin-top:4px}
+.flip-back{transform:rotateY(180deg);background:linear-gradient(135deg,var(--cyan),var(--purple));gap:4px}
+.flip-rom{font-family:'Bangers',cursive;font-size:3rem;letter-spacing:3px;color:#000}
+.flip-char-small{font-size:1.8rem;color:rgba(0,0,0,0.4);line-height:1}
+.flip-ex{font-size:0.82rem;color:rgba(0,0,0,0.6);font-weight:700;margin-top:6px}
+.flip-hira{font-size:0.78rem;color:rgba(0,0,0,0.4);font-weight:700}
+
+.review-actions{display:flex;gap:12px;justify-content:center;margin-bottom:24px}
+.ra-btn{flex:1;max-width:130px;padding:14px;border-radius:14px;font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:1px;border:none;cursor:pointer;transition:all 0.25s}
+.ra-again{background:rgba(255,58,92,0.15);color:var(--red);border:1px solid rgba(255,58,92,0.3)}
+.ra-again:hover{background:rgba(255,58,92,0.25);transform:scale(1.03)}
+.ra-hard{background:rgba(255,165,0,0.12);color:#ff9800;border:1px solid rgba(255,165,0,0.25)}
+.ra-hard:hover{background:rgba(255,165,0,0.22);transform:scale(1.03)}
+.ra-good{background:rgba(0,229,255,0.1);color:var(--cyan);border:1px solid rgba(0,229,255,0.25)}
+.ra-good:hover{background:rgba(0,229,255,0.2);transform:scale(1.03)}
+.ra-easy{background:rgba(0,230,118,0.1);color:var(--green);border:1px solid rgba(0,230,118,0.25)}
+.ra-easy:hover{background:rgba(0,230,118,0.2);transform:scale(1.03)}
+
+.review-progress{display:flex;align-items:center;justify-content:center;gap:16px;font-size:0.82rem;color:var(--gray);font-weight:700;margin-bottom:16px}
+
+/* ===== TOAST ===== */
+.toast{
+  position:fixed;bottom:24px;right:20px;
+  background:rgba(13,15,30,0.97);border:1px solid var(--border);
+  border-radius:14px;padding:14px 18px;max-width:260px;z-index:999;
+  backdrop-filter:blur(20px);
+  transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  display:flex;align-items:flex-start;gap:10px;
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:rgba(0,229,255,0.3)}
+.toast-icon{font-size:1.4rem;flex-shrink:0}
+.toast-body .t-title{font-weight:900;font-size:0.88rem;margin-bottom:2px}
+.toast-body .t-sub{font-size:0.78rem;color:var(--gray);line-height:1.4}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  .left-panel{display:none}
+  .main{padding:16px}
+  .hero-section{flex-direction:column}
+  .hero-card{flex:none}
+  .char-grid{gap:5px}
+  .tile-jp{font-size:1.2rem}
+  .tile-rom{font-size:0.55rem}
+  .compare-banner{display:none}
+  .aq-char{font-size:5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a class="back-link" href="home.html">← Home</a>
+  <div class="top-title">ア KATAKANA MASTER</div>
+  <div class="top-spacer"></div>
+  <div class="top-chip chip-purple" id="masteredChip">⭐ 0/46</div>
+  <div class="top-chip chip-green" id="streakChip">🔥 7 days</div>
+  <a class="hira-link" href="hiragana.html">あ Hiragana →</a>
+</div>
+
+<!-- PAGE WRAP -->
+<div class="page-wrap">
+
+  <!-- LEFT PANEL -->
+  <aside class="left-panel">
+    <div class="row-label">Katakana Rows</div>
+    <button class="row-btn active" onclick="filterRow('all',this)"><span class="row-jp">全</span><span>All Characters</span><div class="row-progress"><div class="row-fill" id="rf-all" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('a',this)"><span class="row-jp">ア</span><span>A-row</span><div class="row-progress"><div class="row-fill" id="rf-a" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('ka',this)"><span class="row-jp">カ</span><span>Ka-row</span><div class="row-progress"><div class="row-fill" id="rf-ka" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('sa',this)"><span class="row-jp">サ</span><span>Sa-row</span><div class="row-progress"><div class="row-fill" id="rf-sa" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('ta',this)"><span class="row-jp">タ</span><span>Ta-row</span><div class="row-progress"><div class="row-fill" id="rf-ta" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('na',this)"><span class="row-jp">ナ</span><span>Na-row</span><div class="row-progress"><div class="row-fill" id="rf-na" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('ha',this)"><span class="row-jp">ハ</span><span>Ha-row</span><div class="row-progress"><div class="row-fill" id="rf-ha" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('ma',this)"><span class="row-jp">マ</span><span>Ma-row</span><div class="row-progress"><div class="row-fill" id="rf-ma" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('ya',this)"><span class="row-jp">ヤ</span><span>Ya-row</span><div class="row-progress"><div class="row-fill" id="rf-ya" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('ra',this)"><span class="row-jp">ラ</span><span>Ra-row</span><div class="row-progress"><div class="row-fill" id="rf-ra" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('wa',this)"><span class="row-jp">ワ</span><span>Wa-row</span><div class="row-progress"><div class="row-fill" id="rf-wa" style="width:0%"></div></div></button>
+    <div class="row-label" style="margin-top:8px">Voiced (濁音)</div>
+    <button class="row-btn" onclick="filterRow('ga',this)"><span class="row-jp">ガ</span><span>Ga-row</span><div class="row-progress"><div class="row-fill" id="rf-ga" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('za',this)"><span class="row-jp">ザ</span><span>Za-row</span><div class="row-progress"><div class="row-fill" id="rf-za" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('da',this)"><span class="row-jp">ダ</span><span>Da-row</span><div class="row-progress"><div class="row-fill" id="rf-da" style="width:0%"></div></div></button>
+    <button class="row-btn" onclick="filterRow('ba',this)"><span class="row-jp">バ</span><span>Ba/Pa-row</span><div class="row-progress"><div class="row-fill" id="rf-ba" style="width:0%"></div></div></button>
+
+    <div class="row-label" style="margin-top:8px">By Theme</div>
+    <div style="padding:4px 8px;display:flex;flex-wrap:wrap;gap:4px">
+      <span class="lw-pill" onclick="showLWCategory('food')">🍕 Food</span>
+      <span class="lw-pill" onclick="showLWCategory('tech')">💻 Tech</span>
+      <span class="lw-pill" onclick="showLWCategory('anime')">🎌 Anime</span>
+      <span class="lw-pill" onclick="showLWCategory('sport')">⚽ Sports</span>
+      <span class="lw-pill" onclick="showLWCategory('music')">🎵 Music</span>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- MODE TABS -->
+    <div class="mode-tabs">
+      <button class="mode-tab active" onclick="setMode('study')">📖 STUDY</button>
+      <button class="mode-tab" onclick="setMode('quiz')">🎯 QUIZ</button>
+      <button class="mode-tab" onclick="setMode('review')">🔄 SRS REVIEW</button>
+    </div>
+
+    <!-- ===== STUDY MODE ===== -->
+    <div id="studyMode">
+
+      <!-- Compare banner -->
+      <div class="compare-banner" id="compareBanner">
+        <div class="cb-char">
+          <span id="cbKata" style="color:var(--cyan)">ア</span>
+          <span class="cb-label" style="color:var(--cyan)">Katakana</span>
+        </div>
+        <div class="cb-arrow">↔</div>
+        <div class="cb-char">
+          <span id="cbHira" style="color:var(--gold)">あ</span>
+          <span class="cb-label" style="color:var(--gold)">Hiragana</span>
+        </div>
+        <div class="cb-info" id="cbInfo">
+          Both represent <strong>the same sound</strong> — "a". Katakana is used for foreign loanwords, sound effects, emphasis, and scientific terms. Same alphabet, different style!
+        </div>
+      </div>
+
+      <!-- Hero card -->
+      <div class="hero-section">
+        <div class="hero-card">
+          <span class="hero-char" id="heroChar">ア</span>
+          <div class="hero-rom" id="heroRom">a</div>
+          <div class="hero-pair" id="heroPair">
+            <div class="pair-item"><div class="pair-char" style="color:var(--cyan)">ア</div><div class="pair-label" style="color:var(--cyan)">Katakana</div></div>
+            <div class="pair-sep">≈</div>
+            <div class="pair-item"><div class="pair-char" style="color:var(--gold)">あ</div><div class="pair-label" style="color:var(--gold)">Hiragana</div></div>
+          </div>
+          <div class="hero-example" id="heroExample">アイス (aisu) — Ice cream</div>
+          <button class="hero-audio-btn" id="audioBtn" onclick="playAudio()">🔊 Play Sound</button>
+        </div>
+
+        <div class="hero-info">
+          <div class="info-card">
+            <div class="info-label">Mnemonic — How to remember</div>
+            <div class="info-value" id="heroPic">ア looks like the hiragana あ but with sharp, angular strokes — like a robot version!</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Loanword Examples</div>
+            <div class="info-value" id="heroLW">
+              <span class="lw-badge">🌍 From English</span><br>
+              <span id="heroLWText">アイスクリーム (ice cream), アメリカ (America)</span>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">SRS Status</div>
+            <div class="srs-status" id="heroSRS"><span class="srs-tag srs-new">🆕 New</span></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Practice Stats</div>
+            <div class="info-value" id="heroStats">Not studied yet · Tap to begin!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-overview">
+        <div class="prog-title">📊 Katakana Progress</div>
+        <div class="prog-bars">
+          <div class="prog-row">
+            <div class="prog-row-label">Mastered</div>
+            <div class="prog-bar-wrap"><div class="prog-bar-fill" id="pb-mastered" style="width:0%;background:var(--green)"></div></div>
+            <div class="prog-count" style="color:var(--green)" id="pc-mastered">0 / 46</div>
+          </div>
+          <div class="prog-row">
+            <div class="prog-row-label">Learning</div>
+            <div class="prog-bar-wrap"><div class="prog-bar-fill" id="pb-learning" style="width:0%;background:var(--purple)"></div></div>
+            <div class="prog-count" style="color:var(--purple)" id="pc-learning">0 / 46</div>
+          </div>
+          <div class="prog-row">
+            <div class="prog-row-label">Not Seen</div>
+            <div class="prog-bar-wrap"><div class="prog-bar-fill" id="pb-new" style="width:100%;background:var(--border)"></div></div>
+            <div class="prog-count" id="pc-new">46 / 46</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loanword Explorer -->
+      <div class="lw-explorer" id="lwExplorer">
+        <div class="lw-explorer-title">🌍 Loanword Explorer</div>
+        <div class="lw-explorer-sub">Katakana comes alive through foreign words! Click a category to explore.</div>
+        <div class="lw-categories">
+          <button class="lw-cat-btn active" onclick="setLWCat('all',this)">All</button>
+          <button class="lw-cat-btn" onclick="setLWCat('food',this)">🍕 Food</button>
+          <button class="lw-cat-btn" onclick="setLWCat('tech',this)">💻 Tech</button>
+          <button class="lw-cat-btn" onclick="setLWCat('anime',this)">🎌 Anime/Manga</button>
+          <button class="lw-cat-btn" onclick="setLWCat('sport',this)">⚽ Sports</button>
+          <button class="lw-cat-btn" onclick="setLWCat('music',this)">🎵 Music</button>
+          <button class="lw-cat-btn" onclick="setLWCat('place',this)">📍 Places</button>
+        </div>
+        <div class="lw-words" id="lwWords"></div>
+      </div>
+
+      <!-- Char grid -->
+      <div id="gridContainer"></div>
+
+    </div><!-- /studyMode -->
+
+    <!-- ===== QUIZ MODE ===== -->
+    <div id="quizMode">
+      <div id="quizSetup">
+        <div class="quiz-setup">
+          <div style="text-align:center">
+            <div style="font-family:'Bangers',cursive;font-size:2rem;letter-spacing:3px;margin-bottom:6px;background:linear-gradient(90deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent">🎯 KATAKANA QUIZ</div>
+            <div style="color:var(--gray);font-size:0.9rem">Choose rows and quiz style</div>
+          </div>
+          <div class="quiz-row-select" id="quizRowSelect"></div>
+          <div style="display:flex;flex-direction:column;gap:12px;align-items:center">
+            <div style="font-size:0.82rem;color:var(--text)">
+              Question type:
+              <select id="quizType" style="background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--white);padding:4px 8px;margin-left:6px;font-family:'Nunito',sans-serif;font-size:0.82rem">
+                <option value="char2rom">Character → Romaji</option>
+                <option value="rom2char">Romaji → Character</option>
+                <option value="mixed">Mixed</option>
+                <option value="loanword">Katakana → English Word</option>
+              </select>
+            </div>
+            <label class="quiz-toggle-row">
+              <div class="toggle-switch"><input type="checkbox" id="showHiraToggle"><span class="toggle-slider"></span></div>
+              Show hiragana comparison hints
+            </label>
+          </div>
+          <button class="start-quiz-btn" onclick="startQuiz()">⚡ Start Quiz!</button>
+        </div>
+      </div>
+      <div id="quizActive" style="display:none">
+        <div class="active-quiz">
+          <div class="aq-progress-bar"><div class="aq-progress-fill" id="aqPF" style="width:0%"></div></div>
+          <div class="aq-label" id="aqLabel">QUESTION 1/10</div>
+          <div class="aq-question" id="aqQuestion">What sound does this make?</div>
+          <span class="aq-char" id="aqChar">ア</span>
+          <div class="aq-hira-compare hidden" id="aqHiraHint"></div>
+          <div class="aq-hint" id="aqHint">Choose the correct reading</div>
+          <div class="aq-options" id="aqOptions"></div>
+          <div class="aq-score-row">
+            <div class="aq-score-item">✅ <span class="aq-score-num" id="aqCorrect">0</span></div>
+            <div class="aq-score-item">❌ <span class="aq-score-num" id="aqWrong">0</span></div>
+            <div class="aq-score-item">⚡ <span class="aq-score-num" id="aqXP" style="color:var(--cyan)">0</span> XP</div>
+          </div>
+        </div>
+      </div>
+      <div id="quizResult" style="display:none">
+        <div class="quiz-result">
+          <span class="qr-emoji" id="qrEmoji">🏆</span>
+          <div class="qr-title" id="qrTitle" style="color:var(--cyan)">PERFECT!</div>
+          <p class="qr-sub" id="qrSub"></p>
+          <div class="qr-stats">
+            <div class="qr-stat"><div class="qr-num" id="qrScore">10/10</div><div class="qr-lbl">Score</div></div>
+            <div class="qr-stat"><div class="qr-num" id="qrAcc">100%</div><div class="qr-lbl">Accuracy</div></div>
+            <div class="qr-stat"><div class="qr-num" id="qrXP">+100</div><div class="qr-lbl">XP Earned</div></div>
+          </div>
+          <button class="qr-btn" onclick="startQuiz()">🔄 Play Again</button>
+          <button class="qr-btn-sec" onclick="setMode('study')">📖 Back to Study</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REVIEW MODE ===== -->
+    <div id="reviewMode">
+      <div id="reviewEmpty" style="text-align:center;padding:60px 20px">
+        <div style="font-size:3rem;margin-bottom:12px">🌟</div>
+        <div style="font-family:'Bangers',cursive;font-size:1.8rem;letter-spacing:2px;color:var(--cyan);margin-bottom:8px">ALL CAUGHT UP!</div>
+        <div style="color:var(--gray);font-size:0.9rem;margin-bottom:24px">No cards due for review.<br>Study more katakana to build your deck!</div>
+        <button onclick="setMode('study')" style="padding:12px 28px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#000;font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:2px;border:none;border-radius:12px;cursor:pointer">📖 Study More</button>
+      </div>
+      <div id="reviewActive" style="display:none">
+        <div class="review-progress" id="reviewProgress">Card 1 of 12</div>
+        <div class="flip-card" id="flipCard" onclick="flipReviewCard()">
+          <div class="flip-inner" id="flipInner">
+            <div class="flip-front">
+              <span class="flip-char" id="rfChar">ア</span>
+              <span class="flip-sub">Tap to reveal →</span>
+              <span class="flip-hira-hint" id="rfHiraHint"></span>
+            </div>
+            <div class="flip-back">
+              <span class="flip-char-small" id="rbCharSmall">ア</span>
+              <span class="flip-rom" id="rbRom">a</span>
+              <span class="flip-ex" id="rbEx">アイス (aisu) — Ice cream</span>
+              <span class="flip-hira" id="rbHira">Hiragana: あ</span>
+            </div>
+          </div>
+        </div>
+        <div class="review-actions" id="reviewActions" style="display:none">
+          <button class="ra-btn ra-again" onclick="reviewAnswer('again')">😓 Again</button>
+          <button class="ra-btn ra-hard" onclick="reviewAnswer('hard')">🤔 Hard</button>
+          <button class="ra-btn ra-good" onclick="reviewAnswer('good')">😊 Good</button>
+          <button class="ra-btn ra-easy" onclick="reviewAnswer('easy')">⚡ Easy</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✨</span>
+  <div class="toast-body">
+    <div class="t-title" id="toastTitle">Great!</div>
+    <div class="t-sub" id="toastSub"></div>
+  </div>
+</div>
+
+<script>
+// =====================================================================
+// KATAKANA DATA
+// =====================================================================
+const HIRA_MAP = {
+  'ア':'あ','イ':'い','ウ':'う','エ':'え','オ':'お',
+  'カ':'か','キ':'き','ク':'く','ケ':'け','コ':'こ',
+  'サ':'さ','シ':'し','ス':'す','セ':'せ','ソ':'そ',
+  'タ':'た','チ':'ち','ツ':'つ','テ':'て','ト':'と',
+  'ナ':'な','ニ':'に','ヌ':'ぬ','ネ':'ね','ノ':'の',
+  'ハ':'は','ヒ':'ひ','フ':'ふ','ヘ':'へ','ホ':'ほ',
+  'マ':'ま','ミ':'み','ム':'む','メ':'め','モ':'も',
+  'ヤ':'や','ユ':'ゆ','ヨ':'よ',
+  'ラ':'ら','リ':'り','ル':'る','レ':'れ','ロ':'ろ',
+  'ワ':'わ','ヲ':'を','ン':'ん',
+  'ガ':'が','ギ':'ぎ','グ':'ぐ','ゲ':'げ','ゴ':'ご',
+  'ザ':'ざ','ジ':'じ','ズ':'ず','ゼ':'ぜ','ゾ':'ぞ',
+  'ダ':'だ','ヂ':'ぢ','ヅ':'づ','デ':'で','ド':'ど',
+  'バ':'ば','ビ':'び','ブ':'ぶ','ベ':'べ','ボ':'ぼ',
+  'パ':'ぱ','ピ':'ぴ','プ':'ぷ','ペ':'ぺ','ポ':'ぽ',
+};
+
+const KATA = [
+  {c:'ア',r:'a',  row:'a',  ex:'アイス (aisu) Ice cream',      mem:'ア looks like あ but angular — like a robot version of あ!',       lw:'アイスクリーム, アメリカ',lwOrigin:'English'},
+  {c:'イ',r:'i',  row:'a',  ex:'イタリア (Itaria) Italy',       mem:'イ looks like the letter "I" with a slash',                        lw:'イタリア, インターネット',lwOrigin:'English/Place'},
+  {c:'ウ',r:'u',  row:'a',  ex:'ウイルス (uirusu) Virus',       mem:'ウ like う but simpler — a U shape with a hat',                    lw:'ウイルス, ウクレレ',lwOrigin:'English/Hawaiian'},
+  {c:'エ',r:'e',  row:'a',  ex:'エネルギー (enerugī) Energy',   mem:'エ looks like the letter H rotated — "E"nergy!',                   lw:'エネルギー, エレベーター',lwOrigin:'English/German'},
+  {c:'オ',r:'o',  row:'a',  ex:'オレンジ (orenji) Orange',      mem:'オ like お but with clean angular strokes',                        lw:'オレンジ, オーストラリア',lwOrigin:'English/Place'},
+
+  {c:'カ',r:'ka', row:'ka', ex:'カメラ (kamera) Camera',        mem:'カ looks like the letter K — KAmera!',                             lw:'カメラ, カフェ, カード',lwOrigin:'English/French'},
+  {c:'キ',r:'ki', row:'ka', ex:'キーボード (kībōdo) Keyboard',  mem:'キ looks like ki — a key shape!',                                  lw:'キーボード, キャラクター',lwOrigin:'English'},
+  {c:'ク',r:'ku', row:'ka', ex:'クラス (kurasu) Class',          mem:'ク looks like a beak — "coo!" like a bird',                       lw:'クラス, クリスマス',lwOrigin:'English'},
+  {c:'ケ',r:'ke', row:'ka', ex:'ケーキ (kēki) Cake',            mem:'ケ like け but with sharp corners — Keto diet!',                   lw:'ケーキ, ケース',lwOrigin:'English'},
+  {c:'コ',r:'ko', row:'ka', ex:'コーヒー (kōhī) Coffee',        mem:'コ looks like a bracket — C for Coffee!',                          lw:'コーヒー, コンピューター',lwOrigin:'Dutch/English'},
+
+  {c:'サ',r:'sa', row:'sa', ex:'サッカー (sakkā) Soccer',       mem:'サ like さ but angular — Soccer "Sa"crifice!',                    lw:'サッカー, サービス',lwOrigin:'English'},
+  {c:'シ',r:'shi',row:'sa', ex:'シャツ (shatsu) Shirt',          mem:'シ looks like a smiley face on its side — SHI!',                  lw:'シャツ, シーン',lwOrigin:'English'},
+  {c:'ス',r:'su', row:'sa', ex:'スポーツ (supōtsu) Sports',      mem:'ス looks like a scythe or skateboard ramp — Super!',              lw:'スポーツ, スーパー',lwOrigin:'English'},
+  {c:'セ',r:'se', row:'sa', ex:'センター (sentā) Center',        mem:'セ looks like the number 5 with a hook',                          lw:'センター, セール',lwOrigin:'English'},
+  {c:'ソ',r:'so', row:'sa', ex:'ソフト (sofuto) Soft(ware)',     mem:'ソ looks like an upside-down smiley — SOme fun!',                 lw:'ソフト, ソーシャル',lwOrigin:'English'},
+
+  {c:'タ',r:'ta', row:'ta', ex:'タブレット (taburetto) Tablet', mem:'タ like た but angular — TAxi!',                                   lw:'タブレット, タクシー',lwOrigin:'English/French'},
+  {c:'チ',r:'chi',row:'ta', ex:'チーム (chīmu) Team',           mem:'チ looks like a person doing a cheerful dance — CHeer!',          lw:'チーム, チャンネル',lwOrigin:'English'},
+  {c:'ツ',r:'tsu',row:'ta', ex:'ツアー (tsuā) Tour',            mem:'ツ looks like a TSUnami — three waves going forward!',             lw:'ツアー, ツイッター',lwOrigin:'English'},
+  {c:'テ',r:'te', row:'ta', ex:'テレビ (terebi) Television',     mem:'テ looks like a T — TEllevision!',                                lw:'テレビ, テスト',lwOrigin:'English'},
+  {c:'ト',r:'to', row:'ta', ex:'トイレ (toire) Toilet',          mem:'ト looks like a toe — TOilet!',                                   lw:'トイレ, トップ',lwOrigin:'English'},
+
+  {c:'ナ',r:'na', row:'na', ex:'ナイフ (naifu) Knife',           mem:'ナ looks like a plus sign with a diagonal — KNife!',              lw:'ナイフ, ナンバー',lwOrigin:'English'},
+  {c:'ニ',r:'ni', row:'na', ex:'ニュース (nyūsu) News',          mem:'ニ looks like two equal lines — NIce News!',                      lw:'ニュース, ニット',lwOrigin:'English'},
+  {c:'ヌ',r:'nu', row:'na', ex:'ヌードル (nūdoru) Noodle',       mem:'ヌ looks like NUdging — swirling noodles!',                       lw:'ヌードル',lwOrigin:'English'},
+  {c:'ネ',r:'ne', row:'na', ex:'ネット (netto) Net/Internet',    mem:'ネ like ね but angular — NEt!',                                   lw:'ネット, ネクタイ',lwOrigin:'English/French'},
+  {c:'ノ',r:'no', row:'na', ex:'ノート (nōto) Notebook',         mem:'ノ looks like a checkmark slash — NOtebook check!',               lw:'ノート, ノルウェー',lwOrigin:'English/Place'},
+
+  {c:'ハ',r:'ha', row:'ha', ex:'ハンバーガー (hanbāgā) Burger', mem:'ハ looks like two sticks making an "H" — HAhaha!',                lw:'ハンバーガー, ハート',lwOrigin:'English'},
+  {c:'ヒ',r:'hi', row:'ha', ex:'ヒーロー (hīrō) Hero',           mem:'ヒ looks like HIm — a person seen from the side',                 lw:'ヒーロー, ヒント',lwOrigin:'English'},
+  {c:'フ',r:'fu', row:'ha', ex:'フルーツ (furūtsu) Fruit',       mem:'フ looks like a hook — FUn to hang on!',                          lw:'フルーツ, フォント',lwOrigin:'English'},
+  {c:'ヘ',r:'he', row:'ha', ex:'ヘルメット (herumetto) Helmet', mem:'ヘ looks like a mountain peak — HEre I am!',                      lw:'ヘルメット, ヘッドホン',lwOrigin:'English'},
+  {c:'ホ',r:'ho', row:'ha', ex:'ホテル (hoteru) Hotel',          mem:'ホ looks like a cross with a branch — HOtel sign!',               lw:'ホテル, ホームページ',lwOrigin:'English'},
+
+  {c:'マ',r:'ma', row:'ma', ex:'マンガ (manga) Manga',           mem:'マ looks like a bird beak — MAcaw!',                              lw:'マンガ, マスク',lwOrigin:'Japanese/English'},
+  {c:'ミ',r:'mi', row:'ma', ex:'ミュージック (myūjikku) Music', mem:'ミ looks like three lines — MIssissippi river!',                  lw:'ミュージック, ミルク',lwOrigin:'English'},
+  {c:'ム',r:'mu', row:'ma', ex:'ムービー (mūbī) Movie',          mem:'ム looks like a cow — MOO!',                                      lw:'ムービー',lwOrigin:'English'},
+  {c:'メ',r:'me', row:'ma', ex:'メール (mēru) Email/Mail',       mem:'メ looks like an X with a top bar — MEdia!',                     lw:'メール, メニュー',lwOrigin:'English'},
+  {c:'モ',r:'mo', row:'ma', ex:'モデル (moderu) Model',          mem:'モ looks like も but angular — MOre!',                            lw:'モデル, モバイル',lwOrigin:'English'},
+
+  {c:'ヤ',r:'ya', row:'ya', ex:'ヤクルト (Yakuruto) Yakult',     mem:'ヤ like a person raising hands — YAy!',                           lw:'ヤクルト, ヤード',lwOrigin:'Japanese/English'},
+  {c:'ユ',r:'yu', row:'ya', ex:'ユーチューブ (Yūchūbu) YouTube',mem:'ユ looks like a U with a horizontal bar — YOU!',                   lw:'ユーチューブ, ユニコーン',lwOrigin:'English'},
+  {c:'ヨ',r:'yo', row:'ya', ex:'ヨーロッパ (Yōroppa) Europe',    mem:'ヨ looks like the letter E — YO Europe!',                         lw:'ヨーロッパ, ヨガ',lwOrigin:'Place/English'},
+
+  {c:'ラ',r:'ra', row:'ra', ex:'ラーメン (rāmen) Ramen',         mem:'ラ looks like a person bowing — RAmen bow!',                      lw:'ラーメン, ラジオ',lwOrigin:'Japanese/English'},
+  {c:'リ',r:'ri', row:'ra', ex:'リモコン (rimokon) Remote',       mem:'リ looks like two vertical lines — RRR!',                         lw:'リモコン, リスト',lwOrigin:'English'},
+  {c:'ル',r:'ru', row:'ra', ex:'ルーム (rūmu) Room',              mem:'ル looks like an L shape going right — RUle!',                    lw:'ルーム, ルール',lwOrigin:'English'},
+  {c:'レ',r:'re', row:'ra', ex:'レストラン (resutoran) Restaurant',mem:'レ looks like a checkmark — REstaurant check!',                 lw:'レストラン, レベル',lwOrigin:'French/English'},
+  {c:'ロ',r:'ro', row:'ra', ex:'ロボット (robotto) Robot',        mem:'ロ looks like a square — RObot box!',                             lw:'ロボット, ロック',lwOrigin:'English'},
+
+  {c:'ワ',r:'wa', row:'wa', ex:'ワイン (wain) Wine',              mem:'ワ looks like a bent arm — WA!',                                  lw:'ワイン, ワールド',lwOrigin:'English'},
+  {c:'ヲ',r:'wo', row:'wa', ex:'(Object marker only)',            mem:'ヲ is very rare in modern katakana — mostly theoretical',         lw:'(Rarely used in loanwords)',lwOrigin:'—'},
+  {c:'ン',r:'n',  row:'wa', ex:'ナンバー (nanbā) Number',         mem:'ン looks like ソ but flipped — just an N sound!',                 lw:'ナンバー, ランキング',lwOrigin:'English'},
+
+  // Voiced
+  {c:'ガ',r:'ga', row:'ga', ex:'ゲーム → ガ (ga)',          mem:'カ + ゛= ガ. GA-ming!',lw:'ガイド, ガラス',lwOrigin:'English/Dutch'},
+  {c:'ギ',r:'gi', row:'ga', ex:'ギター (gitā) Guitar',      mem:'キ + ゛= ギ. GItār!',  lw:'ギター, ギャップ',lwOrigin:'English'},
+  {c:'グ',r:'gu', row:'ga', ex:'グループ (gurūpu) Group',   mem:'ク + ゛= グ. GRoup!',  lw:'グループ, グラフ',lwOrigin:'English'},
+  {c:'ゲ',r:'ge', row:'ga', ex:'ゲーム (gēmu) Game',        mem:'ケ + ゛= ゲ. GEmu!',   lw:'ゲーム, ゲスト',lwOrigin:'English'},
+  {c:'ゴ',r:'go', row:'ga', ex:'ゴール (gōru) Goal',        mem:'コ + ゛= ゴ. GOal!',   lw:'ゴール, ゴリラ',lwOrigin:'English'},
+
+  {c:'ザ',r:'za', row:'za', ex:'ザ・ベスト (Za Besuto) The Best',mem:'サ + ゛= ザ. ZAp!',lw:'ザ (The), ザッパー',lwOrigin:'English'},
+  {c:'ジ',r:'ji', row:'za', ex:'ジュース (jūsu) Juice',     mem:'シ + ゛= ジ. JuIce!',  lw:'ジュース, ジム',lwOrigin:'English'},
+  {c:'ズ',r:'zu', row:'za', ex:'ズーム (zūmu) Zoom',        mem:'ス + ゛= ズ. ZUm!',    lw:'ズーム, ズボン',lwOrigin:'English/French'},
+  {c:'ゼ',r:'ze', row:'za', ex:'ゼロ (zero) Zero',          mem:'セ + ゛= ゼ. ZEro!',   lw:'ゼロ, ゼリー',lwOrigin:'English'},
+  {c:'ゾ',r:'zo', row:'za', ex:'ゾーン (zōn) Zone',         mem:'ソ + ゛= ゾ. ZOne!',   lw:'ゾーン, ゾンビ',lwOrigin:'English'},
+
+  {c:'ダ',r:'da', row:'da', ex:'ダウンロード (daunrōdo) Download',mem:'タ + ゛= ダ. DAta!',lw:'ダウンロード, ダイヤ',lwOrigin:'English'},
+  {c:'ヂ',r:'di', row:'da', ex:'(Rare in loanwords)',        mem:'チ + ゛= ヂ. Rare!',   lw:'(Rare)',lwOrigin:'—'},
+  {c:'ヅ',r:'du', row:'da', ex:'(Rare in loanwords)',        mem:'ツ + ゛= ヅ. Rare!',   lw:'(Rare)',lwOrigin:'—'},
+  {c:'デ',r:'de', row:'da', ex:'デジタル (dejitaru) Digital',mem:'テ + ゛= デ. DEjital!', lw:'デジタル, デザイン',lwOrigin:'English'},
+  {c:'ド',r:'do', row:'da', ex:'ドア (doa) Door',           mem:'ト + ゛= ド. DOor!',    lw:'ドア, ドラマ',lwOrigin:'English'},
+
+  {c:'バ',r:'ba', row:'ba', ex:'バッグ (baggu) Bag',        mem:'ハ + ゛= バ. BAg!',    lw:'バッグ, バスケット',lwOrigin:'English'},
+  {c:'ビ',r:'bi', row:'ba', ex:'ビデオ (bideo) Video',      mem:'ヒ + ゛= ビ. BIdeo!',  lw:'ビデオ, ビール',lwOrigin:'English/German'},
+  {c:'ブ',r:'bu', row:'ba', ex:'ブランド (burando) Brand',  mem:'フ + ゛= ブ. BRand!',  lw:'ブランド, ブログ',lwOrigin:'English'},
+  {c:'ベ',r:'be', row:'ba', ex:'ベスト (besuto) Best',      mem:'ヘ + ゛= ベ. BEst!',   lw:'ベスト, ベース',lwOrigin:'English'},
+  {c:'ボ',r:'bo', row:'ba', ex:'ボール (bōru) Ball',        mem:'ホ + ゛= ボ. BOall!',  lw:'ボール, ボタン',lwOrigin:'English'},
+
+  {c:'パ',r:'pa', row:'ba', ex:'パソコン (pasokon) PC',     mem:'ハ + ゜= パ. PAsokon!', lw:'パソコン, パーティー',lwOrigin:'English'},
+  {c:'ピ',r:'pi', row:'ba', ex:'ピアノ (piano) Piano',      mem:'ヒ + ゜= ピ. PIano!',   lw:'ピアノ, ピンク',lwOrigin:'Italian/English'},
+  {c:'プ',r:'pu', row:'ba', ex:'プレイ (purei) Play',       mem:'フ + ゜= プ. PLay!',    lw:'プレイ, プロ',lwOrigin:'English'},
+  {c:'ペ',r:'pe', row:'ba', ex:'ペット (petto) Pet',        mem:'ヘ + ゜= ペ. PEt!',     lw:'ペット, ページ',lwOrigin:'English'},
+  {c:'ポ',r:'po', row:'ba', ex:'ポップ (poppu) Pop',        mem:'ホ + ゜= ポ. POp!',     lw:'ポップ, ポイント',lwOrigin:'English'},
+];
+
+// Loanword explorer data
+const LOANWORDS = [
+  {k:'コーヒー',r:'kōhī',en:'Coffee',cat:'food',origin:'Dutch'},
+  {k:'ハンバーガー',r:'hanbāgā',en:'Hamburger',cat:'food',origin:'English'},
+  {k:'アイスクリーム',r:'aisukurīmu',en:'Ice Cream',cat:'food',origin:'English'},
+  {k:'ピザ',r:'piza',en:'Pizza',cat:'food',origin:'Italian'},
+  {k:'チョコレート',r:'chokoreeto',en:'Chocolate',cat:'food',origin:'Spanish'},
+  {k:'サラダ',r:'sarada',en:'Salad',cat:'food',origin:'English'},
+  {k:'ケーキ',r:'kēki',en:'Cake',cat:'food',origin:'English'},
+  {k:'ジュース',r:'jūsu',en:'Juice',cat:'food',origin:'English'},
+  {k:'ラーメン',r:'rāmen',en:'Ramen',cat:'food',origin:'Chinese'},
+  {k:'スープ',r:'sūpu',en:'Soup',cat:'food',origin:'English'},
+
+  {k:'スマートフォン',r:'sumātofon',en:'Smartphone',cat:'tech',origin:'English'},
+  {k:'コンピューター',r:'konpyūtā',en:'Computer',cat:'tech',origin:'English'},
+  {k:'インターネット',r:'intānetto',en:'Internet',cat:'tech',origin:'English'},
+  {k:'ソフトウェア',r:'sofutowea',en:'Software',cat:'tech',origin:'English'},
+  {k:'ダウンロード',r:'daunrōdo',en:'Download',cat:'tech',origin:'English'},
+  {k:'ゲーム',r:'gēmu',en:'Game',cat:'tech',origin:'English'},
+  {k:'ロボット',r:'robotto',en:'Robot',cat:'tech',origin:'English'},
+  {k:'デジタル',r:'dejitaru',en:'Digital',cat:'tech',origin:'English'},
+  {k:'アプリ',r:'apuri',en:'App',cat:'tech',origin:'English'},
+  {k:'パソコン',r:'pasokon',en:'Personal Computer',cat:'tech',origin:'English'},
+
+  {k:'アニメ',r:'anime',en:'Animation/Anime',cat:'anime',origin:'Japanese'},
+  {k:'マンガ',r:'manga',en:'Manga',cat:'anime',origin:'Japanese'},
+  {k:'キャラクター',r:'kyarakutā',en:'Character',cat:'anime',origin:'English'},
+  {k:'コスプレ',r:'kosupure',en:'Cosplay',cat:'anime',origin:'English'},
+  {k:'オタク',r:'otaku',en:'Enthusiast/Geek',cat:'anime',origin:'Japanese'},
+  {k:'カワイイ',r:'kawaii',en:'Cute',cat:'anime',origin:'Japanese'},
+  {k:'センパイ',r:'senpai',en:'Senior/Upperclassman',cat:'anime',origin:'Japanese'},
+  {k:'ニンジャ',r:'ninja',en:'Ninja',cat:'anime',origin:'Japanese'},
+  {k:'サムライ',r:'samurai',en:'Samurai',cat:'anime',origin:'Japanese'},
+
+  {k:'サッカー',r:'sakkā',en:'Soccer',cat:'sport',origin:'English'},
+  {k:'バスケットボール',r:'basukettobōru',en:'Basketball',cat:'sport',origin:'English'},
+  {k:'テニス',r:'tenisu',en:'Tennis',cat:'sport',origin:'English'},
+  {k:'ゴルフ',r:'gorufu',en:'Golf',cat:'sport',origin:'English'},
+  {k:'スポーツ',r:'supōtsu',en:'Sports',cat:'sport',origin:'English'},
+  {k:'チーム',r:'chīmu',en:'Team',cat:'sport',origin:'English'},
+  {k:'トレーニング',r:'torēningu',en:'Training',cat:'sport',origin:'English'},
+
+  {k:'ミュージック',r:'myūjikku',en:'Music',cat:'music',origin:'English'},
+  {k:'ギター',r:'gitā',en:'Guitar',cat:'music',origin:'English'},
+  {k:'ピアノ',r:'piano',en:'Piano',cat:'music',origin:'Italian'},
+  {k:'ドラム',r:'doramu',en:'Drums',cat:'music',origin:'English'},
+  {k:'ライブ',r:'raibu',en:'Live (concert)',cat:'music',origin:'English'},
+  {k:'ボーカル',r:'bōkaru',en:'Vocal',cat:'music',origin:'English'},
+  {k:'アルバム',r:'arubamu',en:'Album',cat:'music',origin:'English'},
+];
+
+// Row groupings
+const ROWS = [
+  {key:'a',  label:'A-row',   chars:['ア','イ','ウ','エ','オ']},
+  {key:'ka', label:'Ka-row',  chars:['カ','キ','ク','ケ','コ']},
+  {key:'sa', label:'Sa-row',  chars:['サ','シ','ス','セ','ソ']},
+  {key:'ta', label:'Ta-row',  chars:['タ','チ','ツ','テ','ト']},
+  {key:'na', label:'Na-row',  chars:['ナ','ニ','ヌ','ネ','ノ']},
+  {key:'ha', label:'Ha-row',  chars:['ハ','ヒ','フ','ヘ','ホ']},
+  {key:'ma', label:'Ma-row',  chars:['マ','ミ','ム','メ','モ']},
+  {key:'ya', label:'Ya-row',  chars:['ヤ','ユ','ヨ']},
+  {key:'ra', label:'Ra-row',  chars:['ラ','リ','ル','レ','ロ']},
+  {key:'wa', label:'Wa-row',  chars:['ワ','ヲ','ン']},
+  {key:'ga', label:'Ga-row (voiced)',    chars:['ガ','ギ','グ','ゲ','ゴ']},
+  {key:'za', label:'Za-row (voiced)',    chars:['ザ','ジ','ズ','ゼ','ゾ']},
+  {key:'da', label:'Da-row (voiced)',    chars:['ダ','ヂ','ヅ','デ','ド']},
+  {key:'ba', label:'Ba/Pa-row (voiced)', chars:['バ','ビ','ブ','ベ','ボ','パ','ピ','プ','ペ','ポ']},
+];
+
+// STATE
+let state = {};
+let selectedChar = 'ア';
+let currentMode = 'study';
+let currentRow = 'all';
+let quizQueue = [], qIdx = 0, qCorrect = 0, qWrong = 0, qXP = 0;
+let reviewQueue = [], rIdx = 0, cardFlipped = false;
+let quizAnswered = false;
+let toastTimer;
+
+KATA.forEach(k => { state[k.c] = {status:'new', correct:0, wrong:0}; });
+
+// =====================================================================
+// LOANWORD EXPLORER
+// =====================================================================
+let currentLWCat = 'all';
+
+function setLWCat(cat, btn) {
+  currentLWCat = cat;
+  document.querySelectorAll('.lw-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLWWords();
+}
+
+function renderLWWords() {
+  const words = currentLWCat === 'all' ? LOANWORDS : LOANWORDS.filter(w => w.cat === currentLWCat);
+  const el = document.getElementById('lwWords');
+  el.innerHTML = words.map(w => `
+    <div class="lw-word-card" onclick="selectChar('${w.k[0]}')">
+      <div class="lw-katakana">${w.k}</div>
+      <div class="lw-romaji">${w.r}</div>
+      <div class="lw-english">${w.en}</div>
+      <div class="lw-origin">from ${w.origin}</div>
+    </div>
+  `).join('');
+}
+
+function showLWCategory(cat) {
+  setMode('study');
+  document.getElementById('lwExplorer').scrollIntoView({behavior:'smooth'});
+  currentLWCat = cat;
+  document.querySelectorAll('.lw-cat-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.toLowerCase().includes(cat));
+  });
+  renderLWWords();
+}
+
+// =====================================================================
+// BUILD GRID
+// =====================================================================
+function buildGrid(filter = 'all') {
+  const container = document.getElementById('gridContainer');
+  container.innerHTML = '';
+  const rowsToShow = filter === 'all' ? ROWS : ROWS.filter(r => r.key === filter);
+  rowsToShow.forEach(row => {
+    const rowDiv = document.createElement('div');
+    const headDiv = document.createElement('div');
+    headDiv.className = 'section-head';
+    headDiv.innerHTML = `<h2>${row.label}</h2><span class="subtitle">${row.chars.join(' ')}</span>`;
+    rowDiv.appendChild(headDiv);
+
+    const grid = document.createElement('div');
+    grid.className = 'char-grid';
+    grid.style.marginBottom = '24px';
+    const cells = [...row.chars];
+    while (cells.length % 5 !== 0 && cells.length < 10) cells.push(null);
+    cells.forEach(ch => {
+      const tile = document.createElement('div');
+      if (!ch) { tile.className = 'char-tile empty'; grid.appendChild(tile); return; }
+      const k = KATA.find(x => x.c === ch);
+      const s = state[ch] || {status:'new'};
+      tile.className = `char-tile ${s.status} ${ch === selectedChar ? 'selected' : ''}`;
+      tile.dataset.char = ch;
+      tile.innerHTML = `<div class="tile-jp">${ch}</div><div class="tile-rom">${k ? k.r : ''}</div><div class="tile-check">✓</div>`;
+      tile.addEventListener('click', () => selectChar(ch));
+      grid.appendChild(tile);
+    });
+    rowDiv.appendChild(grid);
+    container.appendChild(rowDiv);
+  });
+}
+
+// =====================================================================
+// SELECT CHAR
+// =====================================================================
+function selectChar(ch) {
+  selectedChar = ch;
+  const k = KATA.find(x => x.c === ch);
+  if (!k) return;
+
+  document.querySelectorAll('.char-tile').forEach(t => t.classList.toggle('selected', t.dataset.char === ch));
+
+  // Hero update
+  document.getElementById('heroChar').textContent = ch;
+  document.getElementById('heroRom').textContent = k.r;
+  document.getElementById('heroExample').textContent = k.ex;
+  document.getElementById('heroPic').textContent = k.mem;
+  document.getElementById('heroLWText').textContent = k.lw;
+
+  const origEl = document.querySelector('#heroLW .lw-badge');
+  if (origEl) origEl.textContent = '🌍 From ' + k.lwOrigin;
+
+  // Hiragana pair
+  const hira = HIRA_MAP[ch] || '—';
+  document.getElementById('heroPair').innerHTML = `
+    <div class="pair-item"><div class="pair-char" style="color:var(--cyan)">${ch}</div><div class="pair-label" style="color:var(--cyan)">Katakana</div></div>
+    <div class="pair-sep">≈</div>
+    <div class="pair-item"><div class="pair-char" style="color:var(--gold)">${hira}</div><div class="pair-label" style="color:var(--gold)">Hiragana</div></div>
+  `;
+
+  // Compare banner
+  document.getElementById('cbKata').textContent = ch;
+  document.getElementById('cbHira').textContent = hira;
+  document.getElementById('cbInfo').innerHTML = `Both represent the same sound <strong>"${k.r}"</strong>. Katakana is the <strong>angular, sharp</strong> version used for foreign loanwords like <strong>${k.lw.split(',')[0].trim()}</strong>. Origin: <strong>${k.lwOrigin}</strong>`;
+
+  // SRS
+  const s = state[ch];
+  document.getElementById('heroSRS').innerHTML = {
+    new: '<span class="srs-tag srs-new">🆕 New</span>',
+    learning: '<span class="srs-tag srs-learning">📖 Learning</span>',
+    review: '<span class="srs-tag srs-review">🔄 Review</span>',
+    mastered: '<span class="srs-tag srs-mastered">⭐ Mastered</span>',
+  }[s.status] || '<span class="srs-tag srs-new">🆕 New</span>';
+
+  document.getElementById('heroStats').textContent = s.status === 'new' ? 'Not studied yet · Tap to begin!' : `✅ ${s.correct} correct · ❌ ${s.wrong} wrong`;
+
+  if (s.status === 'new') {
+    state[ch].status = 'learning';
+    updateProgress();
+    refreshTile(ch);
+  }
+}
+
+function refreshTile(ch) {
+  const tile = document.querySelector(`[data-char="${ch}"]`);
+  if (!tile) return;
+  const s = state[ch];
+  tile.className = `char-tile ${s.status} ${ch === selectedChar ? 'selected' : ''}`;
+}
+
+// =====================================================================
+// FILTER ROW
+// =====================================================================
+function filterRow(row, btn) {
+  currentRow = row;
+  document.querySelectorAll('.row-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  buildGrid(row === 'all' ? 'all' : row);
+}
+
+// =====================================================================
+// PROGRESS
+// =====================================================================
+function updateProgress() {
+  let mastered = 0, learning = 0;
+  const total = KATA.length;
+  KATA.forEach(k => {
+    if (state[k.c].status === 'mastered') mastered++;
+    else if (state[k.c].status === 'learning' || state[k.c].status === 'review') learning++;
+  });
+  const newCount = total - mastered - learning;
+  const pct = n => Math.round(n / total * 100) + '%';
+  document.getElementById('pb-mastered').style.width = pct(mastered);
+  document.getElementById('pb-learning').style.width  = pct(learning);
+  document.getElementById('pb-new').style.width       = pct(newCount);
+  document.getElementById('pc-mastered').textContent = `${mastered} / 46`;
+  document.getElementById('pc-learning').textContent  = `${learning} / 46`;
+  document.getElementById('pc-new').textContent       = `${newCount} / 46`;
+  document.getElementById('masteredChip').textContent = `⭐ ${mastered}/46`;
+
+  ROWS.forEach(row => {
+    const done = row.chars.filter(c => state[c] && state[c].status === 'mastered').length;
+    const el = document.getElementById('rf-' + row.key);
+    if (el) el.style.width = Math.round(done / row.chars.length * 100) + '%';
+  });
+  const allDone = KATA.filter(k => state[k.c].status === 'mastered').length;
+  const rfAll = document.getElementById('rf-all');
+  if (rfAll) rfAll.style.width = Math.round(allDone / total * 100) + '%';
+}
+
+// =====================================================================
+// MODE SWITCH
+// =====================================================================
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-tab').forEach((t, i) => {
+    t.classList.toggle('active', ['study','quiz','review'][i] === mode);
+  });
+  document.getElementById('studyMode').style.display  = mode === 'study'  ? '' : 'none';
+  document.getElementById('quizMode').className       = mode === 'quiz'   ? 'active' : '';
+  document.getElementById('reviewMode').className     = mode === 'review' ? 'active' : '';
+  if (mode === 'quiz')   buildQuizSetup();
+  if (mode === 'review') initReview();
+}
+
+// =====================================================================
+// QUIZ
+// =====================================================================
+function buildQuizSetup() {
+  const el = document.getElementById('quizRowSelect');
+  el.innerHTML = '';
+  ROWS.forEach(row => {
+    const btn = document.createElement('button');
+    btn.className = 'qrs-btn sel';
+    btn.dataset.row = row.key;
+    btn.textContent = row.chars[0] + '... ' + row.label;
+    btn.addEventListener('click', () => btn.classList.toggle('sel'));
+    el.appendChild(btn);
+  });
+  document.getElementById('quizSetup').style.display = '';
+  document.getElementById('quizActive').style.display = 'none';
+  document.getElementById('quizResult').style.display = 'none';
+}
+
+function startQuiz() {
+  const selRows = [...document.querySelectorAll('.qrs-btn.sel')].map(b => b.dataset.row);
+  if (!selRows.length) { showToast('⚠️', 'Select a row!', 'Please pick at least one row.'); return; }
+  const pool = KATA.filter(k => selRows.includes(k.row));
+  quizQueue = shuffle([...pool]).slice(0, Math.min(15, pool.length));
+  qIdx = 0; qCorrect = 0; qWrong = 0; qXP = 0;
+  document.getElementById('quizSetup').style.display = 'none';
+  document.getElementById('quizActive').style.display = '';
+  document.getElementById('quizResult').style.display = 'none';
+  renderQuizQ();
+}
+
+function renderQuizQ() {
+  quizAnswered = false;
+  if (qIdx >= quizQueue.length) { showQuizResult(); return; }
+
+  const q = quizQueue[qIdx];
+  const type = document.getElementById('quizType').value;
+  const showHira = document.getElementById('showHiraToggle').checked;
+
+  const pct = (qIdx / quizQueue.length * 100);
+  document.getElementById('aqPF').style.width = pct + '%';
+  document.getElementById('aqLabel').textContent = `QUESTION ${qIdx+1} / ${quizQueue.length}`;
+  document.getElementById('aqCorrect').textContent = qCorrect;
+  document.getElementById('aqWrong').textContent = qWrong;
+  document.getElementById('aqXP').textContent = qXP;
+
+  const hiraHintEl = document.getElementById('aqHiraHint');
+
+  if (type === 'loanword') {
+    document.getElementById('aqQuestion').textContent = 'What English word is this?';
+    document.getElementById('aqChar').textContent = q.ex.split('(')[0].trim();
+    document.getElementById('aqChar').style.fontSize = '3rem';
+    document.getElementById('aqHint').textContent = 'Choose the correct English translation';
+    hiraHintEl.classList.add('hidden');
+
+    const correct = q.ex.split(')')[0].split('(')[1] || q.r;
+    const wrongPool = KATA.filter(k => k.c !== q.c).map(k => k.ex.split(')')[0].split('(')[1] || k.r).filter(Boolean);
+    const opts = shuffle([correct, ...shuffle(wrongPool).slice(0, 3)]);
+    renderOpts(opts, correct, false);
+  } else {
+    const isC2R = type === 'char2rom' || (type === 'mixed' && Math.random() > 0.5);
+    document.getElementById('aqChar').style.fontSize = '';
+
+    if (isC2R) {
+      document.getElementById('aqQuestion').textContent = 'What sound does this make?';
+      document.getElementById('aqChar').textContent = q.c;
+      document.getElementById('aqHint').textContent = 'Choose the correct romanization';
+      if (showHira) {
+        hiraHintEl.textContent = `Hiragana hint: ${HIRA_MAP[q.c] || '—'}`;
+        hiraHintEl.classList.remove('hidden');
+      } else { hiraHintEl.classList.add('hidden'); }
+      const wrong = shuffle(KATA.filter(k => k.r !== q.r)).slice(0, 3).map(k => k.r);
+      renderOpts(shuffle([q.r, ...wrong]), q.r, false);
+    } else {
+      document.getElementById('aqQuestion').textContent = 'Which character is this?';
+      document.getElementById('aqChar').textContent = q.r;
+      document.getElementById('aqHint').textContent = 'Choose the correct katakana';
+      hiraHintEl.classList.add('hidden');
+      const wrong = shuffle(KATA.filter(k => k.c !== q.c)).slice(0, 3).map(k => k.c);
+      renderOpts(shuffle([q.c, ...wrong]), q.c, true);
+    }
+  }
+}
+
+function renderOpts(opts, correct, isLarge) {
+  const container = document.getElementById('aqOptions');
+  container.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'aq-opt';
+    btn.textContent = opt;
+    if (isLarge) btn.style.fontSize = '2.2rem';
+    btn.addEventListener('click', () => {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      const isRight = opt === correct;
+      container.querySelectorAll('.aq-opt').forEach(b => {
+        if (b.textContent === correct) b.classList.add('correct');
+        else if (b === btn && !isRight) b.classList.add('wrong');
+      });
+      if (isRight) {
+        qCorrect++; qXP += 10;
+        const c = quizQueue[qIdx].c;
+        state[c].correct++;
+        if (state[c].correct >= 3) state[c].status = 'mastered';
+        else state[c].status = 'learning';
+        updateProgress(); refreshTile(c);
+        if (state[c].status === 'mastered') showToast('⭐', c + ' Mastered!', '+10 XP earned!');
+      } else {
+        qWrong++;
+        state[quizQueue[qIdx].c].wrong++;
+      }
+      document.getElementById('aqCorrect').textContent = qCorrect;
+      document.getElementById('aqWrong').textContent = qWrong;
+      document.getElementById('aqXP').textContent = qXP;
+      setTimeout(() => { qIdx++; renderQuizQ(); }, 850);
+    });
+    container.appendChild(btn);
+  });
+}
+
+function showQuizResult() {
+  document.getElementById('quizActive').style.display = 'none';
+  document.getElementById('quizResult').style.display = '';
+  const total = quizQueue.length;
+  const acc = Math.round(qCorrect / total * 100);
+  const perfect = qCorrect === total;
+  const bonus = perfect ? 30 : 0;
+  document.getElementById('qrEmoji').textContent = perfect ? '🏆' : acc >= 70 ? '⭐' : '💪';
+  document.getElementById('qrTitle').textContent = perfect ? 'PERFECT!' : acc >= 70 ? 'GREAT!' : 'KEEP GOING!';
+  document.getElementById('qrSub').textContent = `${qCorrect}/${total} correct · ${acc}% accuracy${perfect ? ' · Perfect bonus +30 XP!' : ''}`;
+  document.getElementById('qrScore').textContent = `${qCorrect}/${total}`;
+  document.getElementById('qrAcc').textContent = acc + '%';
+  document.getElementById('qrXP').textContent = '+' + (qXP + bonus);
+  if (perfect) showToast('🏆', 'PERFECT!', `+${qXP + bonus} XP earned!`);
+}
+
+// =====================================================================
+// REVIEW (SRS)
+// =====================================================================
+function initReview() {
+  reviewQueue = KATA.filter(k => state[k.c].status === 'learning' || state[k.c].status === 'review');
+  reviewQueue = shuffle([...reviewQueue]);
+  rIdx = 0; cardFlipped = false;
+  if (!reviewQueue.length) {
+    document.getElementById('reviewEmpty').style.display = '';
+    document.getElementById('reviewActive').style.display = 'none';
+  } else {
+    document.getElementById('reviewEmpty').style.display = 'none';
+    document.getElementById('reviewActive').style.display = '';
+    showReviewCard();
+  }
+}
+
+function showReviewCard() {
+  cardFlipped = false;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('reviewActions').style.display = 'none';
+  if (rIdx >= reviewQueue.length) {
+    showToast('🎉', 'Review Complete!', `All ${reviewQueue.length} cards done!`);
+    setTimeout(initReview, 1200); return;
+  }
+  const k = reviewQueue[rIdx];
+  document.getElementById('rfChar').textContent = k.c;
+  document.getElementById('rfHiraHint').textContent = `Hiragana: ${HIRA_MAP[k.c] || '—'}`;
+  document.getElementById('rbCharSmall').textContent = k.c;
+  document.getElementById('rbRom').textContent = k.r;
+  document.getElementById('rbEx').textContent = k.ex.split('\n')[0];
+  document.getElementById('rbHira').textContent = `Hiragana: ${HIRA_MAP[k.c] || '—'}`;
+  document.getElementById('reviewProgress').textContent = `Card ${rIdx+1} of ${reviewQueue.length}`;
+}
+
+function flipReviewCard() {
+  if (cardFlipped) return;
+  cardFlipped = true;
+  document.getElementById('flipInner').classList.add('flipped');
+  setTimeout(() => { document.getElementById('reviewActions').style.display = 'flex'; }, 300);
+}
+
+function reviewAnswer(rating) {
+  const k = reviewQueue[rIdx];
+  if (rating === 'again') { state[k.c].wrong++; state[k.c].status = 'learning'; reviewQueue.push(reviewQueue[rIdx]); }
+  else if (rating === 'easy') { state[k.c].correct += 2; state[k.c].status = 'mastered'; showToast('⭐', k.c + ' Mastered!', 'Perfect recall!'); }
+  else { state[k.c].correct++; if (state[k.c].correct >= 3) state[k.c].status = 'mastered'; }
+  updateProgress(); rIdx++; showReviewCard();
+}
+
+// =====================================================================
+// AUDIO
+// =====================================================================
+function playAudio() {
+  const btn = document.getElementById('audioBtn');
+  btn.classList.add('playing'); btn.textContent = '🔊 Playing...';
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(selectedChar);
+    u.lang = 'ja-JP'; u.rate = 0.8;
+    u.onend = () => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Sound'; };
+    speechSynthesis.speak(u);
+  } else {
+    setTimeout(() => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Sound'; }, 600);
+  }
+}
+
+// =====================================================================
+// TOAST
+// =====================================================================
+function showToast(icon, title, sub, type = 'success') {
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastSub').textContent = sub;
+  const t = document.getElementById('toast');
+  t.className = 'toast ' + type + ' show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// =====================================================================
+// HELPERS
+// =====================================================================
+function shuffle(arr) {
+  for (let i = arr.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  const idx = KATA.findIndex(k => k.c === selectedChar);
+  if (e.key === 'ArrowRight' && idx < KATA.length-1) selectChar(KATA[idx+1].c);
+  if (e.key === 'ArrowLeft'  && idx > 0)             selectChar(KATA[idx-1].c);
+  if (e.key === ' ') { e.preventDefault(); playAudio(); }
+});
+
+// =====================================================================
+// INIT
+// =====================================================================
+buildGrid('all');
+selectChar('ア');
+buildQuizSetup();
+renderLWWords();
+updateProgress();
+
+setTimeout(() => showToast('✨', 'Katakana Unlocked!', 'Foreign words in Japan use these angular characters!'), 800);
+</script>
+</body>
+</html>

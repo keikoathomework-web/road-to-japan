@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — Certificate of Achievement</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #1c2230;
+  --gold: #ffd700; --gold2: #ffaa00; --gold3: #c8860a;
+  --cyan: #00e5ff; --green: #00e676; --red: #ff3a5c;
+  --purple: #a855f7; --orange: #ff6b2b; --pink: #ff6eb4;
+  --white: #fff; --gray: #7a8099; --text: #d0d4e8;
+  --border: rgba(255,255,255,0.07);
+}
+html, body { min-height:100%; font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); }
+
+/* ── NAV ── */
+.top-nav {
+  position:sticky;top:0;z-index:100;height:56px;
+  display:flex;align-items:center;gap:12px;padding:0 20px;
+  background:rgba(13,17,23,0.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-back { display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);color:rgba(255,255,255,0.75);font-size:0.82rem;font-weight:800;text-decoration:none;transition:all 0.2s; }
+.nav-back:hover { background:rgba(255,255,255,0.1);color:#fff; }
+.nav-logo { font-family:'Bangers',cursive;font-size:1.15rem;letter-spacing:3px;background:linear-gradient(90deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.nav-spacer { flex:1; }
+.nav-btn { padding:7px 16px;border-radius:20px;font-size:0.78rem;font-weight:900;cursor:pointer;border:none;transition:all 0.2s; }
+.nav-btn-dl { background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.3);color:var(--gold); }
+.nav-btn-dl:hover { background:rgba(255,215,0,0.2); }
+.nav-btn-share { background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.25);color:var(--cyan); }
+.nav-btn-share:hover { background:rgba(0,229,255,0.18); }
+
+/* ── PAGE ── */
+.page { max-width:860px;margin:0 auto;padding:28px 16px 60px; }
+
+/* ── HERO ── */
+.hero {
+  background:linear-gradient(160deg,#0d0800,#1a1200,#050d1a);
+  padding:36px 20px;text-align:center;position:relative;overflow:hidden;
+  border-bottom:1px solid rgba(255,215,0,0.1);
+}
+.hero::before {
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 30% 50%,rgba(255,215,0,0.08),transparent 55%),
+    radial-gradient(ellipse at 70% 50%,rgba(255,170,0,0.06),transparent 55%),
+    radial-gradient(ellipse at 50% 0%,rgba(255,215,0,0.1),transparent 50%);
+}
+.hero-tag { display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:20px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:var(--gold);font-size:0.68rem;font-weight:900;letter-spacing:1px;margin-bottom:12px;position:relative;z-index:1; }
+.hero-title { font-family:'Bangers',cursive;font-size:2.6rem;letter-spacing:4px;color:var(--white);position:relative;z-index:1;line-height:1.1;margin-bottom:8px; }
+.hero-title .gold { color:var(--gold); }
+.hero-sub { font-size:0.88rem;color:var(--text);line-height:1.75;max-width:480px;margin:0 auto;position:relative;z-index:1; }
+
+/* ── NAME INPUT ── */
+.name-section {
+  background:var(--bg2);border-radius:20px;padding:22px 24px;margin-bottom:22px;
+  border:1px solid rgba(255,215,0,0.15);
+}
+.ns-title { font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--gold);margin-bottom:14px; }
+.ns-row { display:flex;gap:10px;align-items:center;flex-wrap:wrap; }
+.ns-input {
+  flex:1;min-width:200px;padding:12px 16px;border-radius:12px;
+  background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,215,0,0.2);
+  color:var(--white);font-size:1rem;font-weight:900;font-family:'Nunito',sans-serif;
+  outline:none;transition:all 0.2s;
+}
+.ns-input:focus { border-color:rgba(255,215,0,0.5);background:rgba(255,215,0,0.04); }
+.ns-input::placeholder { color:var(--gray); }
+.ns-btn {
+  padding:12px 22px;border-radius:12px;background:linear-gradient(135deg,var(--gold2),var(--gold));
+  color:#000;font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;border:none;cursor:pointer;
+  transition:all 0.2s;white-space:nowrap;
+}
+.ns-btn:hover { transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,215,0,0.3); }
+.ns-tip { font-size:0.72rem;color:var(--gray);margin-top:8px; }
+
+/* ── STATS STRIP ── */
+.stats-strip {
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px;
+}
+@media(max-width:540px) { .stats-strip { grid-template-columns:repeat(2,1fr); } }
+.stat-card {
+  background:var(--bg2);border-radius:16px;padding:14px;text-align:center;
+  border:1px solid var(--border);transition:all 0.2s;
+}
+.stat-card:hover { border-color:rgba(255,215,0,0.2);transform:translateY(-2px); }
+.sc-icon { font-size:1.5rem;margin-bottom:5px; }
+.sc-val { font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;color:var(--white);margin-bottom:2px; }
+.sc-lbl { font-size:0.62rem;font-weight:900;color:var(--gray);text-transform:uppercase;letter-spacing:1px; }
+
+/* ── CERTIFICATE ── */
+.cert-wrap {
+  position:relative;margin-bottom:22px;
+  border-radius:24px;overflow:hidden;
+}
+.cert {
+  background:linear-gradient(145deg,#0d0800 0%,#1a1200 25%,#0a0d1a 50%,#1a1200 75%,#0d0800 100%);
+  border:2px solid var(--gold3);border-radius:24px;
+  padding:40px 36px;position:relative;overflow:hidden;
+}
+@media(max-width:520px) { .cert { padding:28px 20px; } }
+
+/* Corner ornaments */
+.cert-corner {
+  position:absolute;width:60px;height:60px;
+  border-color:var(--gold);border-style:solid;
+  opacity:0.4;
+}
+.cert-corner.tl { top:12px;left:12px;border-width:2px 0 0 2px; }
+.cert-corner.tr { top:12px;right:12px;border-width:2px 2px 0 0; }
+.cert-corner.bl { bottom:12px;left:12px;border-width:0 0 2px 2px; }
+.cert-corner.br { bottom:12px;right:12px;border-width:0 2px 2px 0; }
+
+/* Gold shimmer border overlay */
+.cert::before {
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(255,215,0,0.12),transparent 55%),
+    radial-gradient(ellipse at 50% 100%,rgba(255,215,0,0.08),transparent 55%),
+    radial-gradient(ellipse at 0% 50%,rgba(255,170,0,0.06),transparent 50%),
+    radial-gradient(ellipse at 100% 50%,rgba(255,170,0,0.06),transparent 50%);
+  pointer-events:none;
+}
+
+/* Background pattern */
+.cert-bg-pattern {
+  position:absolute;inset:0;opacity:0.03;
+  background-image:repeating-linear-gradient(45deg,#ffd700 0,#ffd700 1px,transparent 0,transparent 50%);
+  background-size:20px 20px;
+  pointer-events:none;
+}
+
+/* Seal */
+.cert-seal {
+  position:absolute;top:28px;right:36px;
+  width:80px;height:80px;border-radius:50%;
+  background:radial-gradient(circle,#2a1a00,#1a0d00);
+  border:3px solid var(--gold3);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 0 20px rgba(255,215,0,0.15),inset 0 0 12px rgba(255,215,0,0.05);
+  animation:sealPulse 3s ease-in-out infinite;
+}
+@keyframes sealPulse { 0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.15),inset 0 0 12px rgba(255,215,0,0.05)} 50%{box-shadow:0 0 35px rgba(255,215,0,0.3),inset 0 0 18px rgba(255,215,0,0.1)} }
+.seal-emoji { font-size:1.8rem; }
+.seal-text { font-size:0.35rem;font-weight:900;color:var(--gold);letter-spacing:0.5px;text-transform:uppercase;margin-top:1px; }
+
+/* Certificate content */
+.cert-flag { font-size:1.8rem;margin-bottom:8px;position:relative;z-index:1; }
+.cert-school { font-size:0.7rem;font-weight:900;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;position:relative;z-index:1; }
+.cert-line-top { width:80%;max-width:320px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 18px;opacity:0.4;position:relative;z-index:1; }
+
+.cert-certifies { font-size:0.78rem;color:rgba(255,215,0,0.6);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;position:relative;z-index:1; }
+.cert-this-is { font-family:'Playfair Display',serif;font-size:0.95rem;color:rgba(255,255,255,0.5);font-style:italic;margin-bottom:6px;position:relative;z-index:1; }
+
+.cert-recipient {
+  font-family:'Playfair Display',serif;
+  font-size:2.4rem;font-weight:900;
+  background:linear-gradient(90deg,var(--gold3),var(--gold),var(--gold3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:10px;position:relative;z-index:1;
+  min-height:3rem;display:flex;align-items:center;justify-content:center;
+  transition:all 0.3s;
+}
+@media(max-width:400px) { .cert-recipient { font-size:1.8rem; } }
+
+.cert-underline { width:60%;max-width:250px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 16px;opacity:0.5;position:relative;z-index:1; }
+
+.cert-achieved { font-size:0.72rem;color:rgba(255,255,255,0.45);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;position:relative;z-index:1; }
+.cert-program {
+  font-family:'Bangers',cursive;font-size:1.9rem;letter-spacing:5px;
+  color:var(--white);margin-bottom:6px;position:relative;z-index:1;
+  text-shadow:0 0 30px rgba(255,215,0,0.2);
+}
+.cert-subtitle { font-size:0.8rem;color:rgba(255,215,0,0.6);margin-bottom:20px;position:relative;z-index:1; }
+
+.cert-line-mid { width:90%;max-width:380px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,215,0,0.3),transparent);margin:0 auto 18px;position:relative;z-index:1; }
+
+/* Skill badges row */
+.cert-skills { display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:18px;position:relative;z-index:1; }
+.cert-skill {
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);
+  border-radius:12px;padding:8px 12px;min-width:65px;
+}
+.cs-emoji { font-size:1.2rem; }
+.cs-name { font-size:0.55rem;font-weight:900;color:var(--gold);letter-spacing:1px;text-transform:uppercase; }
+
+.cert-line-bot { width:90%;max-width:380px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,215,0,0.3),transparent);margin:0 auto 18px;position:relative;z-index:1; }
+
+/* Signatures row */
+.cert-sigs { display:flex;justify-content:space-around;align-items:flex-end;position:relative;z-index:1;gap:10px;flex-wrap:wrap; }
+.cert-sig { text-align:center; }
+.sig-name { font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--white);border-bottom:1px solid rgba(255,215,0,0.3);padding-bottom:4px;margin-bottom:4px; }
+.sig-title { font-size:0.55rem;font-weight:900;color:var(--gray);letter-spacing:1.5px;text-transform:uppercase; }
+.sig-date { font-family:'Orbitron',sans-serif;font-size:0.65rem;color:var(--gold);letter-spacing:1px;padding-bottom:4px;border-bottom:1px solid rgba(255,215,0,0.3);margin-bottom:4px; }
+
+/* ── ACHIEVEMENTS ── */
+.achievements-section { margin-bottom:22px; }
+.as-title { font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:3px;color:var(--gold);margin-bottom:14px;text-align:center; }
+.achievements-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px; }
+@media(max-width:480px) { .achievements-grid { grid-template-columns:repeat(2,1fr); } }
+.ach-card {
+  background:var(--bg2);border-radius:16px;padding:16px 12px;text-align:center;
+  border:1px solid var(--border);transition:all 0.25s;position:relative;overflow:hidden;
+}
+.ach-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px; }
+.ach-card:hover { transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.5); }
+.ach-card.unlocked { border-color:rgba(255,215,0,0.2); }
+.ach-card.unlocked::before { background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.ach-emoji { font-size:2.2rem;margin-bottom:6px;display:block; }
+.ach-name { font-size:0.75rem;font-weight:900;color:var(--white);margin-bottom:3px; }
+.ach-desc { font-size:0.62rem;color:var(--gray);line-height:1.5; }
+.ach-badge { position:absolute;top:8px;right:8px;font-size:0.55rem;font-weight:900;padding:2px 6px;border-radius:8px;background:rgba(255,215,0,0.12);color:var(--gold);border:1px solid rgba(255,215,0,0.25); }
+
+/* ── SHARE SECTION ── */
+.share-section {
+  background:linear-gradient(135deg,#0d0800,#0a0d1a,#0d0a1a);
+  border-radius:20px;padding:24px;margin-bottom:22px;text-align:center;
+  border:1px solid rgba(255,215,0,0.12);
+}
+.ss-title { font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:3px;color:var(--gold);margin-bottom:6px; }
+.ss-sub { font-size:0.8rem;color:var(--text);margin-bottom:18px; }
+.ss-btns { display:flex;gap:10px;justify-content:center;flex-wrap:wrap; }
+.ss-btn {
+  padding:11px 20px;border-radius:14px;font-size:0.82rem;font-weight:900;cursor:pointer;
+  border:none;transition:all 0.2s;display:flex;align-items:center;gap:7px;
+}
+.ss-btn:hover { transform:translateY(-2px); }
+.ss-btn-dl  { background:linear-gradient(135deg,var(--gold2),var(--gold));color:#000; }
+.ss-btn-x   { background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--white); }
+.ss-btn-copy{ background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.2);color:var(--cyan); }
+
+/* ── JOURNEY RECAP ── */
+.journey-section { margin-bottom:22px; }
+.js-header { display:flex;align-items:center;gap:10px;margin-bottom:14px; }
+.js-title { font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;color:var(--white); }
+.js-line { flex:1;height:1px;background:var(--border); }
+
+.journey-months { display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:10px; }
+@media(max-width:540px) { .journey-months { grid-template-columns:repeat(4,1fr); } }
+.jm {
+  border-radius:10px;padding:8px 4px;text-align:center;
+  background:rgba(0,230,118,0.05);border:1px solid rgba(0,230,118,0.15);
+  font-size:0.62rem;font-weight:900;color:var(--green);
+  transition:all 0.2s;cursor:default;
+}
+.jm:hover { background:rgba(0,230,118,0.1); }
+.jm-num { font-family:'Orbitron',sans-serif;font-size:0.9rem;font-weight:900;display:block;margin-bottom:2px; }
+.jm-name { font-size:0.5rem;color:var(--gray); }
+
+/* ── NEXT STEPS ── */
+.next-section { margin-bottom:22px; }
+.next-card {
+  background:var(--bg2);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;
+  border:1px solid var(--border);margin-bottom:10px;transition:all 0.2s;cursor:pointer;
+  text-decoration:none;
+}
+.next-card:hover { border-color:rgba(255,215,0,0.2);transform:translateX(4px); }
+.nc-icon { font-size:1.8rem;flex-shrink:0; }
+.nc-title { font-size:0.88rem;font-weight:900;color:var(--white);margin-bottom:3px; }
+.nc-sub { font-size:0.72rem;color:var(--gray);line-height:1.5; }
+.nc-arrow { margin-left:auto;color:var(--gold);font-size:1rem;flex-shrink:0; }
+
+/* ── CONFETTI ── */
+.confetti-piece {
+  position:fixed;top:-10px;z-index:999;pointer-events:none;
+  animation:confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0%  { transform:translateY(0) rotate(0deg);   opacity:1; }
+  80% { opacity:1; }
+  100%{ transform:translateY(105vh) rotate(720deg); opacity:0; }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes shimmer { 0%{opacity:0.5} 50%{opacity:1} 100%{opacity:0.5} }
+@keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+.reveal { opacity:0;transform:translateY(16px);transition:opacity 0.55s,transform 0.55s; }
+.reveal.visible { opacity:1;transform:none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="top-nav">
+  <a class="nav-back" href="home.html">← Home</a>
+  <div class="nav-logo">🏆 CERTIFICATE</div>
+  <div class="nav-spacer"></div>
+  <button class="nav-btn nav-btn-dl" onclick="downloadCert()">⬇ Download</button>
+  <button class="nav-btn nav-btn-share" onclick="shareCert()">📤 Share</button>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">🎓 Month 12 Complete · Road to Japan</div>
+  <div class="hero-title">YOU DID IT!<br><span class="gold">INCREDIBLE JOURNEY 🌸</span></div>
+  <div class="hero-sub">One year. One language. One dream. You\'ve completed the Road to Japan program — your Japanese adventure has only just begun! おめでとうございます！</div>
+</div>
+
+<div class="page">
+
+  <!-- NAME INPUT -->
+  <div class="name-section reveal">
+    <div class="ns-title">📝 PERSONALIZE YOUR CERTIFICATE</div>
+    <div class="ns-row">
+      <input class="ns-input" id="nameInput" type="text" placeholder="Enter your name here..." maxlength="40" oninput="updateName()">
+      <button class="ns-btn" onclick="generateCert()">✨ Generate!</button>
+    </div>
+    <div class="ns-tip">💡 Your name will appear on the certificate below. Click "Generate!" to apply!</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip reveal">
+    <div class="stat-card">
+      <div class="sc-icon">📅</div>
+      <div class="sc-val" style="color:var(--gold)">365</div>
+      <div class="sc-lbl">Days Studied</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-icon">⭐</div>
+      <div class="sc-val" style="color:var(--purple)">12</div>
+      <div class="sc-lbl">Months Complete</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-icon">💬</div>
+      <div class="sc-val" style="color:var(--cyan)">500+</div>
+      <div class="sc-lbl">Words Learned</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-icon">🏆</div>
+      <div class="sc-val" style="color:var(--green)" id="totalXP">—</div>
+      <div class="sc-lbl">Total XP</div>
+    </div>
+  </div>
+
+  <!-- THE CERTIFICATE -->
+  <div class="cert-wrap reveal" id="certWrap">
+    <div class="cert" id="certificate">
+      <div class="cert-bg-pattern"></div>
+      <div class="cert-corner tl"></div>
+      <div class="cert-corner tr"></div>
+      <div class="cert-corner bl"></div>
+      <div class="cert-corner br"></div>
+
+      <!-- Official seal -->
+      <div class="cert-seal">
+        <div class="seal-emoji">🗾</div>
+        <div class="seal-text">Road to Japan</div>
+        <div class="seal-text">Official</div>
+      </div>
+
+      <!-- Certificate body -->
+      <div style="text-align:center;position:relative;z-index:1;padding-right:70px">
+        <div class="cert-flag">🎌</div>
+        <div class="cert-school">Road to Japan Academy</div>
+        <div class="cert-line-top"></div>
+
+        <div class="cert-certifies">CERTIFICATE OF ACHIEVEMENT</div>
+        <div class="cert-this-is">This is to certify that</div>
+
+        <div class="cert-recipient" id="certName">Your Name Here</div>
+        <div class="cert-underline"></div>
+
+        <div class="cert-achieved">has successfully completed</div>
+        <div class="cert-program">ROAD TO JAPAN</div>
+        <div class="cert-subtitle">12-Month Japanese Language Mastery Program · 日本語習得プログラム</div>
+
+        <div class="cert-line-mid"></div>
+
+        <!-- Skills -->
+        <div class="cert-skills">
+          <div class="cert-skill"><div class="cs-emoji">あ</div><div class="cs-name">Hiragana</div></div>
+          <div class="cert-skill"><div class="cs-emoji">ア</div><div class="cs-name">Katakana</div></div>
+          <div class="cert-skill"><div class="cs-emoji">漢</div><div class="cs-name">Kanji N5</div></div>
+          <div class="cert-skill"><div class="cs-emoji">💬</div><div class="cs-name">Speaking</div></div>
+          <div class="cert-skill"><div class="cs-emoji">📝</div><div class="cs-name">Grammar</div></div>
+          <div class="cert-skill"><div class="cs-emoji">🎌</div><div class="cs-name">Culture</div></div>
+        </div>
+
+        <div class="cert-line-bot"></div>
+
+        <!-- Signatures -->
+        <div class="cert-sigs">
+          <div class="cert-sig">
+            <div class="sig-name">Yuki Sensei</div>
+            <div class="sig-title">Head Instructor</div>
+          </div>
+          <div class="cert-sig">
+            <div class="sig-date" id="certDate">—</div>
+            <div class="sig-title">Date of Completion</div>
+          </div>
+          <div class="cert-sig">
+            <div class="sig-name">Road to Japan</div>
+            <div class="sig-title">Academy Director</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="achievements-section reveal">
+    <div class="as-title">🏅 ACHIEVEMENTS UNLOCKED</div>
+    <div class="achievements-grid" id="achGrid"></div>
+  </div>
+
+  <!-- SHARE -->
+  <div class="share-section reveal">
+    <div class="ss-title">SHARE YOUR SUCCESS! 🌟</div>
+    <div class="ss-sub">Let the world know you completed your Japanese learning journey. Inspire others to start theirs!</div>
+    <div class="ss-btns">
+      <button class="ss-btn ss-btn-dl" onclick="downloadCert()">⬇ Download Certificate</button>
+      <button class="ss-btn ss-btn-x" onclick="shareToX()">𝕏 Post on X</button>
+      <button class="ss-btn ss-btn-copy" onclick="copyMessage()">📋 Copy Message</button>
+    </div>
+  </div>
+
+  <!-- JOURNEY RECAP -->
+  <div class="journey-section reveal">
+    <div class="js-header">
+      <div class="js-title">YOUR 12-MONTH JOURNEY</div>
+      <div class="js-line"></div>
+    </div>
+    <div class="journey-months" id="journeyMonths"></div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="next-section reveal">
+    <div class="js-header">
+      <div class="js-title">WHAT'S NEXT? 🚀</div>
+      <div class="js-line"></div>
+    </div>
+    <a class="next-card" href="japan-map.html">
+      <div class="nc-icon">🗾</div>
+      <div>
+        <div class="nc-title">Plan Your Japan Trip!</div>
+        <div class="nc-sub">You've learned the language — now explore the real Japan! Browse our interactive map of 25 famous destinations. Your Japanese will be a superpower on the trip! ✈️</div>
+      </div>
+      <div class="nc-arrow">→</div>
+    </a>
+    <a class="next-card" href="progress.html">
+      <div class="nc-icon">📚</div>
+      <div>
+        <div class="nc-title">Review Your Journey</div>
+        <div class="nc-sub">Look back at all 12 months of lessons. Revisit any topic and keep your skills sharp. Language learning never truly ends! 🌱</div>
+      </div>
+      <div class="nc-arrow">→</div>
+    </a>
+    <a class="next-card" href="payment.html">
+      <div class="nc-icon">⭐</div>
+      <div>
+        <div class="nc-title">Continue Your Subscription</div>
+        <div class="nc-sub">Keep access to all lessons, new content, and the growing Road to Japan community. Advanced content — N4 level — coming soon! 🎯</div>
+      </div>
+      <div class="nc-arrow">→</div>
+    </a>
+  </div>
+
+</div>
+
+<script>
+// ── ACHIEVEMENTS DATA ──
+const ACHIEVEMENTS = [
+  { emoji:'🎌', name:'Rising Sun',      desc:'Completed Month 1 — Hiragana & Katakana master!', color:'#ff6eb4' },
+  { emoji:'📖', name:'Story Teller',    desc:'Read all 5 Japanese short stories from start to finish!', color:'#a855f7' },
+  { emoji:'🗾', name:'Map Explorer',    desc:'Visited all 25 locations on the Japan Tourist Map!', color:'#00e5ff' },
+  { emoji:'🔥', name:'30-Day Streak',   desc:'Studied Japanese 30 days in a row — incredible!', color:'#ff6b2b' },
+  { emoji:'💬', name:'First Words',     desc:'Learned your first 50 Japanese vocabulary words!', color:'#00e676' },
+  { emoji:'漢', name:'Kanji Starter',   desc:'Learned all 50 JLPT N5 Kanji characters!', color:'#ffd700' },
+  { emoji:'📝', name:'Grammar Guru',    desc:'Mastered all 8 core Japanese grammar particles!', color:'#a855f7' },
+  { emoji:'🎋', name:'Culture Buff',    desc:'Completed all 6 Culture Hub categories!', color:'#ff6eb4' },
+  { emoji:'🎤', name:'Speak Up!',       desc:'Used the audio feature 100 times to practice pronunciation!', color:'#00e5ff' },
+  { emoji:'⭐', name:'100-Day Streak',  desc:'100 days of consecutive study — you\'re a legend!', color:'#ffd700' },
+  { emoji:'🧠', name:'Quiz Master',     desc:'Scored 100% on 10 different quizzes!', color:'#00e676' },
+  { emoji:'🏆', name:'Road to Japan',   desc:'Completed all 12 months of the full program! 日本語マスター！', color:'#ffd700' },
+];
+
+// ── JOURNEY MONTHS ──
+const JOURNEY_MONTHS = [
+  { n:'01', name:'Alphabet' },
+  { n:'02', name:'Phrases' },
+  { n:'03', name:'Numbers' },
+  { n:'04', name:'Daily Life' },
+  { n:'05', name:'Kanji 1' },
+  { n:'06', name:'Travel' },
+  { n:'07', name:'Food' },
+  { n:'08', name:'Kanji 2' },
+  { n:'09', name:'Culture' },
+  { n:'10', name:'Advanced' },
+  { n:'11', name:'Listening' },
+  { n:'12', name:'Mastery' },
+];
+
+// ── STATE ──
+const profile = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
+const savedName = profile.name || '';
+
+// ── INIT ──
+window.addEventListener('load', () => {
+  // Set date
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  document.getElementById('certDate').textContent = dateStr;
+
+  // Pre-fill name if saved in profile
+  if (savedName) {
+    document.getElementById('nameInput').value = savedName;
+    document.getElementById('certName').textContent = savedName;
+  }
+
+  // XP from localStorage
+  const xp = profile.xp || 0;
+  document.getElementById('totalXP').textContent = xp > 0 ? xp.toLocaleString() : '12,480';
+
+  buildAchievements();
+  buildJourneyMonths();
+  initReveal();
+
+  // Confetti after 1s
+  setTimeout(launchConfetti, 800);
+});
+
+function updateName() {
+  const v = document.getElementById('nameInput').value.trim();
+  document.getElementById('certName').textContent = v || 'Your Name Here';
+}
+
+function generateCert() {
+  const v = document.getElementById('nameInput').value.trim();
+  if (!v) { document.getElementById('nameInput').focus(); return; }
+  document.getElementById('certName').textContent = v;
+  launchConfetti();
+
+  // Briefly animate the certificate
+  const cert = document.getElementById('certificate');
+  cert.style.transition = 'box-shadow 0.3s';
+  cert.style.boxShadow = '0 0 50px rgba(255,215,0,0.3)';
+  setTimeout(() => { cert.style.boxShadow = ''; }, 1500);
+}
+
+// ── BUILD ACHIEVEMENTS ──
+function buildAchievements() {
+  document.getElementById('achGrid').innerHTML = ACHIEVEMENTS.map((a,i) => `
+    <div class="ach-card unlocked reveal" style="transition-delay:${i*0.05}s">
+      <div class="ach-badge">✅</div>
+      <div class="ach-emoji">${a.emoji}</div>
+      <div class="ach-name" style="color:${a.color}">${a.name}</div>
+      <div class="ach-desc">${a.desc}</div>
+    </div>
+  `).join('');
+}
+
+// ── BUILD JOURNEY MONTHS ──
+function buildJourneyMonths() {
+  document.getElementById('journeyMonths').innerHTML = JOURNEY_MONTHS.map(m => `
+    <div class="jm">
+      <span class="jm-num">${m.n}</span>
+      ${m.name}
+    </div>
+  `).join('');
+}
+
+// ── DOWNLOAD (print) ──
+function downloadCert() {
+  const name = document.getElementById('certName').textContent;
+  if (name === 'Your Name Here') {
+    alert('Please enter your name first! ✏️');
+    document.getElementById('nameInput').focus();
+    return;
+  }
+  window.print();
+}
+
+// ── SHARE TO X ──
+function shareToX() {
+  const name = document.getElementById('certName').textContent;
+  const text = name !== 'Your Name Here'
+    ? `🎌 I just completed the Road to Japan 12-Month Japanese Learning Program! 日本語習得！🏆 #RoadToJapan #LearnJapanese #日本語`
+    : `🎌 I just completed the Road to Japan Japanese Learning Program! 12 months of dedication! 🏆 #RoadToJapan #LearnJapanese`;
+  window.open('https://x.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
+}
+
+// ── COPY MESSAGE ──
+function copyMessage() {
+  const name = document.getElementById('certName').textContent;
+  const msg = `🎌 ${name} has completed the Road to Japan 12-Month Japanese Language Mastery Program!\n\n✅ Hiragana & Katakana\n✅ 50 Kanji (JLPT N5)\n✅ 500+ Vocabulary Words\n✅ Grammar Particles\n✅ Japanese Culture\n✅ Real Conversations\n\n日本語、がんばりました！🌸\n\n#RoadToJapan #LearnJapanese #日本語`;
+  navigator.clipboard.writeText(msg).then(() => showToast('✅ Copied to clipboard!')).catch(() => showToast('❌ Copy failed'));
+}
+
+function shareCert() {
+  document.querySelector('.share-section').scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+// ── CONFETTI ──
+function launchConfetti() {
+  const colors = ['#ffd700','#ff6eb4','#00e5ff','#a855f7','#00e676','#ff6b2b','#fff','#ffaa00'];
+  const shapes = ['●','★','♦','▲','■'];
+  for (let i = 0; i < 80; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.textContent = shapes[Math.floor(Math.random()*shapes.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.color = colors[Math.floor(Math.random()*colors.length)];
+      el.style.fontSize = (0.6 + Math.random() * 1.0) + 'rem';
+      el.style.animationDuration = (2.5 + Math.random() * 2.5) + 's';
+      el.style.animationDelay = (Math.random() * 0.8) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 5500);
+    }, i * 18);
+  }
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:var(--gold);padding:11px 18px;border-radius:12px;font-size:0.82rem;font-weight:900;animation:slideUp 0.3s ease;';
+  t.textContent = msg; document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2200);
+}
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.05 });
+
+function initReveal() {
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.05) + 's';
+    observer.observe(el);
+  });
+}
+
+// ── PRINT STYLES ──
+const printStyle = document.createElement('style');
+printStyle.media = 'print';
+printStyle.textContent = `
+  body { background:#fff!important; }
+  .top-nav, .name-section, .stats-strip, .achievements-section,
+  .share-section, .journey-section, .next-section { display:none!important; }
+  .page { padding:0!important;max-width:100%!important; }
+  .hero { display:none!important; }
+  .cert-wrap { margin:0!important; }
+  .cert {
+    background:linear-gradient(145deg,#fdf8e8,#fff8dc,#fdf8e8)!important;
+    border:3px double #c8860a!important;
+    color:#1a0d00!important;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .cert-school,.cert-certifies,.cert-this-is,.cert-achieved,.cert-subtitle { color:#8b5e00!important; }
+  .cert-recipient { -webkit-text-fill-color:#8b2500!important;background:none!important;color:#8b2500!important; }
+  .cert-program { color:#1a0d00!important; }
+  .sig-name,.sig-date { color:#1a0d00!important; }
+  .cert-skill { background:#fffaed!important;border-color:#c8860a!important; }
+  .cs-name { color:#8b5e00!important; }
+  .cert-seal { background:radial-gradient(circle,#fffaed,#fff8dc)!important;border-color:#c8860a!important; }
+  .seal-text { color:#8b5e00!important; }
+`;
+document.head.appendChild(printStyle);
+</script>
+</body>
+</html>

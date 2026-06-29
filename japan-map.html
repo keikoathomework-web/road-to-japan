@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — Japan Sightseeing Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d1117;
+  --gold: #ffd700; --gold2: #ffaa00;
+  --red: #ff3a5c; --cyan: #00e5ff;
+  --green: #00e676; --teal: #00bfa5;
+  --purple: #a855f7; --pink: #ff6eb4;
+  --white: #fff; --gray: #7a8099; --text: #d0d4e8;
+}
+html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
+
+/* ── TOP NAV ── */
+.top-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px;
+  background: rgba(13,17,23,0.97); backdrop-filter: blur(20px);
+  border-bottom: 2px solid rgba(255,215,0,0.2);
+}
+.nav-back {
+  display: flex; align-items: center; gap: 6px; padding: 7px 16px;
+  border-radius: 20px; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.75);
+  font-size: 0.82rem; font-weight: 800; cursor: pointer; text-decoration: none;
+  transition: all 0.2s;
+}
+.nav-back:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.nav-logo {
+  font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 3px;
+  background: linear-gradient(90deg, var(--gold), #ff6b2b);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.nav-subtitle {
+  font-size: 0.78rem; font-weight: 900; color: var(--gray);
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.nav-spacer { flex: 1; }
+.nav-count {
+  padding: 6px 14px; border-radius: 20px;
+  background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25);
+  font-family: 'Orbitron', sans-serif; font-size: 0.78rem; font-weight: 900;
+  color: var(--gold);
+}
+
+/* ── MAP ── */
+#mapContainer {
+  position: fixed; top: 56px; left: 0; right: 0; bottom: 0; z-index: 1;
+}
+#map { width: 100%; height: 100%; }
+
+/* Override Leaflet attribution */
+.leaflet-control-attribution { font-size: 9px !important; opacity: 0.5; }
+.leaflet-control-zoom { border: none !important; }
+.leaflet-control-zoom a {
+  background: rgba(13,17,23,0.9) !important; color: #fff !important;
+  border: 1px solid rgba(255,255,255,0.1) !important; font-size: 1rem !important;
+  width: 32px !important; height: 32px !important; line-height: 30px !important;
+  border-radius: 8px !important; margin-bottom: 3px !important;
+  display: block !important; text-align: center !important;
+}
+
+/* ── CUSTOM MAP PINS ── */
+.map-pin {
+  display: flex; flex-direction: column; align-items: center;
+  cursor: pointer; transition: transform 0.2s;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.6));
+}
+.map-pin:hover { transform: scale(1.15) translateY(-3px); }
+.pin-bubble {
+  width: 44px; height: 44px; border-radius: 50% 50% 50% 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; border: 3px solid #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transform: rotate(-10deg);
+  position: relative;
+}
+.pin-label {
+  background: rgba(13,17,23,0.9); color: #fff;
+  padding: 2px 7px; border-radius: 10px; font-size: 0.6rem;
+  font-weight: 900; white-space: nowrap; margin-top: 2px;
+  border: 1px solid rgba(255,255,255,0.15); letter-spacing: 0.5px;
+}
+
+/* ── SIDE PANEL ── */
+.side-panel {
+  position: fixed; top: 56px; right: 0; bottom: 0; width: 380px;
+  z-index: 500; background: var(--bg);
+  border-left: 2px solid rgba(255,255,255,0.08);
+  transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.34,1.16,0.64,1);
+  overflow-y: auto; display: flex; flex-direction: column;
+}
+.side-panel.open { transform: translateX(0); }
+.panel-close {
+  position: absolute; top: 12px; right: 12px; z-index: 10;
+  width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.6);
+  font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.panel-close:hover { background: rgba(255,58,92,0.2); color: var(--red); }
+
+/* ── POSTCARD ILLUSTRATION ── */
+.postcard {
+  position: relative; width: 100%; height: 220px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.postcard-scene {
+  position: relative; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.postcard-bg { position: absolute; inset: 0; }
+.pc-sky { position: absolute; top: 0; left: 0; right: 0; height: 60%; }
+.pc-ground { position: absolute; bottom: 0; left: 0; right: 0; height: 45%; border-radius: 60% 60% 0 0 / 20% 20% 0 0; }
+.pc-main-emoji { font-size: 5rem; position: relative; z-index: 5; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); animation: pcFloat 3s ease-in-out infinite alternate; }
+@keyframes pcFloat { from{transform:translateY(0)} to{transform:translateY(-10px)} }
+.pc-deco { position: absolute; z-index: 4; font-size: 1.8rem; opacity: 0.8; }
+.pc-stamp {
+  position: absolute; bottom: 10px; right: 12px; z-index: 10;
+  width: 52px; height: 62px; background: rgba(255,255,255,0.95);
+  border-radius: 3px; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 4px; border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  font-size: 1.4rem;
+}
+.pc-stamp::before {
+  content: ''; position: absolute; inset: 3px;
+  border: 1.5px dashed rgba(0,0,0,0.2); border-radius: 2px;
+}
+.pc-stamp-label { font-size: 0.42rem; font-weight: 900; letter-spacing: 1px; color: rgba(0,0,0,0.6); text-transform: uppercase; margin-top: 2px; }
+.postcard-frame {
+  position: absolute; inset: 0; border: 4px solid rgba(255,255,255,0.12);
+  pointer-events: none;
+}
+.pc-region-badge {
+  position: absolute; top: 12px; left: 12px; z-index: 10;
+  padding: 4px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 900;
+  letter-spacing: 1px; text-transform: uppercase; backdrop-filter: blur(10px);
+}
+
+/* ── PANEL CONTENT ── */
+.panel-body { padding: 20px 18px 30px; flex: 1; }
+.spot-prefecture { font-size: 0.68rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+.spot-romaji { font-family: 'Bangers', cursive; font-size: 2.2rem; letter-spacing: 3px; color: var(--white); line-height: 1; margin-bottom: 3px; }
+.spot-kanji { font-size: 1.1rem; font-weight: 900; margin-bottom: 14px; }
+.spot-season { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; margin-bottom: 12px; }
+
+.spot-desc {
+  font-size: 0.9rem; line-height: 1.75; color: var(--text);
+  background: rgba(255,255,255,0.03); border-radius: 12px;
+  padding: 14px; margin-bottom: 14px; border-left: 3px solid;
+}
+
+.fun-fact {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.18);
+  border-radius: 12px; padding: 12px; margin-bottom: 16px;
+}
+.fun-fact-icon { font-size: 1.4rem; flex-shrink: 0; }
+.fun-fact-text { font-size: 0.82rem; line-height: 1.6; color: rgba(255,215,0,0.9); font-weight: 700; }
+
+/* ── VOCABULARY ── */
+.vocab-section { margin-bottom: 10px; }
+.vocab-title {
+  font-size: 0.7rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.vocab-cards { display: flex; flex-direction: column; gap: 8px; }
+.vocab-card {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 11px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.2s; cursor: default;
+}
+.vocab-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.15); }
+.vc-jp { font-size: 1.3rem; font-weight: 900; }
+.vc-rom { font-size: 0.78rem; font-weight: 900; color: var(--teal); }
+.vc-en { font-size: 0.8rem; color: var(--gray); text-align: right; }
+
+/* ── INTRO OVERLAY ── */
+.intro-card {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 400; background: rgba(13,17,23,0.96); backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,215,0,0.25); border-radius: 20px;
+  padding: 16px 22px; max-width: 400px; width: calc(100% - 32px);
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6); animation: introSlide 0.6s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes introSlide { from{transform:translateX(-50%) translateY(20px);opacity:0} to{transform:translateX(-50%) translateY(0);opacity:1} }
+.intro-emoji { font-size: 2.2rem; flex-shrink: 0; }
+.intro-text h3 { font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 2px; color: var(--gold); margin-bottom: 3px; }
+.intro-text p { font-size: 0.78rem; line-height: 1.5; color: var(--text); }
+.intro-close { flex-shrink: 0; padding: 7px 16px; border-radius: 20px; background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); font-size: 0.78rem; font-weight: 900; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.intro-close:hover { background: rgba(255,215,0,0.22); }
+
+/* ── MOBILE ── */
+@media(max-width: 640px) {
+  .side-panel { width: 100%; top: 56px; transform: translateY(100%); border-left: none; border-top: 2px solid rgba(255,255,255,0.08); }
+  .side-panel.open { transform: translateY(0); }
+  .postcard { height: 180px; }
+  .spot-romaji { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="top-nav">
+  <a class="nav-back" href="home.html">← Home</a>
+  <div>
+    <div class="nav-logo">🗾 JAPAN MAP</div>
+    <div class="nav-subtitle">25 Amazing Places to Visit!</div>
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="nav-count" id="visitCount">🏮 0 / 25 visited</div>
+</div>
+
+<!-- MAP -->
+<div id="mapContainer">
+  <div id="map"></div>
+</div>
+
+<!-- SIDE PANEL -->
+<div class="side-panel" id="sidePanel">
+  <button class="panel-close" onclick="closePanel()">✕</button>
+  <div class="postcard" id="postcard"></div>
+  <div class="panel-body" id="panelBody"></div>
+</div>
+
+<!-- INTRO -->
+<div class="intro-card" id="introCard">
+  <div class="intro-emoji">🗾</div>
+  <div class="intro-text">
+    <h3>Japan Sightseeing Map!</h3>
+    <p>Tap any 📍 pin on the map to discover amazing places in Japan! Learn new words at every spot!</p>
+  </div>
+  <button class="intro-close" onclick="document.getElementById('introCard').style.display='none'">Let's Go! 🎌</button>
+</div>
+
+<script>
+// ── SPOT DATA ──
+const SPOTS = [
+  {
+    id:'sapporo', lat:43.0618, lng:141.3545,
+    romaji:'Sapporo', kanji:'札幌', prefecture:'Hokkaido', region:'Hokkaido',
+    emoji:'❄️', pinColor:'#1565c0',
+    pc:{ sky:['#0d47a1','#1976d2'], ground:'#b3e5fc', decos:[{e:'⛄',t:'15%',l:'15%'},{e:'🎿',t:'55%',l:'72%'},{e:'🌨️',t:'10%',r:'20%'},{e:'🍺',b:'35%',l:'35%'}] },
+    season:'Winter ❄️ / Summer 🌸', seasonColor:'rgba(33,150,243,0.2)',
+    desc:'Sapporo is the biggest city in Hokkaido — Japan\'s snowy northern island! 🏔️ Every February, the famous Yuki Matsuri (Snow Festival) fills the city with GIANT snow sculptures! Some are as big as buildings! 🎪',
+    fact:'The Snow Festival started in 1950 when 6 high school students built 6 snow statues in a park. Now over 2 MILLION people visit every year! 🤩',
+    borderColor:'#42a5f5',
+    vocab:[{jp:'雪',rom:'Yuki',en:'Snow ❄️'},{jp:'寒い',rom:'Samui',en:'Cold 🥶'},{jp:'ビール',rom:'Bīru',en:'Beer 🍺 (Sapporo is famous!)'}],
+  },
+  {
+    id:'shiretoko', lat:44.0800, lng:145.0800,
+    romaji:'Shiretoko', kanji:'知床', prefecture:'Hokkaido', region:'Hokkaido',
+    emoji:'🦊', pinColor:'#e65100',
+    pc:{ sky:['#1b5e20','#2e7d32'], ground:'#a5d6a7', decos:[{e:'🦊',t:'20%',l:'20%'},{e:'🐻',t:'30%',r:'18%'},{e:'🌲',b:'20%',l:'10%'},{e:'🌊',b:'15%',r:'10%'}] },
+    season:'Summer 🌿 / Winter 🐻‍❄️', seasonColor:'rgba(76,175,80,0.2)',
+    desc:'Shiretoko is a wild UNESCO World Heritage nature area at the tip of Hokkaido! 🌿 Here you can see real wild foxes 🦊, bears 🐻, and deer roaming free! The sea freezes in winter making huge sheets of ice called "ryuhyo" (drift ice)! 🧊',
+    fact:'Shiretoko means "the end of the earth" in the Ainu language — the indigenous people of Hokkaido! 🏔️',
+    borderColor:'#66bb6a',
+    vocab:[{jp:'自然',rom:'Shizen',en:'Nature 🌿'},{jp:'熊',rom:'Kuma',en:'Bear 🐻'},{jp:'狐',rom:'Kitsune',en:'Fox 🦊'}],
+  },
+  {
+    id:'hakodate', lat:41.7688, lng:140.7290,
+    romaji:'Hakodate', kanji:'函館', prefecture:'Hokkaido', region:'Hokkaido',
+    emoji:'🌃', pinColor:'#4a148c',
+    pc:{ sky:['#0a0a2e','#1a237e'], ground:'#212121', decos:[{e:'🌉',t:'25%',l:'20%'},{e:'⭐',t:'10%',r:'15%'},{e:'🌟',t:'5%',l:'40%'},{e:'✨',t:'18%',r:'35%'}] },
+    season:'All Year Round 🌟', seasonColor:'rgba(156,39,176,0.2)',
+    desc:'Hakodate has one of the THREE most beautiful night views in the whole world! 🌃 From the top of Mount Hakodate, the city looks like a sparkling necklace of lights between two bays. It\'s so magical! 💫',
+    fact:'Hakodate was one of the first Japanese ports to open to foreign ships in 1854. That\'s why you can still find old Western-style buildings and a Morning Market that opens at 5am! 🐟',
+    borderColor:'#ab47bc',
+    vocab:[{jp:'夜景',rom:'Yakei',en:'Night view 🌃'},{jp:'港',rom:'Minato',en:'Harbor / Port ⚓'},{jp:'市場',rom:'Ichiba',en:'Market 🐟'}],
+  },
+  {
+    id:'aomori', lat:40.8242, lng:140.7400,
+    romaji:'Aomori', kanji:'青森', prefecture:'Aomori', region:'Tohoku',
+    emoji:'🍎', pinColor:'#b71c1c',
+    pc:{ sky:['#e53935','#ef5350'], ground:'#4caf50', decos:[{e:'🍎',t:'15%',l:'18%'},{e:'🍎',t:'30%',r:'15%'},{e:'🎏',t:'20%',l:'50%'},{e:'🏮',b:'30%',r:'20%'}] },
+    season:'Summer Festival 🎏 / Autumn 🍎', seasonColor:'rgba(229,57,53,0.2)',
+    desc:'Aomori grows more apples than anywhere else in Japan! 🍎 Every summer, the city hosts the spectacular Nebuta Festival — enormous glowing lantern floats in the shapes of warriors and gods are paraded through the streets at night! 🏮✨',
+    fact:'The Nebuta floats can be as tall as a 2-story house! Each one takes artists months to build with paper, wire, and colored lights! 🎨',
+    borderColor:'#ef5350',
+    vocab:[{jp:'りんご',rom:'Ringo',en:'Apple 🍎'},{jp:'祭り',rom:'Matsuri',en:'Festival 🎏'},{jp:'灯籠',rom:'Tōrō',en:'Lantern 🏮'}],
+  },
+  {
+    id:'sendai', lat:38.2688, lng:140.8721,
+    romaji:'Sendai', kanji:'仙台', prefecture:'Miyagi', region:'Tohoku',
+    emoji:'🎋', pinColor:'#1b5e20',
+    pc:{ sky:['#1b5e20','#388e3c'], ground:'#c8e6c9', decos:[{e:'🎋',t:'10%',l:'15%',s:'3rem'},{e:'🎋',t:'8%',r:'20%',s:'3.5rem'},{e:'⭐',t:'5%',l:'45%'},{e:'🎐',t:'20%',l:'55%'}] },
+    season:'Summer 🎋 (Tanabata: Aug 6-8)', seasonColor:'rgba(56,142,60,0.2)',
+    desc:'Sendai is called "City of Trees" 🌳 and is home to the gorgeous Tanabata Festival! Bamboo trees decorated with colorful paper streamers and origami fill the shopping streets. It\'s based on the legend of two stars in love! 💫❤️',
+    fact:'The Tanabata legend says two star-crossed lovers (the star Vega and Altair) can only meet ONCE A YEAR when the Milky Way parts for them! 🌌',
+    borderColor:'#66bb6a',
+    vocab:[{jp:'竹',rom:'Take',en:'Bamboo 🎋'},{jp:'星',rom:'Hoshi',en:'Star ⭐'},{jp:'願い',rom:'Negai',en:'Wish 🙏'}],
+  },
+  {
+    id:'nikko', lat:36.7490, lng:139.5994,
+    romaji:'Nikkō', kanji:'日光', prefecture:'Tochigi', region:'Kanto',
+    emoji:'⛩️', pinColor:'#e65100',
+    pc:{ sky:['#bf360c','#e64a19'], ground:'#ff8f00', decos:[{e:'⛩️',t:'20%',l:'18%'},{e:'🌊',t:'55%',r:'20%'},{e:'🍂',t:'10%',r:'10%'},{e:'🌲',b:'20%',l:'10%'}] },
+    season:'Autumn 🍂 (Oct-Nov best!)', seasonColor:'rgba(230,81,0,0.2)',
+    desc:'Nikkō is home to one of Japan\'s most amazing shrine complexes — Tōshō-gū! 🏯 There are famous three wise monkeys here: "See no evil, Hear no evil, Speak no evil" 🙈🙉🙊. The buildings are covered in gold and colorful carvings! ✨',
+    fact:'There is a Japanese saying: "Don\'t say magnificent until you\'ve seen Nikkō!" (日光を見ずして結構と言うな) 🤩',
+    borderColor:'#ff7043',
+    vocab:[{jp:'神社',rom:'Jinja',en:'Shinto shrine ⛩️'},{jp:'滝',rom:'Taki',en:'Waterfall 🌊'},{jp:'猿',rom:'Saru',en:'Monkey 🐒'}],
+  },
+  {
+    id:'tokyo', lat:35.6762, lng:139.6503,
+    romaji:'Tokyo', kanji:'東京', prefecture:'Tokyo', region:'Kanto',
+    emoji:'🗼', pinColor:'#c62828',
+    pc:{ sky:['#1a237e','#283593'], ground:'#212121', decos:[{e:'🗼',t:'10%',l:'25%',s:'4rem'},{e:'🌃',t:'10%',r:'10%'},{e:'🚈',b:'30%',l:'10%'},{e:'🎌',t:'5%',r:'25%'}] },
+    season:'Spring 🌸 (Cherry blossoms!)', seasonColor:'rgba(198,40,40,0.2)',
+    desc:'Tokyo is Japan\'s incredible capital city — and the LARGEST city in the whole world! 🌏 Over 37 million people live here! There\'s the glittering Tokyo Tower 🗼, the wild fashions of Harajuku 👗, the busy crossing at Shibuya 🚶, and amazing food everywhere! 🍜',
+    fact:'Tokyo\'s subway trains are so punctual that if a train is even 1 MINUTE late, they make a special announcement to apologize! 🚆 The average delay is only 24 SECONDS per year! 😱',
+    borderColor:'#ef5350',
+    vocab:[{jp:'電車',rom:'Densha',en:'Train 🚆'},{jp:'東京',rom:'Tōkyō',en:'Tokyo (Eastern Capital) 🏙️'},{jp:'渋谷',rom:'Shibuya',en:'Famous crossing district 🚶'}],
+  },
+  {
+    id:'asakusa', lat:35.7148, lng:139.7967,
+    romaji:'Asakusa', kanji:'浅草', prefecture:'Tokyo', region:'Kanto',
+    emoji:'🏮', pinColor:'#c62828',
+    pc:{ sky:['#b71c1c','#c62828'], ground:'#ff8f00', decos:[{e:'🏮',t:'10%',l:'10%',s:'3rem'},{e:'🏯',t:'15%',r:'15%',s:'3rem'},{e:'🎎',t:'55%',l:'60%'},{e:'🌸',t:'8%',l:'45%'}] },
+    season:'All Year 🏮 (Best: Spring 🌸)', seasonColor:'rgba(183,28,28,0.2)',
+    desc:'Asakusa is Tokyo\'s most traditional district! 🏮 The giant red lantern (Kaminarimon — Thunder Gate) is one of Japan\'s most photographed spots! Sensō-ji is Tokyo\'s OLDEST temple, over 1,400 years old! The Nakamise shopping street leading to it is filled with snacks and souvenirs! 🍡',
+    fact:'Kaminarimon\'s famous red lantern is 4 meters tall and weighs 700 kg! It was donated by the founder of Panasonic! ⚡',
+    borderColor:'#ef5350',
+    vocab:[{jp:'お寺',rom:'O-tera',en:'Buddhist temple 🛕'},{jp:'雷門',rom:'Kaminarimon',en:'Thunder Gate ⚡'},{jp:'お土産',rom:'Omiyage',en:'Souvenir 🎁'}],
+  },
+  {
+    id:'kamakura', lat:35.3192, lng:139.5467,
+    romaji:'Kamakura', kanji:'鎌倉', prefecture:'Kanagawa', region:'Kanto',
+    emoji:'🙏', pinColor:'#1b5e20',
+    pc:{ sky:['#0d47a1','#1565c0'], ground:'#388e3c', decos:[{e:'🙏',t:'5%',l:'20%',s:'5rem'},{e:'🌊',t:'55%',r:'10%'},{e:'🌸',t:'8%',r:'25%'},{e:'🌿',b:'20%',l:'12%'}] },
+    season:'Spring 🌸 / All year', seasonColor:'rgba(27,94,32,0.2)',
+    desc:'Kamakura was Japan\'s capital 800 years ago during the age of samurai! ⚔️ The GIANT BUDDHA (Daibutsu) stands 13.35 meters tall — that\'s as tall as a 4-story building! 😲 And you can actually WALK INSIDE the hollow statue! 🚶‍♂️',
+    fact:'The Great Buddha of Kamakura used to be inside a huge wooden temple hall, but a giant tsunami in 1498 destroyed the building. Now the Buddha sits peacefully outside under the open sky! 🌤️',
+    borderColor:'#66bb6a',
+    vocab:[{jp:'大仏',rom:'Daibutsu',en:'Great Buddha statue 🙏'},{jp:'侍',rom:'Samurai',en:'Samurai warrior ⚔️'},{jp:'海',rom:'Umi',en:'Sea / Ocean 🌊'}],
+  },
+  {
+    id:'mtfuji', lat:35.3606, lng:138.7274,
+    romaji:'Mt. Fuji', kanji:'富士山', prefecture:'Shizuoka / Yamanashi', region:'Chubu',
+    emoji:'🗻', pinColor:'#1565c0',
+    pc:{ sky:['#e3f2fd','#90caf9'], ground:'#a5d6a7', decos:[{e:'🗻',t:'5%',l:'15%',s:'5.5rem'},{e:'☁️',t:'15%',r:'10%'},{e:'🌸',b:'30%',l:'10%'},{e:'🦢',t:'35%',r:'25%'}] },
+    season:'Summer 🌿 (climbing: Jul-Sep)', seasonColor:'rgba(21,101,192,0.2)',
+    desc:'Mt. Fuji is Japan\'s highest mountain at 3,776 meters — that\'s super high! 🏔️ Its perfect cone shape has inspired Japanese artists for thousands of years. You can see it on clear days from as far away as Tokyo! It is a UNESCO World Heritage site and a sacred symbol of Japan! 🎌',
+    fact:'Mt. Fuji is actually a VOLCANO! The last time it erupted was in 1707. About 300,000 people climb it every year — most hike at night to see the sunrise from the top! 🌅',
+    borderColor:'#42a5f5',
+    vocab:[{jp:'山',rom:'Yama',en:'Mountain 🏔️'},{jp:'富士山',rom:'Fujisan',en:'Mt. Fuji (honorable mountain!) 🗻'},{jp:'登る',rom:'Noboru',en:'To climb 🧗'}],
+  },
+  {
+    id:'hakone', lat:35.2329, lng:139.1069,
+    romaji:'Hakone', kanji:'箱根', prefecture:'Kanagawa', region:'Chubu',
+    emoji:'♨️', pinColor:'#ad1457',
+    pc:{ sky:['#880e4f','#ad1457'], ground:'#795548', decos:[{e:'♨️',t:'15%',l:'20%',s:'3.5rem'},{e:'🗻',t:'10%',r:'10%'},{e:'🌁',b:'40%',l:'10%'},{e:'🛁',b:'30%',r:'18%'}] },
+    season:'All Year 🌸 (Spring & Autumn best)', seasonColor:'rgba(173,20,87,0.2)',
+    desc:'Hakone is Japan\'s most famous hot spring (onsen) resort town! ♨️ Imagine soaking in a warm outdoor bath while looking at Mt. Fuji! 🗻 The natural hot springs here come from volcanic activity deep underground. Many traditional Japanese inns (ryokan) serve amazing meals! 🍱',
+    fact:'In Japan, there\'s a special bathing etiquette! You must wash yourself BEFORE getting into the communal hot spring bath. And no swimwear allowed — everyone bathes naturally! 🛁',
+    borderColor:'#f48fb1',
+    vocab:[{jp:'温泉',rom:'Onsen',en:'Hot spring bath ♨️'},{jp:'旅館',rom:'Ryokan',en:'Traditional Japanese inn 🏯'},{jp:'富士山',rom:'Fujisan',en:'Mt. Fuji visible from here! 🗻'}],
+  },
+  {
+    id:'kyoto', lat:35.0116, lng:135.7681,
+    romaji:'Kyōto', kanji:'京都', prefecture:'Kyoto', region:'Kansai',
+    emoji:'⛩️', pinColor:'#b71c1c',
+    pc:{ sky:['#b71c1c','#c62828'], ground:'#795548', decos:[{e:'⛩️',t:'8%',l:'10%',s:'5rem'},{e:'🌸',t:'8%',r:'15%'},{e:'🏯',b:'35%',r:'12%'},{e:'🍂',t:'5%',l:'50%'}] },
+    season:'Spring 🌸 (Sakura) / Autumn 🍂', seasonColor:'rgba(183,28,28,0.2)',
+    desc:'Kyoto was Japan\'s royal capital for over 1,000 years! 👑 It has 1,600 Buddhist temples and 400 Shinto shrines! The most famous sight is Fushimi Inari — thousands of bright orange torii gates winding up a mountain! 🧡 At Kinkaku-ji (Golden Pavilion), a real temple covered in gold reflects in the pond! ✨',
+    fact:'During WWII, the US Secretary of War removed Kyoto from the list of bombing targets because he loved the city and its cultural treasures! Thanks to that decision, its historic beauty survived! 🙏',
+    borderColor:'#ef5350',
+    vocab:[{jp:'鳥居',rom:'Torii',en:'Shrine gate 🧡'},{jp:'着物',rom:'Kimono',en:'Traditional garment 👘'},{jp:'金閣寺',rom:'Kinkakuji',en:'Golden Pavilion Temple ✨'}],
+  },
+  {
+    id:'nara', lat:34.6851, lng:135.8048,
+    romaji:'Nara', kanji:'奈良', prefecture:'Nara', region:'Kansai',
+    emoji:'🦌', pinColor:'#4e342e',
+    pc:{ sky:['#558b2f','#689f38'], ground:'#a5d6a7', decos:[{e:'🦌',t:'20%',l:'15%',s:'3.5rem'},{e:'🦌',t:'35%',r:'20%'},{e:'🏯',t:'10%',l:'60%'},{e:'🌿',b:'20%',l:'5%'}] },
+    season:'All Year 🦌 (Autumn 🍂 most beautiful)', seasonColor:'rgba(78,52,46,0.2)',
+    desc:'Nara was Japan\'s very FIRST permanent capital city! 🏛️ But the most amazing thing here is: over 1,200 wild deer 🦌 roam freely in Nara Park! The deer are considered sacred messengers of the gods. You can buy special "deer crackers" (shika senbei) and the deer will bow their heads to ask for them! 🫎',
+    fact:'Nara\'s Great Buddha (inside Tōdai-ji temple) is the LARGEST bronze statue in the world! The temple building itself is the world\'s largest wooden structure! 😮',
+    borderColor:'#a1887f',
+    vocab:[{jp:'鹿',rom:'Shika',en:'Deer 🦌'},{jp:'公園',rom:'Kōen',en:'Park 🌿'},{jp:'せんべい',rom:'Senbei',en:'Rice cracker 🍘'}],
+  },
+  {
+    id:'osaka', lat:34.6937, lng:135.5023,
+    romaji:'Ōsaka', kanji:'大阪', prefecture:'Osaka', region:'Kansai',
+    emoji:'🎡', pinColor:'#e65100',
+    pc:{ sky:['#e65100','#ef6c00'], ground:'#ff8f00', decos:[{e:'🎡',t:'10%',l:'15%',s:'4rem'},{e:'🦑',b:'35%',l:'55%'},{e:'🌃',t:'8%',r:'10%'},{e:'🍡',b:'30%',r:'10%'}] },
+    season:'All Year! 🎉 (Best spring & autumn)', seasonColor:'rgba(230,81,0,0.2)',
+    desc:'Osaka is Japan\'s food capital! 🍜 People here love eating so much they have a saying: "Kuidaore" (食い倒れ) — eat until you drop! 😄 Try takoyaki (octopus balls) 🐙, okonomiyaki (savory pancakes), and kushikatsu (fried skewers)! The neon lights of Dotonbori reflect in the canal and giant mechanical crabs wave from restaurant signs! 🦀',
+    fact:'Osaka people are famous in Japan for being super friendly and funny! They have their own dialect (Osaka-ben) and love making people laugh! 😂',
+    borderColor:'#ff7043',
+    vocab:[{jp:'たこやき',rom:'Takoyaki',en:'Octopus balls 🐙'},{jp:'おいしい',rom:'Oishii',en:'Delicious! 😋'},{jp:'食い倒れ',rom:'Kuidaore',en:'Eat until you drop! 🍜'}],
+  },
+  {
+    id:'hiroshima', lat:34.3853, lng:132.4553,
+    romaji:'Hiroshima', kanji:'広島', prefecture:'Hiroshima', region:'Chugoku',
+    emoji:'🕊️', pinColor:'#1565c0',
+    pc:{ sky:['#546e7a','#607d8b'], ground:'#4db6ac', decos:[{e:'🕊️',t:'15%',l:'15%',s:'3rem'},{e:'🕊️',t:'5%',r:'20%'},{e:'☮️',t:'10%',l:'45%'},{e:'🌸',b:'30%',l:'10%'}] },
+    season:'Spring 🌸 / All year', seasonColor:'rgba(21,101,192,0.2)',
+    desc:'Hiroshima is a city of incredible peace and hope! 🕊️ The Peace Memorial Park and the A-Bomb Dome (Genbaku Dōmu) stand as a powerful reminder of the importance of peace. Hiroshima has rebuilt itself into a vibrant, beautiful city that welcomes the world with a message of friendship! 🌸',
+    fact:'The story of Sadako Sasaki — a young girl who folded 1,000 origami cranes (千羽鶴) believing it would heal her — inspired people worldwide. Now thousands of paper cranes are sent to Hiroshima from children around the globe every year! 🦢',
+    borderColor:'#4fc3f7',
+    vocab:[{jp:'平和',rom:'Heiwa',en:'Peace 🕊️'},{jp:'希望',rom:'Kibō',en:'Hope 🌟'},{jp:'千羽鶴',rom:'Senbazuru',en:'1,000 origami cranes 🦢'}],
+  },
+  {
+    id:'miyajima', lat:34.2955, lng:132.3197,
+    romaji:'Miyajima', kanji:'宮島', prefecture:'Hiroshima', region:'Chugoku',
+    emoji:'⛩️', pinColor:'#ad1457',
+    pc:{ sky:['#01579b','#0277bd'], ground:'#26c6da', decos:[{e:'⛩️',t:'10%',l:'15%',s:'5rem'},{e:'🌊',t:'55%',r:'10%'},{e:'🦌',t:'30%',r:'20%'},{e:'🌅',t:'5%',l:'50%'}] },
+    season:'All Year 🌊 (Sunrise & high tide!)', seasonColor:'rgba(173,20,87,0.2)',
+    desc:'The floating Torii Gate of Miyajima is one of Japan\'s THREE most famous views! 🌊 At high tide, the giant orange gate appears to float on the sea! 😲 The island itself is sacred — no cars, and wild deer roam between the temples! It was once forbidden for ordinary people to even step on its holy ground! ⛩️',
+    fact:'The 16-meter tall torii gate weighs about 60 tons and stands in the sea. Its foundation is not bolted down — it stays in place purely by its own weight! Engineering genius! ⚙️',
+    borderColor:'#f48fb1',
+    vocab:[{jp:'島',rom:'Shima',en:'Island 🏝️'},{jp:'潮',rom:'Shio',en:'Tide 🌊'},{jp:'鳥居',rom:'Torii',en:'Shrine gate ⛩️'}],
+  },
+  {
+    id:'himeji', lat:34.8394, lng:134.6939,
+    romaji:'Himeji', kanji:'姫路', prefecture:'Hyogo', region:'Kansai',
+    emoji:'🏯', pinColor:'#4a148c',
+    pc:{ sky:['#e8eaf6','#c5cae9'], ground:'#a5d6a7', decos:[{e:'🏯',t:'5%',l:'15%',s:'5rem'},{e:'🌸',t:'15%',r:'10%'},{e:'🌸',b:'30%',l:'10%'},{e:'🦢',t:'35%',r:'25%'}] },
+    season:'Spring 🌸 (Cherry blossoms around castle!)', seasonColor:'rgba(74,20,140,0.2)',
+    desc:'Himeji Castle is Japan\'s most beautiful castle — nicknamed "White Heron Castle" 🦢 because its gleaming white walls look like a white bird taking flight! 🏯 It\'s a UNESCO World Heritage site and the best-preserved castle in all of Japan. In spring, the castle surrounded by thousands of cherry blossom trees is magical! 🌸',
+    fact:'Himeji Castle has NEVER been destroyed! It survived wars, earthquakes, and WWII bombing raids! Legend says the castle is so beautiful that bomber pilots couldn\'t bring themselves to destroy it! 🛡️',
+    borderColor:'#9575cd',
+    vocab:[{jp:'城',rom:'Shiro',en:'Castle 🏯'},{jp:'白',rom:'Shiro',en:'White (also means castle!) ⬜'},{jp:'桜',rom:'Sakura',en:'Cherry blossom 🌸'}],
+  },
+  {
+    id:'fukuoka', lat:33.5904, lng:130.4017,
+    romaji:'Fukuoka', kanji:'福岡', prefecture:'Fukuoka', region:'Kyushu',
+    emoji:'🍜', pinColor:'#f57f17',
+    pc:{ sky:['#e65100','#f57f17'], ground:'#5d4037', decos:[{e:'🍜',t:'10%',l:'20%',s:'4rem'},{e:'🏮',b:'35%',l:'10%'},{e:'🌙',t:'8%',r:'20%'},{e:'⚓',b:'30%',r:'15%'}] },
+    season:'All Year 🍜 (Evening yatai!)', seasonColor:'rgba(245,127,23,0.2)',
+    desc:'Fukuoka is the birthplace of Hakata Ramen — the rich, creamy tonkotsu (pork bone broth) ramen style loved around the world! 🍜 Every evening, street food stalls called "yatai" 屋台 set up along the river, where people eat under the stars! Fukuoka is Asia\'s most livable city! 🌃',
+    fact:'Fukuoka is closer to Seoul, South Korea than to Tokyo! It has been a gateway between Japan and the Asian mainland for over 2,000 years! ⚓',
+    borderColor:'#ffb74d',
+    vocab:[{jp:'屋台',rom:'Yatai',en:'Street food stall 🏮'},{jp:'豚骨',rom:'Tonkotsu',en:'Pork bone broth 🍜'},{jp:'博多',rom:'Hakata',en:'Old name for Fukuoka 🏙️'}],
+  },
+  {
+    id:'nagasaki', lat:32.7503, lng:129.8777,
+    romaji:'Nagasaki', kanji:'長崎', prefecture:'Nagasaki', region:'Kyushu',
+    emoji:'🌉', pinColor:'#00695c',
+    pc:{ sky:['#263238','#37474f'], ground:'#546e7a', decos:[{e:'🌉',t:'15%',l:'15%',s:'3.5rem'},{e:'⛪',b:'30%',r:'15%'},{e:'🌙',t:'8%',r:'20%'},{e:'🚋',b:'25%',l:'10%'}] },
+    season:'Spring & Autumn 🌸', seasonColor:'rgba(0,105,92,0.2)',
+    desc:'Nagasaki is Japan\'s most international city! 🌍 For 200 years when Japan was closed to the world, only Nagasaki was allowed to trade with the Dutch and Chinese! 🚢 This created a unique mix of Japanese and Western cultures. Glover Garden has beautiful old Western mansions, and Dejima island was once where Dutch traders lived! 🏡',
+    fact:'Nagasaki has the only Chinatown in Japan (Shinchi Chinatown) that\'s over 400 years old! The famous Lantern Festival lights up the city with over 15,000 glowing lanterns! 🏮',
+    borderColor:'#4db6ac',
+    vocab:[{jp:'橋',rom:'Hashi',en:'Bridge 🌉'},{jp:'夕日',rom:'Yūhi',en:'Sunset 🌅'},{jp:'国際',rom:'Kokusai',en:'International 🌍'}],
+  },
+  {
+    id:'kumamoto', lat:32.8031, lng:130.7079,
+    romaji:'Kumamoto', kanji:'熊本', prefecture:'Kumamoto', region:'Kyushu',
+    emoji:'🐻', pinColor:'#4a148c',
+    pc:{ sky:['#1a237e','#283593'], ground:'#388e3c', decos:[{e:'🐻',t:'10%',l:'15%',s:'4rem'},{e:'🏯',b:'30%',r:'15%'},{e:'🌸',t:'5%',r:'15%'},{e:'🌿',b:'20%',l:'10%'}] },
+    season:'Spring 🌸 / All year', seasonColor:'rgba(74,20,140,0.2)',
+    desc:'Kumamoto is home to KUMAMON 🐻 — Japan\'s most famous mascot character! This cute black bear with red cheeks has appeared on over 12,000 products and earned billions of yen for Kumamoto Prefecture! 💰 The real Kumamon even has his own office in City Hall! Kumamoto Castle is also one of Japan\'s most impressive fortresses! 🏯',
+    fact:'Kumamon was created in 2011 to attract tourists to Kumamoto. He became SO famous that his face now appears on everything from candy to airplanes! His "salary" goes directly to the prefecture! 😄',
+    borderColor:'#7e57c2',
+    vocab:[{jp:'くまモン',rom:'Kumamon',en:'Kumamoto\'s bear mascot 🐻'},{jp:'熊',rom:'Kuma',en:'Bear 🐻'},{jp:'城',rom:'Shiro',en:'Castle 🏯'}],
+  },
+  {
+    id:'kagoshima', lat:31.5966, lng:130.5571,
+    romaji:'Kagoshima', kanji:'鹿児島', prefecture:'Kagoshima', region:'Kyushu',
+    emoji:'🌋', pinColor:'#b71c1c',
+    pc:{ sky:['#37474f','#546e7a'], ground:'#757575', decos:[{e:'🌋',t:'5%',l:'15%',s:'5rem'},{e:'💨',t:'25%',r:'10%'},{e:'🌊',t:'55%',r:'20%'},{e:'🌺',b:'30%',l:'10%'}] },
+    season:'All Year 🌋 (Sakurajima always active!)', seasonColor:'rgba(183,28,28,0.2)',
+    desc:'Kagoshima has a living volcano — Sakurajima — right next to the city! 🌋 It erupts HUNDREDS of times every year and residents sometimes have to wear hard hats and use umbrellas against falling ash! 😮 Despite this, Kagoshima is one of Japan\'s most laid-back, sunny cities! ☀️ The area is also the birthplace of Japan\'s most famous samurai — Saigo Takamori! ⚔️',
+    fact:'Ash from Sakurajima falls on the city so often that Kagoshima has the MOST umbrella vending machines in Japan! ☂️ Kids in local schools sometimes have to wear helmets on their way to school! 😲',
+    borderColor:'#ef5350',
+    vocab:[{jp:'火山',rom:'Kazan',en:'Volcano 🌋'},{jp:'灰',rom:'Hai',en:'Ash / Cinders 💨'},{jp:'桜島',rom:'Sakurajima',en:'Cherry Island Volcano 🌸🌋'}],
+  },
+  {
+    id:'okinawa', lat:26.2124, lng:127.6809,
+    romaji:'Okinawa', kanji:'沖縄', prefecture:'Okinawa', region:'Okinawa',
+    emoji:'🌺', pinColor:'#00695c',
+    pc:{ sky:['#0277bd','#0288d1'], ground:'#00acc1', decos:[{e:'🌺',t:'10%',l:'15%',s:'3.5rem'},{e:'🐠',t:'35%',r:'18%'},{e:'🐚',b:'30%',l:'12%'},{e:'🏝️',b:'20%',r:'10%'}] },
+    season:'Summer 🌊 / All year (subtropical!)', seasonColor:'rgba(0,105,92,0.2)',
+    desc:'Okinawa is Japan\'s tropical paradise! 🏝️ The ocean here is the most beautiful blue-green color — clear enough to see the coral reefs below! 🐠 Okinawa has its own unique culture, language (Uchinaguchi), music (sanshin 🎵), and food! People in Okinawa live longer than almost anywhere in the world — they call it the "Land of Immortals"! 🌺',
+    fact:'The people of Okinawa have a secret to long life called "hara hachi bu" — they only eat until they\'re 80% full! They also eat lots of purple sweet potatoes (紫芋 murasaki imo)! 🍠',
+    borderColor:'#4dd0e1',
+    vocab:[{jp:'珊瑚礁',rom:'Sangoshō',en:'Coral reef 🐠'},{jp:'海',rom:'Umi',en:'Ocean / Sea 🌊'},{jp:'ありがとう',rom:'Arigatō',en:'Thank you! (Nifē dēbiru in Okinawan) 🙏'}],
+  },
+  {
+    id:'yakushima', lat:30.3688, lng:130.6568,
+    romaji:'Yakushima', kanji:'屋久島', prefecture:'Kagoshima', region:'Kyushu',
+    emoji:'🌲', pinColor:'#1b5e20',
+    pc:{ sky:['#1b5e20','#2e7d32'], ground:'#33691e', decos:[{e:'🌲',t:'5%',l:'10%',s:'4.5rem'},{e:'🌿',t:'15%',r:'10%',s:'3rem'},{e:'🦌',t:'30%',r:'22%'},{e:'🌧️',t:'8%',l:'50%'}] },
+    season:'All Year 🌲 (Rainy but magical!)', seasonColor:'rgba(27,94,32,0.2)',
+    desc:'Yakushima is a magical island of ancient cedar forests! 🌲 Some of the cedar trees here (called "Yakusugi") are over 2,000 years old — older than most countries! The most ancient one, Jōmon Sugi, is estimated to be 2,170–7,200 years old! 😮 Studio Ghibli\'s "Princess Mononoke" forest was inspired by this island! 🎬',
+    fact:'Yakushima gets so much rain (up to 10,000mm per year in the mountains!) that locals say "It rains 35 days a month" 😄. This rain is why the ancient forest is so green and magical! 💚',
+    borderColor:'#81c784',
+    vocab:[{jp:'森',rom:'Mori',en:'Forest 🌲'},{jp:'古い',rom:'Furui',en:'Old / Ancient 🏛️'},{jp:'雨',rom:'Ame',en:'Rain 🌧️'}],
+  },
+];
+
+// Track visited
+const visited = new Set();
+let map;
+
+// ── INIT MAP ──
+window.addEventListener('load', () => {
+  map = L.map('map', {
+    center: [36.5, 136.0],
+    zoom: 5,
+    zoomControl: true,
+    attributionControl: true,
+  });
+
+  // CartoDB Positron (clean, light, child-friendly)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
+
+  // Add all pins
+  SPOTS.forEach(spot => addPin(spot));
+
+  // Close panel on map click
+  map.on('click', () => closePanel());
+});
+
+// ── ADD PIN ──
+function addPin(spot) {
+  const icon = L.divIcon({
+    className: '',
+    html: `<div class="map-pin" id="pin-${spot.id}">
+      <div class="pin-bubble" style="background:linear-gradient(135deg,${spot.pinColor},${spot.pinColor}dd)">
+        <span>${spot.emoji}</span>
+      </div>
+      <div class="pin-label">${spot.romaji}</div>
+    </div>`,
+    iconSize: [60, 62],
+    iconAnchor: [30, 55],
+    popupAnchor: [0, -58],
+  });
+
+  const marker = L.marker([spot.lat, spot.lng], { icon });
+  marker.addTo(map);
+  marker.on('click', (e) => {
+    L.DomEvent.stopPropagation(e);
+    openPanel(spot);
+  });
+}
+
+// ── BUILD POSTCARD ILLUSTRATION ──
+function buildPostcard(spot) {
+  const pc = spot.pc;
+  const sky = `linear-gradient(180deg, ${pc.sky[0]}, ${pc.sky[1]})`;
+
+  // Build deco elements
+  const decos = (pc.decos || []).map(d => {
+    const style = [
+      d.t ? `top:${d.t}` : '',
+      d.b ? `bottom:${d.b}` : '',
+      d.l ? `left:${d.l}` : '',
+      d.r ? `right:${d.r}` : '',
+      `font-size:${d.s || '2rem'}`,
+    ].filter(Boolean).join(';');
+    return `<div class="pc-deco" style="${style}">${d.e}</div>`;
+  }).join('');
+
+  return `
+    <div class="postcard-scene">
+      <div class="postcard-bg">
+        <div class="pc-sky" style="background:${sky}"></div>
+        <div class="pc-ground" style="background:${pc.ground}"></div>
+      </div>
+      ${decos}
+      <div class="pc-main-emoji">${spot.emoji}</div>
+      <div class="pc-stamp">
+        <div style="font-size:1.4rem">${spot.emoji}</div>
+        <div class="pc-stamp-label">${spot.prefecture.split('/')[0].trim()}</div>
+      </div>
+      <div class="pc-region-badge" style="background:${spot.pinColor}22;border:1px solid ${spot.pinColor}66;color:${spot.pinColor}">
+        📍 ${spot.region}
+      </div>
+      <div class="postcard-frame"></div>
+    </div>
+  `;
+}
+
+// ── OPEN PANEL ──
+function openPanel(spot) {
+  // Mark visited
+  if (!visited.has(spot.id)) {
+    visited.add(spot.id);
+    document.getElementById('visitCount').textContent = `🏮 ${visited.size} / ${SPOTS.length} visited`;
+    const pin = document.getElementById(`pin-${spot.id}`);
+    if (pin) {
+      const bubble = pin.querySelector('.pin-bubble');
+      if (bubble) bubble.style.boxShadow = `0 0 0 3px #ffd700, 0 4px 12px rgba(0,0,0,0.5)`;
+    }
+  }
+
+  // Build postcard
+  document.getElementById('postcard').innerHTML = buildPostcard(spot);
+  document.getElementById('postcard').style.background = `linear-gradient(180deg, ${spot.pc.sky[0]}, ${spot.pc.sky[1]})`;
+
+  // Build vocab cards
+  const vocabHtml = spot.vocab.map(v => `
+    <div class="vocab-card">
+      <div class="vc-jp" style="color:${spot.borderColor}">${v.jp}</div>
+      <div>
+        <div class="vc-rom">${v.rom}</div>
+      </div>
+      <div class="vc-en">${v.en}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('panelBody').innerHTML = `
+    <div class="spot-prefecture" style="color:${spot.borderColor}">${spot.prefecture}</div>
+    <div class="spot-romaji">${spot.romaji}</div>
+    <div class="spot-kanji" style="color:${spot.borderColor}">${spot.kanji}</div>
+    <div class="spot-season" style="background:${spot.seasonColor};border:1px solid ${spot.borderColor}44;color:${spot.borderColor}">
+      🗓️ ${spot.season}
+    </div>
+    <div class="spot-desc" style="border-color:${spot.borderColor}">
+      ${spot.desc}
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-icon">💡</div>
+      <div class="fun-fact-text"><strong>Fun Fact!</strong><br>${spot.fact}</div>
+    </div>
+    <div class="vocab-section">
+      <div class="vocab-title" style="color:${spot.borderColor}">
+        📖 Learn Japanese Here!
+      </div>
+      <div class="vocab-cards">${vocabHtml}</div>
+    </div>
+  `;
+
+  document.getElementById('sidePanel').classList.add('open');
+  document.getElementById('introCard').style.display = 'none';
+
+  // Pan map slightly to the left to make room for panel
+  if (window.innerWidth > 640) {
+    map.panTo([spot.lat, spot.lng - 3], { animate: true, duration: 0.6 });
+  } else {
+    map.panTo([spot.lat, spot.lng], { animate: true, duration: 0.6 });
+  }
+}
+
+function closePanel() {
+  document.getElementById('sidePanel').classList.remove('open');
+}
+
+// Keyboard close
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+</script>
+</body>
+</html>

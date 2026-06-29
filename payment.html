@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — Upgrade to Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<!-- Square Web Payments SDK (Sandbox) -->
+<!-- ⚠️ PRODUCTION: change to https://web.squarecdn.com/v1/square.js -->
+<script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #1c2230;
+  --gold: #ffd700; --gold2: #ffaa00; --gold3: #fff0a0;
+  --purple: #a855f7; --purple2: #7c3aed;
+  --green: #00e676; --red: #ff3a5c;
+  --cyan: #00e5ff; --orange: #ff6b2b;
+  --white: #fff; --gray: #7a8099; --text: #d0d4e8;
+  --border: rgba(255,255,255,0.07);
+}
+html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); }
+button { font-family: 'Nunito', sans-serif; cursor: pointer; }
+
+/* ── NAV ── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100; height: 56px;
+  display: flex; align-items: center; gap: 14px; padding: 0 20px;
+  background: rgba(13,17,23,0.97); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-back {
+  display: flex; align-items: center; gap: 6px; padding: 7px 14px;
+  border-radius: 20px; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10); color: rgba(255,255,255,0.75);
+  font-size: 0.82rem; font-weight: 800; cursor: pointer; text-decoration: none; transition: all 0.2s;
+}
+.nav-back:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.nav-logo { font-family: 'Bangers', cursive; font-size: 1.15rem; letter-spacing: 3px; background: linear-gradient(90deg,var(--gold),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.nav-secure { margin-left: auto; display: flex; align-items: center; gap: 5px; font-size: 0.72rem; font-weight: 900; color: var(--green); }
+.nav-secure-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ── LAYOUT ── */
+.page { max-width: 960px; margin: 0 auto; padding: 32px 16px 60px; }
+.layout { display: grid; grid-template-columns: 1fr 400px; gap: 24px; align-items: start; }
+@media(max-width:720px) { .layout { grid-template-columns: 1fr; } .order-panel { order: -1; } }
+
+/* ── LEFT: PLAN SELECTOR + FORM ── */
+
+/* Plan toggle */
+.plan-toggle { display: flex; gap: 12px; margin-bottom: 24px; }
+.plan-opt {
+  flex: 1; border-radius: 18px; padding: 18px 16px; cursor: pointer; position: relative; overflow: hidden;
+  border: 2px solid var(--border); background: var(--bg2); transition: all 0.25s;
+}
+.plan-opt.selected { border-color: var(--gold); background: rgba(255,215,0,0.06); }
+.plan-opt:hover:not(.selected) { border-color: rgba(255,255,255,0.15); }
+.plan-badge {
+  position: absolute; top: 10px; right: 10px; padding: 3px 9px; border-radius: 20px;
+  font-size: 0.6rem; font-weight: 900; letter-spacing: 0.5px;
+}
+.plan-badge.popular { background: var(--gold2); color: #000; }
+.plan-badge.free-badge { background: rgba(255,255,255,0.1); color: var(--gray); }
+.plan-icon { font-size: 1.8rem; margin-bottom: 8px; }
+.plan-name { font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 2px; color: var(--white); margin-bottom: 3px; }
+.plan-price { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--gold); }
+.plan-price span { font-size: 0.72rem; color: var(--gray); }
+.plan-price-sub { font-size: 0.65rem; color: var(--gray); margin-top: 2px; }
+.plan-save-tag {
+  display: inline-block; padding: 2px 8px; border-radius: 20px; margin-bottom: 6px;
+  background: rgba(0,230,118,0.15); border: 1px solid rgba(0,230,118,0.3);
+  color: var(--green); font-size: 0.65rem; font-weight: 900; letter-spacing: 0.5px;
+}
+.plan-check { position: absolute; bottom: 12px; right: 12px; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); display: none; align-items: center; justify-content: center; font-size: 0.75rem; color: #000; font-weight: 900; }
+.plan-opt.selected .plan-check { display: flex; }
+
+/* Feature list */
+.features-card { border-radius: 18px; border: 1px solid var(--border); background: var(--bg2); padding: 20px; margin-bottom: 24px; }
+.features-title { font-size: 0.7rem; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); margin-bottom: 14px; }
+.feature-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.feature-row:last-child { border-bottom: none; }
+.feature-icon { font-size: 1.1rem; flex-shrink: 0; width: 28px; text-align: center; }
+.feature-text { flex: 1; font-size: 0.85rem; font-weight: 700; }
+.feature-check { font-size: 0.9rem; font-weight: 900; }
+.feature-check.yes { color: var(--green); }
+.feature-check.no { color: rgba(255,255,255,0.2); }
+
+/* Payment form */
+.payment-card { border-radius: 18px; border: 1px solid var(--border); background: var(--bg2); padding: 24px; margin-bottom: 24px; }
+.section-title { font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 2px; color: var(--white); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-full { margin-bottom: 12px; }
+.form-label { font-size: 0.68rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: block; }
+.form-input {
+  width: 100%; padding: 11px 14px; border-radius: 11px;
+  background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1);
+  color: var(--white); font-size: 0.88rem; font-family: 'Nunito', sans-serif;
+  outline: none; transition: border-color 0.2s;
+}
+.form-input:focus { border-color: rgba(168,85,247,0.5); background: rgba(168,85,247,0.04); }
+.form-input::placeholder { color: var(--gray); }
+
+/* Square card container */
+.square-card-wrap { border-radius: 11px; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); transition: border-color 0.2s; }
+.square-card-wrap:focus-within { border-color: rgba(168,85,247,0.5); }
+#card-container { min-height: 56px; }
+.sq-card-iframe { border: none !important; }
+
+/* Square overrides via css vars (injected) */
+.sq-notice { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 0.7rem; color: var(--gray); }
+
+/* Pay button */
+.pay-btn {
+  width: 100%; padding: 16px; border-radius: 14px; border: none; margin-top: 20px;
+  background: linear-gradient(135deg, var(--purple2), var(--purple));
+  color: #fff; font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 3px;
+  cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden;
+  box-shadow: 0 4px 24px rgba(168,85,247,0.35);
+}
+.pay-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(168,85,247,0.5); }
+.pay-btn:active { transform: translateY(0); }
+.pay-btn.loading { pointer-events: none; opacity: 0.7; }
+.pay-btn-shine { position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.5s; }
+.pay-btn:hover .pay-btn-shine { left: 150%; }
+
+/* Secure badges */
+.secure-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 14px; }
+.secure-item { display: flex; align-items: center; gap: 5px; font-size: 0.68rem; color: var(--gray); font-weight: 700; }
+
+/* ── RIGHT: ORDER PANEL ── */
+.order-panel { position: sticky; top: 72px; }
+.order-card { border-radius: 18px; border: 1px solid rgba(255,215,0,0.18); background: linear-gradient(135deg, #1a0d3a, #0d1a2a); padding: 22px; margin-bottom: 12px; }
+.order-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.order-crown { font-size: 2rem; }
+.order-plan-name { font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 2px; color: var(--gold); }
+.order-plan-sub { font-size: 0.72rem; color: var(--gray); }
+.order-lines { border-top: 1px solid var(--border); padding-top: 14px; }
+.order-line { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; font-size: 0.82rem; }
+.order-line-label { color: var(--gray); }
+.order-line-val { font-weight: 800; color: var(--white); }
+.order-divider { height: 1px; background: var(--border); margin: 8px 0; }
+.order-total { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
+.order-total-label { font-weight: 900; font-size: 0.88rem; color: var(--white); }
+.order-total-price { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--gold); }
+
+
+/* What's included mini list */
+.includes-card { border-radius: 18px; border: 1px solid var(--border); background: var(--bg2); padding: 18px; }
+.includes-title { font-size: 0.68rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.inc-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 0.8rem; font-weight: 700; }
+.inc-icon { font-size: 1rem; width: 22px; text-align: center; }
+
+/* ── SUCCESS SCREEN ── */
+.success-screen {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: var(--bg); flex-direction: column; align-items: center; justify-content: center;
+  padding: 24px; text-align: center;
+}
+.success-screen.show { display: flex; }
+.success-burst { font-size: 5rem; animation: burstIn 0.6s cubic-bezier(0.34,1.56,0.64,1); margin-bottom: 20px; }
+@keyframes burstIn { from{transform:scale(0) rotate(-20deg);opacity:0} to{transform:scale(1) rotate(0);opacity:1} }
+.success-title { font-family: 'Bangers', cursive; font-size: 2.5rem; letter-spacing: 4px; color: var(--gold); margin-bottom: 10px; }
+.success-sub { font-size: 0.95rem; color: var(--text); max-width: 380px; line-height: 1.7; margin-bottom: 28px; }
+.success-details {
+  background: var(--bg2); border: 1px solid rgba(255,215,0,0.2); border-radius: 16px;
+  padding: 18px 22px; max-width: 380px; width: 100%; margin-bottom: 28px; text-align: left;
+}
+.success-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.82rem; border-bottom: 1px solid var(--border); }
+.success-row:last-child { border-bottom: none; }
+.success-row-label { color: var(--gray); }
+.success-row-val { font-weight: 900; color: var(--white); }
+.success-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.success-btn {
+  padding: 13px 24px; border-radius: 14px; font-size: 0.9rem; font-weight: 900;
+  cursor: pointer; border: none; transition: all 0.2s;
+}
+.success-btn-home { background: linear-gradient(135deg, var(--gold2), var(--gold)); color: #000; }
+.success-btn-profile { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: var(--white); }
+.success-btn:hover { transform: translateY(-2px); }
+
+/* Confetti */
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 499; overflow: hidden; }
+.conf { position: absolute; width: 8px; height: 14px; border-radius: 2px; opacity: 0; animation: fall linear forwards; }
+@keyframes fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ── TOAST ── */
+@keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* ── ERROR ── */
+.error-msg { background: rgba(255,58,92,0.1); border: 1px solid rgba(255,58,92,0.25); border-radius: 10px; padding: 10px 14px; font-size: 0.82rem; font-weight: 700; color: var(--red); margin-top: 10px; display: none; }
+.error-msg.show { display: block; }
+
+/* ── SANDBOX BADGE ── */
+.sandbox-badge {
+  background: rgba(255,170,0,0.12); border: 1px solid rgba(255,170,0,0.3);
+  border-radius: 8px; padding: 8px 12px; margin-bottom: 16px;
+  font-size: 0.75rem; font-weight: 700; color: var(--gold2);
+  display: flex; align-items: flex-start; gap: 8px;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="top-nav">
+  <a class="nav-back" href="home.html">← Home</a>
+  <div class="nav-logo">💎 UPGRADE</div>
+  <div class="nav-secure">
+    <div class="nav-secure-dot"></div>
+    Secure Checkout
+  </div>
+</div>
+
+<div class="page">
+  <div class="layout">
+
+    <!-- ── LEFT COLUMN ── -->
+    <div class="left-col">
+
+      <!-- Sandbox notice (remove in production) -->
+      <div class="sandbox-badge">
+        ⚠️ <span><strong>Sandbox Mode</strong> — Replace <code>APPLICATION_ID</code> and <code>LOCATION_ID</code> in the script below with your Square credentials before going live. Test card: <strong>4111 1111 1111 1111</strong></span>
+      </div>
+
+      <!-- Plan selector -->
+      <div style="margin-bottom:10px;font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--white)">1 — CHOOSE YOUR PLAN</div>
+      <div class="plan-toggle">
+        <div class="plan-opt" id="plan-free" onclick="selectPlan('free')">
+          <div class="plan-badge free-badge">FREE</div>
+          <div class="plan-icon">🌱</div>
+          <div class="plan-name">Free</div>
+          <div class="plan-price">$0 <span>/ forever</span></div>
+          <div class="plan-check">✓</div>
+        </div>
+        <div class="plan-opt selected" id="plan-premium" onclick="selectPlan('premium')">
+          <div class="plan-icon">👑</div>
+          <div class="plan-name">Monthly</div>
+          <div class="plan-price">$9.99 <span>/ month</span></div>
+          <div class="plan-check">✓</div>
+        </div>
+        <div class="plan-opt" id="plan-annual" onclick="selectPlan('annual')">
+          <div class="plan-badge popular">🔥 BEST VALUE</div>
+          <div class="plan-save-tag">Save 34%!</div>
+          <div class="plan-icon">🏆</div>
+          <div class="plan-name">Annual</div>
+          <div class="plan-price">$6.58 <span>/ month</span></div>
+          <div class="plan-price-sub">$79 billed once a year</div>
+          <div class="plan-check">✓</div>
+        </div>
+      </div>
+
+      <!-- Feature comparison -->
+      <div class="features-card">
+        <div class="features-title">What's included</div>
+        <div class="feature-row">
+          <div class="feature-icon">📖</div>
+          <div class="feature-text">Hiragana & Katakana Learning</div>
+          <div class="feature-check yes" id="ft1-free">✓</div>
+          <div style="width:8px"></div>
+          <div class="feature-check yes" id="ft1-prem">✓</div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">📖</div>
+          <div class="feature-text">Story: Chapter 1 (Free Preview)</div>
+          <div class="feature-check yes">✓</div>
+          <div style="width:8px"></div>
+          <div class="feature-check yes">✓</div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">📕</div>
+          <div class="feature-text">Story: Chapters 2 – 5 (Full Story)</div>
+          <div class="feature-check no">✕</div>
+          <div style="width:8px"></div>
+          <div class="feature-check yes">✓</div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">🖊️</div>
+          <div class="feature-text">Full Kanji Library (JLPT N5)</div>
+          <div class="feature-check no">✕</div>
+          <div style="width:8px"></div>
+          <div class="feature-check yes">✓</div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">💬</div>
+          <div class="feature-text">Vocabulary Flash Cards (500+ words)</div>
+          <div class="feature-check no">✕</div>
+          <div style="width:8px"></div>
+          <div class="feature-check yes">✓</div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">🗾</div>
+          <div class="feature-text">Interactive Japan Sightseeing Map</div>
+          <div class="feature-check no">✕</div>
+          <div style="width:8px"></div>
+          <div class="feature-check yes">✓</div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">🔥</div>
+          <div class="feature-text">Streak Tracking & XP System</div>
+          <div class="feature-check no">✕</div>
+          <div style="width:8px"></div>
+          <div class="feature-check yes">✓</div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">🏅</div>
+          <div class="feature-text">Achievement Badges (16 total)</div>
+          <div class="feature-check no">✕</div>
+          <div style="width:8px"></div>
+          <div class="feature-check yes">✓</div>
+        </div>
+      </div>
+
+      <!-- Payment form -->
+      <div class="payment-card" id="paymentFormWrap">
+        <div class="section-title">💳 2 — PAYMENT DETAILS</div>
+
+        <div class="form-row">
+          <div>
+            <label class="form-label">First Name</label>
+            <input class="form-input" id="firstName" type="text" placeholder="Keiko" autocomplete="given-name">
+          </div>
+          <div>
+            <label class="form-label">Last Name</label>
+            <input class="form-input" id="lastName" type="text" placeholder="Tanaka" autocomplete="family-name">
+          </div>
+        </div>
+
+        <div class="form-full">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" id="emailField" type="email" placeholder="your@email.com" value="keikoathomework@gmail.com" autocomplete="email">
+        </div>
+
+        <div class="form-full">
+          <label class="form-label">Card Details</label>
+          <div class="square-card-wrap">
+            <div id="card-container"></div>
+          </div>
+          <div class="sq-notice">🔒 Card details are encrypted by Square. We never store your card number.</div>
+        </div>
+
+        <div id="error-msg" class="error-msg"></div>
+
+        <button class="pay-btn" id="pay-btn" onclick="handlePayment()">
+          <div class="pay-btn-shine"></div>
+          <span id="pay-btn-text">🔒 START PREMIUM — $9.99 / month</span>
+        </button>
+
+        <div class="secure-row">
+          <div class="secure-item">🔒 SSL Encrypted</div>
+          <div class="secure-item">⬛ Powered by Square</div>
+          <div class="secure-item">🔄 Cancel Anytime</div>
+        </div>
+      </div>
+
+      <!-- Free plan note -->
+      <div id="freePlanNote" style="display:none; text-align:center; padding:20px; color:var(--gray); font-size:0.85rem; background:var(--bg2); border-radius:14px; border:1px solid var(--border)">
+        You selected the <strong style="color:var(--white)">Free Plan</strong>.<br>
+        Enjoy Hiragana, Katakana, and Chapter 1 — upgrade anytime to unlock everything! 🌱
+        <br><br>
+        <a href="home.html" style="display:inline-block;padding:10px 22px;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.25);color:var(--green);border-radius:12px;font-weight:900;text-decoration:none">Continue with Free Plan →</a>
+      </div>
+
+    </div>
+
+    <!-- ── RIGHT COLUMN: ORDER SUMMARY ── -->
+    <div class="order-panel">
+      <div class="order-card">
+        <div class="order-header">
+          <div class="order-crown">👑</div>
+          <div>
+            <div class="order-plan-name" id="orderPlanName">PREMIUM PLAN</div>
+            <div class="order-plan-sub" id="orderPlanSub">Road to Japan — Monthly</div>
+          </div>
+        </div>
+
+        <div class="order-lines">
+          <div class="order-line">
+            <div class="order-line-label" id="orderLineLabel">Premium Plan × 1 month</div>
+            <div class="order-line-val" id="orderPrice">$9.99</div>
+          </div>
+          <div class="order-line" id="orderSavingsLine" style="display:none">
+            <div class="order-line-label" style="color:var(--green)">🎉 Annual savings</div>
+            <div class="order-line-val" style="color:var(--green)" id="orderSavingsVal">-$40.88</div>
+          </div>
+          <div class="order-line">
+            <div class="order-line-label">Tax (0%)</div>
+            <div class="order-line-val">$0.00</div>
+          </div>
+          <div class="order-divider"></div>
+          <div class="order-total">
+            <div class="order-total-label">Total Today</div>
+            <div class="order-total-price" id="orderTotal">$9.99</div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- Included features mini -->
+      <div class="includes-card">
+        <div class="includes-title">✨ Premium Includes</div>
+        <div class="inc-item"><div class="inc-icon">📖</div> All 5 Story Chapters</div>
+        <div class="inc-item"><div class="inc-icon">🖊️</div> Full JLPT N5 Kanji</div>
+        <div class="inc-item"><div class="inc-icon">💬</div> 500+ Vocabulary Cards</div>
+        <div class="inc-item"><div class="inc-icon">🗾</div> Japan Sightseeing Map</div>
+        <div class="inc-item"><div class="inc-icon">🔥</div> Streak & XP Tracking</div>
+        <div class="inc-item"><div class="inc-icon">🏅</div> Achievement Badges</div>
+        <div class="inc-item"><div class="inc-icon">📧</div> Priority Support</div>
+        <div class="inc-item"><div class="inc-icon">🔄</div> Cancel Anytime</div>
+      </div>
+    </div>
+
+  </div><!-- /layout -->
+</div><!-- /page -->
+
+<!-- ── SUCCESS SCREEN ── -->
+<div class="success-screen" id="successScreen">
+  <div class="confetti" id="confettiWrap"></div>
+  <div class="success-burst">🎌</div>
+  <div class="success-title">WELCOME TO PREMIUM!</div>
+  <div class="success-sub">Your journey to Japan just got a major upgrade! All premium features are now unlocked. がんばって！ (Ganbatte — Do your best!) 🌸</div>
+  <div class="success-details">
+    <div class="success-row">
+      <div class="success-row-label">Plan</div>
+      <div class="success-row-val">👑 Premium Monthly</div>
+    </div>
+    <div class="success-row">
+      <div class="success-row-label">Amount charged</div>
+      <div class="success-row-val" id="successAmount">$9.99</div>
+    </div>
+    <div class="success-row">
+      <div class="success-row-label">Start date</div>
+      <div class="success-row-val" id="successDate">—</div>
+    </div>
+    <div class="success-row">
+      <div class="success-row-label">Next renewal</div>
+      <div class="success-row-val" id="successRenew">—</div>
+    </div>
+    <div class="success-row">
+      <div class="success-row-label">Email receipt</div>
+      <div class="success-row-val" id="successEmail">—</div>
+    </div>
+  </div>
+  <div class="success-btns">
+    <button class="success-btn success-btn-home" onclick="window.location.href='home.html'">🏠 Start Learning!</button>
+    <button class="success-btn success-btn-profile" onclick="window.location.href='profile.html'">👤 View Profile</button>
+  </div>
+</div>
+
+<script>
+// ── SQUARE CONFIG ──
+// ⚠️ Replace these with your real Square credentials from the Square Developer Dashboard
+const APPLICATION_ID = 'sandbox-sq0idb-REPLACE_WITH_YOUR_APPLICATION_ID';
+const LOCATION_ID    = 'REPLACE_WITH_YOUR_LOCATION_ID';
+
+let currentPlan = 'premium';
+let card = null;
+let sqReady = false;
+
+const PLANS = {
+  free:    { price: 0,     annual: false, label: 'FREE PLAN',    sub: 'Road to Japan — Free', btnText: '🌱 CONTINUE WITH FREE PLAN' },
+  premium: { price: 9.99,  annual: false, label: 'PREMIUM PLAN', sub: 'Road to Japan — Monthly', btnText: '🔒 START PREMIUM — $9.99 / month' },
+  annual:  { price: 79.00, annual: true,  label: 'ANNUAL PLAN',  sub: 'Road to Japan — Annual (Save 34%!)', btnText: '🔒 START ANNUAL — $79 / year ($6.58/mo)' },
+};
+
+// ── PLAN SELECTOR ──
+function selectPlan(plan) {
+  currentPlan = plan;
+  ['free','premium','annual'].forEach(p =>
+    document.getElementById('plan-'+p).classList.toggle('selected', p === plan)
+  );
+  const isPaid = plan !== 'free';
+  document.getElementById('paymentFormWrap').style.display = isPaid ? 'block' : 'none';
+  document.getElementById('freePlanNote').style.display   = isPaid ? 'none' : 'block';
+  document.getElementById('orderPlanName').textContent = PLANS[plan].label;
+  document.getElementById('orderPlanSub').textContent  = PLANS[plan].sub;
+  updateOrderTotal();
+}
+
+// ── ORDER TOTAL ──
+function updateOrderTotal() {
+  const p = PLANS[currentPlan];
+  const savingsLine = document.getElementById('orderSavingsLine');
+
+  if (currentPlan === 'annual') {
+    const monthlyEquiv = (9.99 * 12).toFixed(2);
+    const savings = (9.99 * 12 - 79).toFixed(2);
+    document.getElementById('orderLineLabel').textContent = 'Annual Plan × 12 months';
+    document.getElementById('orderPrice').textContent = `$${monthlyEquiv}`;
+    document.getElementById('orderSavingsVal').textContent = `-$${savings}`;
+    savingsLine.style.display = 'flex';
+  } else {
+    document.getElementById('orderLineLabel').textContent = currentPlan === 'premium' ? 'Premium Plan × 1 month' : '—';
+    document.getElementById('orderPrice').textContent = `$${p.price.toFixed(2)}`;
+    savingsLine.style.display = 'none';
+  }
+
+  document.getElementById('orderTotal').textContent = `$${p.price.toFixed(2)}`;
+  document.getElementById('pay-btn-text').textContent = p.btnText;
+}
+
+// ── SQUARE SDK INIT ──
+async function initSquare() {
+  if (!window.Square) {
+    console.warn('Square SDK not loaded — check APPLICATION_ID / LOCATION_ID');
+    showError('Payment system unavailable. Please check your Square credentials.');
+    return;
+  }
+
+  try {
+    const payments = Square.payments(APPLICATION_ID, LOCATION_ID);
+
+    // Create card instance
+    card = await payments.card({
+      style: {
+        '.input-container': {
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderRadius: '8px',
+        },
+        '.input-container.is-focus': {
+          borderColor: 'rgba(168,85,247,0.5)',
+        },
+        '.input-container.is-error': {
+          borderColor: 'rgba(255,58,92,0.6)',
+        },
+        '.message-text': { color: '#ff3a5c' },
+        '.message-icon': { color: '#ff3a5c' },
+        input: { color: '#fff', fontFamily: 'Nunito, sans-serif', fontSize: '14px' },
+        'input::placeholder': { color: '#7a8099' },
+      }
+    });
+
+    await card.attach('#card-container');
+    sqReady = true;
+  } catch (e) {
+    console.error('Square init error:', e);
+    showError('Could not load the card form. Please check your Square Application ID and Location ID.');
+  }
+}
+
+// ── HANDLE PAYMENT ──
+async function handlePayment() {
+  if (!sqReady || !card) {
+    showError('Payment form is not ready. Please wait a moment and try again.');
+    return;
+  }
+
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName  = document.getElementById('lastName').value.trim();
+  const email     = document.getElementById('emailField').value.trim();
+
+  if (!firstName || !lastName) { showError('Please enter your first and last name.'); return; }
+  if (!email || !email.includes('@')) { showError('Please enter a valid email address.'); return; }
+
+  // Loading state
+  const btn = document.getElementById('pay-btn');
+  const btnText = document.getElementById('pay-btn-text');
+  btn.classList.add('loading');
+  btnText.textContent = '⏳ Processing...';
+  hideError();
+
+  try {
+    // Tokenize card
+    const result = await card.tokenize();
+
+    if (result.status === 'OK') {
+      const token = result.token;
+
+      // ── ⚠️ BACKEND REQUIRED ──
+      // Send `token`, `email`, `firstName`, `lastName`, and plan to your
+      // server-side endpoint, which calls the Square Payments API to charge the card.
+      //
+      // Example (replace with your actual endpoint):
+      //
+      // const response = await fetch('/api/create-subscription', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ token, email, firstName, lastName, plan: currentPlan })
+      // });
+      // const data = await response.json();
+      // if (!response.ok) throw new Error(data.error);
+
+      // DEMO: simulate server success (remove in production)
+      await new Promise(r => setTimeout(r, 1200));
+
+      // Show success
+      showSuccess(email);
+    } else {
+      const errs = result.errors?.map(e => e.message).join(' ') || 'Card error. Please check your details.';
+      showError(errs);
+      btn.classList.remove('loading');
+      btnText.textContent = PLANS[currentPlan].btnText;
+    }
+  } catch (e) {
+    console.error('Payment error:', e);
+    showError('Something went wrong. Please try again.');
+    btn.classList.remove('loading');
+    btnText.textContent = `🔒 START PREMIUM — $9.99 / month`;
+  }
+}
+
+// ── SUCCESS ──
+function showSuccess(email) {
+  const now = new Date();
+  const renew = new Date(now); renew.setMonth(renew.getMonth() + 1);
+  const fmt = d => d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const total = PLANS[currentPlan].price.toFixed(2);
+
+  document.getElementById('successDate').textContent   = fmt(now);
+  document.getElementById('successRenew').textContent  = fmt(renew);
+  document.getElementById('successEmail').textContent  = email;
+  document.getElementById('successAmount').textContent = `$${total}`;
+
+  document.getElementById('successScreen').classList.add('show');
+  launchConfetti();
+
+  // Save premium status
+  try {
+    const s = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
+    s.premium = true; s.premiumStart = now.toISOString(); s.premiumRenew = renew.toISOString();
+    localStorage.setItem('rtj_profile', JSON.stringify(s));
+  } catch(e) {}
+}
+
+// ── CONFETTI ──
+function launchConfetti() {
+  const wrap = document.getElementById('confettiWrap');
+  const colors = ['#ffd700','#ff6b2b','#a855f7','#00e5ff','#00e676','#ff3a5c','#fff'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    el.className = 'conf';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration = (2 + Math.random()*2) + 's';
+    el.style.animationDelay = (Math.random()*1.5) + 's';
+    el.style.width = (6+Math.random()*8) + 'px';
+    el.style.height = (10+Math.random()*12) + 'px';
+    wrap.appendChild(el);
+  }
+}
+
+// ── ERROR HELPERS ──
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = '⚠️ ' + msg;
+  el.classList.add('show');
+}
+function hideError() {
+  document.getElementById('error-msg').classList.remove('show');
+}
+
+// ── INIT ──
+window.addEventListener('load', () => {
+  initSquare();
+  updateOrderTotal();
+});
+</script>
+</body>
+</html>

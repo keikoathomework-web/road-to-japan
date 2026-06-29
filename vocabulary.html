@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — Vocabulary</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#08090f;--card:rgba(255,255,255,0.04);--card2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08);
+  --green:#00e676;--teal:#00bfa5;--lime:#76ff03;
+  --gold:#ffd700;--red:#ff3a5c;--cyan:#00e5ff;--purple:#a855f7;
+  --white:#fff;--gray:#7a8099;--text:#d0d4e8;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--white);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--teal);border-radius:2px}
+
+/* TOP BAR */
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:10px;padding:0 20px;height:60px;background:rgba(8,9,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,230,118,0.12)}
+.back-link{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--gray);font-size:0.8rem;font-weight:800;text-decoration:none;transition:all 0.2s}
+.back-link:hover{color:var(--white)}
+.top-title{font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:3px;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.top-spacer{flex:1}
+.top-chip{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:0.78rem;font-weight:900}
+.chip-green{background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.25);color:var(--green)}
+.chip-teal{background:rgba(0,191,165,0.08);border:1px solid rgba(0,191,165,0.2);color:var(--teal)}
+.nav-links{display:flex;gap:6px}
+.nav-link{padding:5px 12px;border-radius:14px;font-size:0.78rem;font-weight:900;text-decoration:none;border:1px solid var(--border);color:var(--gray);transition:all 0.2s;background:rgba(255,255,255,0.03)}
+.nav-link:hover{color:var(--white);border-color:rgba(255,255,255,0.15)}
+
+/* LAYOUT */
+.page-wrap{display:flex;min-height:100vh;padding-top:60px}
+
+/* SIDEBAR */
+.left-panel{width:220px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;padding:14px 10px;background:rgba(8,9,15,0.7);border-right:1px solid rgba(0,230,118,0.08);display:flex;flex-direction:column;gap:2px}
+.side-label{font-size:0.62rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--gray);padding:9px 8px 3px;opacity:0.5}
+.side-btn{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;color:var(--gray);font-weight:800;font-size:0.83rem;cursor:pointer;transition:all 0.2s;border:1px solid transparent;background:none;text-align:left;width:100%}
+.side-btn:hover{color:var(--white);background:var(--card2)}
+.side-btn.active{color:var(--green);background:rgba(0,230,118,0.07);border-color:rgba(0,230,118,0.18)}
+.side-icon{font-size:0.95rem;width:18px;text-align:center;flex-shrink:0}
+.side-prog{margin-left:auto;width:30px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.side-fill{height:100%;border-radius:2px;background:var(--green);transition:width 0.4s}
+.side-count{font-size:0.65rem;font-weight:900;color:rgba(0,230,118,0.5);margin-left:auto}
+
+/* MAIN */
+.main{flex:1;padding:22px;max-width:980px}
+
+/* MODE TABS */
+.mode-tabs{display:flex;gap:8px;margin-bottom:22px;background:rgba(255,255,255,0.03);border:1px solid rgba(0,230,118,0.1);border-radius:16px;padding:5px}
+.mode-tab{flex:1;padding:10px;border-radius:11px;border:none;background:transparent;color:var(--gray);font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;cursor:pointer;transition:all 0.25s}
+.mode-tab.active{background:linear-gradient(135deg,rgba(0,230,118,0.13),rgba(0,191,165,0.08));color:var(--green);border:1px solid rgba(0,230,118,0.22)}
+.mode-tab:hover:not(.active){color:var(--text);background:var(--card2)}
+
+/* SEARCH BAR */
+.search-wrap{position:relative;margin-bottom:20px}
+.search-input{width:100%;padding:13px 18px 13px 44px;background:var(--card);border:1px solid rgba(0,230,118,0.15);border-radius:14px;color:var(--white);font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:700;outline:none;transition:all 0.25s}
+.search-input:focus{border-color:rgba(0,230,118,0.4);box-shadow:0 0 0 3px rgba(0,230,118,0.06)}
+.search-input::placeholder{color:var(--gray)}
+.search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:1.1rem;pointer-events:none}
+.search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gray);cursor:pointer;font-size:1rem;display:none}
+.search-clear.show{display:block}
+
+/* HERO WORD CARD */
+.hero-section{display:flex;gap:14px;margin-bottom:22px}
+.hero-word-card{flex:0 0 200px;border-radius:22px;padding:22px 18px;background:linear-gradient(135deg,rgba(0,230,118,0.08),rgba(0,191,165,0.05));border:1px solid rgba(0,230,118,0.22);text-align:center;position:relative;overflow:hidden}
+.hero-word-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,230,118,0.07),transparent 70%)}
+.hero-jp{font-size:2.8rem;line-height:1;display:block;margin-bottom:4px;background:linear-gradient(135deg,#fff,var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900}
+.hero-kana{font-size:1rem;color:var(--teal);font-weight:900;letter-spacing:1px;margin-bottom:4px}
+.hero-en{font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:2px;color:var(--white);margin-bottom:10px}
+.pos-tag{display:inline-block;padding:2px 10px;border-radius:10px;font-size:0.68rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.pos-noun{background:rgba(0,229,255,0.1);color:var(--cyan);border:1px solid rgba(0,229,255,0.2)}
+.pos-verb{background:rgba(255,58,92,0.1);color:var(--red);border:1px solid rgba(255,58,92,0.2)}
+.pos-adj{background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.2)}
+.pos-adv{background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.2)}
+.pos-expr{background:rgba(0,230,118,0.1);color:var(--green);border:1px solid rgba(0,230,118,0.2)}
+.hero-audio-btn{padding:9px 14px;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);border-radius:10px;color:var(--green);font-weight:900;font-size:0.82rem;cursor:pointer;transition:all 0.2s;width:100%}
+.hero-audio-btn:hover{background:rgba(0,230,118,0.15);transform:scale(1.02)}
+.hero-audio-btn.playing{background:rgba(0,191,165,0.1);border-color:var(--teal);color:var(--teal)}
+
+.hero-info{flex:1;display:flex;flex-direction:column;gap:10px}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:13px 16px}
+.info-label{font-size:0.62rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:7px}
+.example-jp{font-size:1rem;color:var(--white);line-height:1.5;margin-bottom:3px}
+.example-kana{font-size:0.78rem;color:var(--teal);font-weight:700;margin-bottom:2px}
+.example-en{font-size:0.8rem;color:var(--text)}
+.highlight{color:var(--green);font-weight:900}
+.mem-text{font-size:0.85rem;color:var(--text);line-height:1.5}
+
+/* SRS / stat */
+.srs-row{display:flex;gap:6px;flex-wrap:wrap}
+.srs-tag{padding:3px 10px;border-radius:10px;font-size:0.72rem;font-weight:900}
+.srs-new{background:rgba(0,230,118,0.1);color:var(--green);border:1px solid rgba(0,230,118,0.2)}
+.srs-learning{background:rgba(0,191,165,0.1);color:var(--teal);border:1px solid rgba(0,191,165,0.2)}
+.srs-mastered{background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.2)}
+
+/* PROGRESS */
+.progress-overview{background:var(--card);border:1px solid rgba(0,230,118,0.1);border-radius:18px;padding:18px 22px;margin-bottom:22px}
+.prog-title{font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:2px;margin-bottom:12px}
+.prog-bars{display:flex;flex-direction:column;gap:8px}
+.prog-row{display:flex;align-items:center;gap:12px}
+.prog-row-label{font-size:0.76rem;font-weight:800;color:var(--gray);width:80px;flex-shrink:0}
+.prog-bar-wrap{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-bar-fill{height:100%;border-radius:4px;transition:width 0.8s ease}
+.prog-count{font-size:0.74rem;font-weight:900;width:60px;text-align:right;flex-shrink:0}
+
+/* WORD GRID */
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.section-head h2{font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px}
+.section-subtitle{font-size:0.78rem;color:var(--gray)}
+.section-count{font-family:'Orbitron',sans-serif;font-size:0.7rem;font-weight:900;color:var(--green);margin-left:auto}
+
+.word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:7px;margin-bottom:26px}
+.word-tile{border-radius:12px;background:var(--card);border:1px solid var(--border);padding:10px 10px 8px;cursor:pointer;transition:all 0.22s;position:relative;overflow:hidden}
+.word-tile:hover{transform:translateY(-2px);border-color:rgba(0,230,118,0.35);box-shadow:0 8px 20px rgba(0,230,118,0.06)}
+.word-tile.selected{border-color:var(--green);background:rgba(0,230,118,0.06)}
+.word-tile.mastered{border-color:rgba(255,215,0,0.25);background:rgba(255,215,0,0.03)}
+.word-tile.learning{border-color:rgba(0,191,165,0.2);background:rgba(0,191,165,0.03)}
+.tile-jp{font-size:1.05rem;font-weight:900;color:var(--white);margin-bottom:2px;line-height:1.2}
+.tile-kana{font-size:0.68rem;color:var(--teal);font-weight:700;margin-bottom:1px}
+.tile-en{font-size:0.68rem;color:var(--gray);line-height:1.2}
+.word-tile.selected .tile-jp{color:var(--green)}
+.word-tile.mastered .tile-jp{color:var(--gold)}
+.tile-check{position:absolute;top:4px;right:5px;font-size:0.6rem;color:var(--gold);opacity:0}
+.word-tile.mastered .tile-check{opacity:1}
+
+/* QUIZ */
+#quizMode{display:none}#quizMode.active{display:block}
+.quiz-setup{background:var(--card);border:1px solid rgba(0,230,118,0.12);border-radius:18px;padding:26px;margin-bottom:18px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.quiz-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:7px;width:100%}
+.qcg-btn{padding:9px;border-radius:11px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:'Nunito',sans-serif;font-weight:800;font-size:0.83rem;cursor:pointer;transition:all 0.2s;text-align:center}
+.qcg-btn.sel{border-color:rgba(0,230,118,0.4);background:rgba(0,230,118,0.07);color:var(--green)}
+.qt-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.qt-btn{padding:7px 14px;border-radius:18px;font-size:0.8rem;font-weight:900;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--gray);transition:all 0.2s}
+.qt-btn.active{border-color:rgba(0,230,118,0.4);background:rgba(0,230,118,0.08);color:var(--green)}
+.start-btn{padding:13px 44px;background:linear-gradient(135deg,var(--green),var(--teal));color:#000;font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px;border:none;border-radius:50px;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 0 #007040}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #007040}
+
+.active-quiz{background:var(--card);border:1px solid rgba(0,230,118,0.12);border-radius:22px;padding:30px;text-align:center}
+.aq-pbar{height:5px;background:var(--border);border-radius:3px;margin-bottom:18px;overflow:hidden}
+.aq-pfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--green),var(--teal));transition:width 0.4s}
+.aq-lbl{font-size:0.7rem;font-weight:900;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:6px}
+.aq-q{font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px;margin-bottom:8px}
+.aq-char{font-size:3.2rem;font-weight:900;display:block;margin:8px 0;background:linear-gradient(135deg,#fff,var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2}
+.aq-sub{font-size:0.82rem;color:var(--gray);margin-bottom:20px}
+.aq-opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.aq-opt{padding:13px 8px;border-radius:12px;background:var(--card);border:1px solid var(--border);cursor:pointer;transition:all 0.25s;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.88rem;color:var(--white)}
+.aq-opt:hover{background:rgba(0,230,118,0.06);border-color:rgba(0,230,118,0.3);transform:scale(1.02)}
+.aq-opt.correct{background:rgba(0,230,118,0.15)!important;border-color:var(--green)!important;color:var(--green);animation:pop 0.35s ease}
+.aq-opt.wrong{background:rgba(255,58,92,0.12)!important;border-color:var(--red)!important;color:var(--red);animation:wsh 0.35s ease}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes wsh{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.aq-score{display:flex;align-items:center;justify-content:center;gap:18px;font-size:0.82rem;color:var(--gray);font-weight:700}
+.aq-snum{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900}
+
+.quiz-result{background:var(--card);border:1px solid rgba(0,230,118,0.18);border-radius:22px;padding:38px 30px;text-align:center}
+.qr-emoji{font-size:3.8rem;display:block;margin-bottom:10px}
+.qr-title{font-family:'Bangers',cursive;font-size:2.2rem;letter-spacing:3px;margin-bottom:7px;color:var(--green)}
+.qr-sub{font-size:0.88rem;color:var(--text);line-height:1.6;margin-bottom:22px}
+.qr-stats{display:flex;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:22px}
+.qr-stat{flex:1;padding:14px;text-align:center;border-right:1px solid var(--border)}
+.qr-stat:last-child{border-right:none}
+.qr-num{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:900;color:var(--green)}
+.qr-lbl{font-size:0.68rem;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.qr-btn{padding:13px 36px;background:linear-gradient(135deg,var(--green),var(--teal));color:#000;font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:2px;border:none;border-radius:13px;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 0 #007040;margin-right:8px}
+.qr-btn:hover{transform:translateY(-2px)}
+.qr-btn-sec{padding:13px 24px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;border-radius:13px;cursor:pointer;transition:all 0.2s}
+.qr-btn-sec:hover{border-color:var(--white);color:var(--white)}
+
+/* REVIEW */
+#reviewMode{display:none}#reviewMode.active{display:block}
+.flip-card{width:100%;max-width:360px;margin:0 auto 20px;perspective:800px;cursor:pointer}
+.flip-inner{width:100%;aspect-ratio:3/2;position:relative;transform-style:preserve-3d;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);border-radius:22px}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;gap:5px}
+.flip-front{background:linear-gradient(135deg,rgba(0,230,118,0.06),rgba(0,191,165,0.04));border:1px solid rgba(0,230,118,0.18)}
+.flip-jp{font-size:3rem;font-weight:900;background:linear-gradient(135deg,#fff,var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.flip-kana{font-size:1rem;color:rgba(0,191,165,0.6);font-weight:700}
+.flip-tap{font-size:0.72rem;color:rgba(255,255,255,0.18);font-weight:700;margin-top:6px}
+.flip-back{transform:rotateY(180deg);background:linear-gradient(135deg,var(--green),var(--teal));padding:16px;text-align:center}
+.flip-en{font-family:'Bangers',cursive;font-size:2.2rem;letter-spacing:2px;color:#000}
+.flip-jp-sm{font-size:1.6rem;font-weight:900;color:rgba(0,0,0,0.4);line-height:1}
+.flip-ex{font-size:0.78rem;color:rgba(0,0,0,0.55);font-weight:700;margin-top:3px}
+.review-actions{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+.ra-btn{flex:1;max-width:115px;padding:12px;border-radius:12px;font-family:'Bangers',cursive;font-size:1rem;letter-spacing:1px;border:none;cursor:pointer;transition:all 0.25s}
+.ra-again{background:rgba(255,58,92,0.14);color:var(--red);border:1px solid rgba(255,58,92,0.28)}
+.ra-again:hover{background:rgba(255,58,92,0.24);transform:scale(1.03)}
+.ra-hard{background:rgba(255,165,0,0.1);color:#ff9800;border:1px solid rgba(255,165,0,0.22)}
+.ra-hard:hover{background:rgba(255,165,0,0.2);transform:scale(1.03)}
+.ra-good{background:rgba(0,191,165,0.1);color:var(--teal);border:1px solid rgba(0,191,165,0.22)}
+.ra-good:hover{background:rgba(0,191,165,0.2);transform:scale(1.03)}
+.ra-easy{background:rgba(0,230,118,0.1);color:var(--green);border:1px solid rgba(0,230,118,0.22)}
+.ra-easy:hover{background:rgba(0,230,118,0.2);transform:scale(1.03)}
+.rev-prog{display:flex;align-items:center;justify-content:center;gap:14px;font-size:0.8rem;color:var(--gray);font-weight:700;margin-bottom:14px}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:18px;background:rgba(13,15,30,0.97);border:1px solid rgba(0,230,118,0.2);border-radius:13px;padding:13px 16px;max-width:250px;z-index:999;backdrop-filter:blur(20px);transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);display:flex;align-items:flex-start;gap:9px}
+.toast.show{transform:translateY(0);opacity:1}
+.t-icon{font-size:1.3rem;flex-shrink:0}
+.t-title{font-weight:900;font-size:0.85rem;margin-bottom:2px}
+.t-sub{font-size:0.76rem;color:var(--gray);line-height:1.4}
+
+@media(max-width:768px){
+  .left-panel{display:none}.main{padding:13px}
+  .hero-section{flex-direction:column}.hero-word-card{flex:none}
+  .word-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="back-link" href="home.html">← Home</a>
+  <div class="top-title">📗 VOCABULARY N5</div>
+  <div class="top-spacer"></div>
+  <div class="top-chip chip-green" id="masteredChip">⭐ 0/150</div>
+  <div class="top-chip chip-teal">📜 JLPT N5</div>
+  <div class="nav-links">
+    <a class="nav-link" href="hiragana.html">あ</a>
+    <a class="nav-link" href="katakana.html">ア</a>
+    <a class="nav-link" href="kanji.html">漢</a>
+  </div>
+</div>
+
+<div class="page-wrap">
+  <aside class="left-panel">
+    <div class="side-label">Categories</div>
+    <button class="side-btn active" onclick="filterCat('all',this)"><span class="side-icon">全</span>All Words<span class="side-count" id="sc-all">150</span></button>
+    <button class="side-btn" onclick="filterCat('greet',this)"><span class="side-icon">👋</span>Greetings<div class="side-prog"><div class="side-fill" id="sf-greet"></div></div></button>
+    <button class="side-btn" onclick="filterCat('number',this)"><span class="side-icon">🔢</span>Numbers<div class="side-prog"><div class="side-fill" id="sf-number"></div></div></button>
+    <button class="side-btn" onclick="filterCat('time',this)"><span class="side-icon">⏰</span>Time<div class="side-prog"><div class="side-fill" id="sf-time"></div></div></button>
+    <button class="side-btn" onclick="filterCat('food',this)"><span class="side-icon">🍜</span>Food & Drink<div class="side-prog"><div class="side-fill" id="sf-food"></div></div></button>
+    <button class="side-btn" onclick="filterCat('family',this)"><span class="side-icon">👨‍👩‍👧</span>Family<div class="side-prog"><div class="side-fill" id="sf-family"></div></div></button>
+    <button class="side-btn" onclick="filterCat('body',this)"><span class="side-icon">👁️</span>Body<div class="side-prog"><div class="side-fill" id="sf-body"></div></div></button>
+    <button class="side-btn" onclick="filterCat('nature',this)"><span class="side-icon">🌸</span>Nature<div class="side-prog"><div class="side-fill" id="sf-nature"></div></div></button>
+    <button class="side-btn" onclick="filterCat('place',this)"><span class="side-icon">🏯</span>Places<div class="side-prog"><div class="side-fill" id="sf-place"></div></div></button>
+    <button class="side-btn" onclick="filterCat('transport',this)"><span class="side-icon">🚃</span>Transport<div class="side-prog"><div class="side-fill" id="sf-transport"></div></div></button>
+    <button class="side-btn" onclick="filterCat('shopping',this)"><span class="side-icon">🛍️</span>Shopping<div class="side-prog"><div class="side-fill" id="sf-shopping"></div></div></button>
+    <button class="side-btn" onclick="filterCat('school',this)"><span class="side-icon">📚</span>School<div class="side-prog"><div class="side-fill" id="sf-school"></div></div></button>
+    <button class="side-btn" onclick="filterCat('home',this)"><span class="side-icon">🏠</span>Home & Things<div class="side-prog"><div class="side-fill" id="sf-home"></div></div></button>
+    <button class="side-btn" onclick="filterCat('verb',this)"><span class="side-icon">⚡</span>Verbs<div class="side-prog"><div class="side-fill" id="sf-verb"></div></div></button>
+    <button class="side-btn" onclick="filterCat('adj',this)"><span class="side-icon">✨</span>Adjectives<div class="side-prog"><div class="side-fill" id="sf-adj"></div></div></button>
+    <button class="side-btn" onclick="filterCat('color',this)"><span class="side-icon">🎨</span>Colors<div class="side-prog"><div class="side-fill" id="sf-color"></div></div></button>
+  </aside>
+
+  <main class="main">
+    <div class="mode-tabs">
+      <button class="mode-tab active" onclick="setMode('study')">📖 STUDY</button>
+      <button class="mode-tab" onclick="setMode('quiz')">🎯 QUIZ</button>
+      <button class="mode-tab" onclick="setMode('review')">🔄 SRS REVIEW</button>
+    </div>
+
+    <!-- STUDY MODE -->
+    <div id="studyMode">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" id="searchInput" type="text" placeholder="Search words... e.g. 食べる, eat, ください" oninput="onSearch()">
+        <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+      </div>
+
+      <div class="hero-section">
+        <div class="hero-word-card">
+          <span class="hero-jp" id="heroJP">食べる</span>
+          <div class="hero-kana" id="heroKana">たべる</div>
+          <div class="hero-en" id="heroEN">To Eat</div>
+          <span class="pos-tag pos-verb" id="posTAG">Verb (る)</span>
+          <button class="hero-audio-btn" id="audioBtn" onclick="playAudio()">🔊 Play Sound</button>
+        </div>
+        <div class="hero-info">
+          <div class="info-card">
+            <div class="info-label">Example Sentence</div>
+            <div class="example-jp" id="exJP">毎日<span class="highlight">食べる</span>ものを選びます。</div>
+            <div class="example-kana" id="exKana">まいにち たべる ものを えらびます。</div>
+            <div class="example-en" id="exEN">I choose what to eat every day.</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Memory Tip</div>
+            <div class="mem-text" id="memTxt">食 (shoku) means food/eat — 食べる is the verb form. Think: "TAbe-RU" like taberu = table food!</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">SRS Status · <span id="heroStat" style="color:var(--gray)">Not studied</span></div>
+            <div class="srs-row" id="heroSRS"><span class="srs-tag srs-new">🆕 New</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-overview">
+        <div class="prog-title">📊 N5 Vocabulary Progress</div>
+        <div class="prog-bars">
+          <div class="prog-row"><div class="prog-row-label">Mastered</div><div class="prog-bar-wrap"><div class="prog-bar-fill" id="pb-m" style="width:0%;background:var(--gold)"></div></div><div class="prog-count" style="color:var(--gold)" id="pc-m">0/150</div></div>
+          <div class="prog-row"><div class="prog-row-label">Learning</div><div class="prog-bar-wrap"><div class="prog-bar-fill" id="pb-l" style="width:0%;background:var(--teal)"></div></div><div class="prog-count" style="color:var(--teal)" id="pc-l">0/150</div></div>
+          <div class="prog-row"><div class="prog-row-label">Not Seen</div><div class="prog-bar-wrap"><div class="prog-bar-fill" id="pb-n" style="width:100%;background:rgba(255,255,255,0.06)"></div></div><div class="prog-count" id="pc-n">150/150</div></div>
+        </div>
+      </div>
+
+      <div id="gridContainer"></div>
+    </div>
+
+    <!-- QUIZ MODE -->
+    <div id="quizMode">
+      <div id="quizSetup">
+        <div class="quiz-setup">
+          <div style="text-align:center">
+            <div style="font-family:'Bangers',cursive;font-size:1.9rem;letter-spacing:3px;margin-bottom:5px;background:linear-gradient(90deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent">🎯 VOCAB QUIZ</div>
+            <div style="color:var(--gray);font-size:0.88rem">Choose categories and question type</div>
+          </div>
+          <div class="quiz-cat-grid" id="quizCatGrid"></div>
+          <div>
+            <div style="font-size:0.72rem;font-weight:900;letter-spacing:2px;color:var(--gray);text-transform:uppercase;margin-bottom:8px;text-align:center">Question Type</div>
+            <div class="qt-row">
+              <button class="qt-btn active" data-qt="jp2en" onclick="setQT(this)">日本語 → English</button>
+              <button class="qt-btn" data-qt="en2jp" onclick="setQT(this)">English → 日本語</button>
+              <button class="qt-btn" data-qt="kana2en" onclick="setQT(this)">Kana → English</button>
+              <button class="qt-btn" data-qt="sentence" onclick="setQT(this)">Fill the Blank</button>
+            </div>
+          </div>
+          <button class="start-btn" onclick="startQuiz()">⚡ Start Quiz!</button>
+        </div>
+      </div>
+      <div id="quizActive" style="display:none">
+        <div class="active-quiz">
+          <div class="aq-pbar"><div class="aq-pfill" id="aqPF" style="width:0%"></div></div>
+          <div class="aq-lbl" id="aqLbl">QUESTION 1/15</div>
+          <div class="aq-q" id="aqQ"></div>
+          <span class="aq-char" id="aqChar"></span>
+          <div class="aq-sub" id="aqSub"></div>
+          <div class="aq-opts" id="aqOpts"></div>
+          <div class="aq-score">
+            <div>✅ <span class="aq-snum" id="aqC">0</span></div>
+            <div>❌ <span class="aq-snum" id="aqW">0</span></div>
+            <div>⚡ <span class="aq-snum" id="aqXP" style="color:var(--green)">0</span> XP</div>
+          </div>
+        </div>
+      </div>
+      <div id="quizResult" style="display:none">
+        <div class="quiz-result">
+          <span class="qr-emoji" id="qrEmoji">🏆</span>
+          <div class="qr-title" id="qrTitle">PERFECT!</div>
+          <p class="qr-sub" id="qrSub"></p>
+          <div class="qr-stats">
+            <div class="qr-stat"><div class="qr-num" id="qrScore"></div><div class="qr-lbl">Score</div></div>
+            <div class="qr-stat"><div class="qr-num" id="qrAcc"></div><div class="qr-lbl">Accuracy</div></div>
+            <div class="qr-stat"><div class="qr-num" id="qrXP"></div><div class="qr-lbl">XP</div></div>
+          </div>
+          <button class="qr-btn" onclick="startQuiz()">🔄 Again</button>
+          <button class="qr-btn-sec" onclick="setMode('study')">📖 Study</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEW MODE -->
+    <div id="reviewMode">
+      <div id="revEmpty" style="text-align:center;padding:56px 20px;display:none">
+        <div style="font-size:3rem;margin-bottom:10px">🌱</div>
+        <div style="font-family:'Bangers',cursive;font-size:1.7rem;letter-spacing:2px;color:var(--green);margin-bottom:7px">ALL CAUGHT UP!</div>
+        <div style="color:var(--gray);font-size:0.88rem;margin-bottom:22px">Study more words to build your deck!</div>
+        <button onclick="setMode('study')" style="padding:11px 26px;background:linear-gradient(135deg,var(--green),var(--teal));color:#000;font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;border:none;border-radius:11px;cursor:pointer">📖 Study More</button>
+      </div>
+      <div id="revActive" style="display:none">
+        <div class="rev-prog" id="revProg">Card 1 of 12</div>
+        <div class="flip-card" onclick="flipRevCard()">
+          <div class="flip-inner" id="flipInner">
+            <div class="flip-front">
+              <span class="flip-jp" id="rfJP">食べる</span>
+              <span class="flip-kana" id="rfKana">たべる</span>
+              <span class="flip-tap">Tap to reveal →</span>
+            </div>
+            <div class="flip-back">
+              <span class="flip-jp-sm" id="rbJP">食べる</span>
+              <span class="flip-en" id="rbEN">TO EAT</span>
+              <span class="flip-ex" id="rbEx">毎日食べる — eat every day</span>
+            </div>
+          </div>
+        </div>
+        <div class="review-actions" id="revActions" style="display:none">
+          <button class="ra-btn ra-again" onclick="revAns('again')">😓 Again</button>
+          <button class="ra-btn ra-hard" onclick="revAns('hard')">🤔 Hard</button>
+          <button class="ra-btn ra-good" onclick="revAns('good')">😊 Good</button>
+          <button class="ra-btn ra-easy" onclick="revAns('easy')">⚡ Easy</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast">
+  <span class="t-icon" id="tIcon">🌱</span>
+  <div><div class="t-title" id="tTitle"></div><div class="t-sub" id="tSub"></div></div>
+</div>
+
+<script>
+// =====================================================================
+// VOCABULARY DATA — JLPT N5 (150 words)
+// =====================================================================
+const WORDS = [
+// GREETINGS
+{jp:'おはようございます',k:'おはようございます',en:'Good morning',pos:'expr',cat:'greet',ex:'おはようございます、田中さん！',exk:'おはようございます、たなかさん！',exe:'Good morning, Tanaka-san!',mem:'The polite version of おはよう. Say it before noon!'},
+{jp:'こんにちは',k:'こんにちは',en:'Hello / Good afternoon',pos:'expr',cat:'greet',ex:'こんにちは！元気ですか？',exk:'こんにちは！げんきですか？',exe:'Hello! How are you?',mem:'"Konnichi-WA" — think of waving Hello!'},
+{jp:'こんばんは',k:'こんばんは',en:'Good evening',pos:'expr',cat:'greet',ex:'こんばんは。今日はいい天気でしたね。',exk:'こんばんは。きょうはいいてんきでしたね。',exe:'Good evening. It was nice weather today.',mem:'Banban = evening bells ringing'},
+{jp:'ありがとう',k:'ありがとう',en:'Thank you',pos:'expr',cat:'greet',ex:'助けてくれてありがとう！',exk:'たすけてくれてありがとう！',exe:'Thank you for helping me!',mem:'"Ari-ga-tou" — it\'s RARE (ari=ant, ga=is, tou=rare) how kind you are!'},
+{jp:'すみません',k:'すみません',en:'Excuse me / Sorry',pos:'expr',cat:'greet',ex:'すみません、トイレはどこですか？',exk:'すみません、トイレはどこですか？',exe:'Excuse me, where is the bathroom?',mem:'"Sumimasen" — like "SorryMasen" in your head!'},
+{jp:'はい',k:'はい',en:'Yes',pos:'expr',cat:'greet',ex:'はい、わかりました。',exk:'はい、わかりました。',exe:'Yes, I understand.',mem:'"Hai!" — like "Hi" said strongly!'},
+{jp:'いいえ',k:'いいえ',en:'No',pos:'expr',cat:'greet',ex:'いいえ、知りません。',exk:'いいえ、しりません。',exe:'No, I don\'t know.',mem:'"Iie" — sounds like "Ee-yeh!" (surprised no!)'},
+{jp:'さようなら',k:'さようなら',en:'Goodbye',pos:'expr',cat:'greet',ex:'さようなら、また明日！',exk:'さようなら、またあした！',exe:'Goodbye, see you tomorrow!',mem:'"Sayou-nara" — "So it goes" (farewell)'},
+{jp:'おやすみなさい',k:'おやすみなさい',en:'Good night',pos:'expr',cat:'greet',ex:'おやすみなさい！良い夢を。',exk:'おやすみなさい！よいゆめを。',exe:'Good night! Sweet dreams.',mem:'"Oyasumi" — oyasumi = rest time'},
+{jp:'どうぞよろしく',k:'どうぞよろしく',en:'Nice to meet you',pos:'expr',cat:'greet',ex:'はじめまして、どうぞよろしく！',exk:'はじめまして、どうぞよろしく！',exe:'Nice to meet you!',mem:'"Yoroshiku" — "yo-ro-shi-KU" = please be good to me'},
+
+// NUMBERS (words)
+{jp:'ひとつ',k:'ひとつ',en:'One (thing)',pos:'noun',cat:'number',ex:'りんごをひとつください。',exk:'りんごをひとつください。',exe:'One apple please.',mem:'ひと = one person, ひとつ = one thing'},
+{jp:'ふたつ',k:'ふたつ',en:'Two (things)',pos:'noun',cat:'number',ex:'コーヒーをふたつお願いします。',exk:'コーヒーをふたつおねがいします。',exe:'Two coffees please.',mem:'ふた = two, like "foot" (two feet!)'},
+{jp:'いくら',k:'いくら',en:'How much?',pos:'expr',cat:'number',ex:'これはいくらですか？',exk:'これはいくらですか？',exe:'How much is this?',mem:'"Ikura" also means salmon roe — "how much for the ikura?"'},
+{jp:'たくさん',k:'たくさん',en:'Many / A lot',pos:'adv',cat:'number',ex:'たくさん食べました！',exk:'たくさんたべました！',exe:'I ate a lot!',mem:'"Takusan" — a TACKle box with SANdwiches (a lot!)'},
+{jp:'すこし',k:'すこし',en:'A little',pos:'adv',cat:'number',ex:'日本語がすこしわかります。',exk:'にほんごがすこしわかります。',exe:'I understand a little Japanese.',mem:'"Sukoshi" — like "scosh" (a small amount)'},
+
+// TIME
+{jp:'いま',k:'いま',en:'Now',pos:'noun',cat:'time',ex:'いま何時ですか？',exk:'いまなんじですか？',exe:'What time is it now?',mem:'"Ima" — "I\'m-A" doing it NOW!'},
+{jp:'きょう',k:'きょう',en:'Today',pos:'noun',cat:'time',ex:'きょうは月曜日です。',exk:'きょうはげつようびです。',exe:'Today is Monday.',mem:'"Kyou" sounds like "Cue" — today is your CUE!'},
+{jp:'あした',k:'あした',en:'Tomorrow',pos:'noun',cat:'time',ex:'あしたテストがあります。',exk:'あしたテストがあります。',exe:'There is a test tomorrow.',mem:'"Ashita" — "Ah SHI-ta!" what did I forget for tomorrow?'},
+{jp:'きのう',k:'きのう',en:'Yesterday',pos:'noun',cat:'time',ex:'きのう映画を見ました。',exk:'きのうえいがをみました。',exe:'I watched a movie yesterday.',mem:'"Kinou" — "Key-no-u" = the past key'},
+{jp:'まいにち',k:'まいにち',en:'Every day',pos:'adv',cat:'time',ex:'まいにち日本語を勉強します。',exk:'まいにちにほんごをべんきょうします。',exe:'I study Japanese every day.',mem:'毎日 — MAI = every, NICHI = day'},
+{jp:'いつ',k:'いつ',en:'When?',pos:'expr',cat:'time',ex:'いつ日本に行きますか？',exk:'いつにほんにいきますか？',exe:'When are you going to Japan?',mem:'"Itsu" — "It\'s-u" time?'},
+{jp:'なんじ',k:'なんじ',en:'What time?',pos:'expr',cat:'time',ex:'いまなんじですか？',exk:'いまなんじですか？',exe:'What time is it?',mem:'何時 — NAN = what, JI = o\'clock'},
+{jp:'ごぜん',k:'ごぜん',en:'AM / Morning',pos:'noun',cat:'time',ex:'ごぜん七時に起きます。',exk:'ごぜんしちじにおきます。',exe:'I wake up at 7 AM.',mem:'午前 — before noon'},
+{jp:'ごご',k:'ごご',en:'PM / Afternoon',pos:'noun',cat:'time',ex:'ごご三時に会いましょう。',exk:'ごごさんじにあいましょう。',exe:'Let\'s meet at 3 PM.',mem:'午後 — after noon'},
+{jp:'らいねん',k:'らいねん',en:'Next year',pos:'noun',cat:'time',ex:'らいねん日本に行きます。',exk:'らいねんにほんにいきます。',exe:'I\'m going to Japan next year.',mem:'来年 — RAI (come) + NEN (year) = the coming year'},
+
+// FOOD
+{jp:'たべる',k:'たべる',en:'To eat',pos:'verb',cat:'food',ex:'すしを食べます。',exk:'すしをたべます。',exe:'I eat sushi.',mem:'食 (shoku) + べる — TABLE food that you EAT'},
+{jp:'のむ',k:'のむ',en:'To drink',pos:'verb',cat:'food',ex:'お水を飲みます。',exk:'おみずをのみます。',exe:'I drink water.',mem:'"Nomu" — "No More!" after you DRINK it all'},
+{jp:'みず',k:'みず',en:'Water',pos:'noun',cat:'food',ex:'お水を一杯ください。',exk:'おみずをいっぱいください。',exe:'One glass of water please.',mem:'水 — MIZu = the kanji looks like flowing water'},
+{jp:'ごはん',k:'ごはん',en:'Rice / Meal',pos:'noun',cat:'food',ex:'ごはんを食べましょう！',exk:'ごはんをたべましょう！',exe:'Let\'s eat!',mem:'"Gohan" — like a GONG calling everyone to eat!'},
+{jp:'にく',k:'にく',en:'Meat',pos:'noun',cat:'food',ex:'牛肉が好きです。',exk:'ぎゅうにくがすきです。',exe:'I like beef.',mem:'"Niku" — sounds like "nick you" — meat NICKS the bone!'},
+{jp:'さかな',k:'さかな',en:'Fish',pos:'noun',cat:'food',ex:'さかなを食べますか？',exk:'さかなをたべますか？',exe:'Do you eat fish?',mem:'"Sakana" — SA-KA-NA = sounds like "sashimi"!'},
+{jp:'たまご',k:'たまご',en:'Egg',pos:'noun',cat:'food',ex:'たまごやきが好きです。',exk:'たまごやきがすきです。',exe:'I like tamagoyaki (rolled egg).',mem:'"Tamago" — every Japanese knows this one from games!'},
+{jp:'パン',k:'ぱん',en:'Bread',pos:'noun',cat:'food',ex:'毎朝パンを食べます。',exk:'まいあさぱんをたべます。',exe:'I eat bread every morning.',mem:'パン from Portuguese "pão" (bread)'},
+{jp:'おちゃ',k:'おちゃ',en:'Green tea',pos:'noun',cat:'food',ex:'おちゃを一杯どうぞ。',exk:'おちゃをいっぱいどうぞ。',exe:'Please have a cup of tea.',mem:'"Ocha" — O + CHA = honorable tea!'},
+{jp:'ラーメン',k:'らーめん',en:'Ramen',pos:'noun',cat:'food',ex:'ラーメンが大好きです！',exk:'らーめんがだいすきです！',exe:'I love ramen!',mem:'From Chinese "lamian" — noodles!'},
+
+// FAMILY
+{jp:'かぞく',k:'かぞく',en:'Family',pos:'noun',cat:'family',ex:'かぞくと旅行します。',exk:'かぞくとりょこうします。',exe:'I travel with my family.',mem:'家族 — KA (house) + ZOKU (tribe/group)'},
+{jp:'おとうさん',k:'おとうさん',en:'Father',pos:'noun',cat:'family',ex:'おとうさんは先生です。',exk:'おとうさんはせんせいです。',exe:'My father is a teacher.',mem:'"Otousan" — "Oh, TOU-san!" = Dad!'},
+{jp:'おかあさん',k:'おかあさん',en:'Mother',pos:'noun',cat:'family',ex:'おかあさんは料理が上手です。',exk:'おかあさんはりょうりがじょうずです。',exe:'My mother is a good cook.',mem:'"Okaasan" — "Oh-KAA-san!" = Mom!'},
+{jp:'おにいさん',k:'おにいさん',en:'Older brother',pos:'noun',cat:'family',ex:'おにいさんは大学生です。',exk:'おにいさんはだいがくせいです。',exe:'My older brother is a university student.',mem:'"Oniisan" — BIG brother (oni = demon, big!)'},
+{jp:'おねえさん',k:'おねえさん',en:'Older sister',pos:'noun',cat:'family',ex:'おねえさんと映画を見ます。',exk:'おねえさんとえいがをみます。',exe:'I watch movies with my older sister.',mem:'"Oneesan" — sounds like "O-nee-san" the nice one!'},
+{jp:'ともだち',k:'ともだち',en:'Friend',pos:'noun',cat:'family',ex:'ともだちと遊びます。',exk:'ともだちとあそびます。',exe:'I play with my friend.',mem:'友達 — TOMO (friend) + DACHI (person)'},
+
+// BODY
+{jp:'め',k:'め',en:'Eye',pos:'noun',cat:'body',ex:'目が痛いです。',exk:'めがいたいです。',exe:'My eye hurts.',mem:'目 — the kanji looks like an eye!'},
+{jp:'みみ',k:'みみ',en:'Ear',pos:'noun',cat:'body',ex:'みみが遠いです。',exk:'みみがとおいです。',exe:'I have trouble hearing.',mem:'"Mimi" — like Mickey Mouse ears!'},
+{jp:'くち',k:'くち',en:'Mouth',pos:'noun',cat:'body',ex:'口を大きく開けてください。',exk:'くちをおおきくあけてください。',exe:'Please open your mouth wide.',mem:'口 kanji looks like a square mouth'},
+{jp:'て',k:'て',en:'Hand',pos:'noun',cat:'body',ex:'手を洗ってください。',exk:'てをあらってください。',exe:'Please wash your hands.',mem:'手 — short and sweet, just TE'},
+{jp:'あし',k:'あし',en:'Foot / Leg',pos:'noun',cat:'body',ex:'あしが痛いです。',exk:'あしがいたいです。',exe:'My leg hurts.',mem:'"Ashi" — ASH-i = the foot leaves ash footprints'},
+{jp:'あたま',k:'あたま',en:'Head',pos:'noun',cat:'body',ex:'あたまが痛いです。',exk:'あたまがいたいです。',exe:'I have a headache.',mem:'"Atama" — "a-ta-ma" = A TAMED head!'},
+
+// NATURE
+{jp:'はな',k:'はな',en:'Flower / Nose',pos:'noun',cat:'nature',ex:'はなを見ます。',exk:'はなをみます。',exe:'I look at the flowers.',mem:'花 = flower, 鼻 = nose — same sound, different meaning!'},
+{jp:'き',k:'き',en:'Tree',pos:'noun',cat:'nature',ex:'木の下で休みます。',exk:'きのしたでやすみます。',exe:'I rest under the tree.',mem:'木 kanji = a tree with roots and branches'},
+{jp:'やま',k:'やま',en:'Mountain',pos:'noun',cat:'nature',ex:'山に登ります。',exk:'やまにのぼります。',exe:'I climb the mountain.',mem:'山 kanji = three mountain peaks!'},
+{jp:'うみ',k:'うみ',en:'Sea / Ocean',pos:'noun',cat:'nature',ex:'うみで泳ぎます。',exk:'うみでおよぎます。',exe:'I swim in the sea.',mem:'"Umi" — "oo-ME" = the deep blue sea'},
+{jp:'そら',k:'そら',en:'Sky',pos:'noun',cat:'nature',ex:'そらが青いです。',exk:'そらがあおいです。',exe:'The sky is blue.',mem:'"Sora" — SORA = the sky in countless anime!'},
+{jp:'てんき',k:'てんき',en:'Weather',pos:'noun',cat:'nature',ex:'今日はいいてんきです。',exk:'きょうはいいてんきです。',exe:'The weather is nice today.',mem:'天気 — TEN (sky) + KI (energy) = sky energy = weather'},
+{jp:'あめ',k:'あめ',en:'Rain',pos:'noun',cat:'nature',ex:'あめが降っています。',exk:'あめがふっています。',exe:'It is raining.',mem:'雨 — "Ame" also means candy — raindrops like candy!'},
+{jp:'ゆき',k:'ゆき',en:'Snow',pos:'noun',cat:'nature',ex:'冬にゆきが降ります。',exk:'ふゆにゆきがふります。',exe:'Snow falls in winter.',mem:'"Yuki" — a popular Japanese name that means snow!'},
+
+// PLACES
+{jp:'がっこう',k:'がっこう',en:'School',pos:'noun',cat:'place',ex:'がっこうに行きます。',exk:'がっこうにいきます。',exe:'I go to school.',mem:'学校 — GAKKOU = learning place'},
+{jp:'うち',k:'うち',en:'Home / My house',pos:'noun',cat:'place',ex:'うちに帰ります。',exk:'うちにかえります。',exe:'I go home.',mem:'"Uchi" = inside/home — "oochi" cozy home!'},
+{jp:'えき',k:'えき',en:'Train station',pos:'noun',cat:'place',ex:'えきはどこですか？',exk:'えきはどこですか？',exe:'Where is the train station?',mem:'駅 — EKI = station. Every anime character says this!'},
+{jp:'びょういん',k:'びょういん',en:'Hospital',pos:'noun',cat:'place',ex:'びょういんに行ってください。',exk:'びょういんにいってください。',exe:'Please go to the hospital.',mem:'"Byouin" — BYOU = sick + IN = place = sick place'},
+{jp:'こうえん',k:'こうえん',en:'Park',pos:'noun',cat:'place',ex:'こうえんで遊びます。',exk:'こうえんであそびます。',exe:'I play in the park.',mem:'公園 — KOUEN = public garden'},
+{jp:'レストラン',k:'れすとらん',en:'Restaurant',pos:'noun',cat:'place',ex:'レストランで食べます。',exk:'れすとらんでたべます。',exe:'I eat at the restaurant.',mem:'From French "restaurant"'},
+{jp:'トイレ',k:'といれ',en:'Bathroom / Toilet',pos:'noun',cat:'place',ex:'トイレはどこですか？',exk:'といれはどこですか？',exe:'Where is the bathroom?',mem:'From English "toilet"'},
+{jp:'ほんや',k:'ほんや',en:'Bookstore',pos:'noun',cat:'place',ex:'ほんやで本を買います。',exk:'ほんやでほんをかいます。',exe:'I buy books at the bookstore.',mem:'本屋 — HON (book) + YA (shop) = book shop'},
+
+// TRANSPORT
+{jp:'でんしゃ',k:'でんしゃ',en:'Train',pos:'noun',cat:'transport',ex:'でんしゃで学校に行きます。',exk:'でんしゃでがっこうにいきます。',exe:'I go to school by train.',mem:'電車 — DEN (electricity) + SHA (vehicle) = electric car!'},
+{jp:'バス',k:'ばす',en:'Bus',pos:'noun',cat:'transport',ex:'バスに乗ります。',exk:'ばすにのります。',exe:'I take the bus.',mem:'From English "bus"'},
+{jp:'くるま',k:'くるま',en:'Car',pos:'noun',cat:'transport',ex:'くるまで行きます。',exk:'くるまでいきます。',exe:'I go by car.',mem:'車 — KURUMA = the kanji looks like a wheel!'},
+{jp:'ひこうき',k:'ひこうき',en:'Airplane',pos:'noun',cat:'transport',ex:'ひこうきで日本に行きます。',exk:'ひこうきでにほんにいきます。',exe:'I go to Japan by airplane.',mem:'飛行機 — HI-KOU-KI = fly-travel-machine'},
+{jp:'のる',k:'のる',en:'To ride / board',pos:'verb',cat:'transport',ex:'でんしゃに乗ります。',exk:'でんしゃにのります。',exe:'I board the train.',mem:'"Noru" — "NORR-u" = getting on board!'},
+{jp:'おりる',k:'おりる',en:'To get off',pos:'verb',cat:'transport',ex:'次の駅で降ります。',exk:'つぎのえきでおります。',exe:'I get off at the next station.',mem:'"Oriru" — OR-iru = OR you stay on?'},
+
+// SHOPPING
+{jp:'かう',k:'かう',en:'To buy',pos:'verb',cat:'shopping',ex:'本を買います。',exk:'ほんをかいます。',exe:'I buy a book.',mem:'"Kau" — "COW" needs to be bought!'},
+{jp:'うる',k:'うる',en:'To sell',pos:'verb',cat:'shopping',ex:'野菜を売ります。',exk:'やさいをうります。',exe:'I sell vegetables.',mem:'"Uru" — "OO-ru" = selling it all!'},
+{jp:'たかい',k:'たかい',en:'Expensive / Tall',pos:'adj',cat:'shopping',ex:'これはたかいですね。',exk:'これはたかいですね。',exe:'This is expensive, isn\'t it.',mem:'高い — TAKAI = tower high = tall or expensive!'},
+{jp:'やすい',k:'やすい',en:'Cheap / Easy',pos:'adj',cat:'shopping',ex:'このお店はやすいです。',exk:'このおみせはやすいです。',exe:'This shop is cheap.',mem:'"Yasui" — "YAS-ui!" (yaas = cheap win!)'},
+{jp:'みせ',k:'みせ',en:'Shop / Store',pos:'noun',cat:'shopping',ex:'あのみせに行きましょう。',exk:'あのみせにいきましょう。',exe:'Let\'s go to that shop.',mem:'店 — MI-SE = let me see (you show things in a shop)'},
+{jp:'いくらですか',k:'いくらですか',en:'How much is it?',pos:'expr',cat:'shopping',ex:'すみません、これはいくらですか？',exk:'すみません、これはいくらですか？',exe:'Excuse me, how much is this?',mem:'The most important shopping phrase!'},
+{jp:'ください',k:'ください',en:'Please give me',pos:'expr',cat:'shopping',ex:'これをひとつください。',exk:'これをひとつください。',exe:'Please give me one of these.',mem:'"Kudasai" — KU-DA-SAI = please give to me!'},
+
+// SCHOOL
+{jp:'べんきょう',k:'べんきょう',en:'Study',pos:'noun',cat:'school',ex:'まいにち日本語を勉強します。',exk:'まいにちにほんごをべんきょうします。',exe:'I study Japanese every day.',mem:'勉強 — BEN-KYOU = study hard!'},
+{jp:'せんせい',k:'せんせい',en:'Teacher',pos:'noun',cat:'school',ex:'せんせいはやさしいです。',exk:'せんせいはやさしいです。',exe:'The teacher is kind.',mem:'先生 — SEN (before) + SEI (born) = one born before = elder!'},
+{jp:'がくせい',k:'がくせい',en:'Student',pos:'noun',cat:'school',ex:'私は学生です。',exk:'わたしはがくせいです。',exe:'I am a student.',mem:'学生 — GAKU (learn) + SEI (life) = learning life!'},
+{jp:'ほん',k:'ほん',en:'Book',pos:'noun',cat:'school',ex:'本を読みます。',exk:'ほんをよみます。',exe:'I read a book.',mem:'本 — HON = book. Japan = NIHON = origin book!'},
+{jp:'よむ',k:'よむ',en:'To read',pos:'verb',cat:'school',ex:'まいにち本を読みます。',exk:'まいにちほんをよみます。',exe:'I read books every day.',mem:'"Yomu" — "YO-mu" = yo, reading time!'},
+{jp:'かく',k:'かく',en:'To write',pos:'verb',cat:'school',ex:'漢字を書きます。',exk:'かんじをかきます。',exe:'I write kanji.',mem:'"Kaku" — "KA-ku" = quack! (a duck writing?)'},
+{jp:'わかる',k:'わかる',en:'To understand',pos:'verb',cat:'school',ex:'日本語がわかります。',exk:'にほんごがわかります。',exe:'I understand Japanese.',mem:'"Wakaru" — "I WA-KA-RU" = I understand!'},
+{jp:'おしえる',k:'おしえる',en:'To teach',pos:'verb',cat:'school',ex:'日本語を教えます。',exk:'にほんごをおしえます。',exe:'I teach Japanese.',mem:'"Oshieru" — "Oh-SHE-AY-ru" = oh, she teaches!'},
+
+// HOME & THINGS
+{jp:'いえ',k:'いえ',en:'House / Home',pos:'noun',cat:'home',ex:'いえに帰ります。',exk:'いえにかえります。',exe:'I return home.',mem:'家 — IE = the roof kanji = house'},
+{jp:'へや',k:'へや',en:'Room',pos:'noun',cat:'home',ex:'へやをきれいにします。',exk:'へやをきれいにします。',exe:'I clean my room.',mem:'部屋 — HE-YA = "Hey ya!" (in your room)'},
+{jp:'でんわ',k:'でんわ',en:'Phone / Telephone',pos:'noun',cat:'home',ex:'でんわをかけます。',exk:'でんわをかけます。',exe:'I make a phone call.',mem:'電話 — DEN (electricity) + WA (speak) = electric speak!'},
+{jp:'テレビ',k:'てれび',en:'Television',pos:'noun',cat:'home',ex:'テレビを見ます。',exk:'てれびをみます。',exe:'I watch TV.',mem:'From English "television"'},
+{jp:'ドア',k:'どあ',en:'Door',pos:'noun',cat:'home',ex:'ドアを開けてください。',exk:'どあをあけてください。',exe:'Please open the door.',mem:'From English "door"'},
+{jp:'まど',k:'まど',en:'Window',pos:'noun',cat:'home',ex:'まどを開けます。',exk:'まどをあけます。',exe:'I open the window.',mem:'"Mado" — MA-DO = magic door to outside!'},
+{jp:'つくえ',k:'つくえ',en:'Desk',pos:'noun',cat:'home',ex:'つくえで勉強します。',exk:'つくえでべんきょうします。',exe:'I study at the desk.',mem:'"Tsukue" — a DESK you TSUKUEe (make) things on!'},
+{jp:'いす',k:'いす',en:'Chair',pos:'noun',cat:'home',ex:'いすに座ってください。',exk:'いすにすわってください。',exe:'Please sit on the chair.',mem:'"Isu" — "EE-SU" = easy seat!'},
+
+// VERBS
+{jp:'いく',k:'いく',en:'To go',pos:'verb',cat:'verb',ex:'学校に行きます。',exk:'がっこうにいきます。',exe:'I go to school.',mem:'"Iku" — "I-KU" = I GO!'},
+{jp:'くる',k:'くる',en:'To come',pos:'verb',cat:'verb',ex:'ここに来てください。',exk:'ここにきてください。',exe:'Please come here.',mem:'"Kuru" — "KOO-ru" = cool, come here!'},
+{jp:'かえる',k:'かえる',en:'To return / go home',pos:'verb',cat:'verb',ex:'うちに帰ります。',exk:'うちにかえります。',exe:'I return home.',mem:'"Kaeru" = also means frog — the frog RETURNS to the pond!'},
+{jp:'みる',k:'みる',en:'To see / watch',pos:'verb',cat:'verb',ex:'映画を見ます。',exk:'えいがをみます。',exe:'I watch a movie.',mem:'"Miru" — "MEER-u" = mirror, you SEE yourself'},
+{jp:'きく',k:'きく',en:'To listen / ask',pos:'verb',cat:'verb',ex:'音楽を聞きます。',exk:'おんがくをききます。',exe:'I listen to music.',mem:'"Kiku" — also means chrysanthemum — LISTEN like a flower!'},
+{jp:'はなす',k:'はなす',en:'To speak / talk',pos:'verb',cat:'verb',ex:'日本語で話します。',exk:'にほんごではなします。',exe:'I speak in Japanese.',mem:'"Hanasu" — HANA (flower) + SU = speak beautifully!'},
+{jp:'あそぶ',k:'あそぶ',en:'To play',pos:'verb',cat:'verb',ex:'ともだちと遊びます。',exk:'ともだちとあそびます。',exe:'I play with my friend.',mem:'"Asobu" — "a-SO-bu!" = let\'s go PLAY!'},
+{jp:'やすむ',k:'やすむ',en:'To rest',pos:'verb',cat:'verb',ex:'ちょっとやすみます。',exk:'ちょっとやすみます。',exe:'I\'ll rest for a bit.',mem:'"Yasumu" — "YA-SU-mu" = YAS! reST time!'},
+{jp:'おきる',k:'おきる',en:'To wake up',pos:'verb',cat:'verb',ex:'ごぜん七時に起きます。',exk:'ごぜんしちじにおきます。',exe:'I wake up at 7 AM.',mem:'"Okiru" — "O-KEE-ru" = oh, key (alarm) WAKES me!'},
+{jp:'ねる',k:'ねる',en:'To sleep',pos:'verb',cat:'verb',ex:'じゅう二時に寝ます。',exk:'じゅうにじにねます。',exe:'I sleep at midnight.',mem:'"Neru" — "NE-RU" = "NER-u" = you SNORE!'},
+{jp:'よぶ',k:'よぶ',en:'To call / invite',pos:'verb',cat:'verb',ex:'友達を呼びます。',exk:'ともだちをよびます。',exe:'I call my friend.',mem:'"Yobu" — "YO-BU!" = YO! I\'m CALLING you!'},
+{jp:'かける',k:'かける',en:'To hang / call',pos:'verb',cat:'verb',ex:'でんわをかけます。',exk:'でんわをかけます。',exe:'I make a phone call.',mem:'"Kakeru" — HOOK it, HANG it, CALL it!'},
+{jp:'あける',k:'あける',en:'To open',pos:'verb',cat:'verb',ex:'ドアを開けます。',exk:'どあをあけます。',exe:'I open the door.',mem:'"Akeru" — "AH-KE-ru" = "Ah!" open sesame!'},
+{jp:'しめる',k:'しめる',en:'To close',pos:'verb',cat:'verb',ex:'まどを閉めます。',exk:'まどをしめます。',exe:'I close the window.',mem:'"Shimeru" — "SHIME-ru" = shimmy it SHUT!'},
+{jp:'もつ',k:'もつ',en:'To hold / have',pos:'verb',cat:'verb',ex:'かばんを持ちます。',exk:'かばんをもちます。',exe:'I carry a bag.',mem:'"Motsu" — "MO-TSU" = MORE things to HOLD!'},
+
+// ADJECTIVES
+{jp:'おおきい',k:'おおきい',en:'Big / Large',pos:'adj',cat:'adj',ex:'このビルはおおきいです。',exk:'このびるはおおきいです。',exe:'This building is big.',mem:'大きい — OOkii = OO sounds big!'},
+{jp:'ちいさい',k:'ちいさい',en:'Small / Little',pos:'adj',cat:'adj',ex:'このねこはちいさいです。',exk:'このねこはちいさいです。',exe:'This cat is small.',mem:'"Chiisai" — "chee-SAI" = tiny little thing!'},
+{jp:'あつい',k:'あつい',en:'Hot',pos:'adj',cat:'adj',ex:'今日はあついですね！',exk:'きょうはあついですね！',exe:'It\'s hot today!',mem:'"Atsui" — "AT-sui!" = AT the sun, it\'s hot!'},
+{jp:'さむい',k:'さむい',en:'Cold (weather)',pos:'adj',cat:'adj',ex:'冬はさむいです。',exk:'ふゆはさむいです。',exe:'Winter is cold.',mem:'"Samui" — "SA-MUI" = SAY moooUI (shivering!)'},
+{jp:'つめたい',k:'つめたい',en:'Cold (to touch)',pos:'adj',cat:'adj',ex:'このお水はつめたいです。',exk:'このおみずはつめたいです。',exe:'This water is cold.',mem:'"Tsumetai" — TSUME (nail) + TAI = cold like a nail!'},
+{jp:'おいしい',k:'おいしい',en:'Delicious',pos:'adj',cat:'adj',ex:'このラーメンはおいしいです！',exk:'このらーめんはおいしいです！',exe:'This ramen is delicious!',mem:'"Oishii" — "OY-shee!" = "Oi! It\'s YUMMY!"'},
+{jp:'まずい',k:'まずい',en:'Not tasty / Bad',pos:'adj',cat:'adj',ex:'これはまずいです。',exk:'これはまずいです。',exe:'This doesn\'t taste good.',mem:'"Mazui" — "MA-ZUI" = "Ma! ZOOM! I spit it out!"'},
+{jp:'たのしい',k:'たのしい',en:'Fun / Enjoyable',pos:'adj',cat:'adj',ex:'日本語はたのしいです！',exk:'にほんごはたのしいです！',exe:'Japanese is fun!',mem:'"Tanoshii" — "TA-no-SHEE!" = TAN? NO! SHE loves it!'},
+{jp:'むずかしい',k:'むずかしい',en:'Difficult',pos:'adj',cat:'adj',ex:'漢字はむずかしいです。',exk:'かんじはむずかしいです。',exe:'Kanji is difficult.',mem:'"Muzukashii" — MUZAK (boring music) + SHII = hard to learn!'},
+{jp:'やさしい',k:'やさしい',en:'Easy / Kind',pos:'adj',cat:'adj',ex:'せんせいはやさしいです。',exk:'せんせいはやさしいです。',exe:'The teacher is kind.',mem:'"Yasashii" — "YA-SA-SHEE" = yay, she\'s NICE!'},
+{jp:'かわいい',k:'かわいい',en:'Cute',pos:'adj',cat:'adj',ex:'このねこはかわいいです！',exk:'このねこはかわいいです！',exe:'This cat is cute!',mem:'"Kawaii" — THE most famous Japanese word!'},
+{jp:'すごい',k:'すごい',en:'Amazing / Wow',pos:'adj',cat:'adj',ex:'すごいですね！',exk:'すごいですね！',exe:'That\'s amazing!',mem:'"Sugoi!" — every anime fan knows this one!'},
+{jp:'ひどい',k:'ひどい',en:'Terrible / Cruel',pos:'adj',cat:'adj',ex:'このてんきはひどいです。',exk:'このてんきはひどいです。',exe:'This weather is terrible.',mem:'"Hidoi!" — "HE-DOE-i!" = HE DID it, that\'s terrible!'},
+
+// COLORS
+{jp:'あか',k:'あか',en:'Red',pos:'noun',cat:'color',ex:'あかいバラが好きです。',exk:'あかいばらがすきです。',exe:'I like red roses.',mem:'"Aka" — A-KA = like an "AHH!" at red fire!'},
+{jp:'あお',k:'あお',en:'Blue / Green',pos:'noun',cat:'color',ex:'そらはあおいです。',exk:'そらはあおいです。',exe:'The sky is blue.',mem:'"Ao" — think of ocean AO (blue)'},
+{jp:'しろ',k:'しろ',en:'White',pos:'noun',cat:'color',ex:'しろいねこがいます。',exk:'しろいねこがいます。',exe:'There is a white cat.',mem:'"Shiro" — WHITE is like a HERO (SHIRO) in anime!'},
+{jp:'くろ',k:'くろ',en:'Black',pos:'noun',cat:'color',ex:'くろいかばんを持っています。',exk:'くろいかばんをもっています。',exe:'I have a black bag.',mem:'"Kuro" — CROW is black!'},
+{jp:'きいろ',k:'きいろ',en:'Yellow',pos:'noun',cat:'color',ex:'きいろい花が咲いています。',exk:'きいろいはながさいています。',exe:'Yellow flowers are blooming.',mem:'"Kiiro" — KEY + IRO = a GOLDEN key!'},
+{jp:'みどり',k:'みどり',en:'Green',pos:'noun',cat:'color',ex:'みどりのはっぱが好きです。',exk:'みどりのはっぱがすきです。',exe:'I like green leaves.',mem:'"Midori" — a popular Japanese girl\'s name = GREEN'},
+{jp:'ももいろ',k:'ももいろ',en:'Pink',pos:'noun',cat:'color',ex:'ももいろのさくらが綺麗です。',exk:'ももいろのさくらがきれいです。',exe:'The pink cherry blossoms are beautiful.',mem:'桃色 — MOMO (peach) + IRO (color) = peach color!'},
+{jp:'むらさき',k:'むらさき',en:'Purple',pos:'noun',cat:'color',ex:'むらさきのふじが綺麗です。',exk:'むらさきのふじがきれいです。',exe:'The purple wisteria is beautiful.',mem:'"Murasaki" — Murasaki Shikibu wrote The Tale of Genji!'},
+];
+
+// Category info
+const CATS = {
+  all:{label:'All Words',emoji:'全'},greet:{label:'Greetings',emoji:'👋'},
+  number:{label:'Numbers',emoji:'🔢'},time:{label:'Time',emoji:'⏰'},
+  food:{label:'Food & Drink',emoji:'🍜'},family:{label:'Family',emoji:'👨‍👩‍👧'},
+  body:{label:'Body',emoji:'👁️'},nature:{label:'Nature',emoji:'🌸'},
+  place:{label:'Places',emoji:'🏯'},transport:{label:'Transport',emoji:'🚃'},
+  shopping:{label:'Shopping',emoji:'🛍️'},school:{label:'School',emoji:'📚'},
+  home:{label:'Home & Things',emoji:'🏠'},verb:{label:'Verbs',emoji:'⚡'},
+  adj:{label:'Adjectives',emoji:'✨'},color:{label:'Colors',emoji:'🎨'},
+};
+
+// STATE
+let state={};
+WORDS.forEach(w=>{state[w.jp]={status:'new',correct:0,wrong:0};});
+let selWord=WORDS[0].jp, curMode='study', curCat='all', selQT='jp2en';
+let quizQ=[],qIdx=0,qC=0,qW=0,qXP=0,quizAns=false;
+let revQ=[],rIdx=0,flipped=false;
+let toastT;
+
+// =====================================================================
+// BUILD GRID
+// =====================================================================
+function buildGrid(filter='all',search=''){
+  const container=document.getElementById('gridContainer');
+  container.innerHTML='';
+  const cats=filter==='all'?Object.keys(CATS).filter(c=>c!=='all'):[filter];
+  let totalShown=0;
+  cats.forEach(cat=>{
+    let items=WORDS.filter(w=>w.cat===cat);
+    if(search) items=items.filter(w=>
+      w.jp.includes(search)||w.k.includes(search)||
+      w.en.toLowerCase().includes(search.toLowerCase())
+    );
+    if(!items.length) return;
+    totalShown+=items.length;
+    const sec=document.createElement('div');
+    const head=document.createElement('div');
+    head.className='section-head';
+    head.innerHTML=`<h2>${CATS[cat].emoji} ${CATS[cat].label}</h2><span class="section-subtitle">${items.length} words</span><span class="section-count">${items.filter(w=>state[w.jp].status==='mastered').length} mastered</span>`;
+    sec.appendChild(head);
+    const grid=document.createElement('div');
+    grid.className='word-grid';
+    grid.style.marginBottom='22px';
+    items.forEach(w=>{
+      const s=state[w.jp];
+      const tile=document.createElement('div');
+      tile.className=`word-tile ${s.status} ${w.jp===selWord?'selected':''}`;
+      tile.dataset.jp=w.jp;
+      tile.innerHTML=`<div class="tile-jp">${w.jp}</div><div class="tile-kana">${w.k!==w.jp?w.k:''}</div><div class="tile-en">${w.en}</div><div class="tile-check">★</div>`;
+      tile.addEventListener('click',()=>selectWord(w.jp));
+      grid.appendChild(tile);
+    });
+    sec.appendChild(grid);
+    container.appendChild(sec);
+  });
+  if(!totalShown){
+    container.innerHTML='<div style="text-align:center;padding:40px;color:var(--gray)">No words found. Try a different search!</div>';
+  }
+}
+
+// =====================================================================
+// SELECT WORD
+// =====================================================================
+function selectWord(jp){
+  selWord=jp;
+  const w=WORDS.find(x=>x.jp===jp); if(!w) return;
+  document.querySelectorAll('.word-tile').forEach(t=>t.classList.toggle('selected',t.dataset.jp===jp));
+  document.getElementById('heroJP').textContent=w.jp;
+  document.getElementById('heroKana').textContent=w.k!==w.jp?w.k:'';
+  document.getElementById('heroEN').textContent=w.en;
+  const ptag=document.getElementById('posTAG');
+  ptag.textContent={'noun':'Noun','verb':'Verb','adj':'Adjective','adv':'Adverb','expr':'Expression'}[w.pos]||w.pos;
+  ptag.className='pos-tag pos-'+w.pos;
+  document.getElementById('exJP').innerHTML=w.ex.replace(w.jp,`<span class="highlight">${w.jp}</span>`);
+  document.getElementById('exKana').textContent=w.exk;
+  document.getElementById('exEN').textContent=w.exe;
+  document.getElementById('memTxt').textContent=w.mem;
+  const s=state[jp];
+  document.getElementById('heroSRS').innerHTML={new:'<span class="srs-tag srs-new">🆕 New</span>',learning:'<span class="srs-tag srs-learning">📖 Learning</span>',mastered:'<span class="srs-tag srs-mastered">⭐ Mastered</span>'}[s.status]||'';
+  document.getElementById('heroStat').textContent=s.status==='new'?'Not studied':` ✅ ${s.correct} · ❌ ${s.wrong}`;
+  if(s.status==='new'){state[jp].status='learning';updateProgress();refreshTile(jp);}
+}
+
+function refreshTile(jp){
+  const t=document.querySelector(`[data-jp="${jp}"]`);
+  if(!t) return;
+  t.className=`word-tile ${state[jp].status} ${jp===selWord?'selected':''}`;
+}
+
+// =====================================================================
+// SEARCH
+// =====================================================================
+function onSearch(){
+  const v=document.getElementById('searchInput').value.trim();
+  document.getElementById('searchClear').classList.toggle('show',v.length>0);
+  buildGrid(curCat,v);
+}
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  document.getElementById('searchClear').classList.remove('show');
+  buildGrid(curCat,'');
+}
+
+// =====================================================================
+// FILTER
+// =====================================================================
+function filterCat(cat,btn){
+  curCat=cat;
+  document.querySelectorAll('.side-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  buildGrid(cat,document.getElementById('searchInput').value.trim());
+}
+
+// =====================================================================
+// PROGRESS
+// =====================================================================
+function updateProgress(){
+  let m=0,l=0;
+  const total=WORDS.length;
+  WORDS.forEach(w=>{if(state[w.jp].status==='mastered')m++;else if(state[w.jp].status==='learning')l++;});
+  const n=total-m-l;
+  const pct=x=>Math.round(x/total*100)+'%';
+  document.getElementById('pb-m').style.width=pct(m);
+  document.getElementById('pb-l').style.width=pct(l);
+  document.getElementById('pb-n').style.width=pct(n);
+  document.getElementById('pc-m').textContent=m+'/'+total;
+  document.getElementById('pc-l').textContent=l+'/'+total;
+  document.getElementById('pc-n').textContent=n+'/'+total;
+  document.getElementById('masteredChip').textContent=`⭐ ${m}/${total}`;
+  Object.keys(CATS).forEach(cat=>{
+    const el=document.getElementById('sf-'+cat);
+    if(!el) return;
+    const items=cat==='all'?WORDS:WORDS.filter(w=>w.cat===cat);
+    const done=items.filter(w=>state[w.jp].status==='mastered').length;
+    el.style.width=items.length?Math.round(done/items.length*100)+'%':'0%';
+  });
+}
+
+// =====================================================================
+// MODE
+// =====================================================================
+function setMode(mode){
+  curMode=mode;
+  document.querySelectorAll('.mode-tab').forEach((t,i)=>t.classList.toggle('active',['study','quiz','review'][i]===mode));
+  document.getElementById('studyMode').style.display=mode==='study'?'':'none';
+  document.getElementById('quizMode').className=mode==='quiz'?'active':'';
+  document.getElementById('reviewMode').className=mode==='review'?'active':'';
+  if(mode==='quiz') buildQuizSetup();
+  if(mode==='review') initReview();
+}
+
+// =====================================================================
+// QUIZ
+// =====================================================================
+function setQT(btn){document.querySelectorAll('.qt-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selQT=btn.dataset.qt;}
+
+function buildQuizSetup(){
+  const el=document.getElementById('quizCatGrid'); el.innerHTML='';
+  Object.entries(CATS).filter(([c])=>c!=='all').forEach(([cat,info])=>{
+    const btn=document.createElement('button');
+    btn.className='qcg-btn sel'; btn.dataset.cat=cat;
+    btn.textContent=info.emoji+' '+info.label;
+    btn.addEventListener('click',()=>btn.classList.toggle('sel'));
+    el.appendChild(btn);
+  });
+  document.getElementById('quizSetup').style.display='';
+  document.getElementById('quizActive').style.display='none';
+  document.getElementById('quizResult').style.display='none';
+}
+
+function startQuiz(){
+  const selCats=[...document.querySelectorAll('.qcg-btn.sel')].map(b=>b.dataset.cat);
+  if(!selCats.length){showToast('⚠️','Pick a category!','Select at least one.');return;}
+  const pool=WORDS.filter(w=>selCats.includes(w.cat));
+  quizQ=shuffle([...pool]).slice(0,Math.min(15,pool.length));
+  qIdx=0;qC=0;qW=0;qXP=0;
+  document.getElementById('quizSetup').style.display='none';
+  document.getElementById('quizActive').style.display='';
+  document.getElementById('quizResult').style.display='none';
+  renderQ();
+}
+
+function renderQ(){
+  quizAns=false;
+  if(qIdx>=quizQ.length){showQResult();return;}
+  const q=quizQ[qIdx];
+  const pct=qIdx/quizQ.length*100;
+  document.getElementById('aqPF').style.width=pct+'%';
+  document.getElementById('aqLbl').textContent=`QUESTION ${qIdx+1}/${quizQ.length}`;
+  document.getElementById('aqC').textContent=qC;
+  document.getElementById('aqW').textContent=qW;
+  document.getElementById('aqXP').textContent=qXP;
+
+  if(selQT==='jp2en'){
+    document.getElementById('aqQ').textContent='What does this mean?';
+    document.getElementById('aqChar').textContent=q.jp;
+    document.getElementById('aqChar').style.fontSize='2.8rem';
+    document.getElementById('aqSub').textContent=q.k!==q.jp?q.k:'';
+    const wrong=shuffle(WORDS.filter(w=>w.en!==q.en)).slice(0,3).map(w=>w.en);
+    buildOpts(shuffle([q.en,...wrong]),q.en);
+  } else if(selQT==='en2jp'){
+    document.getElementById('aqQ').textContent='Which word means this?';
+    document.getElementById('aqChar').textContent=q.en;
+    document.getElementById('aqChar').style.fontSize='1.8rem';
+    document.getElementById('aqSub').textContent='Choose the Japanese word';
+    const wrong=shuffle(WORDS.filter(w=>w.jp!==q.jp)).slice(0,3).map(w=>w.jp);
+    buildOpts(shuffle([q.jp,...wrong]),q.jp);
+  } else if(selQT==='kana2en'){
+    document.getElementById('aqQ').textContent='What does this kana mean?';
+    document.getElementById('aqChar').textContent=q.k;
+    document.getElementById('aqChar').style.fontSize='2rem';
+    document.getElementById('aqSub').textContent='Choose the English meaning';
+    const wrong=shuffle(WORDS.filter(w=>w.en!==q.en)).slice(0,3).map(w=>w.en);
+    buildOpts(shuffle([q.en,...wrong]),q.en);
+  } else if(selQT==='sentence'){
+    document.getElementById('aqQ').textContent='Fill in the blank:';
+    const blank=q.ex.replace(q.jp,'＿＿＿');
+    document.getElementById('aqChar').textContent=blank;
+    document.getElementById('aqChar').style.fontSize='1.2rem';
+    document.getElementById('aqSub').textContent=q.exk.replace(q.k,'＿＿＿')+' ('+q.exe+')';
+    const wrong=shuffle(WORDS.filter(w=>w.jp!==q.jp)).slice(0,3).map(w=>w.jp);
+    buildOpts(shuffle([q.jp,...wrong]),q.jp);
+  }
+}
+
+function buildOpts(opts,correct){
+  const el=document.getElementById('aqOpts'); el.innerHTML='';
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.className='aq-opt';
+    btn.textContent=opt;
+    if(opt.length>10) btn.style.fontSize='0.82rem';
+    btn.addEventListener('click',()=>{
+      if(quizAns) return; quizAns=true;
+      const ok=opt===correct;
+      el.querySelectorAll('.aq-opt').forEach(b=>{
+        if(b.textContent===correct) b.classList.add('correct');
+        else if(b===btn&&!ok) b.classList.add('wrong');
+      });
+      const jp=quizQ[qIdx].jp;
+      if(ok){qC++;qXP+=10;state[jp].correct++;if(state[jp].correct>=3)state[jp].status='mastered';else state[jp].status='learning';updateProgress();refreshTile(jp);if(state[jp].status==='mastered')showToast('⭐',jp+' Mastered!',quizQ[qIdx].en+' — +10XP');}
+      else{qW++;state[jp].wrong++;}
+      document.getElementById('aqC').textContent=qC;
+      document.getElementById('aqW').textContent=qW;
+      document.getElementById('aqXP').textContent=qXP;
+      setTimeout(()=>{qIdx++;renderQ();},880);
+    });
+    el.appendChild(btn);
+  });
+}
+
+function showQResult(){
+  document.getElementById('quizActive').style.display='none';
+  document.getElementById('quizResult').style.display='';
+  const total=quizQ.length, acc=Math.round(qC/total*100), perfect=qC===total;
+  document.getElementById('qrEmoji').textContent=perfect?'🏆':acc>=70?'⭐':'💪';
+  document.getElementById('qrTitle').textContent=perfect?'PERFECT!':acc>=70?'GREAT!':'KEEP GOING!';
+  document.getElementById('qrSub').textContent=`${qC}/${total} correct · ${acc}% accuracy`;
+  document.getElementById('qrScore').textContent=`${qC}/${total}`;
+  document.getElementById('qrAcc').textContent=acc+'%';
+  document.getElementById('qrXP').textContent='+'+(qXP+(perfect?30:0));
+  if(perfect) showToast('🏆','PERFECT!',`+${qXP+30} XP earned!`);
+}
+
+// =====================================================================
+// REVIEW
+// =====================================================================
+function initReview(){
+  revQ=WORDS.filter(w=>['learning','review'].includes(state[w.jp].status));
+  revQ=shuffle([...revQ]); rIdx=0; flipped=false;
+  const has=revQ.length>0;
+  document.getElementById('revEmpty').style.display=has?'none':'';
+  document.getElementById('revActive').style.display=has?'':'none';
+  if(has) showRevCard();
+}
+
+function showRevCard(){
+  flipped=false;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('revActions').style.display='none';
+  if(rIdx>=revQ.length){showToast('🎉','Done!',`${revQ.length} words reviewed!`);setTimeout(initReview,1200);return;}
+  const w=revQ[rIdx];
+  document.getElementById('rfJP').textContent=w.jp;
+  document.getElementById('rfKana').textContent=w.k!==w.jp?w.k:'';
+  document.getElementById('rbJP').textContent=w.jp;
+  document.getElementById('rbEN').textContent=w.en.toUpperCase();
+  document.getElementById('rbEx').textContent=w.exe;
+  document.getElementById('revProg').textContent=`Card ${rIdx+1} of ${revQ.length}`;
+}
+
+function flipRevCard(){
+  if(flipped) return; flipped=true;
+  document.getElementById('flipInner').classList.add('flipped');
+  setTimeout(()=>{document.getElementById('revActions').style.display='flex';},300);
+}
+
+function revAns(r){
+  const w=revQ[rIdx];
+  if(r==='again'){state[w.jp].wrong++;state[w.jp].status='learning';revQ.push(revQ[rIdx]);}
+  else if(r==='easy'){state[w.jp].correct+=2;state[w.jp].status='mastered';showToast('⭐',w.jp+' Mastered!',w.en);}
+  else{state[w.jp].correct++;if(state[w.jp].correct>=3)state[w.jp].status='mastered';}
+  updateProgress();rIdx++;showRevCard();
+}
+
+// =====================================================================
+// AUDIO
+// =====================================================================
+function playAudio(){
+  const btn=document.getElementById('audioBtn');
+  btn.classList.add('playing');btn.textContent='🔊 Playing...';
+  if('speechSynthesis'in window){
+    const u=new SpeechSynthesisUtterance(selWord);
+    u.lang='ja-JP';u.rate=0.78;
+    u.onend=()=>{btn.classList.remove('playing');btn.textContent='🔊 Play Sound';};
+    speechSynthesis.speak(u);
+  } else setTimeout(()=>{btn.classList.remove('playing');btn.textContent='🔊 Play Sound';},600);
+}
+
+// =====================================================================
+// HELPERS
+// =====================================================================
+function showToast(icon,title,sub){
+  document.getElementById('tIcon').textContent=icon;
+  document.getElementById('tTitle').textContent=title;
+  document.getElementById('tSub').textContent=sub;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove('show'),3000);
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT') return;
+  const idx=WORDS.findIndex(w=>w.jp===selWord);
+  if(e.key==='ArrowRight'&&idx<WORDS.length-1) selectWord(WORDS[idx+1].jp);
+  if(e.key==='ArrowLeft'&&idx>0) selectWord(WORDS[idx-1].jp);
+  if(e.key===' '){e.preventDefault();playAudio();}
+});
+
+// INIT
+buildGrid('all');
+selectWord(WORDS[0].jp);
+buildQuizSetup();
+updateProgress();
+setTimeout(()=>showToast('📗','Vocabulary Unlocked!','150 N5 words — search, quiz, SRS review!'),800);
+</script>
+</body>
+</html>
