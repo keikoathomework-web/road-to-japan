@@ -555,12 +555,14 @@ const RTJLang = (() => {
   });
 
   // ── LANGUAGE META ──
+  // Active languages (fully translated)
   const LANGUAGES = [
-    { code:'en', name:'English',    flag:'🇺🇸', nativeName:'English' },
-    { code:'es', name:'Spanish',    flag:'🇪🇸', nativeName:'Español' },
-    { code:'fr', name:'French',     flag:'🇫🇷', nativeName:'Français' },
-    { code:'de', name:'German',     flag:'🇩🇪', nativeName:'Deutsch' },
-    { code:'ko', name:'Korean',     flag:'🇰🇷', nativeName:'한국어' },
+    { code:'en', name:'English',  flag:'🇺🇸', nativeName:'English' },
+    { code:'es', name:'Spanish',  flag:'🇪🇸', nativeName:'Español' },
+    // Coming soon:
+    // { code:'fr', name:'French',  flag:'🇫🇷', nativeName:'Français' },
+    // { code:'de', name:'German',  flag:'🇩🇪', nativeName:'Deutsch'  },
+    // { code:'ko', name:'Korean',  flag:'🇰🇷', nativeName:'한국어'    },
   ];
 
   // ── STORAGE KEYS ──
@@ -756,19 +758,18 @@ const RTJLang = (() => {
         }
         .rtj-ls-sub { font-size:0.83rem;color:#a0a8c0;line-height:1.7;margin-bottom:22px; }
         .rtj-ls-grid {
-          display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:18px;
+          display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px;max-width:280px;margin-left:auto;margin-right:auto;
         }
-        @media(max-width:480px){.rtj-ls-grid{grid-template-columns:repeat(3,1fr);}}
         .rtj-ls-card {
-          border-radius:14px;padding:12px 8px;cursor:pointer;
+          border-radius:16px;padding:20px 12px;cursor:pointer;
           border:1.5px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);
           transition:all 0.2s;
         }
         .rtj-ls-card:hover { background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.25);transform:translateY(-2px); }
         .rtj-ls-card.active { background:rgba(255,215,0,0.12);border-color:rgba(255,215,0,0.5);box-shadow:0 0 16px rgba(255,215,0,0.15); }
-        .rtj-ls-card-flag { font-size:1.8rem;margin-bottom:4px; }
-        .rtj-ls-card-native { font-size:0.75rem;font-weight:900;color:#fff;margin-bottom:2px; }
-        .rtj-ls-card-name { font-size:0.55rem;color:#7a8099; }
+        .rtj-ls-card-flag { font-size:2.8rem;margin-bottom:8px; }
+        .rtj-ls-card-native { font-size:1rem;font-weight:900;color:#fff;margin-bottom:3px; }
+        .rtj-ls-card-name { font-size:0.72rem;color:#7a8099; }
         .rtj-ls-note {
           font-size:0.7rem;color:#7a8099;margin-bottom:18px;
           background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.1);

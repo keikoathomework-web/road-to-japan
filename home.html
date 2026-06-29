@@ -98,9 +98,61 @@ body {
   border: 2px solid rgba(255,215,0,0.4);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.1rem; cursor: pointer; flex-shrink: 0;
-  transition: all 0.2s;
+  transition: all 0.2s; position: relative;
 }
 .avatar-btn:hover { transform: scale(1.1); box-shadow: 0 0 16px rgba(255,215,0,0.3); }
+
+/* Profile Dropdown */
+.profile-dropdown {
+  position: fixed; top: calc(var(--header) + 8px); right: 16px;
+  width: 280px; z-index: 500;
+  background: #161b22; border: 1px solid rgba(255,215,0,0.2);
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+  opacity: 0; pointer-events: none; transform: translateY(-10px) scale(0.97);
+  transition: all 0.22s cubic-bezier(0.34,1.4,0.64,1);
+  transform-origin: top right;
+}
+.profile-dropdown.open {
+  opacity: 1; pointer-events: all; transform: translateY(0) scale(1);
+}
+.pd-header {
+  padding: 18px 18px 14px;
+  background: linear-gradient(135deg,#1a1200,#0d0d1a);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; gap: 12px;
+}
+.pd-avatar {
+  width: 46px; height: 46px; border-radius: 50%; font-size: 1.6rem;
+  background: linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,58,92,0.15));
+  border: 2px solid rgba(255,215,0,0.3);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.pd-name { font-size: 0.9rem; font-weight: 900; color: #fff; margin-bottom: 2px; }
+.pd-plan { font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 10px;
+  background: rgba(0,230,118,0.12); color: var(--green); border: 1px solid rgba(0,230,118,0.25); display: inline-block; }
+.pd-streak { font-size: 0.7rem; color: var(--gray); margin-top: 3px; }
+
+.pd-stats { display: grid; grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid rgba(255,255,255,0.06); }
+.pd-stat { padding: 12px 8px; text-align: center; border-right: 1px solid rgba(255,255,255,0.06); }
+.pd-stat:last-child { border-right: none; }
+.pd-stat-val { font-family: 'Orbitron',sans-serif; font-size: 0.9rem; font-weight: 900; color: #fff; }
+.pd-stat-lbl { font-size: 0.55rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+.pd-menu { padding: 8px 0; }
+.pd-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 18px; font-size: 0.83rem; font-weight: 800;
+  color: #d0d4e8; cursor: pointer; transition: background 0.15s;
+  text-decoration: none;
+}
+.pd-item:hover { background: rgba(255,255,255,0.05); }
+.pd-item-icon { font-size: 1rem; width: 22px; text-align: center; flex-shrink: 0; }
+.pd-item-arrow { margin-left: auto; color: var(--gray); font-size: 0.75rem; }
+.pd-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0; }
+.pd-item.danger { color: var(--red); }
+.pd-item.danger:hover { background: rgba(255,58,92,0.08); }
 
 /* =====================
    LAYOUT
@@ -559,8 +611,73 @@ body {
   <!-- Language Switcher (compact) -->
   <div id="langSwitcherSlot" style="margin-right:8px"></div>
 
-  <div class="avatar-btn" onclick="window.location.href='profile.html'" title="My Profile">🦊</div>
+  <div class="avatar-btn" id="avatarBtn" onclick="toggleProfileDropdown()" title="My Profile">🦊</div>
 </header>
+
+<!-- PROFILE DROPDOWN -->
+<div class="profile-dropdown" id="profileDropdown">
+
+  <!-- Header: avatar + name + plan -->
+  <div class="pd-header">
+    <div class="pd-avatar">🦊</div>
+    <div>
+      <div class="pd-name" id="pdName">KAI-KUN</div>
+      <div class="pd-plan">🌱 Free Plan</div>
+      <div class="pd-streak" id="pdStreak">🔥 7-day streak</div>
+    </div>
+  </div>
+
+  <!-- Mini stats -->
+  <div class="pd-stats">
+    <div class="pd-stat">
+      <div class="pd-stat-val" style="color:var(--red)">7</div>
+      <div class="pd-stat-lbl">Streak</div>
+    </div>
+    <div class="pd-stat">
+      <div class="pd-stat-val" style="color:var(--gold)">1,240</div>
+      <div class="pd-stat-lbl">XP</div>
+    </div>
+    <div class="pd-stat">
+      <div class="pd-stat-val" style="color:var(--cyan)">12</div>
+      <div class="pd-stat-lbl">Level</div>
+    </div>
+  </div>
+
+  <!-- Menu items -->
+  <div class="pd-menu">
+    <a class="pd-item" href="profile.html">
+      <span class="pd-item-icon">👤</span> My Profile
+      <span class="pd-item-arrow">→</span>
+    </a>
+    <a class="pd-item" href="progress.html">
+      <span class="pd-item-icon">🗓️</span> 12-Month Journey
+      <span class="pd-item-arrow">→</span>
+    </a>
+    <a class="pd-item" href="certificate.html">
+      <span class="pd-item-icon">🏆</span> My Certificate
+      <span class="pd-item-arrow">→</span>
+    </a>
+
+    <div class="pd-divider"></div>
+
+    <a class="pd-item" href="payment.html">
+      <span class="pd-item-icon">⭐</span> Upgrade to Premium
+      <span class="pd-item-arrow">→</span>
+    </a>
+    <div class="pd-item" onclick="toggleLangFromDropdown()">
+      <span class="pd-item-icon">🌐</span>
+      <span id="pdLangLabel">Language: English</span>
+      <span class="pd-item-arrow">→</span>
+    </div>
+
+    <div class="pd-divider"></div>
+
+    <div class="pd-item danger" onclick="confirmSignOut()">
+      <span class="pd-item-icon">🚪</span> Sign Out
+    </div>
+  </div>
+
+</div>
 
 <!-- APP LAYOUT -->
 <div class="app-layout">
@@ -651,7 +768,7 @@ body {
         </div>
       </div>
 
-      <div class="quest-card" onclick="openLesson('Daily Review','Review your SRS cards to keep your memory sharp!','🔄','12 cards due','~8 min')">
+      <div class="quest-card" onclick="openLesson('Daily Review','Review your SRS cards to keep your memory sharp!','🔄','12 cards due','~8 min','vocabulary.html')">
         <div class="quest-icon">🔄</div>
         <div class="quest-title">Review 12 Cards</div>
         <div class="quest-progress">
@@ -660,7 +777,7 @@ body {
         </div>
       </div>
 
-      <div class="quest-card" onclick="openLesson('Chapter 1 Story','Continue Kai\'s adventure at the Port of Departure!','⛵','10 min read','Choice-based')">
+      <div class="quest-card" onclick="openLesson('Chapter 1 Story','Continue Kai\'s adventure at the Port of Departure!','⛵','10 min read','Choice-based','story.html')">
         <div class="quest-icon">⛵</div>
         <div class="quest-title">Read 10 min Story</div>
         <div class="quest-progress">
@@ -685,7 +802,7 @@ body {
       <h2>⚔️ Your Story</h2>
     </div>
 
-    <div class="story-banner" onclick="openLesson('Chapter 1: Port of Departure','Join Kai as he discovers the legend of the Grand Scroll and learns Hiragana to board the ship!','⛵','~15 min','Choice-based story')">
+    <div class="story-banner" onclick="openLesson('Chapter 1: Port of Departure','Join Kai as he discovers the legend of the Grand Scroll and learns Hiragana to board the ship!','⛵','~15 min','Choice-based story','story.html')">
       <div class="story-chapter-badge">
         <span style="font-size:0.65rem;font-weight:900;letter-spacing:1px;color:var(--red)">CHAPTER</span>
         <span class="ch-num">1</span>
@@ -700,7 +817,7 @@ body {
     </div>
 
     <!-- REVIEW DUE -->
-    <div class="review-banner" onclick="openLesson('SRS Review','Your spaced repetition cards are due! Review them to keep your memory strong.','🔄','12 cards','~8 min')">
+    <div class="review-banner" onclick="openLesson('SRS Review','Your spaced repetition cards are due! Review them to keep your memory strong.','🔄','12 cards','~8 min','vocabulary.html')">
       <div class="review-num">12</div>
       <div class="review-info">
         <div class="rv-title">🔄 Cards Due for Review</div>
@@ -727,7 +844,7 @@ body {
 
     <div class="modules-grid">
       <!-- Hiragana -->
-      <div class="module-card hiragana" onclick="openLesson('Hiragana','Master all 50 Hiragana characters with flashcards, audio, and stroke order!','あ','5 new cards · 10 review','~10 min')">
+      <div class="module-card hiragana" onclick="openLesson('Hiragana','Master all 50 Hiragana characters with flashcards, audio, and stroke order!','あ','5 new cards · 10 review','~10 min','hiragana.html')">
         <div class="module-top">
           <div class="module-icon-wrap" style="background:rgba(0,229,255,0.1)">あ</div>
           <div class="module-info">
@@ -743,7 +860,7 @@ body {
       </div>
 
       <!-- Katakana -->
-      <div class="module-card" style="border-color:rgba(255,110,180,0.15)" onclick="openLesson('Katakana','Learn all 50 Katakana characters used for foreign words and cool effects!','ア','5 new cards','~10 min')">
+      <div class="module-card" style="border-color:rgba(255,110,180,0.15)" onclick="openLesson('Katakana','Learn all 50 Katakana characters used for foreign words and cool effects!','ア','5 new cards','~10 min','katakana.html')">
         <div class="module-top">
           <div class="module-icon-wrap" style="background:rgba(255,110,180,0.1)">ア</div>
           <div class="module-info">
@@ -785,7 +902,7 @@ body {
       </div>
 
       <!-- Culture -->
-      <div class="module-card culture" onclick="openLesson('Japan Culture','Dive into anime, food, history and travel. Japan is more than a language!','🎌','3 new articles','~5 min read')">
+      <div class="module-card culture" onclick="openLesson('Japan Culture','Dive into anime, food, history and travel. Japan is more than a language!','🎌','3 new articles','~5 min read','culture.html')">
         <div class="module-top">
           <div class="module-icon-wrap" style="background:rgba(0,230,118,0.1)">🎌</div>
           <div class="module-info">
@@ -996,14 +1113,15 @@ function animateNum(id, target) {
 }
 
 // ===== LESSON MODAL =====
-const modalData = {};
+let currentLessonURL = null;
 
-function openLesson(title, sub, icon, stat1, stat2) {
+function openLesson(title, sub, icon, stat1, stat2, url) {
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalSub').textContent = sub;
   document.getElementById('modalIcon').textContent = icon;
   document.getElementById('ms1').textContent = stat1;
   document.getElementById('ms2').textContent = stat2;
+  currentLessonURL = url || null;
   document.getElementById('lessonModal').classList.remove('hidden');
 }
 
@@ -1013,7 +1131,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 
 function startLesson() {
   closeModal();
-  showMochiToast('もちもち！', 'Lesson starting... がんばって！');
+  if (currentLessonURL) {
+    window.location.href = currentLessonURL;
+  } else {
+    showMochiToast('もちもち！', 'Lesson starting... がんばって！');
+  }
 }
 
 // ===== TOAST =====
@@ -1035,6 +1157,38 @@ function showUpgradeToast() {
   showMochiToast('⚔️ Upgrade to Standard!', 'Unlock 1,006 Kanji + Culture Hub + unlimited lessons!');
 }
 
+// ── PROFILE DROPDOWN ──
+function toggleProfileDropdown() {
+  const dd = document.getElementById('profileDropdown');
+  dd.classList.toggle('open');
+  // Load profile data from localStorage
+  const profile = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
+  if (profile.name) document.getElementById('pdName').textContent = profile.name;
+  if (profile.streak) document.getElementById('pdStreak').textContent = `🔥 ${profile.streak}-day streak`;
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  const dd = document.getElementById('profileDropdown');
+  const btn = document.getElementById('avatarBtn');
+  if (dd && !dd.contains(e.target) && !btn.contains(e.target)) {
+    dd.classList.remove('open');
+  }
+});
+
+function confirmSignOut() {
+  if (confirm('Sign out of Road to Japan?')) {
+    localStorage.removeItem('rtj_profile');
+    showMochiToast('👋 Signed out!', 'See you next time! またね！');
+    document.getElementById('profileDropdown').classList.remove('open');
+  }
+}
+
+function toggleLangFromDropdown() {
+  document.getElementById('profileDropdown').classList.remove('open');
+  if (typeof RTJLang !== 'undefined') RTJLang.showScreen();
+}
+
 // ── LANGUAGE SWITCHER INIT ──
 (function initLang() {
   // Inject compact switcher into header slot
@@ -1045,7 +1199,18 @@ function showUpgradeToast() {
     // Show fullscreen picker on very first visit (no language chosen yet)
     RTJLang.autoShow();
     // Re-apply translations whenever language changes
-    document.addEventListener('rtj:langchange', () => RTJLang.apply());
+    document.addEventListener('rtj:langchange', () => {
+      RTJLang.apply();
+      const lbl = document.getElementById('pdLangLabel');
+      if (lbl) {
+        const lang = RTJLang.languages.find(l => l.code === RTJLang.current);
+        if (lang) lbl.textContent = `Language: ${lang.flag} ${lang.nativeName}`;
+      }
+    });
+    // Set initial label
+    const initLang = RTJLang.languages.find(l => l.code === RTJLang.current);
+    const pdLbl = document.getElementById('pdLangLabel');
+    if (pdLbl && initLang) pdLbl.textContent = `Language: ${initLang.flag} ${initLang.nativeName}`;
   }
 })();
 </script>
