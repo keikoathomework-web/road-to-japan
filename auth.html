@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — Join the Adventure</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #08090f;
+  --bg2: #0d0f1e;
+  --card: rgba(255,255,255,0.05);
+  --border: rgba(255,255,255,0.09);
+  --gold: #ffd700;
+  --gold2: #ffaa00;
+  --red: #ff3a5c;
+  --cyan: #00e5ff;
+  --purple: #a855f7;
+  --pink: #ff6eb4;
+  --green: #00e676;
+  --white: #ffffff;
+  --gray: #7a8099;
+  --text: #d0d4e8;
+  --error: #ff3a5c;
+  --success: #00e676;
+}
+
+html, body {
+  height: 100%; font-family: 'Nunito', sans-serif;
+  background: var(--bg); color: var(--white); overflow-x: hidden;
+}
+
+/* ===== BACKGROUND ===== */
+.bg-wrap {
+  position: fixed; inset: 0; z-index: 0; overflow: hidden;
+}
+.bg-orb {
+  position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none;
+}
+.orb1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,215,0,0.1), transparent 70%); top: -150px; right: -100px; }
+.orb2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(168,85,247,0.1), transparent 70%); bottom: -100px; left: -100px; }
+.orb3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,58,92,0.08), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+
+.floating-kanji {
+  position: absolute; pointer-events: none; user-select: none;
+  animation: floatK linear infinite; opacity: 0.04; color: var(--white);
+  font-family: serif;
+}
+@keyframes floatK {
+  from { transform: translateY(110vh) rotate(0deg); }
+  to   { transform: translateY(-200px) rotate(360deg); }
+}
+
+/* ===== LAYOUT ===== */
+.page {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+
+/* ===== LOGO BAR ===== */
+.logo-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8,9,15,0.8); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Bangers', cursive; font-size: 1.5rem; letter-spacing: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--red));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-decoration: none;
+}
+.back-btn {
+  font-size: 0.82rem; font-weight: 800; color: var(--gray);
+  background: none; border: 1px solid var(--border);
+  padding: 6px 16px; border-radius: 20px; cursor: pointer;
+  transition: all 0.2s; font-family: 'Nunito', sans-serif;
+}
+.back-btn:hover { color: var(--white); border-color: var(--white); }
+
+/* ===== AUTH CARD ===== */
+.auth-card {
+  background: rgba(13,15,30,0.9);
+  border: 1px solid var(--border);
+  border-radius: 28px; padding: 44px 40px;
+  width: 100%; max-width: 440px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  animation: cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes cardIn {
+  from { transform: scale(0.9) translateY(20px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.auth-icon { font-size: 2.8rem; text-align: center; display: block; margin-bottom: 8px; }
+
+.auth-title {
+  font-family: 'Bangers', cursive; font-size: 2.4rem;
+  letter-spacing: 3px; text-align: center;
+  background: linear-gradient(135deg, var(--white), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+}
+.auth-sub {
+  text-align: center; color: var(--gray);
+  font-size: 0.9rem; margin-bottom: 32px; line-height: 1.5;
+}
+
+/* ===== SOCIAL BUTTONS ===== */
+.social-btns { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+
+.social-btn {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 14px; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: 0.95rem; color: var(--white);
+  transition: all 0.25s; width: 100%;
+}
+.social-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+.social-btn svg { flex-shrink: 0; }
+
+.social-btn.google:hover { border-color: rgba(234,67,53,0.5); }
+.social-btn.apple:hover  { border-color: rgba(255,255,255,0.4); }
+
+/* ===== DIVIDER ===== */
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px; color: var(--gray); font-size: 0.82rem; font-weight: 700;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* ===== FORM ===== */
+.form-group { margin-bottom: 18px; }
+
+.form-label {
+  display: block; font-size: 0.8rem; font-weight: 900;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--gray); margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%; padding: 14px 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px; color: var(--white);
+  font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 600;
+  transition: all 0.2s; outline: none;
+}
+.form-input::placeholder { color: rgba(255,255,255,0.2); }
+.form-input:focus {
+  border-color: var(--gold);
+  background: rgba(255,215,0,0.04);
+  box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+}
+.form-input.error { border-color: var(--error); box-shadow: 0 0 0 3px rgba(255,58,92,0.1); }
+
+.form-hint { font-size: 0.78rem; color: var(--gray); margin-top: 6px; }
+.form-error { font-size: 0.78rem; color: var(--error); margin-top: 6px; display: none; }
+.form-error.show { display: block; }
+
+/* Password toggle */
+.input-wrap { position: relative; }
+.pw-toggle {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--gray); cursor: pointer;
+  font-size: 1.1rem; padding: 4px; line-height: 1;
+}
+.pw-toggle:hover { color: var(--white); }
+
+/* ===== STRENGTH BAR ===== */
+.pw-strength { margin-top: 8px; }
+.strength-bar { height: 4px; border-radius: 4px; background: var(--border); overflow: hidden; margin-bottom: 4px; }
+.strength-fill { height: 100%; border-radius: 4px; transition: all 0.3s; width: 0%; }
+.strength-txt { font-size: 0.75rem; }
+
+/* ===== SUBMIT BUTTON ===== */
+.btn-submit {
+  width: 100%; padding: 16px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #000; font-family: 'Bangers', cursive;
+  font-size: 1.4rem; letter-spacing: 2px;
+  border: none; border-radius: 14px; cursor: pointer;
+  transition: all 0.25s; margin-top: 8px;
+  box-shadow: 0 0 30px rgba(255,215,0,0.2), 0 4px 0 #a07000;
+}
+.btn-submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 50px rgba(255,215,0,0.4), 0 6px 0 #a07000;
+}
+.btn-submit:active { transform: translateY(0); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* Loading spinner inside button */
+.btn-submit .spinner {
+  display: none; width: 20px; height: 20px;
+  border: 3px solid rgba(0,0,0,0.3);
+  border-top-color: #000; border-radius: 50%;
+  animation: spin 0.6s linear infinite; margin: auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-submit.loading span { display: none; }
+.btn-submit.loading .spinner { display: block; }
+
+/* ===== FOOTER LINK ===== */
+.auth-switch {
+  text-align: center; margin-top: 24px;
+  font-size: 0.88rem; color: var(--gray);
+}
+.auth-switch a {
+  color: var(--gold); font-weight: 800; text-decoration: none;
+  cursor: pointer; transition: opacity 0.2s;
+}
+.auth-switch a:hover { opacity: 0.8; }
+
+.forgot-link {
+  text-align: right; margin-top: -10px; margin-bottom: 16px;
+}
+.forgot-link a {
+  font-size: 0.8rem; color: var(--gray); text-decoration: none;
+  cursor: pointer; transition: color 0.2s;
+}
+.forgot-link a:hover { color: var(--gold); }
+
+/* ===== TERMS ===== */
+.terms-txt {
+  text-align: center; font-size: 0.75rem; color: var(--gray);
+  margin-top: 16px; line-height: 1.5;
+}
+.terms-txt a { color: var(--gold); text-decoration: none; }
+
+/* ===== SUCCESS STATE ===== */
+.success-state {
+  text-align: center; padding: 20px 0;
+}
+.success-icon-wrap {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: rgba(0,230,118,0.1); border: 2px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem; margin: 0 auto 20px;
+  animation: successPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes successPop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+
+/* ===== SCREEN VIEWS ===== */
+.screen { display: none; }
+.screen.active { display: block; animation: screenIn 0.35s ease; }
+@keyframes screenIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+
+/* ===== ONBOARDING ===== */
+.onboarding-card {
+  background: rgba(13,15,30,0.9);
+  border: 1px solid var(--border);
+  border-radius: 28px; padding: 44px 40px;
+  width: 100%; max-width: 560px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  animation: cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+/* Step indicator */
+.step-indicator {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; margin-bottom: 36px;
+}
+.step-dot {
+  width: 32px; height: 6px; border-radius: 3px;
+  background: var(--border); transition: all 0.3s;
+}
+.step-dot.done { background: var(--gold); }
+.step-dot.active { background: var(--gold); width: 48px; }
+
+/* Language selector */
+.lang-options {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-bottom: 32px;
+}
+.lang-option {
+  padding: 20px 16px; border-radius: 16px;
+  border: 2px solid var(--border);
+  background: var(--card); cursor: pointer;
+  text-align: center; transition: all 0.25s;
+}
+.lang-option:hover { border-color: rgba(255,215,0,0.4); background: rgba(255,215,0,0.04); }
+.lang-option.selected { border-color: var(--gold); background: rgba(255,215,0,0.08); }
+.lang-option .flag { font-size: 2.5rem; display: block; margin-bottom: 8px; }
+.lang-option .lang-name { font-family: 'Bangers', cursive; font-size: 1.3rem; letter-spacing: 2px; color: var(--white); }
+.lang-option .lang-native { font-size: 0.8rem; color: var(--gray); margin-top: 2px; }
+.lang-option.selected .lang-name { color: var(--gold); }
+
+/* Level check */
+.level-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+.level-option {
+  padding: 16px 20px; border-radius: 14px;
+  border: 1px solid var(--border); background: var(--card);
+  cursor: pointer; transition: all 0.25s;
+  display: flex; align-items: center; gap: 14px;
+}
+.level-option:hover { border-color: rgba(255,215,0,0.4); background: rgba(255,215,0,0.04); transform: translateX(4px); }
+.level-option.selected { border-color: var(--gold); background: rgba(255,215,0,0.08); }
+.level-option .lv-icon { font-size: 1.8rem; flex-shrink: 0; }
+.level-option .lv-info .lv-title { font-weight: 900; font-size: 0.95rem; margin-bottom: 2px; }
+.level-option.selected .lv-title { color: var(--gold); }
+.level-option .lv-info .lv-desc { font-size: 0.8rem; color: var(--gray); }
+
+/* Character name */
+.char-preview {
+  width: 100px; height: 100px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,58,92,0.1));
+  border: 2px solid rgba(255,215,0,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; margin: 0 auto 20px;
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+.name-display {
+  font-family: 'Bangers', cursive; font-size: 2rem;
+  letter-spacing: 3px; color: var(--gold);
+  text-align: center; min-height: 2.4rem;
+  margin-bottom: 8px; transition: all 0.2s;
+}
+
+/* Onboarding nav buttons */
+.ob-btns { display: flex; gap: 12px; }
+.btn-next {
+  flex: 1; padding: 15px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #000; font-family: 'Bangers', cursive;
+  font-size: 1.3rem; letter-spacing: 2px;
+  border: none; border-radius: 12px; cursor: pointer;
+  transition: all 0.25s; box-shadow: 0 4px 0 #a07000;
+}
+.btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #a07000; }
+.btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.btn-back-ob {
+  padding: 15px 20px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--gray); font-family: 'Bangers', cursive;
+  font-size: 1.1rem; letter-spacing: 1px;
+  border-radius: 12px; cursor: pointer; transition: all 0.25s;
+}
+.btn-back-ob:hover { border-color: var(--white); color: var(--white); }
+
+/* ===== FINISH SCREEN ===== */
+.finish-card {
+  background: rgba(13,15,30,0.9);
+  border: 1px solid rgba(255,215,0,0.2);
+  border-radius: 28px; padding: 52px 40px;
+  width: 100%; max-width: 480px;
+  text-align: center; backdrop-filter: blur(20px);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 60px rgba(255,215,0,0.06);
+  animation: cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+.finish-avatar {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(255,58,92,0.15));
+  border: 3px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.5rem; margin: 0 auto 24px;
+  box-shadow: 0 0 40px rgba(255,215,0,0.25);
+  animation: float 3s ease-in-out infinite;
+}
+.finish-title {
+  font-family: 'Bangers', cursive; font-size: 2.8rem;
+  letter-spacing: 3px; margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--white), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.finish-name {
+  font-family: 'Bangers', cursive; font-size: 2rem;
+  letter-spacing: 3px; color: var(--gold); margin-bottom: 16px;
+}
+.finish-sub { color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 32px; }
+
+.finish-stats {
+  display: flex; gap: 0; margin-bottom: 32px;
+  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+}
+.finish-stat {
+  flex: 1; padding: 16px 12px; text-align: center;
+  border-right: 1px solid var(--border);
+}
+.finish-stat:last-child { border-right: none; }
+.finish-stat .fs-num {
+  font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 900;
+  color: var(--gold); line-height: 1;
+}
+.finish-stat .fs-lbl { font-size: 0.72rem; color: var(--gray); margin-top: 4px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+.btn-start-quest {
+  width: 100%; padding: 18px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #000; font-family: 'Bangers', cursive;
+  font-size: 1.6rem; letter-spacing: 2px;
+  border: none; border-radius: 14px; cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 0 40px rgba(255,215,0,0.25), 0 4px 0 #a07000;
+}
+.btn-start-quest:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 60px rgba(255,215,0,0.4), 0 6px 0 #a07000;
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: rgba(13,15,30,0.95); border: 1px solid var(--border);
+  border-radius: 50px; padding: 12px 24px;
+  font-size: 0.88rem; font-weight: 700; color: var(--white);
+  backdrop-filter: blur(16px); z-index: 999;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  display: flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { border-color: rgba(0,230,118,0.4); }
+.toast.error-toast { border-color: rgba(255,58,92,0.4); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 500px) {
+  .auth-card, .onboarding-card { padding: 32px 24px; }
+  .lang-options { grid-template-columns: 1fr 1fr; }
+  .finish-card { padding: 36px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="bg-wrap">
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+  <div class="bg-orb orb3"></div>
+  <span class="floating-kanji" style="left:8%;font-size:5rem;animation-duration:20s">日</span>
+  <span class="floating-kanji" style="left:80%;font-size:3rem;animation-duration:17s;animation-delay:4s">本</span>
+  <span class="floating-kanji" style="left:20%;font-size:3.5rem;animation-duration:24s;animation-delay:8s">語</span>
+  <span class="floating-kanji" style="left:60%;font-size:2.5rem;animation-duration:19s;animation-delay:2s">侍</span>
+  <span class="floating-kanji" style="left:45%;font-size:4rem;animation-duration:28s;animation-delay:12s">夢</span>
+</div>
+
+<!-- LOGO BAR -->
+<div class="logo-bar">
+  <a class="logo" href="index.html">Road to Japan</a>
+  <button class="back-btn" onclick="window.location.href='index.html'" id="topBackBtn">← Back</button>
+</div>
+
+<!-- ==================== LOGIN SCREEN ==================== -->
+<div class="page screen active" id="screenLogin">
+  <div class="auth-card">
+    <span class="auth-icon">⚡</span>
+    <h1 class="auth-title" id="loginTitle">WELCOME BACK</h1>
+    <p class="auth-sub" id="loginSub">Continue your quest to master Japan!</p>
+
+    <!-- Social Login -->
+    <div class="social-btns">
+      <button class="social-btn google" onclick="handleSocial('Google')">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#EA4335" d="M5.26 9.77A7.24 7.24 0 0 1 12 4.75c1.74 0 3.3.6 4.53 1.6L19.88 3C17.84 1.14 15.08 0 12 0 7.31 0 3.26 2.7 1.28 6.65l3.98 3.12z"/><path fill="#34A853" d="M16.04 18.01A7.23 7.23 0 0 1 12 19.25c-3.06 0-5.68-1.9-6.81-4.63L1.2 17.7C3.18 21.3 7.27 24 12 24c2.97 0 5.79-1.07 7.87-2.96l-3.83-3.03z"/><path fill="#FBBC05" d="M19.25 12c0-.64-.07-1.26-.19-1.85H12V13.7h4.07a3.55 3.55 0 0 1-1.51 2.3l3.83 3.03C20.43 17.26 21.25 14.77 21.25 12c0-.67-.06-1.33-.19-1.97l-.03.03-.1-.06H19.25z"/><path fill="#4285F4" d="M12 4.75c1.74 0 3.3.6 4.53 1.6L19.88 3C17.84 1.14 15.08 0 12 0 7.31 0 3.26 2.7 1.28 6.65l3.98 3.12A7.24 7.24 0 0 1 12 4.75z"/></svg>
+        <span id="googleTxt">Continue with Google</span>
+      </button>
+      <button class="social-btn apple" onclick="handleSocial('Apple')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <span id="appleTxt">Continue with Apple</span>
+      </button>
+    </div>
+
+    <div class="divider"><span id="dividerOr">or</span></div>
+
+    <!-- Email Form -->
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label" id="emailLabel">Email</label>
+        <input class="form-input" id="loginEmail" type="email" placeholder="kai@roadtojapan.com" required autocomplete="email">
+        <div class="form-error" id="loginEmailErr">Please enter a valid email.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" id="pwLabel">Password</label>
+        <div class="input-wrap">
+          <input class="form-input" id="loginPw" type="password" placeholder="••••••••" required autocomplete="current-password">
+          <button type="button" class="pw-toggle" onclick="togglePw('loginPw', this)">👁️</button>
+        </div>
+        <div class="form-error" id="loginPwErr">Incorrect password. Try again.</div>
+      </div>
+
+      <div class="forgot-link">
+        <a onclick="showForgot()" id="forgotTxt">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn-submit" id="loginBtn">
+        <span id="loginBtnTxt">🎌 Let's Go!</span>
+        <div class="spinner"></div>
+      </button>
+    </form>
+
+    <div class="terms-txt" id="termsTxt">
+      By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+    </div>
+
+    <div class="auth-switch">
+      <span id="noAccountTxt">Don't have an account?</span>
+      <a onclick="showScreen('screenRegister')" id="signUpLink"> Sign up free →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== REGISTER SCREEN ==================== -->
+<div class="page screen" id="screenRegister">
+  <div class="auth-card">
+    <span class="auth-icon">🗺️</span>
+    <h1 class="auth-title" id="regTitle">JOIN THE QUEST</h1>
+    <p class="auth-sub" id="regSub">Create your free account and start the adventure!</p>
+
+    <div class="social-btns">
+      <button class="social-btn google" onclick="handleSocial('Google')">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#EA4335" d="M5.26 9.77A7.24 7.24 0 0 1 12 4.75c1.74 0 3.3.6 4.53 1.6L19.88 3C17.84 1.14 15.08 0 12 0 7.31 0 3.26 2.7 1.28 6.65l3.98 3.12z"/><path fill="#34A853" d="M16.04 18.01A7.23 7.23 0 0 1 12 19.25c-3.06 0-5.68-1.9-6.81-4.63L1.2 17.7C3.18 21.3 7.27 24 12 24c2.97 0 5.79-1.07 7.87-2.96l-3.83-3.03z"/><path fill="#FBBC05" d="M19.25 12c0-.64-.07-1.26-.19-1.85H12V13.7h4.07a3.55 3.55 0 0 1-1.51 2.3l3.83 3.03C20.43 17.26 21.25 14.77 21.25 12c0-.67-.06-1.33-.19-1.97l-.03.03-.1-.06H19.25z"/><path fill="#4285F4" d="M12 4.75c1.74 0 3.3.6 4.53 1.6L19.88 3C17.84 1.14 15.08 0 12 0 7.31 0 3.26 2.7 1.28 6.65l3.98 3.12A7.24 7.24 0 0 1 12 4.75z"/></svg>
+        <span id="regGoogleTxt">Sign up with Google</span>
+      </button>
+    </div>
+
+    <div class="divider"><span id="regDivider">or</span></div>
+
+    <form onsubmit="handleRegister(event)">
+      <div class="form-group">
+        <label class="form-label" id="regEmailLabel">Email</label>
+        <input class="form-input" id="regEmail" type="email" placeholder="kai@roadtojapan.com" required autocomplete="email">
+        <div class="form-error" id="regEmailErr">Please enter a valid email.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" id="regPwLabel">Password</label>
+        <div class="input-wrap">
+          <input class="form-input" id="regPw" type="password" placeholder="••••••••" required autocomplete="new-password" oninput="checkStrength(this.value)">
+          <button type="button" class="pw-toggle" onclick="togglePw('regPw', this)">👁️</button>
+        </div>
+        <div class="pw-strength" id="strengthWrap">
+          <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+          <span class="strength-txt" id="strengthTxt" style="color:var(--gray)"></span>
+        </div>
+        <div class="form-error" id="regPwErr">Password must be at least 8 characters.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" id="regPwCLabel">Confirm Password</label>
+        <div class="input-wrap">
+          <input class="form-input" id="regPwC" type="password" placeholder="••••••••" required autocomplete="new-password">
+          <button type="button" class="pw-toggle" onclick="togglePw('regPwC', this)">👁️</button>
+        </div>
+        <div class="form-error" id="regPwCErr">Passwords don't match.</div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="regBtn">
+        <span id="regBtnTxt">🌸 Create Free Account</span>
+        <div class="spinner"></div>
+      </button>
+    </form>
+
+    <div class="terms-txt" id="regTermsTxt">
+      By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+    </div>
+
+    <div class="auth-switch">
+      <span id="haveAccountTxt">Already have an account?</span>
+      <a onclick="showScreen('screenLogin')" id="signInLink"> Sign in →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ONBOARDING SCREEN ==================== -->
+<div class="page screen" id="screenOnboarding">
+  <div class="onboarding-card">
+    <!-- Step indicator -->
+    <div class="step-indicator">
+      <div class="step-dot active" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+      <div class="step-dot" id="dot3"></div>
+    </div>
+
+    <!-- Step 1: Language -->
+    <div class="screen active" id="obStep1">
+      <span class="auth-icon">🌍</span>
+      <h2 class="auth-title" style="font-size:2rem" id="ob1Title">CHOOSE YOUR LANGUAGE</h2>
+      <p class="auth-sub" id="ob1Sub">Which language do you prefer for the app?</p>
+
+      <div class="lang-options">
+        <div class="lang-option selected" id="langEN" onclick="selectLang('en')">
+          <span class="flag">🇺🇸</span>
+          <div class="lang-name">English</div>
+          <div class="lang-native">English</div>
+        </div>
+        <div class="lang-option" id="langES" onclick="selectLang('es')">
+          <span class="flag">🇪🇸</span>
+          <div class="lang-name">Español</div>
+          <div class="lang-native">Spanish</div>
+        </div>
+      </div>
+
+      <div class="ob-btns">
+        <button class="btn-next" id="ob1Next" onclick="goObStep(2)">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Level -->
+    <div class="screen" id="obStep2">
+      <span class="auth-icon">🎯</span>
+      <h2 class="auth-title" style="font-size:2rem" id="ob2Title">YOUR JAPANESE LEVEL?</h2>
+      <p class="auth-sub" id="ob2Sub">We'll personalize your adventure based on your level.</p>
+
+      <div class="level-options">
+        <div class="level-option" onclick="selectLevel(this, 'zero')">
+          <span class="lv-icon">🐣</span>
+          <div class="lv-info">
+            <div class="lv-title" id="lv0Title">Complete Beginner</div>
+            <div class="lv-desc" id="lv0Desc">I don't know any Japanese yet</div>
+          </div>
+        </div>
+        <div class="level-option" onclick="selectLevel(this, 'kana')">
+          <span class="lv-icon">📖</span>
+          <div class="lv-info">
+            <div class="lv-title" id="lv1Title">Kana Level</div>
+            <div class="lv-desc" id="lv1Desc">I know some Hiragana / Katakana</div>
+          </div>
+        </div>
+        <div class="level-option" onclick="selectLevel(this, 'kanji')">
+          <span class="lv-icon">⚔️</span>
+          <div class="lv-info">
+            <div class="lv-title" id="lv2Title">Kanji Warrior</div>
+            <div class="lv-desc" id="lv2Desc">I'm studying Kanji (N5-N3)</div>
+          </div>
+        </div>
+        <div class="level-option" onclick="selectLevel(this, 'advanced')">
+          <span class="lv-icon">🏆</span>
+          <div class="lv-info">
+            <div class="lv-title" id="lv3Title">Advanced</div>
+            <div class="lv-desc" id="lv3Desc">N2 / N1 level — almost fluent!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ob-btns">
+        <button class="btn-back-ob" onclick="goObStep(1)">←</button>
+        <button class="btn-next" id="ob2Next" disabled onclick="goObStep(3)">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Character Name -->
+    <div class="screen" id="obStep3">
+      <div class="char-preview">⚡</div>
+      <div class="name-display" id="nameDisplay">KAI</div>
+
+      <h2 class="auth-title" style="font-size:1.8rem;margin-bottom:6px" id="ob3Title">NAME YOUR HERO</h2>
+      <p class="auth-sub" id="ob3Sub">Give your adventurer a name to start the journey!</p>
+
+      <div class="form-group">
+        <input class="form-input" id="heroName" type="text" maxlength="16"
+          placeholder="Kai" style="text-align:center;font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:3px"
+          oninput="updateNameDisplay(this.value)">
+        <div class="form-hint" id="ob3Hint" style="text-align:center">Max 16 characters</div>
+      </div>
+
+      <div class="ob-btns">
+        <button class="btn-back-ob" onclick="goObStep(2)">←</button>
+        <button class="btn-next" onclick="finishOnboarding()" id="ob3Next">🎌 Begin Quest!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FINISH SCREEN ==================== -->
+<div class="page screen" id="screenFinish">
+  <div class="finish-card">
+    <div class="finish-avatar" id="finishAvatar">⚡</div>
+    <div class="finish-title">READY TO</div>
+    <div class="finish-title" style="color:var(--gold)">SAIL!</div>
+    <div class="finish-name" id="finishName">Welcome, KAI!</div>
+    <p class="finish-sub" id="finishSubTxt">
+      Your adventure begins now. Kai is packed and Sakura is waiting at the port. The Grand Scroll won't find itself!
+    </p>
+
+    <div class="finish-stats">
+      <div class="finish-stat">
+        <div class="fs-num">0</div>
+        <div class="fs-lbl">XP</div>
+      </div>
+      <div class="finish-stat">
+        <div class="fs-num">🔥 0</div>
+        <div class="fs-lbl">Streak</div>
+      </div>
+      <div class="finish-stat">
+        <div class="fs-num">🍡 0</div>
+        <div class="fs-lbl">MochiCoins</div>
+      </div>
+    </div>
+
+    <button class="btn-start-quest" onclick="startQuest()">
+      🎌 Start Chapter 1 →
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span id="toastIcon">✓</span>
+  <span id="toastMsg">Success!</span>
+</div>
+
+<script src="lang.js"></script>
+<script>
+// ===== STATE =====
+let selectedLang = localStorage.getItem('rtj_lang') || 'en';
+let selectedLevel = null, heroNameVal = 'KAI';
+
+// Apply saved language on load
+window.addEventListener('DOMContentLoaded', () => {
+  applyLang(selectedLang);
+  document.getElementById('langEN').classList.toggle('selected', selectedLang === 'en');
+  document.getElementById('langES').classList.toggle('selected', selectedLang === 'es');
+});
+
+// ===== I18N =====
+const T = {
+  en: {
+    loginTitle:'WELCOME BACK', loginSub:'Continue your quest to master Japan!',
+    googleTxt:'Continue with Google', appleTxt:'Continue with Apple',
+    dividerOr:'or with email', emailLabel:'Email', pwLabel:'Password',
+    forgotTxt:'Forgot password?', loginBtnTxt:'🎌 Let\'s Go!',
+    termsTxt:'By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.',
+    noAccountTxt:'Don\'t have an account?', signUpLink:' Sign up free →',
+    backBtn:'← Back to Site',
+    regTitle:'JOIN THE QUEST', regSub:'Create your free account and start the adventure!',
+    regGoogleTxt:'Sign up with Google', regDivider:'or with email',
+    regEmailLabel:'Email', regPwLabel:'Password', regPwCLabel:'Confirm Password',
+    regBtnTxt:'🌸 Create Free Account', regTermsTxt:'By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.',
+    haveAccountTxt:'Already have an account?', signInLink:' Sign in →',
+    ob1Title:'CHOOSE YOUR LANGUAGE', ob1Sub:'Which language do you prefer for the app?',
+    ob2Title:'YOUR JAPANESE LEVEL?', ob2Sub:'We\'ll personalize your adventure based on your level.',
+    lv0Title:'Complete Beginner', lv0Desc:'I don\'t know any Japanese yet',
+    lv1Title:'Kana Level', lv1Desc:'I know some Hiragana / Katakana',
+    lv2Title:'Kanji Warrior', lv2Desc:'I\'m studying Kanji (N5-N3)',
+    lv3Title:'Advanced', lv3Desc:'N2 / N1 level — almost fluent!',
+    ob3Title:'NAME YOUR HERO', ob3Sub:'Give your adventurer a name to start the journey!',
+    ob3Hint:'Max 16 characters',
+    finishSubTxt:'Your adventure begins now. Kai is packed and Sakura is waiting at the port. The Grand Scroll won\'t find itself!',
+  },
+  es: {
+    loginTitle:'BIENVENIDO DE VUELTA', loginSub:'¡Continúa tu quest para dominar Japón!',
+    googleTxt:'Continuar con Google', appleTxt:'Continuar con Apple',
+    dividerOr:'o con email', emailLabel:'Correo electrónico', pwLabel:'Contraseña',
+    forgotTxt:'¿Olvidaste tu contraseña?', loginBtnTxt:'🎌 ¡Vamos!',
+    termsTxt:'Al continuar aceptas nuestros <a href="#">Términos</a> y <a href="#">Política de privacidad</a>.',
+    noAccountTxt:'¿No tienes una cuenta?', signUpLink:' Regístrate gratis →',
+    backBtn:'← Volver al sitio',
+    regTitle:'ÚNETE A LA QUEST', regSub:'¡Crea tu cuenta gratis y comienza la aventura!',
+    regGoogleTxt:'Regístrate con Google', regDivider:'o con email',
+    regEmailLabel:'Correo electrónico', regPwLabel:'Contraseña', regPwCLabel:'Confirmar contraseña',
+    regBtnTxt:'🌸 Crear cuenta gratis', regTermsTxt:'Al registrarte aceptas nuestros <a href="#">Términos</a> y <a href="#">Política de privacidad</a>.',
+    haveAccountTxt:'¿Ya tienes una cuenta?', signInLink:' Inicia sesión →',
+    ob1Title:'ELIGE TU IDIOMA', ob1Sub:'¿Qué idioma prefieres para la aplicación?',
+    ob2Title:'¿TU NIVEL DE JAPONÉS?', ob2Sub:'Personalizaremos tu aventura según tu nivel.',
+    lv0Title:'Principiante absoluto', lv0Desc:'No sé nada de japonés aún',
+    lv1Title:'Nivel Kana', lv1Desc:'Sé algo de Hiragana / Katakana',
+    lv2Title:'Guerrero Kanji', lv2Desc:'Estudio Kanji (N5-N3)',
+    lv3Title:'Avanzado', lv3Desc:'Nivel N2 / N1 — ¡casi fluido!',
+    ob3Title:'NOMBRA A TU HÉROE', ob3Sub:'¡Dale un nombre a tu aventurero para comenzar el viaje!',
+    ob3Hint:'Máximo 16 caracteres',
+    finishSubTxt:'Tu aventura comienza ahora. Kai está listo y Sakura espera en el puerto. ¡El Gran Pergamino no se encontrará solo!',
+  }
+};
+
+function applyLang(l) {
+  selectedLang = l;
+  const t = T[l];
+  Object.keys(t).forEach(k => {
+    const el = document.getElementById(k);
+    if (el) el.innerHTML = t[k];
+  });
+  // update level labels too
+  ['lv0','lv1','lv2','lv3'].forEach(lv => {
+    const tEl = document.getElementById(lv+'Title');
+    const dEl = document.getElementById(lv+'Desc');
+    if (tEl) tEl.textContent = t[lv+'Title'];
+    if (dEl) dEl.textContent = t[lv+'Desc'];
+  });
+}
+
+// ===== NAVIGATION =====
+function showScreen(id) {
+  document.querySelectorAll('.page.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showForgot() {
+  showToast('🔑 Password reset email sent! Check your inbox.', 'success');
+}
+
+// ===== SOCIAL LOGIN =====
+function handleSocial(provider) {
+  showToast(`Connecting to ${provider}...`, '');
+  setTimeout(() => {
+    showScreen('screenOnboarding');
+    showToast(`✓ Signed in with ${provider}!`, 'success');
+  }, 1200);
+}
+
+// ===== LOGIN =====
+function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const pw = document.getElementById('loginPw').value;
+  const btn = document.getElementById('loginBtn');
+
+  clearErrors();
+  let valid = true;
+
+  if (!email || !email.includes('@')) {
+    showError('loginEmailErr', 'loginEmail'); valid = false;
+  }
+  if (!pw || pw.length < 6) {
+    showError('loginPwErr', 'loginPw'); valid = false;
+  }
+  if (!valid) return;
+
+  btn.classList.add('loading'); btn.disabled = true;
+  setTimeout(() => {
+    btn.classList.remove('loading'); btn.disabled = false;
+    showScreen('screenOnboarding');
+    showToast('✓ Logged in successfully!', 'success');
+  }, 1500);
+}
+
+// ===== REGISTER =====
+function handleRegister(e) {
+  e.preventDefault();
+  const email = document.getElementById('regEmail').value;
+  const pw = document.getElementById('regPw').value;
+  const pwc = document.getElementById('regPwC').value;
+  const btn = document.getElementById('regBtn');
+
+  clearErrors();
+  let valid = true;
+
+  if (!email || !email.includes('@')) {
+    showError('regEmailErr', 'regEmail'); valid = false;
+  }
+  if (!pw || pw.length < 8) {
+    showError('regPwErr', 'regPw'); valid = false;
+  }
+  if (pw !== pwc) {
+    showError('regPwCErr', 'regPwC'); valid = false;
+  }
+  if (!valid) return;
+
+  btn.classList.add('loading'); btn.disabled = true;
+  setTimeout(() => {
+    btn.classList.remove('loading'); btn.disabled = false;
+    showScreen('screenOnboarding');
+    showToast('🎉 Account created! Let\'s set up your adventure.', 'success');
+  }, 1800);
+}
+
+// ===== ONBOARDING STEPS =====
+function goObStep(step) {
+  for (let i = 1; i <= 3; i++) {
+    const s = document.getElementById('obStep' + i);
+    const d = document.getElementById('dot' + i);
+    s.classList.remove('active');
+    d.classList.remove('active', 'done');
+    if (i < step) d.classList.add('done');
+    else if (i === step) d.classList.add('active');
+  }
+  document.getElementById('obStep' + step).classList.add('active');
+}
+
+function selectLang(l) {
+  document.getElementById('langEN').classList.toggle('selected', l === 'en');
+  document.getElementById('langES').classList.toggle('selected', l === 'es');
+  selectedLang = l;
+  applyLang(l);
+  // Save to localStorage so all pages use this language
+  localStorage.setItem('rtj_lang', l);
+  localStorage.setItem('rtj_lang_seen', '1');
+}
+
+let selectedLevelEl = null;
+function selectLevel(el, level) {
+  document.querySelectorAll('.level-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedLevel = level;
+  document.getElementById('ob2Next').disabled = false;
+}
+
+function updateNameDisplay(val) {
+  const display = document.getElementById('nameDisplay');
+  display.textContent = val.toUpperCase() || 'KAI';
+  heroNameVal = val.toUpperCase() || 'KAI';
+}
+
+function finishOnboarding() {
+  const name = document.getElementById('heroName').value.trim().toUpperCase() || 'KAI';
+  heroNameVal = name;
+  document.getElementById('finishName').textContent =
+    selectedLang === 'es' ? `¡Bienvenido, ${name}!` : `Welcome, ${name}!`;
+  document.getElementById('finishSubTxt').textContent = T[selectedLang].finishSubTxt;
+  showScreen('screenFinish');
+}
+
+function startQuest() {
+  // Save profile to localStorage
+  const profile = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
+  profile.name    = heroNameVal;
+  profile.lang    = selectedLang;
+  profile.level   = selectedLevel;
+  profile.streak  = 0;
+  profile.xp      = 0;
+  profile.joinDate = new Date().toISOString().split('T')[0];
+  localStorage.setItem('rtj_profile', JSON.stringify(profile));
+  localStorage.setItem('rtj_lang', selectedLang);
+  localStorage.setItem('rtj_lang_seen', '1');
+
+  const msg = selectedLang === 'es'
+    ? '🎌 ¡Comenzando el Capítulo 1!'
+    : '🎌 Starting Chapter 1: Port of Departure!';
+  showToast(msg, 'success');
+  setTimeout(() => { window.location.href = 'home.html'; }, 1200);
+}
+
+// ===== HELPERS =====
+function showError(errId, inputId) {
+  document.getElementById(errId).classList.add('show');
+  document.getElementById(inputId).classList.add('error');
+}
+function clearErrors() {
+  document.querySelectorAll('.form-error').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('.form-input').forEach(i => i.classList.remove('error'));
+}
+
+function togglePw(inputId, btn) {
+  const input = document.getElementById(inputId);
+  const isText = input.type === 'text';
+  input.type = isText ? 'password' : 'text';
+  btn.textContent = isText ? '👁️' : '🙈';
+}
+
+function checkStrength(pw) {
+  const fill = document.getElementById('strengthFill');
+  const txt = document.getElementById('strengthTxt');
+  let score = 0;
+  if (pw.length >= 8) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+
+  const levels = [
+    { w: '25%', color: 'var(--red)', label: 'Too weak' },
+    { w: '50%', color: '#ff9800', label: 'Fair' },
+    { w: '75%', color: '#ffee58', label: 'Good' },
+    { w: '100%', color: 'var(--green)', label: 'Strong 💪' },
+  ];
+  const lv = levels[Math.max(0, score - 1)] || levels[0];
+  fill.style.width = pw.length ? lv.w : '0%';
+  fill.style.background = lv.color;
+  txt.textContent = pw.length ? lv.label : '';
+  txt.style.color = lv.color;
+}
+
+let toastTimer;
+function showToast(msg, type) {
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+  const toastIcon = document.getElementById('toastIcon');
+  toastMsg.textContent = msg;
+  toast.className = 'toast ' + (type === 'success' ? 'success' : type === 'error' ? 'error-toast' : '');
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// Init
+applyLang('en');
+</script>
+</body>
+</html>
