@@ -530,7 +530,7 @@ async function initSquare() {
         },
         '.message-text': { color: '#ff3a5c' },
         '.message-icon': { color: '#ff3a5c' },
-        input: { color: '#fff', fontFamily: 'Nunito, sans-serif', fontSize: '14px' },
+        input: { color: '#fff', fontSize: '14px' },
         'input::placeholder': { color: '#7a8099' },
       }
     });
@@ -539,7 +539,8 @@ async function initSquare() {
     sqReady = true;
   } catch (e) {
     console.error('Square init error:', e);
-    showError('Could not load the card form. Please check your Square Application ID and Location ID.');
+    const detail = e?.message || e?.name || JSON.stringify(e);
+    showError(`Could not load the card form: ${detail}`);
   }
 }
 
