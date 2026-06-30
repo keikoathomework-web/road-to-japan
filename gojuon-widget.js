@@ -188,8 +188,22 @@
 
   let lastUtterance = null; // module-level reference — Chrome silently drops utterances that get GC'd
 
+  function showDebugBadge(msg, isError) {
+    const badge = document.getElementById('rtj-voice-badge');
+    if (!badge) return;
+    badge.textContent = msg;
+    badge.style.color = isError ? '#ff3a5c' : '#ffd700';
+    badge.style.borderColor = isError ? 'rgba(255,58,92,0.5)' : 'rgba(255,215,0,0.3)';
+    badge.classList.add('show');
+    clearTimeout(badgeTimer);
+    badgeTimer = setTimeout(() => badge.classList.remove('show'), 4000);
+  }
+
   window.rtjPlayKana = function(kana, romaji) {
-    if (!('speechSynthesis' in window)) return;
+    if (!('speechSynthesis' in window)) {
+      showDebugBadge('❌ No speechSynthesis API', true);
+      return;
+    }
     speechSynthesis.cancel();
     // Chrome bug: speak() called in the same tick as cancel() is often silently dropped.
     // A short delay lets the cancel actually flush before we queue the next utterance.
@@ -199,21 +213,38 @@
       utt.rate = 0.85;
       utt.pitch = 1.0;
       const v = getVoice();
-      if (v) {
-        utt.voice = v;
-        const badge = document.getElementById('rtj-voice-badge');
-        const gender = /kyoko|female|woman|haruka|mizuki/i.test(v.name) ? '👩 Female' : '👨 Male';
-        if (badge) {
-          badge.textContent = romaji ? `${gender} · ${romaji}` : gender;
-          badge.classList.add('show');
-          clearTimeout(badgeTimer);
-          badgeTimer = setTimeout(() => badge.classList.remove('show'), 1800);
-        }
+      const allVoices = speechSynthesis.getVoices();
+      console.log('[RTJ TTS] total voices:', allVoices.length, '| ja voices:', cachedVoices.length, '| picked:', v ? v.name : '(browser default)');
+
+      if (v) utt.voice = v;
+
+      utt.onstart = () => {
+        console.log('[RTJ TTS] onstart fired — audio should be playing now');
+        showDebugBadge(v ? `🔊 ${v.name}` : '🔊 Playing (default voice)', false);
+      };
+      utt.onerror = (e) => {
+        console.error('[RTJ TTS] onerror:', e.error);
+        showDebugBadge(`❌ TTS error: ${e.error}`, true);
+      };
+      utt.onend = () => console.log('[RTJ TTS] onend fired');
+
+      if (allVoices.length === 0) {
+        showDebugBadge('❌ Browser has 0 voices loaded', true);
+      } else if (cachedVoices.length === 0) {
+        showDebugBadge(`⚠️ No 日本語 voice found (${allVoices.length} total) — trying default`, true);
       }
+
       lastUtterance = utt;
       speechSynthesis.speak(utt);
       // Some Chrome builds need a kick — speak() can silently no-op without it.
       if (speechSynthesis.paused) speechSynthesis.resume();
+
+      // If neither onstart nor onerror fires within 1s, speak() was silently swallowed.
+      setTimeout(() => {
+        if (!speechSynthesis.speaking && !speechSynthesis.pending) {
+          console.warn('[RTJ TTS] speak() produced no audio and no error — likely a stuck speechSynthesis queue. Try reloading the tab.');
+        }
+      }, 1000);
     }, 60);
   };
 
