@@ -37,9 +37,12 @@ function initRTJAuth() {
     },
 
     async signInWithGoogle() {
+      // Build the redirect from the current directory (not just origin) so this
+      // still works under a GitHub Pages project path like /road-to-japan/.
+      const dir = window.location.pathname.replace(/[^/]*$/, '');
       const { data, error } = await client.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: window.location.origin + '/auth.html?signup=1' },
+        options: { redirectTo: window.location.origin + dir + 'auth.html?signup=1' },
       });
       if (error) throw error;
       return data; // browser will redirect to Google, then back here
