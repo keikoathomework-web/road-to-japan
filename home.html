@@ -410,6 +410,15 @@ body {
   margin-left: auto; font-size: 1.1rem; opacity: 0.3;
 }
 
+.plan-badge-tag {
+  margin-left: auto; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px;
+  font-weight: 900; white-space: nowrap;
+}
+.plan-badge-tag.premium-tag {
+  background: rgba(255,215,0,0.15); color: var(--gold);
+  border: 1px solid rgba(255,215,0,0.3);
+}
+
 .module-progress-row {
   display: flex; align-items: center; gap: 10px;
 }
@@ -881,69 +890,69 @@ body {
         <div class="module-next">Next: <strong>ア行 (a-i-u-e-o)</strong></div>
       </div>
 
-      <!-- Kanji (locked) -->
-      <div class="module-card kanji locked" style="opacity:0.55">
+      <!-- Kanji -->
+      <div class="module-card kanji" id="cardKanji" onclick="window.location.href='kanji.html'">
         <div class="module-top">
           <div class="module-icon-wrap" style="background:rgba(255,215,0,0.08)">漢</div>
           <div class="module-info">
             <div class="module-name" style="color:var(--gold)">Kanji</div>
-            <div class="module-sub">Grade 1–6 · 1,006 characters</div>
+            <div class="module-sub">JLPT N5 · 91 characters</div>
           </div>
-          <div class="module-lock">🔒</div>
+          <span class="plan-badge-tag premium-tag">👑 Premium</span>
         </div>
-        <div class="module-next" style="font-size:0.8rem;color:var(--gray)">Complete Hiragana first to unlock</div>
+        <div class="module-next" style="font-size:0.8rem;color:var(--gray)">Unlock with Premium</div>
       </div>
 
       <!-- Japan Map -->
-      <div class="module-card" style="border-color:rgba(0,229,255,0.2);cursor:pointer" onclick="window.location.href='japan-map.html'">
+      <div class="module-card" id="cardMap" style="border-color:rgba(0,229,255,0.2);cursor:pointer" onclick="window.location.href='japan-map.html'">
         <div class="module-top">
           <div class="module-icon-wrap" style="background:rgba(0,229,255,0.12)">🗾</div>
           <div class="module-info">
             <div class="module-name" style="color:var(--cyan)">Japan Sightseeing Map</div>
             <div class="module-sub">25 landmarks · Illustrated · Learn vocabulary</div>
           </div>
-          <span style="font-size:0.7rem;padding:2px 8px;border-radius:10px;background:rgba(0,229,255,0.15);color:var(--cyan);font-weight:900;white-space:nowrap">NEW</span>
+          <span class="plan-badge-tag premium-tag">👑 Premium</span>
         </div>
         <div class="module-next">🗺️ Sapporo to Okinawa · Tap pins to explore Japan!</div>
       </div>
 
       <!-- Culture -->
-      <div class="module-card culture" onclick="openLesson('Japan Culture','Dive into anime, food, history and travel. Japan is more than a language!','🎌','3 new articles','~5 min read','culture.html')">
+      <div class="module-card culture" id="cardCulture" onclick="openLesson('Japan Culture','Dive into anime, food, history and travel. Japan is more than a language!','🎌','3 new articles','~5 min read','culture.html')">
         <div class="module-top">
           <div class="module-icon-wrap" style="background:rgba(0,230,118,0.1)">🎌</div>
           <div class="module-info">
             <div class="module-name" style="color:var(--green)">Culture Hub</div>
             <div class="module-sub">Anime · Food · History · Travel</div>
           </div>
-          <span style="font-size:0.7rem;padding:2px 8px;border-radius:10px;background:rgba(0,230,118,0.15);color:var(--green);font-weight:900;white-space:nowrap">3 NEW</span>
+          <span class="plan-badge-tag premium-tag">👑 Premium</span>
         </div>
         <div class="module-next">Latest: <strong>One Piece — Real Japan Connections</strong></div>
       </div>
 
-      <!-- Reading -->
-      <div class="module-card reading locked" style="opacity:0.55">
+      <!-- Vocabulary -->
+      <div class="module-card" id="cardVocab" style="border-color:rgba(255,215,0,0.15)" onclick="window.location.href='vocabulary.html'">
         <div class="module-top">
-          <div class="module-icon-wrap" style="background:rgba(255,110,180,0.08)">📖</div>
+          <div class="module-icon-wrap" style="background:rgba(255,215,0,0.1)">💬</div>
           <div class="module-info">
-            <div class="module-name" style="color:var(--pink)">Reading</div>
-            <div class="module-sub">N5 → N1 Comprehension</div>
+            <div class="module-name" style="color:var(--gold)">Vocabulary</div>
+            <div class="module-sub">500+ flashcards · Greetings, food, travel</div>
           </div>
-          <div class="module-lock">🔒</div>
+          <span class="plan-badge-tag premium-tag">👑 Premium</span>
         </div>
-        <div class="module-next" style="font-size:0.8rem;color:var(--gray)">Unlock with Standard plan ($15)</div>
+        <div class="module-next">Unlock with Premium</div>
       </div>
 
-      <!-- JLPT (locked) -->
-      <div class="module-card jlpt locked" style="opacity:0.55">
+      <!-- Story Chapters 3-5 -->
+      <div class="module-card" id="cardStory35" style="border-color:rgba(168,85,247,0.15)" onclick="window.location.href='story3.html'">
         <div class="module-top">
-          <div class="module-icon-wrap" style="background:rgba(168,85,247,0.08)">🎯</div>
+          <div class="module-icon-wrap" style="background:rgba(168,85,247,0.1)">📕</div>
           <div class="module-info">
-            <div class="module-name" style="color:var(--purple)">JLPT Prep</div>
-            <div class="module-sub">N5 → N1 Full Prep</div>
+            <div class="module-name" style="color:var(--purple)">Story Chapters 3–5</div>
+            <div class="module-sub">Continue Kai &amp; Sakura's journey</div>
           </div>
-          <div class="module-lock">🔒</div>
+          <span class="plan-badge-tag premium-tag">👑 Premium</span>
         </div>
-        <div class="module-next" style="font-size:0.8rem;color:var(--gray)">Unlock with Premium plan ($30)</div>
+        <div class="module-next">Chapters 1–2 are free · 3–5 unlock with Premium</div>
       </div>
     </div>
 
@@ -1182,6 +1191,11 @@ function initDashboardFromProfile() {
   const plan    = profile.plan || 'free';
   const level   = Math.max(1, Math.floor(xp / 300) + 1);
   const xpIntoLevel = xp % 300;
+
+  // Hide "Premium" badges on module cards if the user is already Premium
+  if (plan !== 'free') {
+    document.querySelectorAll('.plan-badge-tag.premium-tag').forEach(el => el.style.display = 'none');
+  }
 
   // Header chips
   document.getElementById('headerStreakChip').textContent = `🔥 ${streak}`;
