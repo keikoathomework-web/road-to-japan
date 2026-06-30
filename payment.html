@@ -8,6 +8,7 @@
 <!-- Square Web Payments SDK (Sandbox) -->
 <!-- ⚠️ PRODUCTION: change to https://web.squarecdn.com/v1/square.js -->
 <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+<script src="supabase-client.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -608,7 +609,11 @@ async function handlePayment() {
 // ── SUCCESS ──
 function showSuccess(email) {
   const now = new Date();
-  const renew = new Date(now); renew.setMonth(renew.getMonth() + 1);
+  const renew = new Date(now);
+  const isAnnual = PLANS[currentPlan].annual;
+  if (isAnnual) renew.setFullYear(renew.getFullYear() + 1);
+  else renew.setMonth(renew.getMonth() + 1);
+
   const fmt = d => d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   const total = PLANS[currentPlan].price.toFixed(2);
 
@@ -620,12 +625,20 @@ function showSuccess(email) {
   document.getElementById('successScreen').classList.add('show');
   launchConfetti();
 
-  // Save premium status
+  // Save real subscription data — profile.html and home.html read this.
   try {
     const s = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
-    s.premium = true; s.premiumStart = now.toISOString(); s.premiumRenew = renew.toISOString();
+    s.plan          = currentPlan === 'annual' ? 'premium' : currentPlan; // 'free' | 'standard' | 'premium'
+    s.billingCycle   = isAnnual ? 'annual' : 'monthly';
+    s.premium        = currentPlan !== 'free';
+    s.premiumStart    = now.toISOString();
+    s.premiumRenew    = renew.toISOString();
     localStorage.setItem('rtj_profile', JSON.stringify(s));
-  } catch(e) {}
+
+    if (window.RTJAuth && RTJAuth.isConfigured()) {
+      RTJAuth.updateProfile({ plan: s.plan }).catch(err => console.error('[RTJAuth] plan sync failed:', err));
+    }
+  } catch(e) { console.error('Failed to save subscription state:', e); }
 }
 
 // ── CONFETTI ──
