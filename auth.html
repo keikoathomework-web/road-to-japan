@@ -583,6 +583,63 @@ html, body {
   </div>
 </div>
 
+<!-- ==================== FORGOT PASSWORD SCREEN ==================== -->
+<div class="page screen" id="screenForgot">
+  <div class="auth-card">
+    <span class="auth-icon">🔑</span>
+    <h1 class="auth-title" style="font-size:1.8rem">RESET PASSWORD</h1>
+    <p class="auth-sub">Enter your email and we'll send you a reset link.</p>
+
+    <form id="forgotForm" onsubmit="handleForgotSubmit(event)">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="forgotEmail" type="email" placeholder="kai@roadtojapan.com" required>
+        <div class="form-error" id="forgotEmailErr">Please enter a valid email.</div>
+      </div>
+      <button type="submit" class="btn-submit" id="forgotBtn">
+        <span id="forgotBtnTxt">📩 Send Reset Link</span>
+        <div class="spinner"></div>
+      </button>
+    </form>
+
+    <div class="auth-switch">
+      <a onclick="showScreen('screenLogin')"> ← Back to Sign In</a>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SET NEW PASSWORD SCREEN ==================== -->
+<div class="page screen" id="screenNewPassword">
+  <div class="auth-card">
+    <span class="auth-icon">🔐</span>
+    <h1 class="auth-title" style="font-size:1.8rem">SET NEW PASSWORD</h1>
+    <p class="auth-sub">Choose a new password for your account.</p>
+
+    <form id="newPwForm" onsubmit="handleNewPasswordSubmit(event)">
+      <div class="form-group">
+        <label class="form-label">New Password</label>
+        <div class="input-wrap">
+          <input class="form-input" id="newPw" type="password" placeholder="8+ characters" minlength="8" required>
+          <button type="button" class="pw-toggle" onclick="togglePw('newPw', this)">👁️</button>
+        </div>
+        <div class="form-error" id="newPwErr">Password must be at least 8 characters.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm New Password</label>
+        <div class="input-wrap">
+          <input class="form-input" id="newPwC" type="password" placeholder="••••••••" required>
+          <button type="button" class="pw-toggle" onclick="togglePw('newPwC', this)">👁️</button>
+        </div>
+        <div class="form-error" id="newPwCErr">Passwords don't match.</div>
+      </div>
+      <button type="submit" class="btn-submit" id="newPwBtn">
+        <span id="newPwBtnTxt">✅ Update Password</span>
+        <div class="spinner"></div>
+      </button>
+    </form>
+  </div>
+</div>
+
 <!-- ==================== ONBOARDING SCREEN ==================== -->
 <div class="page screen" id="screenOnboarding">
   <div class="onboarding-card">
@@ -742,6 +799,16 @@ window.addEventListener('DOMContentLoaded', () => {
   // If Google OAuth just redirected back here, the user is already
   // signed in — skip straight to onboarding instead of showing Sign Up.
   window.addEventListener('rtjauth:ready', async () => {
+    // A password-reset email link lands here with type=recovery — show the
+    // "set new password" screen instead of treating it as a normal sign-in.
+    RTJAuth.onAuthEvent((event) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        showScreen('screenNewPassword');
+      }
+    });
+
+    if (params.get('reset') === '1') return; // wait for the PASSWORD_RECOVERY event above
+
     const session = await RTJAuth.getSession();
     if (session) {
       const profile = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
@@ -828,7 +895,61 @@ function showScreen(id) {
 }
 
 function showForgot() {
-  showToast('🔑 Password reset email sent! Check your inbox.', 'success');
+  // Pre-fill with whatever email the user already typed on the login screen
+  const loginEmail = document.getElementById('loginEmail').value;
+  if (loginEmail) document.getElementById('forgotEmail').value = loginEmail;
+  showScreen('screenForgot');
+}
+
+function handleForgotSubmit(e) {
+  e.preventDefault();
+  const email = document.getElementById('forgotEmail').value;
+  const btn = document.getElementById('forgotBtn');
+
+  document.getElementById('forgotEmailErr').classList.remove('show');
+  if (!email || !email.includes('@')) {
+    document.getElementById('forgotEmailErr').classList.add('show');
+    return;
+  }
+
+  btn.classList.add('loading'); btn.disabled = true;
+  RTJAuth.resetPasswordForEmail(email)
+    .then(() => {
+      btn.classList.remove('loading'); btn.disabled = false;
+      showToast('📩 Reset link sent! Check your inbox.', 'success');
+      showScreen('screenLogin');
+    })
+    .catch(err => {
+      btn.classList.remove('loading'); btn.disabled = false;
+      document.getElementById('forgotEmailErr').textContent = err.message;
+      document.getElementById('forgotEmailErr').classList.add('show');
+    });
+}
+
+function handleNewPasswordSubmit(e) {
+  e.preventDefault();
+  const pw = document.getElementById('newPw').value;
+  const pwc = document.getElementById('newPwC').value;
+  const btn = document.getElementById('newPwBtn');
+
+  document.getElementById('newPwErr').classList.remove('show');
+  document.getElementById('newPwCErr').classList.remove('show');
+
+  if (pw.length < 8) { document.getElementById('newPwErr').classList.add('show'); return; }
+  if (pw !== pwc) { document.getElementById('newPwCErr').classList.add('show'); return; }
+
+  btn.classList.add('loading'); btn.disabled = true;
+  RTJAuth.updatePassword(pw)
+    .then(() => {
+      btn.classList.remove('loading'); btn.disabled = false;
+      showToast('✅ Password updated! Redirecting...', 'success');
+      setTimeout(() => { window.location.href = 'home.html'; }, 1500);
+    })
+    .catch(err => {
+      btn.classList.remove('loading'); btn.disabled = false;
+      document.getElementById('newPwErr').textContent = err.message;
+      document.getElementById('newPwErr').classList.add('show');
+    });
 }
 
 // ===== SOCIAL LOGIN =====

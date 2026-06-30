@@ -1254,6 +1254,12 @@ function initDashboardFromProfile() {
 }
 document.addEventListener('DOMContentLoaded', initDashboardFromProfile);
 
+// Strip any leftover #access_token=... from auth redirects so it never
+// lingers in the address bar or gets bookmarked/shared by accident.
+if (window.location.hash.includes('access_token')) {
+  history.replaceState(null, '', window.location.pathname + window.location.search);
+}
+
 // Close dropdown when clicking outside
 document.addEventListener('click', e => {
   const dd = document.getElementById('profileDropdown');

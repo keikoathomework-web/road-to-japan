@@ -36,6 +36,25 @@ function initRTJAuth() {
       return data;
     },
 
+    async resetPasswordForEmail(email) {
+      // Build the redirect from the current directory so this still works
+      // under a GitHub Pages project path like /road-to-japan/.
+      const dir = window.location.pathname.replace(/[^/]*$/, '');
+      const { error } = await client.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + dir + 'auth.html?reset=1',
+      });
+      if (error) throw error;
+    },
+
+    async updatePassword(newPassword) {
+      const { error } = await client.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+    },
+
+    onAuthEvent(callback) {
+      client.auth.onAuthStateChange((event, session) => callback(event, session));
+    },
+
     async signInWithGoogle() {
       // Build the redirect from the current directory (not just origin) so this
       // still works under a GitHub Pages project path like /road-to-japan/.
