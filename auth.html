@@ -726,11 +726,20 @@ html, body {
 let selectedLang = localStorage.getItem('rtj_lang') || 'en';
 let selectedLevel = null, heroNameVal = 'KAI';
 
+let selectedPlan = 'free';
+
 // Apply saved language on load
 window.addEventListener('DOMContentLoaded', () => {
   applyLang(selectedLang);
   document.getElementById('langEN').classList.toggle('selected', selectedLang === 'en');
   document.getElementById('langES').classList.toggle('selected', selectedLang === 'es');
+
+  // Auto-open Sign Up screen when coming from a "Start"/"Choose Plan" CTA
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('plan')) selectedPlan = params.get('plan');
+  if (params.get('signup') === '1') {
+    showScreen('screenRegister');
+  }
 });
 
 // ===== I18N =====
@@ -927,6 +936,7 @@ function startQuest() {
   profile.name    = heroNameVal;
   profile.lang    = selectedLang;
   profile.level   = selectedLevel;
+  profile.plan    = selectedPlan;
   profile.streak  = 0;
   profile.xp      = 0;
   profile.joinDate = new Date().toISOString().split('T')[0];

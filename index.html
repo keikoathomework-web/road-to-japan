@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Road to Japan</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<script src="gojuon-widget.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -403,7 +404,7 @@ footer { text-align:center;padding:32px 24px;border-top:1px solid var(--border);
   <p class="hero-subtitle" data-en="Master Japanese, discover anime, J-Pop, samurai history, and every hidden corner of Japan — all in one epic adventure." data-es="Domina el japonés, descubre anime, J-Pop, historia samurái y cada rincón de Japón — todo en una épica aventura.">Master Japanese, discover anime, J-Pop, samurai history, and every hidden corner of Japan — all in one epic adventure.</p>
 
   <div class="hero-btns">
-    <button class="btn-primary" onclick="goTo(8)" data-en="🎌 Start Your Quest" data-es="🎌 Iniciar tu Quest">🎌 Start Your Quest</button>
+    <button class="btn-primary" onclick="goSignup('free')" data-en="🎌 Start Your Quest" data-es="🎌 Iniciar tu Quest">🎌 Start Your Quest</button>
     <button class="btn-outline" onclick="goTo(7)" data-en="▶ Try Demo" data-es="▶ Probar Demo">▶ Try Demo</button>
   </div>
 
@@ -770,7 +771,7 @@ footer { text-align:center;padding:32px 24px;border-top:1px solid var(--border);
         <li><span class="check">✦</span><span data-en="Kai &amp; Sakura story begins" data-es="La historia de Kai y Sakura comienza">Kai &amp; Sakura story begins</span></li>
         <li><span class="check" style="opacity:0.35">🔒</span><span style="opacity:0.4" data-en="Full Kanji + Culture Hub" data-es="Kanji completo + Culture Hub">Full Kanji + Culture Hub</span></li>
       </ul>
-      <button class="plan-btn btn-ghost" onclick="showModal()" data-en="Start Free →" data-es="Empezar Gratis →">Start Free →</button>
+      <button class="plan-btn btn-ghost" onclick="goSignup('free')" data-en="Start Free →" data-es="Empezar Gratis →">Start Free →</button>
     </div>
 
     <div class="plan-card hot reveal" style="transition-delay:0.15s">
@@ -789,7 +790,7 @@ footer { text-align:center;padding:32px 24px;border-top:1px solid var(--border);
         <li><span class="check">✦</span><span data-en="Reading comprehension N5→N3" data-es="Comprensión lectora N5→N3">Reading comprehension N5→N3</span></li>
         <li><span class="check" style="opacity:0.35">🔒</span><span style="opacity:0.4" data-en="JLPT prep" data-es="Preparación JLPT">JLPT prep</span></li>
       </ul>
-      <button class="plan-btn btn-gold" onclick="showModal()" data-en="Choose Standard →" data-es="Elegir Estándar →">Choose Standard →</button>
+      <button class="plan-btn btn-gold" onclick="goSignup('standard')" data-en="Choose Standard →" data-es="Elegir Estándar →">Choose Standard →</button>
     </div>
 
     <div class="plan-card reveal" style="transition-delay:0.3s;border-color:rgba(168,85,247,0.3)">
@@ -807,7 +808,7 @@ footer { text-align:center;padding:32px 24px;border-top:1px solid var(--border);
         <li><span class="check">✦</span><span data-en="Live Tutor Sessions" data-es="Sesiones con tutor en vivo">Live Tutor Sessions</span></li>
         <li><span class="check">✦</span><span data-en="AI Weakness Report" data-es="Informe de debilidades IA">AI Weakness Report</span></li>
       </ul>
-      <button class="plan-btn btn-premium" onclick="showModal()" data-en="Go Premium →" data-es="Ir a Premium →">Go Premium →</button>
+      <button class="plan-btn btn-premium" onclick="goSignup('premium')" data-en="Go Premium →" data-es="Ir a Premium →">Go Premium →</button>
     </div>
   </div>
 
@@ -855,6 +856,7 @@ function buildCards() {
       c.classList.toggle('flipped');
       flipped[c.classList.contains('flipped') ? 'add' : 'delete'](i);
       updateProgress(); updateEx(i);
+      if (window.rtjPlayKana) rtjPlayKana(h.c, h.r);
     });
     g.appendChild(c);
   });
@@ -863,10 +865,14 @@ function buildCards() {
 function buildMini() {
   const el = document.getElementById('miniCards');
   if (!el) return;
+  const miniRomaji = {'あ':'a','い':'i','う':'u','え':'e','お':'o','か':'ka','き':'ki'};
   ['あ','い','う','え','お','か','き'].forEach(ch => {
     const d = document.createElement('div');
     d.className = 'mini-card'; d.textContent = ch;
-    d.addEventListener('click', () => d.classList.toggle('done'));
+    d.addEventListener('click', () => {
+      d.classList.toggle('done');
+      if (window.rtjPlayKana) rtjPlayKana(ch, miniRomaji[ch]);
+    });
     el.appendChild(d);
   });
 }
@@ -943,6 +949,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 function showModal() { document.getElementById('modalOverlay').classList.remove('hidden'); }
 function closeModal() { document.getElementById('modalOverlay').classList.add('hidden'); }
 function closeModalOutside(e) { if (e.target.id === 'modalOverlay') closeModal(); }
+function goSignup(plan) { window.location.href = 'auth.html?signup=1&plan=' + plan; }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 buildCards();
