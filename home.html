@@ -1223,8 +1223,13 @@ function initDashboardFromProfile() {
   document.getElementById('sidebarPlanEmoji').textContent = planInfo.emoji;
   document.getElementById('sidebarPlanName').textContent = planInfo.label;
   document.getElementById('sidebarPlanSub').textContent = planInfo.sub;
-  if (plan !== 'free') {
-    document.getElementById('sidebarUpgradeBtn').style.display = 'none';
+
+  const upgradeBtn = document.getElementById('sidebarUpgradeBtn');
+  if (plan === 'premium') {
+    upgradeBtn.style.display = 'none';
+  } else {
+    upgradeBtn.style.display = '';
+    upgradeBtn.textContent = plan === 'standard' ? '👑 Upgrade to Premium' : '⚔️ Upgrade';
   }
 
   // Daily quests — only "done" if the user actually completed them
