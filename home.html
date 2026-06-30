@@ -603,9 +603,9 @@ body {
 <header class="top-header">
   <a class="header-logo" href="index.html">Road to Japan</a>
 
-  <div class="streak-chip">🔥 7</div>
-  <div class="xp-chip">⚡ 1,240 XP</div>
-  <div class="mochi-chip">🍡 320</div>
+  <div class="streak-chip" id="headerStreakChip">🔥 0</div>
+  <div class="xp-chip" id="headerXpChip">⚡ 0 XP</div>
+  <div class="mochi-chip" id="headerMochiChip">🍡 0</div>
 
   <div class="header-spacer"></div>
 
@@ -623,23 +623,23 @@ body {
     <div class="pd-avatar">🦊</div>
     <div>
       <div class="pd-name" id="pdName">KAI-KUN</div>
-      <div class="pd-plan">🌱 Free Plan</div>
-      <div class="pd-streak" id="pdStreak">🔥 7-day streak</div>
+      <div class="pd-plan" id="pdPlan">🌱 Free Plan</div>
+      <div class="pd-streak" id="pdStreak">🔥 0-day streak</div>
     </div>
   </div>
 
   <!-- Mini stats -->
   <div class="pd-stats">
     <div class="pd-stat">
-      <div class="pd-stat-val" style="color:var(--red)">7</div>
+      <div class="pd-stat-val" style="color:var(--red)" id="pdStreakNum">0</div>
       <div class="pd-stat-lbl">Streak</div>
     </div>
     <div class="pd-stat">
-      <div class="pd-stat-val" style="color:var(--gold)">1,240</div>
+      <div class="pd-stat-val" style="color:var(--gold)" id="pdXpNum">0</div>
       <div class="pd-stat-lbl">XP</div>
     </div>
     <div class="pd-stat">
-      <div class="pd-stat-val" style="color:var(--cyan)">12</div>
+      <div class="pd-stat-val" style="color:var(--cyan)" id="pdLevelNum">1</div>
       <div class="pd-stat-lbl">Level</div>
     </div>
   </div>
@@ -722,11 +722,11 @@ body {
       <span class="nav-icon">🚪</span><span class="nav-label">Log Out</span>
     </a>
 
-    <div class="sidebar-plan">
-      <span class="plan-emoji">🌱</span>
-      <div class="plan-name" data-i18n="prof_plan_free">Free Plan</div>
-      <div class="plan-sub">5 lessons/day remaining</div>
-      <button class="upgrade-btn" onclick="window.location.href='payment.html'" data-i18n="nav_upgrade">⚔️ Upgrade</button>
+    <div class="sidebar-plan" id="sidebarPlanBox">
+      <span class="plan-emoji" id="sidebarPlanEmoji">🌱</span>
+      <div class="plan-name" id="sidebarPlanName" data-i18n="prof_plan_free">Free Plan</div>
+      <div class="plan-sub" id="sidebarPlanSub">5 lessons/day remaining</div>
+      <button class="upgrade-btn" id="sidebarUpgradeBtn" onclick="window.location.href='payment.html'" data-i18n="nav_upgrade">⚔️ Upgrade</button>
     </div>
   </aside>
 
@@ -737,17 +737,17 @@ body {
     <div class="greeting-banner">
       <div class="greeting-avatar">⚡</div>
       <div class="greeting-text">
-        <div class="hello">Good morning,</div>
-        <div class="name">KAI-KUN!</div>
-        <div class="status">🔥 7-day streak · Keep it up, adventurer!</div>
+        <div class="hello" id="greetHello">Good morning,</div>
+        <div class="name" id="greetName">KAI-KUN!</div>
+        <div class="status" id="greetStatus">🔥 New adventurer · Start your first quest!</div>
       </div>
       <div class="greeting-xp">
         <div class="lv-label">Level</div>
-        <div class="lv-num">12</div>
+        <div class="lv-num" id="greetLevel">1</div>
         <div class="xp-bar-wrap">
           <div class="xp-bar-fill" id="xpBar" style="width:0%"></div>
         </div>
-        <div class="xp-bar-txt">1,240 / 1,800 XP</div>
+        <div class="xp-bar-txt" id="xpBarTxt">0 / 300 XP</div>
       </div>
     </div>
 
@@ -759,13 +759,13 @@ body {
     </div>
 
     <div class="quest-grid">
-      <div class="quest-card done">
-        <div class="quest-done-badge">✓ Done</div>
+      <div class="quest-card" id="questHiragana" onclick="openLesson('Hiragana Basics','Master the first 15 hiragana characters: vowels and the K-row!','あ','15 characters','Beginner','hiragana.html')">
+        <div class="quest-done-badge" id="questHiraganaBadge" style="display:none">✓ Done</div>
         <div class="quest-icon">あ</div>
         <div class="quest-title">Learn 5 Hiragana</div>
         <div class="quest-progress">
-          <div class="quest-bar-wrap"><div class="quest-bar-fill" style="width:100%;background:var(--green)"></div></div>
-          <div class="quest-meta"><span>5/5 cards</span><span class="quest-reward">+30 XP ✓</span></div>
+          <div class="quest-bar-wrap"><div class="quest-bar-fill" id="questHiraganaBar" style="width:0%;background:var(--green)"></div></div>
+          <div class="quest-meta"><span id="questHiraganaMeta">0/5 cards</span><span class="quest-reward" id="questHiraganaXp">+30 XP</span></div>
         </div>
       </div>
 
@@ -787,13 +787,13 @@ body {
         </div>
       </div>
 
-      <div class="quest-card done">
-        <div class="quest-done-badge">✓ Done</div>
+      <div class="quest-card" id="questStreak">
+        <div class="quest-done-badge" id="questStreakBadge" style="display:none">✓ Done</div>
         <div class="quest-icon">🔥</div>
         <div class="quest-title">Keep Streak Alive</div>
         <div class="quest-progress">
-          <div class="quest-bar-wrap"><div class="quest-bar-fill" style="width:100%;background:var(--red)"></div></div>
-          <div class="quest-meta"><span>Day 7 ✓</span><span class="quest-reward">+20 XP ✓</span></div>
+          <div class="quest-bar-wrap"><div class="quest-bar-fill" id="questStreakBar" style="width:0%;background:var(--red)"></div></div>
+          <div class="quest-meta"><span id="questStreakMeta">Day 0</span><span class="quest-reward" id="questStreakXp">+20 XP</span></div>
         </div>
       </div>
     </div>
@@ -1008,10 +1008,10 @@ body {
         <div class="leader-rank" style="color:var(--gold)">#7</div>
         <div class="leader-avatar" style="background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,58,92,0.1));border:2px solid rgba(255,215,0,0.3)">⚡</div>
         <div>
-          <div class="leader-name">KAI <span class="you-badge">YOU</span></div>
-          <div class="leader-sub">Level 12 · 🔥 7 days</div>
+          <div class="leader-name" id="leaderYouName">KAI <span class="you-badge">YOU</span></div>
+          <div class="leader-sub" id="leaderYouSub">Level 1 · 🔥 0 days</div>
         </div>
-        <div class="leader-xp" style="color:var(--gold)">1,240 XP</div>
+        <div class="leader-xp" style="color:var(--gold)" id="leaderYouXp">0 XP</div>
       </div>
     </div>
 
@@ -1151,7 +1151,10 @@ function showMochiToast(title = 'もちもち！', sub = '7-day streak! Mochi is
 }
 
 function showToast() {
-  showMochiToast('Your Profile', 'Level 12 · Explorer · 1,240 XP total');
+  const profile = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
+  const xp = profile.xp || 0;
+  const level = Math.max(1, Math.floor(xp / 300) + 1);
+  showMochiToast('Your Profile', `Level ${level} · Explorer · ${xp.toLocaleString()} XP total`);
 }
 
 function showUpgradeToast() {
@@ -1162,11 +1165,83 @@ function showUpgradeToast() {
 function toggleProfileDropdown() {
   const dd = document.getElementById('profileDropdown');
   dd.classList.toggle('open');
-  // Load profile data from localStorage
-  const profile = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
-  if (profile.name) document.getElementById('pdName').textContent = profile.name;
-  if (profile.streak) document.getElementById('pdStreak').textContent = `🔥 ${profile.streak}-day streak`;
 }
+
+// ── DASHBOARD: load real data from the profile created at signup ──
+// New accounts start at 0 — no fake "already done" quests or streaks.
+function initDashboardFromProfile() {
+  const profile = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
+  const name    = profile.name || 'ADVENTURER';
+  const streak  = profile.streak || 0;
+  const xp      = profile.xp || 0;
+  const plan    = profile.plan || 'free';
+  const level   = Math.max(1, Math.floor(xp / 300) + 1);
+  const xpIntoLevel = xp % 300;
+
+  // Header chips
+  document.getElementById('headerStreakChip').textContent = `🔥 ${streak}`;
+  document.getElementById('headerXpChip').textContent = `⚡ ${xp.toLocaleString()} XP`;
+  document.getElementById('headerMochiChip').textContent = `🍡 ${profile.mochiCoins || 0}`;
+
+  // Greeting banner
+  const hour = new Date().getHours();
+  document.getElementById('greetHello').textContent =
+    hour < 12 ? 'Good morning,' : hour < 18 ? 'Good afternoon,' : 'Good evening,';
+  document.getElementById('greetName').textContent = name.toUpperCase() + '!';
+  document.getElementById('greetStatus').textContent = streak > 0
+    ? `🔥 ${streak}-day streak · Keep it up, adventurer!`
+    : `🌱 Welcome aboard! Complete your first quest to start a streak.`;
+  document.getElementById('greetLevel').textContent = level;
+  document.getElementById('xpBar').style.width = Math.round((xpIntoLevel / 300) * 100) + '%';
+  document.getElementById('xpBarTxt').textContent = `${xpIntoLevel} / 300 XP`;
+
+  // Profile dropdown
+  document.getElementById('pdName').textContent = name;
+  document.getElementById('pdStreak').textContent = `🔥 ${streak}-day streak`;
+  document.getElementById('pdStreakNum').textContent = streak;
+  document.getElementById('pdXpNum').textContent = xp.toLocaleString();
+  document.getElementById('pdLevelNum').textContent = level;
+
+  // Sidebar plan
+  const planInfo = {
+    free:     { emoji: '🌱', label: 'Free Plan',     sub: '5 lessons/day remaining' },
+    standard: { emoji: '⚔️', label: 'Standard Plan', sub: 'Unlimited lessons' },
+    premium:  { emoji: '👑', label: 'Premium Plan',  sub: 'Unlimited + AI tutor' },
+  }[plan] || { emoji: '🌱', label: 'Free Plan', sub: '5 lessons/day remaining' };
+  document.getElementById('pdPlan').textContent = `${planInfo.emoji} ${planInfo.label}`;
+  document.getElementById('sidebarPlanEmoji').textContent = planInfo.emoji;
+  document.getElementById('sidebarPlanName').textContent = planInfo.label;
+  document.getElementById('sidebarPlanSub').textContent = planInfo.sub;
+  if (plan !== 'free') {
+    document.getElementById('sidebarUpgradeBtn').style.display = 'none';
+  }
+
+  // Daily quests — only "done" if the user actually completed them
+  const questsDone = profile.questsDone || {};
+
+  const hiraganaDone = !!questsDone.hiragana5;
+  document.getElementById('questHiragana').classList.toggle('done', hiraganaDone);
+  document.getElementById('questHiraganaBadge').style.display = hiraganaDone ? '' : 'none';
+  document.getElementById('questHiraganaBar').style.width = hiraganaDone ? '100%' : '0%';
+  document.getElementById('questHiraganaMeta').textContent = hiraganaDone ? '5/5 cards' : '0/5 cards';
+  document.getElementById('questHiraganaXp').textContent = hiraganaDone ? '+30 XP ✓' : '+30 XP';
+
+  const streakDoneToday = !!questsDone.streakToday;
+  document.getElementById('questStreak').classList.toggle('done', streakDoneToday);
+  document.getElementById('questStreakBadge').style.display = streakDoneToday ? '' : 'none';
+  document.getElementById('questStreakBar').style.width = streakDoneToday ? '100%' : '0%';
+  document.getElementById('questStreakMeta').textContent = `Day ${streak}` + (streakDoneToday ? ' ✓' : '');
+  document.getElementById('questStreakXp').textContent = streakDoneToday ? '+20 XP ✓' : '+20 XP';
+
+  // Leaderboard "YOU" row
+  const leaderName = document.getElementById('leaderYouName');
+  if (leaderName) leaderName.innerHTML = `${name} <span class="you-badge">YOU</span>`;
+  const leaderSub = document.getElementById('leaderYouSub');
+  if (leaderSub) leaderSub.textContent = `Level ${level} · 🔥 ${streak} days`;
+  const leaderXp = document.getElementById('leaderYouXp');
+  if (leaderXp) leaderXp.textContent = `${xp.toLocaleString()} XP`;
+}
+document.addEventListener('DOMContentLoaded', initDashboardFromProfile);
 
 // Close dropdown when clicking outside
 document.addEventListener('click', e => {
