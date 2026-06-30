@@ -1,0 +1,1024 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — Kanji Master</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#08090f;--card:rgba(255,255,255,0.04);--card2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08);
+  --red:#ff3a5c;--red2:#cc1a3a;--orange:#ff7043;
+  --gold:#ffd700;--gold2:#ffaa00;--cyan:#00e5ff;
+  --purple:#a855f7;--green:#00e676;--pink:#ff6eb4;
+  --white:#fff;--gray:#7a8099;--text:#d0d4e8;
+  --acc1:#ff3a5c;--acc2:#ff7043;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--white);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
+
+/* ===== TOP BAR ===== */
+.top-bar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;gap:10px;padding:0 20px;height:60px;
+  background:rgba(8,9,15,0.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,58,92,0.15);
+}
+.back-link{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--gray);font-size:0.8rem;font-weight:800;text-decoration:none;transition:all 0.2s}
+.back-link:hover{color:var(--white)}
+.top-title{font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:3px;background:linear-gradient(90deg,var(--red),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.top-spacer{flex:1}
+.top-chip{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:0.78rem;font-weight:900}
+.chip-red{background:rgba(255,58,92,0.1);border:1px solid rgba(255,58,92,0.25);color:var(--red)}
+.chip-gold{background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);color:var(--gold)}
+.nav-links{display:flex;gap:6px}
+.nav-link{padding:5px 12px;border-radius:14px;font-size:0.78rem;font-weight:900;text-decoration:none;border:1px solid var(--border);color:var(--gray);transition:all 0.2s;background:rgba(255,255,255,0.03)}
+.nav-link:hover{color:var(--white);border-color:rgba(255,255,255,0.15)}
+
+/* ===== LAYOUT ===== */
+.page-wrap{display:flex;min-height:100vh;padding-top:60px}
+
+/* ===== LEFT SIDEBAR ===== */
+.left-panel{
+  width:220px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);
+  overflow-y:auto;padding:16px 12px;
+  background:rgba(8,9,15,0.7);border-right:1px solid rgba(255,58,92,0.1);
+  display:flex;flex-direction:column;gap:3px;
+}
+.side-label{font-size:0.62rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--gray);padding:10px 8px 4px;opacity:0.5}
+.side-btn{
+  display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:11px;
+  color:var(--gray);font-weight:800;font-size:0.85rem;cursor:pointer;
+  transition:all 0.2s;border:1px solid transparent;background:none;text-align:left;width:100%;
+}
+.side-btn:hover{color:var(--white);background:var(--card2)}
+.side-btn.active{color:var(--red);background:rgba(255,58,92,0.07);border-color:rgba(255,58,92,0.2)}
+.side-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.side-progress{margin-left:auto;width:32px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.side-fill{height:100%;border-radius:2px;background:var(--red);transition:width 0.4s}
+.jlpt-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.62rem;font-weight:900;letter-spacing:1px;background:rgba(255,58,92,0.15);border:1px solid rgba(255,58,92,0.3);color:var(--red);margin-left:auto}
+
+/* ===== MAIN ===== */
+.main{flex:1;padding:24px;max-width:1000px}
+
+/* ===== MODE TABS ===== */
+.mode-tabs{display:flex;gap:8px;margin-bottom:24px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,58,92,0.12);border-radius:16px;padding:6px}
+.mode-tab{flex:1;padding:10px;border-radius:12px;border:none;background:transparent;color:var(--gray);font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;cursor:pointer;transition:all 0.25s}
+.mode-tab.active{background:linear-gradient(135deg,rgba(255,58,92,0.14),rgba(255,112,67,0.08));color:var(--red);border:1px solid rgba(255,58,92,0.25)}
+.mode-tab:hover:not(.active){color:var(--text);background:var(--card2)}
+
+/* ===== HERO KANJI CARD ===== */
+.hero-section{display:flex;gap:16px;margin-bottom:24px}
+
+.hero-kanji-card{
+  flex:0 0 200px;border-radius:24px;padding:24px 20px;
+  background:linear-gradient(135deg,rgba(255,58,92,0.08),rgba(255,112,67,0.05));
+  border:1px solid rgba(255,58,92,0.25);text-align:center;position:relative;overflow:hidden;
+}
+.hero-kanji-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,58,92,0.08),transparent 70%)}
+
+.hero-kanji{
+  font-size:7rem;line-height:1;display:block;margin-bottom:6px;
+  background:linear-gradient(135deg,#fff,var(--red));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 4px 20px rgba(255,58,92,0.3));
+}
+.hero-meaning{font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:2px;color:var(--white);margin-bottom:4px}
+.hero-strokes{font-size:0.72rem;font-weight:900;color:var(--gray);letter-spacing:1px;margin-bottom:12px}
+
+/* Stroke dots */
+.stroke-dots{display:flex;justify-content:center;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.stroke-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,58,92,0.3);border:1px solid rgba(255,58,92,0.4)}
+.stroke-dot.filled{background:var(--red);box-shadow:0 0 6px rgba(255,58,92,0.5)}
+
+.hero-audio-btn{padding:9px 16px;background:rgba(255,58,92,0.08);border:1px solid rgba(255,58,92,0.2);border-radius:10px;color:var(--red);font-weight:900;font-size:0.82rem;cursor:pointer;transition:all 0.2s;width:100%}
+.hero-audio-btn:hover{background:rgba(255,58,92,0.15);transform:scale(1.02)}
+.hero-audio-btn.playing{background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.3);color:var(--gold)}
+
+/* Readings panel */
+.hero-info{flex:1;display:flex;flex-direction:column;gap:10px}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 18px}
+.info-label{font-size:0.63rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:8px}
+
+.reading-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.reading-block{padding:10px 12px;border-radius:10px}
+.reading-type{font-size:0.65rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.on-block{background:rgba(255,58,92,0.07);border:1px solid rgba(255,58,92,0.15)}
+.on-block .reading-type{color:var(--red)}
+.on-block .reading-val{color:var(--white);font-size:1.1rem;font-weight:900}
+.kun-block{background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.12)}
+.kun-block .reading-type{color:var(--cyan)}
+.kun-block .reading-val{color:var(--white);font-size:1.1rem;font-weight:900}
+
+/* Word examples */
+.word-examples{display:flex;flex-direction:column;gap:5px}
+.word-ex{
+  display:flex;align-items:center;gap:10px;padding:7px 10px;
+  border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  transition:all 0.2s;cursor:pointer;
+}
+.word-ex:hover{background:rgba(255,58,92,0.05);border-color:rgba(255,58,92,0.2)}
+.we-kanji{font-size:1.1rem;color:var(--white);min-width:60px}
+.we-kana{font-size:0.75rem;color:var(--cyan);font-weight:700}
+.we-en{font-size:0.78rem;color:var(--text)}
+
+/* Radical */
+.radical-row{display:flex;align-items:center;gap:12px}
+.radical-char{
+  width:52px;height:52px;border-radius:12px;
+  background:rgba(255,112,67,0.08);border:1px solid rgba(255,112,67,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;flex-shrink:0;
+}
+.radical-info{flex:1}
+.radical-name{font-weight:900;font-size:0.9rem;margin-bottom:2px}
+.radical-desc{font-size:0.78rem;color:var(--gray);line-height:1.4}
+
+/* SRS status */
+.srs-status{display:flex;gap:6px;flex-wrap:wrap}
+.srs-tag{padding:3px 10px;border-radius:10px;font-size:0.72rem;font-weight:900}
+.srs-new{background:rgba(255,58,92,0.1);color:var(--red);border:1px solid rgba(255,58,92,0.2)}
+.srs-learning{background:rgba(255,112,67,0.1);color:var(--orange);border:1px solid rgba(255,112,67,0.2)}
+.srs-review{background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.2)}
+.srs-mastered{background:rgba(0,230,118,0.1);color:var(--green);border:1px solid rgba(0,230,118,0.2)}
+
+/* ===== PROGRESS OVERVIEW ===== */
+.progress-overview{background:var(--card);border:1px solid rgba(255,58,92,0.1);border-radius:20px;padding:20px 24px;margin-bottom:24px}
+.prog-title{font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;margin-bottom:14px}
+.prog-bars{display:flex;flex-direction:column;gap:9px}
+.prog-row{display:flex;align-items:center;gap:12px}
+.prog-row-label{font-size:0.77rem;font-weight:800;color:var(--gray);width:80px;flex-shrink:0}
+.prog-bar-wrap{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-bar-fill{height:100%;border-radius:4px;transition:width 0.8s ease}
+.prog-count{font-size:0.75rem;font-weight:900;width:52px;text-align:right;flex-shrink:0}
+
+/* ===== KANJI GRID ===== */
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.section-head h2{font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px}
+.section-head .subtitle{font-size:0.78rem;color:var(--gray)}
+.section-count{font-family:'Orbitron',sans-serif;font-size:0.72rem;font-weight:900;color:var(--red);margin-left:auto}
+
+.kanji-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px;margin-bottom:28px}
+.kanji-tile{
+  border-radius:14px;background:var(--card);border:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.22s;position:relative;overflow:hidden;
+  padding:8px 4px;aspect-ratio:1;
+}
+.kanji-tile:hover{transform:translateY(-3px);border-color:rgba(255,58,92,0.4);box-shadow:0 10px 24px rgba(255,58,92,0.08)}
+.kanji-tile.selected{border-color:var(--red);background:rgba(255,58,92,0.08);box-shadow:0 0 20px rgba(255,58,92,0.15)}
+.kanji-tile.mastered{border-color:rgba(0,230,118,0.3);background:rgba(0,230,118,0.04)}
+.kanji-tile.learning{border-color:rgba(255,112,67,0.2);background:rgba(255,112,67,0.04)}
+
+.tile-kanji{font-size:1.8rem;line-height:1;margin-bottom:3px;color:var(--white)}
+.tile-mean{font-size:0.6rem;font-weight:900;color:var(--gray);text-align:center;line-height:1.2;padding:0 2px}
+.kanji-tile.selected .tile-kanji{color:var(--red)}
+.kanji-tile.mastered .tile-kanji{color:var(--green)}
+.tile-check{position:absolute;top:4px;right:4px;width:14px;height:14px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:0.55rem;color:#000;font-weight:900;opacity:0;transition:opacity 0.3s}
+.kanji-tile.mastered .tile-check{opacity:1}
+
+/* ===== QUIZ MODE ===== */
+#quizMode{display:none}#quizMode.active{display:block}
+.quiz-setup{background:var(--card);border:1px solid rgba(255,58,92,0.15);border-radius:20px;padding:28px;margin-bottom:20px;display:flex;flex-direction:column;align-items:center;gap:20px}
+.quiz-cat-select{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;width:100%}
+.qcs-btn{padding:10px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;cursor:pointer;transition:all 0.2s;text-align:center}
+.qcs-btn.sel{border-color:rgba(255,58,92,0.4);background:rgba(255,58,92,0.07);color:var(--red)}
+.quiz-type-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.qt-btn{padding:7px 16px;border-radius:20px;font-size:0.82rem;font-weight:900;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--gray);transition:all 0.2s}
+.qt-btn.active{border-color:rgba(255,58,92,0.4);background:rgba(255,58,92,0.1);color:var(--red)}
+.start-quiz-btn{padding:14px 48px;background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px;border:none;border-radius:50px;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 0 #800020}
+.start-quiz-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #800020}
+
+.active-quiz{background:var(--card);border:1px solid rgba(255,58,92,0.15);border-radius:24px;padding:32px;text-align:center}
+.aq-progress-bar{height:5px;background:var(--border);border-radius:3px;margin-bottom:20px;overflow:hidden}
+.aq-progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--red),var(--orange));transition:width 0.4s}
+.aq-label{font-size:0.7rem;font-weight:900;letter-spacing:2px;color:var(--red);text-transform:uppercase;margin-bottom:6px}
+.aq-question{font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px;margin-bottom:10px}
+.aq-char{font-size:7rem;display:block;margin:6px 0;background:linear-gradient(135deg,#fff,var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;filter:drop-shadow(0 4px 16px rgba(255,58,92,0.2))}
+.aq-char.small-text{font-size:1.4rem;font-family:'Bangers',cursive;background:none;-webkit-text-fill-color:var(--white)}
+.aq-hint{font-size:0.82rem;color:var(--gray);margin-bottom:22px}
+.aq-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.aq-opt{padding:14px 10px;border-radius:14px;background:var(--card);border:1px solid var(--border);cursor:pointer;transition:all 0.25s;font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:1px;color:var(--white)}
+.aq-opt.small-opt{font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:800;letter-spacing:0}
+.aq-opt:hover{background:rgba(255,58,92,0.06);border-color:rgba(255,58,92,0.3);transform:scale(1.03)}
+.aq-opt.correct{background:rgba(0,230,118,0.15)!important;border-color:var(--green)!important;color:var(--green);animation:pop 0.35s ease}
+.aq-opt.wrong{background:rgba(255,58,92,0.12)!important;border-color:var(--red)!important;color:var(--red);animation:wshake 0.35s ease}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes wshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.aq-score-row{display:flex;align-items:center;justify-content:center;gap:20px;font-size:0.82rem;color:var(--gray);font-weight:700}
+.aq-score-num{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900}
+
+.quiz-result{background:var(--card);border:1px solid rgba(255,58,92,0.2);border-radius:24px;padding:40px 32px;text-align:center}
+.qr-emoji{font-size:4rem;display:block;margin-bottom:12px}
+.qr-title{font-family:'Bangers',cursive;font-size:2.4rem;letter-spacing:3px;margin-bottom:8px;color:var(--red)}
+.qr-sub{font-size:0.9rem;color:var(--text);line-height:1.6;margin-bottom:24px}
+.qr-stats{display:flex;gap:0;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px}
+.qr-stat{flex:1;padding:16px;text-align:center;border-right:1px solid var(--border)}
+.qr-stat:last-child{border-right:none}
+.qr-num{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;color:var(--red)}
+.qr-lbl{font-size:0.7rem;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.qr-btn{padding:14px 40px;background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;border:none;border-radius:14px;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 0 #800020;margin-right:10px}
+.qr-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #800020}
+.qr-btn-sec{padding:14px 28px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;border-radius:14px;cursor:pointer;transition:all 0.2s}
+.qr-btn-sec:hover{border-color:var(--white);color:var(--white)}
+
+/* ===== REVIEW MODE ===== */
+#reviewMode{display:none}#reviewMode.active{display:block}
+.flip-card{width:100%;max-width:380px;margin:0 auto 24px;perspective:800px;cursor:pointer}
+.flip-inner{width:100%;aspect-ratio:3/2;position:relative;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);border-radius:24px}
+.flip-inner.flipped{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.flip-front{background:linear-gradient(135deg,rgba(255,58,92,0.06),rgba(255,112,67,0.04));border:1px solid rgba(255,58,92,0.2)}
+.flip-char{background:linear-gradient(135deg,#fff,var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:5.5rem;line-height:1}
+.flip-tap{font-size:0.75rem;color:rgba(255,255,255,0.2);font-weight:700;margin-top:10px}
+.flip-strokes{font-size:0.72rem;color:rgba(255,255,255,0.2);font-weight:700;margin-top:4px}
+.flip-back{transform:rotateY(180deg);background:linear-gradient(135deg,var(--red),var(--orange));padding:16px;gap:4px;text-align:center}
+.flip-meaning{font-family:'Bangers',cursive;font-size:2.4rem;letter-spacing:3px;color:#fff}
+.flip-char-sm{font-size:2rem;color:rgba(255,255,255,0.5);line-height:1}
+.flip-readings{font-size:0.8rem;color:rgba(255,255,255,0.8);font-weight:800;margin-top:4px}
+.flip-ex-word{font-size:0.78rem;color:rgba(255,255,255,0.6);margin-top:2px}
+
+.review-actions{display:flex;gap:10px;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
+.ra-btn{flex:1;max-width:120px;padding:13px;border-radius:14px;font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:1px;border:none;cursor:pointer;transition:all 0.25s}
+.ra-again{background:rgba(255,58,92,0.15);color:var(--red);border:1px solid rgba(255,58,92,0.3)}
+.ra-again:hover{background:rgba(255,58,92,0.25);transform:scale(1.03)}
+.ra-hard{background:rgba(255,165,0,0.12);color:#ff9800;border:1px solid rgba(255,165,0,0.25)}
+.ra-hard:hover{background:rgba(255,165,0,0.22);transform:scale(1.03)}
+.ra-good{background:rgba(0,229,255,0.08);color:var(--cyan);border:1px solid rgba(0,229,255,0.2)}
+.ra-good:hover{background:rgba(0,229,255,0.18);transform:scale(1.03)}
+.ra-easy{background:rgba(0,230,118,0.08);color:var(--green);border:1px solid rgba(0,230,118,0.2)}
+.ra-easy:hover{background:rgba(0,230,118,0.18);transform:scale(1.03)}
+.review-progress{display:flex;align-items:center;justify-content:center;gap:16px;font-size:0.82rem;color:var(--gray);font-weight:700;margin-bottom:16px}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:24px;right:20px;background:rgba(13,15,30,0.97);border:1px solid var(--border);border-radius:14px;padding:14px 18px;max-width:260px;z-index:999;backdrop-filter:blur(20px);transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);display:flex;align-items:flex-start;gap:10px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:rgba(255,58,92,0.3)}
+.toast-icon{font-size:1.4rem;flex-shrink:0}
+.t-title{font-weight:900;font-size:0.88rem;margin-bottom:2px}
+.t-sub{font-size:0.78rem;color:var(--gray);line-height:1.4}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  .left-panel{display:none}
+  .main{padding:14px}
+  .hero-section{flex-direction:column}
+  .hero-kanji-card{flex:none}
+  .kanji-grid{grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px}
+  .tile-kanji{font-size:1.5rem}
+  .aq-char{font-size:5rem}
+  .nav-links{display:none}
+}
+</style>
+<script src="gojuon-widget.js"></script>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a class="back-link" href="home.html">← Home</a>
+  <div class="top-title">漢 KANJI MASTER</div>
+  <div class="top-spacer"></div>
+  <div class="top-chip chip-red" id="masteredChip">⭐ 0/80</div>
+  <div class="top-chip chip-gold">📜 JLPT N5</div>
+  <div class="nav-links">
+    <a class="nav-link" href="hiragana.html">あ Hiragana</a>
+    <a class="nav-link" href="katakana.html">ア Katakana</a>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="left-panel">
+    <div class="side-label">Categories</div>
+    <button class="side-btn active" onclick="filterCat('all',this)"><span class="side-icon">全</span><span>All Kanji</span><div class="side-progress"><div class="side-fill" id="sf-all"></div></div></button>
+    <button class="side-btn" onclick="filterCat('numbers',this)"><span class="side-icon">🔢</span><span>Numbers</span><div class="side-progress"><div class="side-fill" id="sf-numbers"></div></div></button>
+    <button class="side-btn" onclick="filterCat('time',this)"><span class="side-icon">⏰</span><span>Time</span><div class="side-progress"><div class="side-fill" id="sf-time"></div></div></button>
+    <button class="side-btn" onclick="filterCat('nature',this)"><span class="side-icon">🌿</span><span>Nature</span><div class="side-progress"><div class="side-fill" id="sf-nature"></div></div></button>
+    <button class="side-btn" onclick="filterCat('people',this)"><span class="side-icon">👤</span><span>People</span><div class="side-progress"><div class="side-fill" id="sf-people"></div></div></button>
+    <button class="side-btn" onclick="filterCat('body',this)"><span class="side-icon">👁️</span><span>Body</span><div class="side-progress"><div class="side-fill" id="sf-body"></div></div></button>
+    <button class="side-btn" onclick="filterCat('direction',this)"><span class="side-icon">🧭</span><span>Direction</span><div class="side-progress"><div class="side-fill" id="sf-direction"></div></div></button>
+    <button class="side-btn" onclick="filterCat('place',this)"><span class="side-icon">🏯</span><span>Places</span><div class="side-progress"><div class="side-fill" id="sf-place"></div></div></button>
+    <button class="side-btn" onclick="filterCat('adjective',this)"><span class="side-icon">✨</span><span>Adjectives</span><div class="side-progress"><div class="side-fill" id="sf-adjective"></div></div></button>
+    <button class="side-btn" onclick="filterCat('action',this)"><span class="side-icon">⚡</span><span>Actions/Verbs</span><div class="side-progress"><div class="side-fill" id="sf-action"></div></div></button>
+    <button class="side-btn" onclick="filterCat('things',this)"><span class="side-icon">📦</span><span>Things</span><div class="side-progress"><div class="side-fill" id="sf-things"></div></div></button>
+    <div class="side-label" style="margin-top:8px">JLPT Level</div>
+    <button class="side-btn" onclick="filterCat('all',this)" style="opacity:0.5"><span class="side-icon">📜</span><span>N5 (Current)</span><span class="jlpt-badge">N5</span></button>
+    <button class="side-btn" onclick="alert('JLPT N4 — coming soon! Master N5 first! 💪')" style="opacity:0.35"><span class="side-icon">🔒</span><span>N4 (Locked)</span></button>
+    <button class="side-btn" onclick="alert('JLPT N3 — coming soon!')" style="opacity:0.2"><span class="side-icon">🔒</span><span>N3 (Locked)</span></button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- MODE TABS -->
+    <div class="mode-tabs">
+      <button class="mode-tab active" onclick="setMode('study')">📖 STUDY</button>
+      <button class="mode-tab" onclick="setMode('quiz')">🎯 QUIZ</button>
+      <button class="mode-tab" onclick="setMode('review')">🔄 SRS REVIEW</button>
+    </div>
+
+    <!-- ===== STUDY MODE ===== -->
+    <div id="studyMode">
+
+      <!-- Hero Card -->
+      <div class="hero-section">
+        <div class="hero-kanji-card">
+          <span class="hero-kanji" id="heroKanji">日</span>
+          <div class="hero-meaning" id="heroMeaning">Sun / Day</div>
+          <div class="hero-strokes" id="heroStrokes">4 STROKES</div>
+          <div class="stroke-dots" id="strokeDots"></div>
+          <button class="hero-audio-btn" id="audioBtn" onclick="playAudio()">🔊 Play Reading</button>
+        </div>
+
+        <div class="hero-info">
+          <div class="info-card">
+            <div class="info-label">Readings</div>
+            <div class="reading-grid">
+              <div class="reading-block on-block">
+                <div class="reading-type">音読み On (Chinese)</div>
+                <div class="reading-val" id="heroOn">ニチ・ジツ</div>
+              </div>
+              <div class="reading-block kun-block">
+                <div class="reading-type">訓読み Kun (Japanese)</div>
+                <div class="reading-val" id="heroKun">ひ・か</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-label">Example Words</div>
+            <div class="word-examples" id="heroWords"></div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-label">Radical & Memory</div>
+            <div class="radical-row">
+              <div class="radical-char" id="heroRadChar">日</div>
+              <div class="radical-info">
+                <div class="radical-name" id="heroRadName">Sun Radical</div>
+                <div class="radical-desc" id="heroMem">日 looks like the sun with a ray through the middle. Same kanji means both "sun" and "day"!</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-label">SRS Status · <span id="heroStats" style="color:var(--gray)">Not studied</span></div>
+            <div class="srs-status" id="heroSRS"><span class="srs-tag srs-new">🆕 New</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-overview">
+        <div class="prog-title">⛩️ JLPT N5 Progress — 80 Kanji</div>
+        <div class="prog-bars">
+          <div class="prog-row"><div class="prog-row-label">Mastered</div><div class="prog-bar-wrap"><div class="prog-bar-fill" id="pb-mastered" style="width:0%;background:var(--green)"></div></div><div class="prog-count" style="color:var(--green)" id="pc-mastered">0/80</div></div>
+          <div class="prog-row"><div class="prog-row-label">Learning</div><div class="prog-bar-wrap"><div class="prog-bar-fill" id="pb-learning" style="width:0%;background:var(--orange)"></div></div><div class="prog-count" style="color:var(--orange)" id="pc-learning">0/80</div></div>
+          <div class="prog-row"><div class="prog-row-label">Not Seen</div><div class="prog-bar-wrap"><div class="prog-bar-fill" id="pb-new" style="width:100%;background:rgba(255,255,255,0.06)"></div></div><div class="prog-count" id="pc-new">80/80</div></div>
+        </div>
+      </div>
+
+      <!-- Kanji Grid -->
+      <div id="gridContainer"></div>
+
+    </div><!-- /studyMode -->
+
+    <!-- ===== QUIZ MODE ===== -->
+    <div id="quizMode">
+      <div id="quizSetup">
+        <div class="quiz-setup">
+          <div style="text-align:center">
+            <div style="font-family:'Bangers',cursive;font-size:2rem;letter-spacing:3px;margin-bottom:6px;background:linear-gradient(90deg,var(--red),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent">🎯 KANJI QUIZ</div>
+            <div style="color:var(--gray);font-size:0.9rem">Pick categories and question type</div>
+          </div>
+          <div class="quiz-cat-select" id="quizCatSelect"></div>
+          <div>
+            <div style="font-size:0.75rem;font-weight:900;letter-spacing:2px;color:var(--gray);text-transform:uppercase;margin-bottom:8px;text-align:center">Question Type</div>
+            <div class="quiz-type-row">
+              <button class="qt-btn active" data-qt="kanji2en" onclick="setQT(this)">漢字 → English</button>
+              <button class="qt-btn" data-qt="en2kanji" onclick="setQT(this)">English → 漢字</button>
+              <button class="qt-btn" data-qt="kanji2on" onclick="setQT(this)">漢字 → On-reading</button>
+              <button class="qt-btn" data-qt="kanji2kun" onclick="setQT(this)">漢字 → Kun-reading</button>
+              <button class="qt-btn" data-qt="word" onclick="setQT(this)">漢字 Word Meaning</button>
+            </div>
+          </div>
+          <button class="start-quiz-btn" onclick="startQuiz()">⚡ Start Quiz!</button>
+        </div>
+      </div>
+      <div id="quizActive" style="display:none">
+        <div class="active-quiz">
+          <div class="aq-progress-bar"><div class="aq-progress-fill" id="aqPF" style="width:0%"></div></div>
+          <div class="aq-label" id="aqLabel">QUESTION 1/12</div>
+          <div class="aq-question" id="aqQuestion"></div>
+          <span class="aq-char" id="aqChar"></span>
+          <div class="aq-hint" id="aqHint"></div>
+          <div class="aq-options" id="aqOptions"></div>
+          <div class="aq-score-row">
+            <div>✅ <span class="aq-score-num" id="aqCorrect">0</span></div>
+            <div>❌ <span class="aq-score-num" id="aqWrong">0</span></div>
+            <div>⚡ <span class="aq-score-num" id="aqXP" style="color:var(--red)">0</span> XP</div>
+          </div>
+        </div>
+      </div>
+      <div id="quizResult" style="display:none">
+        <div class="quiz-result">
+          <span class="qr-emoji" id="qrEmoji">🏆</span>
+          <div class="qr-title" id="qrTitle">PERFECT!</div>
+          <p class="qr-sub" id="qrSub"></p>
+          <div class="qr-stats">
+            <div class="qr-stat"><div class="qr-num" id="qrScore"></div><div class="qr-lbl">Score</div></div>
+            <div class="qr-stat"><div class="qr-num" id="qrAcc"></div><div class="qr-lbl">Accuracy</div></div>
+            <div class="qr-stat"><div class="qr-num" id="qrXP"></div><div class="qr-lbl">XP Earned</div></div>
+          </div>
+          <button class="qr-btn" onclick="startQuiz()">🔄 Play Again</button>
+          <button class="qr-btn-sec" onclick="setMode('study')">📖 Back to Study</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REVIEW MODE ===== -->
+    <div id="reviewMode">
+      <div id="reviewEmpty" style="text-align:center;padding:60px 20px;display:none">
+        <div style="font-size:3rem;margin-bottom:12px">⛩️</div>
+        <div style="font-family:'Bangers',cursive;font-size:1.8rem;letter-spacing:2px;color:var(--red);margin-bottom:8px">ALL CAUGHT UP!</div>
+        <div style="color:var(--gray);font-size:0.9rem;margin-bottom:24px">No kanji due for review.<br>Study more kanji to build your deck!</div>
+        <button onclick="setMode('study')" style="padding:12px 28px;background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:2px;border:none;border-radius:12px;cursor:pointer">📖 Study More</button>
+      </div>
+      <div id="reviewActive" style="display:none">
+        <div class="review-progress" id="reviewProgress">Card 1 of 10</div>
+        <div class="flip-card" onclick="flipCard()">
+          <div class="flip-inner" id="flipInner">
+            <div class="flip-front">
+              <span class="flip-char" id="rfChar">日</span>
+              <span class="flip-strokes" id="rfStrokes">4 strokes</span>
+              <span class="flip-tap">Tap to reveal →</span>
+            </div>
+            <div class="flip-back">
+              <span class="flip-char-sm" id="rbChar">日</span>
+              <span class="flip-meaning" id="rbMeaning">SUN / DAY</span>
+              <span class="flip-readings" id="rbReadings">On: ニチ　Kun: ひ</span>
+              <span class="flip-ex-word" id="rbEx">日本 (Nihon) — Japan</span>
+            </div>
+          </div>
+        </div>
+        <div class="review-actions" id="reviewActions" style="display:none">
+          <button class="ra-btn ra-again" onclick="reviewAns('again')">😓 Again</button>
+          <button class="ra-btn ra-hard" onclick="reviewAns('hard')">🤔 Hard</button>
+          <button class="ra-btn ra-good" onclick="reviewAns('good')">😊 Good</button>
+          <button class="ra-btn ra-easy" onclick="reviewAns('easy')">⚡ Easy</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">⛩️</span>
+  <div>
+    <div class="t-title" id="toastTitle"></div>
+    <div class="t-sub" id="toastSub"></div>
+  </div>
+</div>
+
+<script>
+// =====================================================================
+// KANJI DATA — JLPT N5 (80 kanji)
+// =====================================================================
+const KANJI = [
+  // NUMBERS
+  {k:'一',m:'One',on:'イチ',kun:'ひと(つ)',s:1,cat:'numbers',rad:'一',radN:'One (horizontal line)',mem:'A single horizontal stroke — ONE!',words:[{w:'一つ',r:'ひとつ',e:'one thing'},{w:'一日',r:'いちにち',e:'one day'},{w:'一番',r:'いちばん',e:'number one'}]},
+  {k:'二',m:'Two',on:'ニ',kun:'ふた(つ)',s:2,cat:'numbers',rad:'二',radN:'Two',mem:'Two horizontal strokes stacked — TWO!',words:[{w:'二つ',r:'ふたつ',e:'two things'},{w:'二月',r:'にがつ',e:'February'},{w:'二十',r:'にじゅう',e:'twenty'}]},
+  {k:'三',m:'Three',on:'サン',kun:'みっ(つ)',s:3,cat:'numbers',rad:'三',radN:'Three',mem:'Three horizontal strokes — THREE!',words:[{w:'三つ',r:'みっつ',e:'three things'},{w:'三月',r:'さんがつ',e:'March'},{w:'三十',r:'さんじゅう',e:'thirty'}]},
+  {k:'四',m:'Four',on:'シ',kun:'よ(っつ)',s:5,cat:'numbers',rad:'囗',radN:'Enclosure',mem:'Four sections inside a box',words:[{w:'四つ',r:'よっつ',e:'four things'},{w:'四月',r:'しがつ',e:'April'},{w:'四十',r:'よんじゅう',e:'forty'}]},
+  {k:'五',m:'Five',on:'ゴ',kun:'いつ(つ)',s:4,cat:'numbers',rad:'一',radN:'One',mem:'Five fingers on a hand — FIVE!',words:[{w:'五つ',r:'いつつ',e:'five things'},{w:'五月',r:'ごがつ',e:'May'},{w:'五十',r:'ごじゅう',e:'fifty'}]},
+  {k:'六',m:'Six',on:'ロク',kun:'むっ(つ)',s:4,cat:'numbers',rad:'八',radN:'Eight',mem:'Looks like an inverted cross — six sides of dice',words:[{w:'六つ',r:'むっつ',e:'six things'},{w:'六月',r:'ろくがつ',e:'June'},{w:'六十',r:'ろくじゅう',e:'sixty'}]},
+  {k:'七',m:'Seven',on:'シチ',kun:'なな(つ)',s:2,cat:'numbers',rad:'一',radN:'One',mem:'The number 7 tilted — SEVEN!',words:[{w:'七つ',r:'ななつ',e:'seven things'},{w:'七月',r:'しちがつ',e:'July'},{w:'七十',r:'ななじゅう',e:'seventy'}]},
+  {k:'八',m:'Eight',on:'ハチ',kun:'やっ(つ)',s:2,cat:'numbers',rad:'八',radN:'Eight',mem:'Two strokes spreading apart like 8 legs',words:[{w:'八つ',r:'やっつ',e:'eight things'},{w:'八月',r:'はちがつ',e:'August'},{w:'八十',r:'はちじゅう',e:'eighty'}]},
+  {k:'九',m:'Nine',on:'ク・キュウ',kun:'ここの(つ)',s:2,cat:'numbers',rad:'乙',radN:'Second',mem:'Looks like a hook — NINE!',words:[{w:'九つ',r:'ここのつ',e:'nine things'},{w:'九月',r:'くがつ',e:'September'},{w:'九十',r:'きゅうじゅう',e:'ninety'}]},
+  {k:'十',m:'Ten',on:'ジュウ',kun:'とお',s:2,cat:'numbers',rad:'十',radN:'Ten (cross)',mem:'A cross — 10 fingers (two hands crossed)!',words:[{w:'十月',r:'じゅうがつ',e:'October'},{w:'二十',r:'にじゅう',e:'twenty'},{w:'十分',r:'じゅうぶん',e:'enough'}]},
+  {k:'百',m:'Hundred',on:'ヒャク',kun:'—',s:6,cat:'numbers',rad:'白',radN:'White',mem:'一 (one) on top of 白 (white) — hundred',words:[{w:'百円',r:'ひゃくえん',e:'100 yen'},{w:'百万',r:'ひゃくまん',e:'one million'},{w:'三百',r:'さんびゃく',e:'three hundred'}]},
+  {k:'千',m:'Thousand',on:'セン',kun:'ち',s:3,cat:'numbers',rad:'十',radN:'Ten',mem:'Looks like a person standing tall — a thousand steps',words:[{w:'三千',r:'さんぜん',e:'three thousand'},{w:'千円',r:'せんえん',e:'1000 yen'},{w:'八千',r:'はっせん',e:'eight thousand'}]},
+  {k:'万',m:'Ten Thousand',on:'マン',kun:'—',s:3,cat:'numbers',rad:'一',radN:'One',mem:'万 — the number that fills a hand!',words:[{w:'一万',r:'いちまん',e:'10,000'},{w:'万年',r:'まんねん',e:'ten thousand years'},{w:'百万',r:'ひゃくまん',e:'million'}]},
+
+  // TIME
+  {k:'日',m:'Sun / Day',on:'ニチ・ジツ',kun:'ひ・か',s:4,cat:'time',rad:'日',radN:'Sun/Day',mem:'日 looks like the sun with a center ray. The same kanji for sun AND day!',words:[{w:'日本',r:'にほん',e:'Japan'},{w:'今日',r:'きょう',e:'today'},{w:'日曜日',r:'にちようび',e:'Sunday'}]},
+  {k:'月',m:'Moon / Month',on:'ゲツ・ガツ',kun:'つき',s:4,cat:'time',rad:'月',radN:'Moon/Month',mem:'月 looks like a crescent moon — same kanji for moon AND month!',words:[{w:'一月',r:'いちがつ',e:'January'},{w:'月曜日',r:'げつようび',e:'Monday'},{w:'毎月',r:'まいつき',e:'every month'}]},
+  {k:'年',m:'Year',on:'ネン',kun:'とし',s:6,cat:'time',rad:'干',radN:'Dry/Shield',mem:'年 — a grain plant showing the harvest year',words:[{w:'今年',r:'ことし',e:'this year'},{w:'来年',r:'らいねん',e:'next year'},{w:'去年',r:'きょねん',e:'last year'}]},
+  {k:'時',m:'Time / Hour',on:'ジ',kun:'とき',s:10,cat:'time',rad:'日',radN:'Sun',mem:'日 (sun) + 寺 (temple) — temple bells mark the time!',words:[{w:'時間',r:'じかん',e:'time (duration)'},{w:'何時',r:'なんじ',e:'what time'},{w:'時々',r:'ときどき',e:'sometimes'}]},
+  {k:'分',m:'Minute / Part',on:'フン・プン',kun:'わか(る)',s:4,cat:'time',rad:'刀',radN:'Knife',mem:'八 (split) + 刀 (knife) — cutting into minutes!',words:[{w:'三分',r:'さんぷん',e:'3 minutes'},{w:'気分',r:'きぶん',e:'feeling/mood'},{w:'自分',r:'じぶん',e:'oneself'}]},
+  {k:'週',m:'Week',on:'シュウ',kun:'—',s:11,cat:'time',rad:'辶',radN:'Road',mem:'走 (run) + 辶 (road) — running around the week!',words:[{w:'今週',r:'こんしゅう',e:'this week'},{w:'来週',r:'らいしゅう',e:'next week'},{w:'毎週',r:'まいしゅう',e:'every week'}]},
+  {k:'今',m:'Now / Present',on:'コン・キン',kun:'いま',s:4,cat:'time',rad:'人',radN:'Person',mem:'今 — a roof over a person, safe NOW',words:[{w:'今日',r:'きょう',e:'today'},{w:'今年',r:'ことし',e:'this year'},{w:'今週',r:'こんしゅう',e:'this week'}]},
+  {k:'前',m:'Before / In front',on:'ゼン',kun:'まえ',s:9,cat:'time',rad:'刀',radN:'Knife',mem:'月 (moon) + 刀 (knife) + 止 — cutting time before',words:[{w:'午前',r:'ごぜん',e:'AM / morning'},{w:'名前',r:'なまえ',e:'name'},{w:'前に',r:'まえに',e:'before'}]},
+  {k:'後',m:'After / Behind',on:'ゴ・コウ',kun:'あと・うし(ろ)',s:9,cat:'time',rad:'彳',radN:'Step',mem:'Step + thread + road — trailing behind',words:[{w:'午後',r:'ごご',e:'PM / afternoon'},{w:'後で',r:'あとで',e:'later'},{w:'最後',r:'さいご',e:'the last'}]},
+  {k:'毎',m:'Every',on:'マイ',kun:'—',s:6,cat:'time',rad:'毋',radN:'Mother',mem:'Every day, the mother tends to things!',words:[{w:'毎日',r:'まいにち',e:'every day'},{w:'毎年',r:'まいとし',e:'every year'},{w:'毎朝',r:'まいあさ',e:'every morning'}]},
+
+  // NATURE
+  {k:'山',m:'Mountain',on:'サン',kun:'やま',s:3,cat:'nature',rad:'山',radN:'Mountain',mem:'三 peaks — three strokes draw a mountain!',words:[{w:'富士山',r:'ふじさん',e:'Mt. Fuji'},{w:'山田',r:'やまだ',e:'Yamada (surname)'},{w:'登山',r:'とざん',e:'mountain climbing'}]},
+  {k:'川',m:'River',on:'セン',kun:'かわ',s:3,cat:'nature',rad:'川',radN:'River',mem:'Three strokes flowing down — water flowing in a river!',words:[{w:'川',r:'かわ',e:'river'},{w:'小川',r:'おがわ',e:'stream'},{w:'川口',r:'かわぐち',e:'rivermouth/Kawaguchi'}]},
+  {k:'木',m:'Tree',on:'モク・ボク',kun:'き',s:4,cat:'nature',rad:'木',radN:'Tree',mem:'A tree with branches (top) and roots (bottom)!',words:[{w:'木曜日',r:'もくようび',e:'Thursday'},{w:'木村',r:'きむら',e:'Kimura (name)'},{w:'大木',r:'たいぼく',e:'big tree'}]},
+  {k:'火',m:'Fire',on:'カ',kun:'ひ',s:4,cat:'nature',rad:'火',radN:'Fire',mem:'A flame rising up — FIRE!',words:[{w:'火曜日',r:'かようび',e:'Tuesday'},{w:'花火',r:'はなび',e:'fireworks'},{w:'火山',r:'かざん',e:'volcano'}]},
+  {k:'水',m:'Water',on:'スイ',kun:'みず',s:4,cat:'nature',rad:'水',radN:'Water',mem:'Flowing water with droplets on the sides!',words:[{w:'水曜日',r:'すいようび',e:'Wednesday'},{w:'水道',r:'すいどう',e:'waterworks'},{w:'お水',r:'おみず',e:'water (polite)'}]},
+  {k:'金',m:'Gold / Money',on:'キン・コン',kun:'かね',s:8,cat:'nature',rad:'金',radN:'Metal/Gold',mem:'金 — a person under a roof guarding treasure!',words:[{w:'金曜日',r:'きんようび',e:'Friday'},{w:'お金',r:'おかね',e:'money'},{w:'金属',r:'きんぞく',e:'metal'}]},
+  {k:'土',m:'Earth / Soil',on:'ド・ト',kun:'つち',s:3,cat:'nature',rad:'土',radN:'Earth',mem:'十 (cross) + 一 (line) — cross planted in the ground!',words:[{w:'土曜日',r:'どようび',e:'Saturday'},{w:'土地',r:'とち',e:'land'},{w:'土台',r:'どだい',e:'foundation'}]},
+  {k:'花',m:'Flower',on:'カ',kun:'はな',s:7,cat:'nature',rad:'艸',radN:'Grass/Plant',mem:'草 (grass) + 化 (change) — grass that transforms into beauty!',words:[{w:'花火',r:'はなび',e:'fireworks'},{w:'花見',r:'はなみ',e:'flower viewing'},{w:'花屋',r:'はなや',e:'flower shop'}]},
+  {k:'林',m:'Forest (small)',on:'リン',kun:'はやし',s:8,cat:'nature',rad:'木',radN:'Tree',mem:'Two trees side by side — a small grove!',words:[{w:'林',r:'はやし',e:'woods'},{w:'小林',r:'こばやし',e:'Kobayashi (name)'},{w:'林業',r:'りんぎょう',e:'forestry'}]},
+  {k:'森',m:'Forest (large)',on:'シン',kun:'もり',s:12,cat:'nature',rad:'木',radN:'Tree',mem:'Three trees together — a dense forest!',words:[{w:'森',r:'もり',e:'forest'},{w:'森林',r:'しんりん',e:'forest/woods'},{w:'森田',r:'もりた',e:'Morita (name)'}]},
+
+  // PEOPLE
+  {k:'人',m:'Person',on:'ジン・ニン',kun:'ひと',s:2,cat:'people',rad:'人',radN:'Person',mem:'Two strokes like legs walking — a person!',words:[{w:'日本人',r:'にほんじん',e:'Japanese person'},{w:'何人',r:'なんにん',e:'how many people'},{w:'一人',r:'ひとり',e:'one person'}]},
+  {k:'男',m:'Man',on:'ダン・ナン',kun:'おとこ',s:7,cat:'people',rad:'田',radN:'Rice field',mem:'田 (field) + 力 (strength) — a man works in the fields!',words:[{w:'男の人',r:'おとこのひと',e:'man'},{w:'男子',r:'だんし',e:'boy/male'},{w:'男性',r:'だんせい',e:'male (formal)'}]},
+  {k:'女',m:'Woman',on:'ジョ',kun:'おんな',s:3,cat:'people',rad:'女',radN:'Woman',mem:'A woman sitting gracefully — elegant strokes!',words:[{w:'女の人',r:'おんなのひと',e:'woman'},{w:'女子',r:'じょし',e:'girl/female'},{w:'女性',r:'じょせい',e:'female (formal)'}]},
+  {k:'子',m:'Child',on:'シ',kun:'こ',s:3,cat:'people',rad:'子',radN:'Child',mem:'A child with arms out wide — playing!',words:[{w:'子供',r:'こども',e:'child'},{w:'女の子',r:'おんなのこ',e:'girl'},{w:'男の子',r:'おとこのこ',e:'boy'}]},
+  {k:'父',m:'Father',on:'フ',kun:'ちち',s:4,cat:'people',rad:'父',radN:'Father',mem:'A person (人) hitting something — father works hard!',words:[{w:'お父さん',r:'おとうさん',e:'father (familiar)'},{w:'父親',r:'ちちおや',e:'father'},{w:'父母',r:'ふぼ',e:'parents'}]},
+  {k:'母',m:'Mother',on:'ボ',kun:'はは',s:5,cat:'people',rad:'母',radN:'Mother',mem:'女 (woman) with two dots — a nursing mother!',words:[{w:'お母さん',r:'おかあさん',e:'mother (familiar)'},{w:'母親',r:'ははおや',e:'mother'},{w:'父母',r:'ふぼ',e:'parents'}]},
+  {k:'友',m:'Friend',on:'ユウ',kun:'とも',s:4,cat:'people',rad:'又',radN:'Again/Hand',mem:'Two hands reaching toward each other — friendship!',words:[{w:'友達',r:'ともだち',e:'friend'},{w:'友人',r:'ゆうじん',e:'friend (formal)'},{w:'親友',r:'しんゆう',e:'best friend'}]},
+  {k:'先',m:'Before / Previous',on:'セン',kun:'さき',s:6,cat:'people',rad:'儿',radN:'Legs',mem:'A person walking ahead — going first!',words:[{w:'先生',r:'せんせい',e:'teacher'},{w:'先週',r:'せんしゅう',e:'last week'},{w:'お先に',r:'おさきに',e:'after you'}]},
+  {k:'生',m:'Life / Birth',on:'セイ・ショウ',kun:'い(きる)・う(まれる)',s:5,cat:'people',rad:'生',radN:'Life',mem:'A plant sprouting from the ground — new life!',words:[{w:'先生',r:'せんせい',e:'teacher'},{w:'学生',r:'がくせい',e:'student'},{w:'誕生日',r:'たんじょうび',e:'birthday'}]},
+
+  // BODY
+  {k:'目',m:'Eye',on:'モク',kun:'め',s:5,cat:'body',rad:'目',radN:'Eye',mem:'A vertical eye with an iris inside — an eye!',words:[{w:'目',r:'め',e:'eye'},{w:'目的',r:'もくてき',e:'purpose/goal'},{w:'注目',r:'ちゅうもく',e:'attention'}]},
+  {k:'耳',m:'Ear',on:'ジ',kun:'みみ',s:6,cat:'body',rad:'耳',radN:'Ear',mem:'Like an ear canal seen from the side!',words:[{w:'耳',r:'みみ',e:'ear'},{w:'耳鼻科',r:'じびか',e:'ENT clinic'},{w:'耳鳴り',r:'みみなり',e:'tinnitus'}]},
+  {k:'口',m:'Mouth',on:'コウ・ク',kun:'くち',s:3,cat:'body',rad:'口',radN:'Mouth',mem:'A square mouth open to speak — MOUTH!',words:[{w:'口',r:'くち',e:'mouth'},{w:'入口',r:'いりぐち',e:'entrance'},{w:'出口',r:'でぐち',e:'exit'}]},
+  {k:'手',m:'Hand',on:'シュ',kun:'て',s:4,cat:'body',rad:'手',radN:'Hand',mem:'Five strokes like five fingers on a hand!',words:[{w:'手',r:'て',e:'hand'},{w:'手紙',r:'てがみ',e:'letter'},{w:'上手',r:'じょうず',e:'skilled'}]},
+  {k:'足',m:'Foot / Leg',on:'ソク',kun:'あし',s:7,cat:'body',rad:'口',radN:'Mouth',mem:'A leg with a foot at the bottom!',words:[{w:'足',r:'あし',e:'foot/leg'},{w:'足りる',r:'たりる',e:'to be sufficient'},{w:'遠足',r:'えんそく',e:'excursion'}]},
+
+  // DIRECTION
+  {k:'上',m:'Up / Above',on:'ジョウ',kun:'うえ・あ(がる)',s:3,cat:'direction',rad:'一',radN:'One',mem:'A line pointing UP — above the horizon!',words:[{w:'上手',r:'じょうず',e:'skilled'},{w:'上野',r:'うえの',e:'Ueno (place)'},{w:'以上',r:'いじょう',e:'more than'}]},
+  {k:'下',m:'Down / Below',on:'カ・ゲ',kun:'した・さ(がる)',s:3,cat:'direction',rad:'一',radN:'One',mem:'A line pointing DOWN — below the horizon!',words:[{w:'下手',r:'へた',e:'unskilled'},{w:'地下',r:'ちか',e:'underground'},{w:'下さい',r:'ください',e:'please give me'}]},
+  {k:'左',m:'Left',on:'サ',kun:'ひだり',s:5,cat:'direction',rad:'工',radN:'Work',mem:'工 (work) + 手 — the left hand working!',words:[{w:'左',r:'ひだり',e:'left'},{w:'左手',r:'ひだりて',e:'left hand'},{w:'左折',r:'させつ',e:'left turn'}]},
+  {k:'右',m:'Right',on:'ウ・ユウ',kun:'みぎ',s:5,cat:'direction',rad:'口',radN:'Mouth',mem:'口 (mouth) + 手 — using right hand to eat!',words:[{w:'右',r:'みぎ',e:'right'},{w:'右手',r:'みぎて',e:'right hand'},{w:'右折',r:'うせつ',e:'right turn'}]},
+  {k:'中',m:'Middle / Inside',on:'チュウ',kun:'なか',s:4,cat:'direction',rad:'中',radN:'Middle',mem:'A line through the middle of a box — CENTER!',words:[{w:'中国',r:'ちゅうごく',e:'China'},{w:'中学校',r:'ちゅうがっこう',e:'middle school'},{w:'中心',r:'ちゅうしん',e:'center'}]},
+  {k:'東',m:'East',on:'トウ',kun:'ひがし',s:8,cat:'direction',rad:'木',radN:'Tree',mem:'Sun rising behind a tree — East!',words:[{w:'東京',r:'とうきょう',e:'Tokyo'},{w:'東口',r:'ひがしぐち',e:'east exit'},{w:'東南',r:'とうなん',e:'southeast'}]},
+  {k:'西',m:'West',on:'セイ・サイ',kun:'にし',s:6,cat:'direction',rad:'覀',radN:'Cover',mem:'Like a bird in a nest at sunset — West!',words:[{w:'西口',r:'にしぐち',e:'west exit'},{w:'関西',r:'かんさい',e:'Kansai region'},{w:'東西',r:'とうざい',e:'east and west'}]},
+  {k:'南',m:'South',on:'ナン',kun:'みなみ',s:9,cat:'direction',rad:'十',radN:'Ten',mem:'十 + 早 — the sun at its height in the south!',words:[{w:'南口',r:'みなみぐち',e:'south exit'},{w:'東南',r:'とうなん',e:'southeast'},{w:'南米',r:'なんべい',e:'South America'}]},
+  {k:'北',m:'North',on:'ホク',kun:'きた',s:5,cat:'direction',rad:'匕',radN:'Spoon',mem:'Two people back to back — facing North!',words:[{w:'北口',r:'きたぐち',e:'north exit'},{w:'北海道',r:'ほっかいどう',e:'Hokkaido'},{w:'東北',r:'とうほく',e:'Tohoku region'}]},
+
+  // PLACES
+  {k:'国',m:'Country',on:'コク',kun:'くに',s:8,cat:'place',rad:'囗',radN:'Enclosure',mem:'玉 (jewel) in a box (border) — a country guards its treasure!',words:[{w:'日本国',r:'にほんこく',e:'Japan (formal)'},{w:'外国',r:'がいこく',e:'foreign country'},{w:'中国',r:'ちゅうごく',e:'China'}]},
+  {k:'町',m:'Town',on:'チョウ',kun:'まち',s:7,cat:'place',rad:'田',radN:'Rice field',mem:'田 (field) + 丁 — a town grows from farmland!',words:[{w:'町',r:'まち',e:'town'},{w:'中町',r:'なかまち',e:'Nakamachi'},{w:'町長',r:'ちょうちょう',e:'town mayor'}]},
+  {k:'村',m:'Village',on:'ソン',kun:'むら',s:7,cat:'place',rad:'木',radN:'Tree',mem:'木 (tree) + 寸 — a village among the trees!',words:[{w:'村',r:'むら',e:'village'},{w:'農村',r:'のうそん',e:'farm village'},{w:'村人',r:'むらびと',e:'villager'}]},
+  {k:'市',m:'City / Market',on:'シ',kun:'いち',s:5,cat:'place',rad:'巾',radN:'Cloth',mem:'A person calling out at market — buying and selling!',words:[{w:'東京市',r:'とうきょうし',e:'Tokyo city'},{w:'市場',r:'いちば',e:'market'},{w:'都市',r:'とし',e:'city/urban area'}]},
+  {k:'駅',m:'Train Station',on:'エキ',kun:'—',s:14,cat:'place',rad:'馬',radN:'Horse',mem:'馬 (horse) + 睪 — horses used to carry passengers!',words:[{w:'東京駅',r:'とうきょうえき',e:'Tokyo Station'},{w:'駅員',r:'えきいん',e:'station staff'},{w:'次の駅',r:'つぎのえき',e:'next station'}]},
+  {k:'校',m:'School',on:'コウ',kun:'—',s:10,cat:'place',rad:'木',radN:'Tree',mem:'木 (tree) + 交 (interact) — learning under the trees!',words:[{w:'学校',r:'がっこう',e:'school'},{w:'高校',r:'こうこう',e:'high school'},{w:'校長',r:'こうちょう',e:'school principal'}]},
+
+  // ADJECTIVES
+  {k:'大',m:'Big / Large',on:'ダイ・タイ',kun:'おお(きい)',s:3,cat:'adjective',rad:'大',radN:'Big',mem:'A person standing tall with arms stretched wide — BIG!',words:[{w:'大学',r:'だいがく',e:'university'},{w:'大丈夫',r:'だいじょうぶ',e:'OK / alright'},{w:'大好き',r:'だいすき',e:'love very much'}]},
+  {k:'小',m:'Small / Little',on:'ショウ',kun:'ちい(さい)・こ',s:3,cat:'adjective',rad:'小',radN:'Small',mem:'Three small strokes — something tiny scattering!',words:[{w:'小学校',r:'しょうがっこう',e:'elementary school'},{w:'小さい',r:'ちいさい',e:'small'},{w:'小川',r:'おがわ',e:'stream'}]},
+  {k:'高',m:'Tall / Expensive',on:'コウ',kun:'たか(い)',s:10,cat:'adjective',rad:'高',radN:'Tall',mem:'A tall building on a hill — HIGH!',words:[{w:'高校',r:'こうこう',e:'high school'},{w:'高い',r:'たかい',e:'tall/expensive'},{w:'最高',r:'さいこう',e:'the best'}]},
+  {k:'新',m:'New',on:'シン',kun:'あたら(しい)',s:13,cat:'adjective',rad:'斤',radN:'Ax',mem:'辛 + 木 + 斤 — fresh wood cut by an axe is NEW!',words:[{w:'新幹線',r:'しんかんせん',e:'bullet train'},{w:'新しい',r:'あたらしい',e:'new'},{w:'新宿',r:'しんじゅく',e:'Shinjuku'}]},
+  {k:'長',m:'Long / Chief',on:'チョウ',kun:'なが(い)',s:8,cat:'adjective',rad:'長',radN:'Long',mem:'Long flowing hair streaming behind — LONG!',words:[{w:'社長',r:'しゃちょう',e:'company president'},{w:'長い',r:'ながい',e:'long'},{w:'身長',r:'しんちょう',e:'height (body)'}]},
+  {k:'白',m:'White',on:'ハク・ビャク',kun:'しろ',s:5,cat:'adjective',rad:'白',radN:'White',mem:'日 (sun) + one drop — sunlight is white!',words:[{w:'白い',r:'しろい',e:'white'},{w:'白米',r:'はくまい',e:'white rice'},{w:'面白い',r:'おもしろい',e:'interesting'}]},
+  {k:'赤',m:'Red',on:'セキ',kun:'あか',s:7,cat:'adjective',rad:'赤',radN:'Red',mem:'大 (big) + 火 (fire) — a BIG FIRE is red!',words:[{w:'赤い',r:'あかい',e:'red'},{w:'赤ちゃん',r:'あかちゃん',e:'baby'},{w:'赤道',r:'せきどう',e:'equator'}]},
+  {k:'青',m:'Blue / Green',on:'セイ',kun:'あお',s:8,cat:'adjective',rad:'青',radN:'Blue/Green',mem:'Like a plant growing under the clear sky — blue/green!',words:[{w:'青い',r:'あおい',e:'blue'},{w:'青年',r:'せいねん',e:'youth'},{w:'青木',r:'あおき',e:'Aoki (name)'}]},
+
+  // ACTIONS/VERBS
+  {k:'見',m:'See / Look',on:'ケン',kun:'み(る)',s:7,cat:'action',rad:'見',radN:'See',mem:'目 (eye) + 人 (person) — a person uses their eyes to SEE!',words:[{w:'見る',r:'みる',e:'to watch/see'},{w:'花見',r:'はなみ',e:'flower viewing'},{w:'意見',r:'いけん',e:'opinion'}]},
+  {k:'聞',m:'Listen / Ask',on:'ブン・モン',kun:'き(く)',s:14,cat:'action',rad:'耳',radN:'Ear',mem:'耳 (ear) in a gate 門 — listening through the door!',words:[{w:'聞く',r:'きく',e:'to listen/ask'},{w:'新聞',r:'しんぶん',e:'newspaper'},{w:'聞こえる',r:'きこえる',e:'to be heard'}]},
+  {k:'書',m:'Write',on:'ショ',kun:'か(く)',s:10,cat:'action',rad:'日',radN:'Sun',mem:'A brush writing under the sun — WRITE!',words:[{w:'書く',r:'かく',e:'to write'},{w:'教科書',r:'きょうかしょ',e:'textbook'},{w:'図書館',r:'としょかん',e:'library'}]},
+  {k:'読',m:'Read',on:'ドク',kun:'よ(む)',s:14,cat:'action',rad:'言',radN:'Say/Speech',mem:'言 (speech) + 売 (sell) — reading aloud to sell!',words:[{w:'読む',r:'よむ',e:'to read'},{w:'読書',r:'どくしょ',e:'reading books'},{w:'音読み',r:'おんよみ',e:'on-reading'}]},
+  {k:'食',m:'Eat / Food',on:'ショク',kun:'た(べる)',s:9,cat:'action',rad:'食',radN:'Eat',mem:'A lid over a bowl of rice — FOOD ready to eat!',words:[{w:'食べる',r:'たべる',e:'to eat'},{w:'食堂',r:'しょくどう',e:'cafeteria'},{w:'夕食',r:'ゆうしょく',e:'dinner'}]},
+  {k:'飲',m:'Drink',on:'イン',kun:'の(む)',s:12,cat:'action',rad:'食',radN:'Eat',mem:'食 (eat) + 欠 (lack) — drink what you lack!',words:[{w:'飲む',r:'のむ',e:'to drink'},{w:'飲み物',r:'のみもの',e:'drink/beverage'},{w:'飲食',r:'いんしょく',e:'food and drink'}]},
+  {k:'行',m:'Go',on:'コウ・ギョウ',kun:'い(く)',s:6,cat:'action',rad:'行',radN:'Go',mem:'Two cross-roads merging — GO forward!',words:[{w:'行く',r:'いく',e:'to go'},{w:'旅行',r:'りょこう',e:'trip/travel'},{w:'銀行',r:'ぎんこう',e:'bank'}]},
+  {k:'来',m:'Come',on:'ライ',kun:'く(る)',s:7,cat:'action',rad:'木',radN:'Tree',mem:'A wheat plant coming to maturity — COME!',words:[{w:'来る',r:'くる',e:'to come'},{w:'来年',r:'らいねん',e:'next year'},{w:'来週',r:'らいしゅう',e:'next week'}]},
+  {k:'出',m:'Exit / Come out',on:'シュツ',kun:'で(る)',s:5,cat:'action',rad:'凵',radN:'Box open top',mem:'Two mountains popping up — going OUT!',words:[{w:'出る',r:'でる',e:'to exit/come out'},{w:'出口',r:'でぐち',e:'exit'},{w:'出発',r:'しゅっぱつ',e:'departure'}]},
+  {k:'入',m:'Enter',on:'ニュウ',kun:'はい(る)',s:2,cat:'action',rad:'入',radN:'Enter',mem:'Two strokes coming together — entering through a door!',words:[{w:'入る',r:'はいる',e:'to enter'},{w:'入口',r:'いりぐち',e:'entrance'},{w:'輸入',r:'ゆにゅう',e:'import'}]},
+  {k:'言',m:'Say / Speak',on:'ゲン',kun:'い(う)',s:7,cat:'action',rad:'言',radN:'Say/Speech',mem:'A mouth (口) with sound waves rising — SAY it!',words:[{w:'言う',r:'いう',e:'to say'},{w:'言語',r:'げんご',e:'language'},{w:'言葉',r:'ことば',e:'word/language'}]},
+  {k:'会',m:'Meet / Gather',on:'カイ',kun:'あ(う)',s:6,cat:'action',rad:'人',radN:'Person',mem:'A roof where people MEET together!',words:[{w:'会う',r:'あう',e:'to meet'},{w:'会社',r:'かいしゃ',e:'company'},{w:'社会',r:'しゃかい',e:'society'}]},
+
+  // THINGS
+  {k:'本',m:'Book / Origin',on:'ホン',kun:'もと',s:5,cat:'things',rad:'木',radN:'Tree',mem:'木 (tree) with a mark at the ROOT — origin, then books!',words:[{w:'日本',r:'にほん',e:'Japan'},{w:'本',r:'ほん',e:'book'},{w:'基本',r:'きほん',e:'basics'}]},
+  {k:'車',m:'Car / Vehicle',on:'シャ',kun:'くるま',s:7,cat:'things',rad:'車',radN:'Vehicle',mem:'A wheel with an axle — a VEHICLE!',words:[{w:'電車',r:'でんしゃ',e:'train'},{w:'車',r:'くるま',e:'car'},{w:'自動車',r:'じどうしゃ',e:'automobile'}]},
+  {k:'電',m:'Electricity',on:'デン',kun:'—',s:13,cat:'things',rad:'雨',radN:'Rain',mem:'雨 (rain) + 申 — lightning in a rainstorm!',words:[{w:'電車',r:'でんしゃ',e:'train'},{w:'電話',r:'でんわ',e:'telephone'},{w:'電気',r:'でんき',e:'electricity'}]},
+  {k:'気',m:'Energy / Feeling',on:'キ',kun:'—',s:6,cat:'things',rad:'气',radN:'Steam',mem:'Steam rising into the air — vital ENERGY!',words:[{w:'天気',r:'てんき',e:'weather'},{w:'気持ち',r:'きもち',e:'feeling'},{w:'元気',r:'げんき',e:'healthy/energetic'}]},
+  {k:'語',m:'Language / Word',on:'ゴ',kun:'かた(る)',s:14,cat:'things',rad:'言',radN:'Say',mem:'言 (speech) + 吾 (I/me) — MY language!',words:[{w:'日本語',r:'にほんご',e:'Japanese language'},{w:'英語',r:'えいご',e:'English'},{w:'語学',r:'ごがく',e:'language study'}]},
+  {k:'字',m:'Character / Letter',on:'ジ',kun:'あざ',s:6,cat:'things',rad:'子',radN:'Child',mem:'子 (child) under a roof — learning characters at home!',words:[{w:'漢字',r:'かんじ',e:'kanji'},{w:'文字',r:'もじ',e:'character/letter'},{w:'字幕',r:'じまく',e:'subtitles'}]},
+  {k:'学',m:'Study / Learn',on:'ガク',kun:'まな(ぶ)',s:8,cat:'things',rad:'子',radN:'Child',mem:'子 (child) with a roof = school — learning!',words:[{w:'大学',r:'だいがく',e:'university'},{w:'学校',r:'がっこう',e:'school'},{w:'学生',r:'がくせい',e:'student'}]},
+  {k:'円',m:'Circle / Yen',on:'エン',kun:'まる(い)',s:4,cat:'things',rad:'囗',radN:'Enclosure',mem:'A complete circle — a CIRCLE or the YEN coin!',words:[{w:'円',r:'えん',e:'yen (¥)'},{w:'百円',r:'ひゃくえん',e:'100 yen'},{w:'円形',r:'えんけい',e:'circular shape'}]},
+  {k:'天',m:'Sky / Heaven',on:'テン',kun:'あめ',s:4,cat:'things',rad:'大',radN:'Big',mem:'大 (big) + 一 (line above) — what\'s above the big person: SKY!',words:[{w:'天気',r:'てんき',e:'weather'},{w:'天ぷら',r:'てんぷら',e:'tempura'},{w:'天国',r:'てんごく',e:'heaven'}]},
+];
+
+// Category definitions
+const CATS = {
+  all:       {label:'All Kanji',    emoji:'全'},
+  numbers:   {label:'Numbers',      emoji:'🔢'},
+  time:      {label:'Time',         emoji:'⏰'},
+  nature:    {label:'Nature',       emoji:'🌿'},
+  people:    {label:'People',       emoji:'👤'},
+  body:      {label:'Body',         emoji:'👁️'},
+  direction: {label:'Direction',    emoji:'🧭'},
+  place:     {label:'Places',       emoji:'🏯'},
+  adjective: {label:'Adjectives',   emoji:'✨'},
+  action:    {label:'Actions/Verbs',emoji:'⚡'},
+  things:    {label:'Things',       emoji:'📦'},
+};
+
+// STATE
+let state = {};
+KANJI.forEach(k => { state[k.k] = {status:'new', correct:0, wrong:0}; });
+let selectedK = KANJI[0].k;
+let currentMode = 'study';
+let currentCat = 'all';
+let selectedQT = 'kanji2en';
+let quizQueue = [], qIdx = 0, qCorrect = 0, qWrong = 0, qXP = 0;
+let quizAnswered = false;
+let reviewQueue = [], rIdx = 0, cardFlipped = false;
+let toastTimer;
+
+// =====================================================================
+// BUILD GRID
+// =====================================================================
+function buildGrid(filter = 'all') {
+  const container = document.getElementById('gridContainer');
+  container.innerHTML = '';
+  const cats = filter === 'all'
+    ? Object.keys(CATS).filter(c => c !== 'all')
+    : [filter];
+
+  cats.forEach(cat => {
+    const items = KANJI.filter(k => k.cat === cat);
+    if (!items.length) return;
+    const sec = document.createElement('div');
+    const head = document.createElement('div');
+    head.className = 'section-head';
+    head.innerHTML = `<h2>${CATS[cat].emoji} ${CATS[cat].label}</h2><span class="subtitle">${items.map(k=>k.k).join(' ')}</span><span class="section-count">${items.length} kanji</span>`;
+    sec.appendChild(head);
+
+    const grid = document.createElement('div');
+    grid.className = 'kanji-grid';
+    grid.style.marginBottom = '28px';
+    items.forEach(kj => {
+      const s = state[kj.k];
+      const tile = document.createElement('div');
+      tile.className = `kanji-tile ${s.status} ${kj.k === selectedK ? 'selected' : ''}`;
+      tile.dataset.k = kj.k;
+      tile.innerHTML = `<div class="tile-kanji">${kj.k}</div><div class="tile-mean">${kj.m}</div><div class="tile-check">✓</div>`;
+      tile.addEventListener('click', () => selectKanji(kj.k));
+      grid.appendChild(tile);
+    });
+    sec.appendChild(grid);
+    container.appendChild(sec);
+  });
+}
+
+// =====================================================================
+// SELECT KANJI
+// =====================================================================
+function selectKanji(k) {
+  selectedK = k;
+  const kj = KANJI.find(x => x.k === k);
+  if (!kj) return;
+
+  document.querySelectorAll('.kanji-tile').forEach(t => t.classList.toggle('selected', t.dataset.k === k));
+
+  document.getElementById('heroKanji').textContent = k;
+  document.getElementById('heroMeaning').textContent = kj.m;
+  document.getElementById('heroStrokes').textContent = kj.s + ' STROKES';
+  document.getElementById('heroOn').textContent = kj.on;
+  document.getElementById('heroKun').textContent = kj.kun;
+  document.getElementById('heroMem').textContent = kj.mem;
+  document.getElementById('heroRadChar').textContent = kj.rad;
+  document.getElementById('heroRadName').textContent = kj.radN + ' radical';
+
+  // Stroke dots
+  const dots = document.getElementById('strokeDots');
+  dots.innerHTML = '';
+  for (let i = 0; i < kj.s; i++) {
+    const d = document.createElement('div');
+    d.className = 'stroke-dot' + (i < kj.s ? ' filled' : '');
+    dots.appendChild(d);
+  }
+
+  // Words
+  const wordsEl = document.getElementById('heroWords');
+  wordsEl.innerHTML = kj.words.map(w => `
+    <div class="word-ex" onclick="speakWord('${w.w}')">
+      <div>
+        <div class="we-kanji">${w.w}</div>
+        <div class="we-kana">${w.r}</div>
+      </div>
+      <div class="we-en">${w.e}</div>
+    </div>
+  `).join('');
+
+  // SRS
+  const s = state[k];
+  document.getElementById('heroSRS').innerHTML = {
+    new:      '<span class="srs-tag srs-new">🆕 New</span>',
+    learning: '<span class="srs-tag srs-learning">📖 Learning</span>',
+    review:   '<span class="srs-tag srs-review">🔄 Review</span>',
+    mastered: '<span class="srs-tag srs-mastered">⭐ Mastered</span>',
+  }[s.status];
+  document.getElementById('heroStats').textContent = s.status === 'new'
+    ? 'Not studied yet'
+    : `✅ ${s.correct} correct · ❌ ${s.wrong} wrong`;
+
+  if (s.status === 'new') {
+    state[k].status = 'learning';
+    updateProgress();
+    refreshTile(k);
+  }
+
+  document.getElementById('heroKanji').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function refreshTile(k) {
+  const tile = document.querySelector(`[data-k="${k}"]`);
+  if (!tile) return;
+  tile.className = `kanji-tile ${state[k].status} ${k === selectedK ? 'selected' : ''}`;
+}
+
+// =====================================================================
+// FILTER
+// =====================================================================
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.side-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  buildGrid(cat);
+}
+
+// =====================================================================
+// PROGRESS
+// =====================================================================
+function updateProgress() {
+  let mastered = 0, learning = 0;
+  const total = KANJI.length;
+  KANJI.forEach(k => {
+    if (state[k.k].status === 'mastered') mastered++;
+    else if (['learning','review'].includes(state[k.k].status)) learning++;
+  });
+  const newC = total - mastered - learning;
+  const pct = n => Math.round(n / total * 100) + '%';
+  document.getElementById('pb-mastered').style.width = pct(mastered);
+  document.getElementById('pb-learning').style.width  = pct(learning);
+  document.getElementById('pb-new').style.width       = pct(newC);
+  document.getElementById('pc-mastered').textContent = `${mastered}/${total}`;
+  document.getElementById('pc-learning').textContent  = `${learning}/${total}`;
+  document.getElementById('pc-new').textContent       = `${newC}/${total}`;
+  document.getElementById('masteredChip').textContent = `⭐ ${mastered}/80`;
+
+  // Side fills
+  Object.keys(CATS).forEach(cat => {
+    const el = document.getElementById('sf-' + cat);
+    if (!el) return;
+    const items = cat === 'all' ? KANJI : KANJI.filter(k => k.cat === cat);
+    const done = items.filter(k => state[k.k].status === 'mastered').length;
+    el.style.width = items.length ? Math.round(done / items.length * 100) + '%' : '0%';
+  });
+}
+
+// =====================================================================
+// MODE SWITCH
+// =====================================================================
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-tab').forEach((t, i) => t.classList.toggle('active', ['study','quiz','review'][i] === mode));
+  document.getElementById('studyMode').style.display  = mode === 'study'  ? '' : 'none';
+  document.getElementById('quizMode').className       = mode === 'quiz'   ? 'active' : '';
+  document.getElementById('reviewMode').className     = mode === 'review' ? 'active' : '';
+  if (mode === 'quiz')   buildQuizSetup();
+  if (mode === 'review') initReview();
+}
+
+// =====================================================================
+// QUIZ
+// =====================================================================
+function setQT(btn) {
+  document.querySelectorAll('.qt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedQT = btn.dataset.qt;
+}
+
+function buildQuizSetup() {
+  const el = document.getElementById('quizCatSelect');
+  el.innerHTML = '';
+  Object.entries(CATS).filter(([c]) => c !== 'all').forEach(([cat, info]) => {
+    const btn = document.createElement('button');
+    btn.className = 'qcs-btn sel';
+    btn.dataset.cat = cat;
+    btn.textContent = info.emoji + ' ' + info.label;
+    btn.addEventListener('click', () => btn.classList.toggle('sel'));
+    el.appendChild(btn);
+  });
+  document.getElementById('quizSetup').style.display = '';
+  document.getElementById('quizActive').style.display = 'none';
+  document.getElementById('quizResult').style.display = 'none';
+}
+
+function startQuiz() {
+  const selCats = [...document.querySelectorAll('.qcs-btn.sel')].map(b => b.dataset.cat);
+  if (!selCats.length) { showToast('⚠️', 'Pick a category!', 'Select at least one category.'); return; }
+  const pool = KANJI.filter(k => selCats.includes(k.cat));
+  quizQueue = shuffle([...pool]).slice(0, Math.min(15, pool.length));
+  qIdx = 0; qCorrect = 0; qWrong = 0; qXP = 0;
+  document.getElementById('quizSetup').style.display = 'none';
+  document.getElementById('quizActive').style.display = '';
+  document.getElementById('quizResult').style.display = 'none';
+  renderQ();
+}
+
+function renderQ() {
+  quizAnswered = false;
+  if (qIdx >= quizQueue.length) { showResult(); return; }
+  const q = quizQueue[qIdx];
+  const qt = selectedQT;
+  const pct = (qIdx / quizQueue.length * 100);
+  document.getElementById('aqPF').style.width = pct + '%';
+  document.getElementById('aqLabel').textContent = `QUESTION ${qIdx+1} / ${quizQueue.length}`;
+  document.getElementById('aqCorrect').textContent = qCorrect;
+  document.getElementById('aqWrong').textContent = qWrong;
+  document.getElementById('aqXP').textContent = qXP;
+
+  const charEl = document.getElementById('aqChar');
+  charEl.className = 'aq-char';
+
+  if (qt === 'kanji2en') {
+    document.getElementById('aqQuestion').textContent = 'What does this kanji mean?';
+    charEl.textContent = q.k;
+    document.getElementById('aqHint').textContent = 'Choose the English meaning';
+    const wrong = shuffle(KANJI.filter(k => k.k !== q.k)).slice(0,3).map(k => k.m);
+    buildOpts(shuffle([q.m, ...wrong]), q.m, true);
+  } else if (qt === 'en2kanji') {
+    document.getElementById('aqQuestion').textContent = 'Which kanji means this?';
+    charEl.textContent = q.m;
+    charEl.className = 'aq-char small-text';
+    document.getElementById('aqHint').textContent = 'Choose the correct kanji';
+    const wrong = shuffle(KANJI.filter(k => k.k !== q.k)).slice(0,3).map(k => k.k);
+    buildOpts(shuffle([q.k, ...wrong]), q.k, false);
+  } else if (qt === 'kanji2on') {
+    document.getElementById('aqQuestion').textContent = 'What is the On-reading?';
+    charEl.textContent = q.k;
+    document.getElementById('aqHint').textContent = '音読み (Chinese-origin reading)';
+    const wrong = shuffle(KANJI.filter(k => k.k !== q.k && k.on !== q.on)).slice(0,3).map(k => k.on.split('・')[0]);
+    buildOpts(shuffle([q.on.split('・')[0], ...wrong]), q.on.split('・')[0], true);
+  } else if (qt === 'kanji2kun') {
+    document.getElementById('aqQuestion').textContent = 'What is the Kun-reading?';
+    charEl.textContent = q.k;
+    document.getElementById('aqHint').textContent = '訓読み (Japanese-origin reading)';
+    const clean = r => r.replace(/[（）()]/g,'').split('・')[0];
+    const wrong = shuffle(KANJI.filter(k => k.k !== q.k && k.kun !== q.kun)).slice(0,3).map(k => clean(k.kun));
+    buildOpts(shuffle([clean(q.kun), ...wrong]), clean(q.kun), true);
+  } else if (qt === 'word') {
+    const word = q.words[Math.floor(Math.random() * q.words.length)];
+    document.getElementById('aqQuestion').textContent = 'What does this word mean?';
+    charEl.textContent = word.w;
+    document.getElementById('aqHint').textContent = word.r + ' — Choose the meaning';
+    const wrong = shuffle(KANJI.filter(k => k.k !== q.k).flatMap(k => k.words)).slice(0,3).map(w => w.e);
+    buildOpts(shuffle([word.e, ...wrong]), word.e, true);
+  }
+}
+
+function buildOpts(opts, correct, smallText) {
+  const el = document.getElementById('aqOptions');
+  el.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'aq-opt' + (smallText && opt.length > 3 ? ' small-opt' : '');
+    btn.textContent = opt;
+    btn.addEventListener('click', () => {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      const isRight = opt === correct;
+      el.querySelectorAll('.aq-opt').forEach(b => {
+        if (b.textContent === correct) b.classList.add('correct');
+        else if (b === btn && !isRight) b.classList.add('wrong');
+      });
+      const kk = quizQueue[qIdx].k;
+      if (isRight) { qCorrect++; qXP += 10; state[kk].correct++; if (state[kk].correct >= 3) state[kk].status = 'mastered'; else state[kk].status = 'learning'; updateProgress(); refreshTile(kk); if (state[kk].status === 'mastered') showToast('⭐', kk + ' Mastered!', quizQueue[qIdx].m + ' — +10 XP'); }
+      else { qWrong++; state[kk].wrong++; }
+      document.getElementById('aqCorrect').textContent = qCorrect;
+      document.getElementById('aqWrong').textContent = qWrong;
+      document.getElementById('aqXP').textContent = qXP;
+      setTimeout(() => { qIdx++; renderQ(); }, 900);
+    });
+    el.appendChild(btn);
+  });
+}
+
+function showResult() {
+  document.getElementById('quizActive').style.display = 'none';
+  document.getElementById('quizResult').style.display = '';
+  const total = quizQueue.length;
+  const acc = Math.round(qCorrect / total * 100);
+  const perfect = qCorrect === total;
+  const bonus = perfect ? 30 : 0;
+  document.getElementById('qrEmoji').textContent = perfect ? '🏆' : acc >= 70 ? '⭐' : '💪';
+  document.getElementById('qrTitle').textContent = perfect ? 'PERFECT!' : acc >= 70 ? 'GREAT!' : 'KEEP GOING!';
+  document.getElementById('qrSub').textContent = `${qCorrect}/${total} correct · ${acc}% accuracy${perfect ? ' · Perfect bonus +30 XP!' : ''}`;
+  document.getElementById('qrScore').textContent = `${qCorrect}/${total}`;
+  document.getElementById('qrAcc').textContent = acc + '%';
+  document.getElementById('qrXP').textContent = '+' + (qXP + bonus);
+  if (perfect) showToast('🏆', 'PERFECT!', `Master of kanji! +${qXP+bonus} XP`);
+}
+
+// =====================================================================
+// REVIEW
+// =====================================================================
+function initReview() {
+  reviewQueue = KANJI.filter(k => ['learning','review'].includes(state[k.k].status));
+  reviewQueue = shuffle([...reviewQueue]);
+  rIdx = 0; cardFlipped = false;
+  const hasCards = reviewQueue.length > 0;
+  document.getElementById('reviewEmpty').style.display  = hasCards ? 'none' : '';
+  document.getElementById('reviewActive').style.display = hasCards ? '' : 'none';
+  if (hasCards) showReviewCard();
+}
+
+function showReviewCard() {
+  cardFlipped = false;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('reviewActions').style.display = 'none';
+  if (rIdx >= reviewQueue.length) { showToast('🎉', 'Done!', `${reviewQueue.length} cards reviewed!`); setTimeout(initReview, 1200); return; }
+  const kj = reviewQueue[rIdx];
+  document.getElementById('rfChar').textContent   = kj.k;
+  document.getElementById('rfStrokes').textContent = kj.s + ' strokes';
+  document.getElementById('rbChar').textContent    = kj.k;
+  document.getElementById('rbMeaning').textContent = kj.m.toUpperCase();
+  document.getElementById('rbReadings').textContent = 'On: ' + kj.on + '　Kun: ' + kj.kun;
+  document.getElementById('rbEx').textContent      = kj.words[0].w + ' (' + kj.words[0].r + ') — ' + kj.words[0].e;
+  document.getElementById('reviewProgress').textContent = `Card ${rIdx+1} of ${reviewQueue.length}`;
+}
+
+function flipCard() {
+  if (cardFlipped) return;
+  cardFlipped = true;
+  document.getElementById('flipInner').classList.add('flipped');
+  setTimeout(() => { document.getElementById('reviewActions').style.display = 'flex'; }, 300);
+}
+
+function reviewAns(r) {
+  const kj = reviewQueue[rIdx];
+  if (r === 'again') { state[kj.k].wrong++; state[kj.k].status = 'learning'; reviewQueue.push(reviewQueue[rIdx]); }
+  else if (r === 'easy') { state[kj.k].correct += 2; state[kj.k].status = 'mastered'; showToast('⭐', kj.k + ' Mastered!', kj.m); }
+  else { state[kj.k].correct++; if (state[kj.k].correct >= 3) state[kj.k].status = 'mastered'; }
+  updateProgress(); rIdx++; showReviewCard();
+}
+
+// =====================================================================
+// AUDIO
+// =====================================================================
+function playAudio() {
+  const btn = document.getElementById('audioBtn');
+  btn.classList.add('playing'); btn.textContent = '🔊 Playing...';
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(selectedK);
+    u.lang = 'ja-JP'; u.rate = 0.7;
+    u.onend = () => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Reading'; };
+    speechSynthesis.speak(u);
+  } else { setTimeout(() => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Reading'; }, 700); }
+}
+
+function speakWord(word) {
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(word);
+    u.lang = 'ja-JP'; u.rate = 0.75;
+    speechSynthesis.speak(u);
+  }
+}
+
+// =====================================================================
+// HELPERS
+// =====================================================================
+function showToast(icon, title, sub, type = 'success') {
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastSub').textContent = sub;
+  const t = document.getElementById('toast');
+  t.className = 'toast ' + type + ' show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+function shuffle(arr) {
+  for (let i = arr.length-1; i>0; i--) { const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]] = [arr[j],arr[i]]; }
+  return arr;
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  const idx = KANJI.findIndex(k => k.k === selectedK);
+  if (e.key === 'ArrowRight' && idx < KANJI.length-1) selectKanji(KANJI[idx+1].k);
+  if (e.key === 'ArrowLeft'  && idx > 0)              selectKanji(KANJI[idx-1].k);
+  if (e.key === ' ') { e.preventDefault(); playAudio(); }
+});
+
+// =====================================================================
+// INIT
+// =====================================================================
+buildGrid('all');
+selectKanji(KANJI[0].k);
+buildQuizSetup();
+updateProgress();
+setTimeout(() => showToast('⛩️','漢字 Unlocked!','80 JLPT N5 kanji — on/kun readings, words, radicals!'), 800);
+</script>
+</body>
+</html>
+

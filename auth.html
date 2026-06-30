@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -439,6 +439,7 @@ html, body {
   .finish-card { padding: 36px 24px; }
 }
 </style>
+<script src="gojuon-widget.js"></script>
 </head>
 <body>
 
@@ -599,12 +600,12 @@ html, body {
 
       <div class="lang-options">
         <div class="lang-option selected" id="langEN" onclick="selectLang('en')">
-          <span class="flag">🇺🇸</span>
+          <span class="flag"><img src="https://flagcdn.com/w80/us.png" alt="🇺🇸" style="width:52px;height:auto;border-radius:4px"></span>
           <div class="lang-name">English</div>
           <div class="lang-native">English</div>
         </div>
         <div class="lang-option" id="langES" onclick="selectLang('es')">
-          <span class="flag">🇪🇸</span>
+          <span class="flag"><img src="https://flagcdn.com/w80/es.png" alt="🇪🇸" style="width:52px;height:auto;border-radius:4px"></span>
           <div class="lang-name">Español</div>
           <div class="lang-native">Spanish</div>
         </div>
@@ -996,3 +997,4 @@ applyLang('en');
 </script>
 </body>
 </html>
+

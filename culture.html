@@ -1,0 +1,818 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — Culture Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #1c2230;
+  --gold: #ffd700; --gold2: #ffaa00;
+  --cyan: #00e5ff; --green: #00e676; --red: #ff3a5c;
+  --purple: #a855f7; --orange: #ff6b2b; --pink: #ff6eb4;
+  --teal: #00bfa5; --blue: #2979ff;
+  --white: #fff; --gray: #7a8099; --text: #d0d4e8;
+  --border: rgba(255,255,255,0.07);
+}
+html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); }
+
+/* ── NAV ── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100; height: 56px;
+  display: flex; align-items: center; gap: 12px; padding: 0 20px;
+  background: rgba(13,17,23,0.97); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-back { display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);color:rgba(255,255,255,0.75);font-size:0.82rem;font-weight:800;text-decoration:none;transition:all 0.2s; }
+.nav-back:hover { background:rgba(255,255,255,0.1);color:#fff; }
+.nav-logo { font-family:'Bangers',cursive;font-size:1.15rem;letter-spacing:3px;background:linear-gradient(90deg,#ff6b2b,#ff6eb4,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.nav-spacer { flex:1; }
+.nav-xp { padding:6px 14px;border-radius:20px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);font-family:'Orbitron',sans-serif;font-size:0.72rem;font-weight:900;color:var(--gold); }
+
+/* ── HERO ── */
+.hero {
+  position:relative;overflow:hidden;padding:40px 20px 34px;text-align:center;
+  background:linear-gradient(160deg,#0a0010 0%,#1a000a 30%,#0a1a0a 70%,#0a0a2a 100%);
+  border-bottom:1px solid rgba(255,107,43,0.12);
+}
+.hero::before {
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(255,110,180,0.1), transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(168,85,247,0.1), transparent 50%),
+    radial-gradient(ellipse at 50% -10%, rgba(255,107,43,0.12), transparent 55%);
+}
+.hero-floats { position:absolute;inset:0;pointer-events:none;overflow:hidden; }
+.hf { position:absolute;font-size:3rem;opacity:0.05;animation:floatUp linear infinite; }
+@keyframes floatUp { 0%{transform:translateY(100%) rotate(0deg)} 100%{transform:translateY(-120%) rotate(360deg)} }
+.hero-tag { display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:20px;background:rgba(255,107,43,0.12);border:1px solid rgba(255,107,43,0.3);color:var(--orange);font-size:0.68rem;font-weight:900;letter-spacing:1px;margin-bottom:12px;position:relative;z-index:1; }
+.hero-title { font-family:'Bangers',cursive;font-size:2.8rem;letter-spacing:4px;color:var(--white);margin-bottom:8px;position:relative;z-index:1;line-height:1; }
+.hero-title .grad { background:linear-gradient(90deg,var(--orange),var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.hero-sub { font-size:0.88rem;color:var(--text);line-height:1.75;max-width:500px;margin:0 auto 22px;position:relative;z-index:1; }
+
+/* Category pills */
+.cat-pills { display:flex;gap:8px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1; }
+.cat-pill {
+  padding:9px 18px;border-radius:24px;font-size:0.8rem;font-weight:900;cursor:pointer;
+  border:1.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:var(--text);
+  transition:all 0.25s;
+}
+.cat-pill:hover:not(.active) { border-color:rgba(255,255,255,0.2);transform:translateY(-1px); }
+.cat-pill.active { color:#000;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,0.4); }
+
+/* ── PAGE ── */
+.page { max-width:920px;margin:0 auto;padding:32px 16px 70px; }
+
+/* ── CATEGORY SECTIONS ── */
+.cat-section { display:none; }
+.cat-section.active { display:block; }
+
+/* ── SECTION HEADER ── */
+.sec-header { display:flex;align-items:center;gap:12px;margin-bottom:20px; }
+.sec-icon { font-size:2rem; }
+.sec-title { font-family:'Bangers',cursive;font-size:1.8rem;letter-spacing:3px;color:var(--white); }
+.sec-sub { font-size:0.8rem;color:var(--gray);font-weight:700;margin-top:2px; }
+.sec-line { flex:1;height:1px;background:var(--border); }
+
+/* ── CULTURE CARDS ── */
+.culture-grid { display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px; }
+@media(max-width:600px) { .culture-grid { grid-template-columns:1fr; } }
+.culture-card {
+  border-radius:20px;overflow:hidden;border:1px solid var(--border);
+  background:var(--bg2);transition:all 0.3s;cursor:default;
+}
+.culture-card:hover { transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,0.5);border-color:rgba(255,255,255,0.15); }
+
+/* Illustration header */
+.cc-illus {
+  height:130px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.cc-illus-bg { position:absolute;inset:0; }
+.cc-emoji-main { font-size:4rem;position:relative;z-index:2;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.5));animation:ccFloat 3s ease-in-out infinite alternate; }
+@keyframes ccFloat { from{transform:translateY(0) scale(1)} to{transform:translateY(-8px) scale(1.05)} }
+.cc-deco { position:absolute;z-index:1;font-size:1.8rem;opacity:0.5; }
+.cc-body { padding:16px; }
+.cc-title { font-family:'Bangers',cursive;font-size:1.15rem;letter-spacing:2px;color:var(--white);margin-bottom:4px; }
+.cc-sub { font-size:0.7rem;font-weight:900;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px; }
+.cc-desc { font-size:0.8rem;line-height:1.7;color:var(--text);margin-bottom:12px; }
+.cc-fact { display:flex;gap:8px;align-items:flex-start;background:rgba(255,255,255,0.03);border-radius:10px;padding:10px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.05); }
+.cc-fact-icon { font-size:1rem;flex-shrink:0; }
+.cc-fact-text { font-size:0.73rem;line-height:1.6;color:var(--text); }
+
+/* Vocab chips in cards */
+.cc-vocab { display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px; }
+.vc { display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);cursor:pointer;transition:all 0.2s; }
+.vc:hover { background:rgba(255,255,255,0.08);transform:scale(1.03); }
+.vc-jp { font-size:0.88rem;font-weight:900;color:var(--white); }
+.vc-rom { font-size:0.62rem;font-weight:900; }
+.vc-en { font-size:0.62rem;color:var(--gray); }
+.cc-readmore { display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);font-size:0.75rem;font-weight:900;color:var(--text);cursor:pointer;transition:all 0.2s; }
+.cc-readmore:hover { background:rgba(255,255,255,0.1); }
+
+/* ── FEATURE ARTICLE (wide card) ── */
+.feature-card {
+  border-radius:20px;overflow:hidden;border:1px solid var(--border);background:var(--bg2);
+  margin-bottom:20px;display:grid;grid-template-columns:200px 1fr;
+  transition:all 0.3s;
+}
+@media(max-width:580px) { .feature-card { grid-template-columns:1fr; } }
+.feature-card:hover { transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,0.5);border-color:rgba(255,255,255,0.15); }
+.fc-illus { display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;min-height:160px; }
+.fc-illus-bg { position:absolute;inset:0; }
+.fc-emoji { font-size:5rem;position:relative;z-index:2;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.5)); }
+.fc-body { padding:20px; }
+.fc-tag { display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.62rem;font-weight:900;letter-spacing:1px;margin-bottom:8px; }
+.fc-title { font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px;color:var(--white);margin-bottom:6px; }
+.fc-desc { font-size:0.82rem;line-height:1.75;color:var(--text);margin-bottom:12px; }
+.fc-vocab { display:flex;flex-wrap:wrap;gap:5px; }
+
+/* ── QUIZ BANNER ── */
+.quiz-banner {
+  border-radius:20px;padding:22px;margin:24px 0;
+  display:flex;align-items:center;gap:16px;
+  background:linear-gradient(135deg,#1a0d30,#0d0d1a,#0d1a10);
+  border:1px solid rgba(168,85,247,0.2);
+  cursor:pointer;transition:all 0.25s;
+}
+.quiz-banner:hover { transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,0.5);border-color:rgba(168,85,247,0.4); }
+.qb-icon { font-size:2.5rem;flex-shrink:0; }
+.qb-title { font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;color:var(--purple);margin-bottom:3px; }
+.qb-sub { font-size:0.78rem;color:var(--text); }
+.qb-btn { margin-left:auto;padding:10px 20px;border-radius:12px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.35);color:var(--purple);font-size:0.82rem;font-weight:900;white-space:nowrap;transition:all 0.2s; }
+.quiz-banner:hover .qb-btn { background:rgba(168,85,247,0.25); }
+
+/* ── CULTURE QUIZ MODAL ── */
+.quiz-modal {
+  position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  opacity:0;pointer-events:none;transition:opacity 0.3s;
+}
+.quiz-modal.open { opacity:1;pointer-events:all; }
+.quiz-modal-inner {
+  background:var(--bg2);border:1px solid rgba(168,85,247,0.25);border-radius:24px;
+  padding:28px 24px;max-width:460px;width:100%;max-height:85vh;overflow-y:auto;
+  transform:scale(0.92);transition:transform 0.3s cubic-bezier(0.34,1.5,0.64,1);
+}
+.quiz-modal.open .quiz-modal-inner { transform:scale(1); }
+.qm-title { font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:3px;color:var(--purple);margin-bottom:4px; }
+.qm-progress { font-size:0.7rem;color:var(--gray);margin-bottom:16px;font-weight:900; }
+.qm-q { font-size:0.95rem;font-weight:900;color:var(--white);margin-bottom:6px;line-height:1.55; }
+.qm-jp { font-size:1.6rem;color:var(--white);margin-bottom:10px; }
+.qm-opts { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px; }
+@media(max-width:400px) { .qm-opts { grid-template-columns:1fr; } }
+.qm-opt { padding:11px 12px;border-radius:12px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);color:var(--text);font-size:0.82rem;font-weight:800;cursor:pointer;transition:all 0.2s;text-align:left; }
+.qm-opt:hover:not(:disabled) { background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.35); }
+.qm-opt.correct { background:rgba(0,230,118,0.12);border-color:rgba(0,230,118,0.4);color:var(--green); }
+.qm-opt.wrong { background:rgba(255,58,92,0.1);border-color:rgba(255,58,92,0.35);color:var(--red); }
+.qm-feedback { padding:10px 14px;border-radius:10px;font-size:0.8rem;font-weight:800;display:none;margin-bottom:10px; }
+.qm-feedback.show { display:block; }
+.qm-feedback.correct { background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.25);color:var(--green); }
+.qm-feedback.wrong { background:rgba(255,58,92,0.08);border:1px solid rgba(255,58,92,0.2);color:var(--red); }
+.qm-next { padding:10px 20px;border-radius:12px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);color:var(--purple);font-size:0.82rem;font-weight:900;cursor:pointer;display:none; }
+.qm-result { text-align:center;padding:16px 0; }
+.qmr-score { font-family:'Bangers',cursive;font-size:3rem;letter-spacing:3px;color:var(--gold);margin-bottom:6px; }
+.qmr-msg { font-size:0.88rem;color:var(--text);margin-bottom:16px; }
+.qmr-close { padding:11px 24px;border-radius:12px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#000;font-size:0.88rem;font-weight:900;cursor:pointer;border:none; }
+
+/* ── VOCAB TOOLTIP ── */
+.vtt { position:fixed;z-index:300;background:var(--bg3);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:10px 14px;pointer-events:none;opacity:0;transition:opacity 0.2s;max-width:200px;box-shadow:0 8px 24px rgba(0,0,0,0.6); }
+.vtt.show { opacity:1; }
+.vtt-jp { font-size:1.2rem;font-weight:900;color:var(--white);margin-bottom:3px; }
+.vtt-rom { font-size:0.75rem;font-weight:900;color:var(--teal); }
+.vtt-en { font-size:0.75rem;color:var(--text);margin-top:2px; }
+
+/* ── ANIMATIONS ── */
+@keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+.reveal { opacity:0;transform:translateY(16px);transition:opacity 0.5s,transform 0.5s; }
+.reveal.visible { opacity:1;transform:none; }
+</style>
+<script src="gojuon-widget.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="top-nav">
+  <a class="nav-back" href="home.html">← Home</a>
+  <div class="nav-logo">🎌 CULTURE HUB</div>
+  <div class="nav-spacer"></div>
+  <div class="nav-xp" id="xpDisplay">0 XP</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-floats" id="heroFloats"></div>
+  <div class="hero-tag">🎌 Month 9 · Culture</div>
+  <div class="hero-title">DISCOVER<br><span class="grad">JAPAN'S SOUL</span></div>
+  <div class="hero-sub">Language is just the beginning. Dive into anime 🎬, ramen 🍜, sakura 🌸, samurai ⚔️, and everything that makes Japan one of the world's most fascinating cultures!</div>
+  <div class="cat-pills" id="catPills"></div>
+</div>
+
+<div class="page" id="mainPage"></div>
+
+<!-- QUIZ MODAL -->
+<div class="quiz-modal" id="quizModal" onclick="if(event.target===this)closeQuiz()">
+  <div class="quiz-modal-inner">
+    <div class="qm-title">🧠 CULTURE QUIZ</div>
+    <div class="qm-progress" id="qmProgress">Question 1 / 10</div>
+    <div id="qmBody"></div>
+  </div>
+</div>
+
+<!-- VOCAB TOOLTIP -->
+<div class="vtt" id="vtt">
+  <div class="vtt-jp" id="vtt-jp"></div>
+  <div class="vtt-rom" id="vtt-rom"></div>
+  <div class="vtt-en" id="vtt-en"></div>
+</div>
+
+<script>
+// ── CATEGORY DATA ──
+const CATS = [
+  { id:'anime',    label:'🎬 Anime & Manga', color:'#a855f7' },
+  { id:'food',     label:'🍜 Food & Drink',  color:'#ff6b2b' },
+  { id:'festivals',label:'🎉 Festivals',      color:'#ff6eb4' },
+  { id:'tradition',label:'⛩️ Traditions',     color:'#00e5ff' },
+  { id:'pop',      label:'🎮 Pop Culture',    color:'#00e676' },
+  { id:'nature',   label:'🌸 Nature & Seasons',color:'#ffd700'},
+];
+
+// ── CONTENT DATA ──
+const CONTENT = {
+
+  anime: {
+    feature: {
+      emoji:'🎌', bg:['#1a0d30','#0d0a1a'],
+      tag:{ text:'🎬 Did You Know?', color:'#a855f7' },
+      title:'ANIME IS WORLDWIDE!',
+      desc:'Japan produces over 60% of the world\'s animation! Over 430 million people outside Japan watch anime. Popular series like Dragon Ball, Naruto, One Piece, and Studio Ghibli films like Spirited Away have introduced millions of people to Japanese culture and language. Many anime fans start learning Japanese just to watch without subtitles! 🌏',
+      vocab:[
+        {jp:'アニメ',rom:'Anime',en:'Animation',color:'#a855f7'},
+        {jp:'漫画',rom:'Manga',en:'Comics/Graphic novels',color:'#a855f7'},
+        {jp:'主人公',rom:'Shujinkō',en:'Main character (hero)',color:'#a855f7'},
+        {jp:'かわいい',rom:'Kawaii',en:'Cute!',color:'#a855f7'},
+        {jp:'すごい',rom:'Sugoi',en:'Amazing! Wow!',color:'#a855f7'},
+        {jp:'なるほど',rom:'Naruhodo',en:'I see! Makes sense!',color:'#a855f7'},
+      ],
+    },
+    cards:[
+      {
+        emoji:'🏯', bg:['#2d0a50','#150030'],
+        decos:[{e:'⚔️',t:'15%',r:'15%'},{e:'🌸',b:'20%',l:'20%'}],
+        title:'STUDIO GHIBLI', sub:'The Disney of Japan',
+        desc:'Founded in 1985, Studio Ghibli has created some of the world\'s most beloved animated films. Spirited Away (千と千尋の神隠し) won the Academy Award for Best Animated Feature in 2003 — the only non-English film to ever win! 🏆',
+        fact:'Hayao Miyazaki, the co-founder, draws every frame by hand and has "retired" 5 times — but keeps coming back to make more films! 😄',
+        vocab:[{jp:'魔法',rom:'Mahō',en:'Magic ✨',c:'#a855f7'},{jp:'精霊',rom:'Seirei',en:'Spirit 👻',c:'#a855f7'},{jp:'冒険',rom:'Bōken',en:'Adventure 🗺️',c:'#a855f7'}],
+      },
+      {
+        emoji:'🐉', bg:['#0d1a3a','#0a0f2a'],
+        decos:[{e:'💥',t:'10%',r:'15%'},{e:'⚡',b:'25%',l:'20%'}],
+        title:'SHŌNEN MANGA', sub:'Action & Friendship',
+        desc:'Shōnen (少年) manga is aimed at young boys and features action, friendship, and characters overcoming challenges through hard work. Dragon Ball, Naruto, One Piece, and Demon Slayer are shōnen classics loved worldwide! 💪',
+        fact:'"One Piece" (ワンピース) has sold over 516 million copies — making it the best-selling manga series in history! If you stacked all those volumes, the pile would be taller than Mount Everest! 📚',
+        vocab:[{jp:'少年',rom:'Shōnen',en:'Boy / Young man',c:'#00e5ff'},{jp:'友情',rom:'Yūjō',en:'Friendship 👫',c:'#00e5ff'},{jp:'努力',rom:'Doryoku',en:'Hard work / Effort 💪',c:'#00e5ff'}],
+      },
+      {
+        emoji:'👘', bg:['#2a0a1a','#1a050d'],
+        decos:[{e:'🌸',t:'10%',r:'10%'},{e:'🎀',b:'20%',l:'15%'}],
+        title:'SHŌJO & JOSEI', sub:'Romance & Drama',
+        desc:'Shōjo (少女) manga is aimed at young girls and often features romance, school life, and emotional drama. Sailor Moon 🌙 is one of the most famous shōjo series ever, inspiring generations of readers worldwide!',
+        fact:'The anime "Sailor Moon" (セーラームーン) single-handedly created the "magical girl" (魔法少女) genre that is still popular today. There have been over 30 different Sailor Moon anime series! 🌙',
+        vocab:[{jp:'少女',rom:'Shōjo',en:'Girl / Young woman',c:'#ff6eb4'},{jp:'恋愛',rom:'Ren\'ai',en:'Romance / Love 💕',c:'#ff6eb4'},{jp:'変身',rom:'Henshin',en:'Transformation ✨',c:'#ff6eb4'}],
+      },
+      {
+        emoji:'🎮', bg:['#0a2a10','#050d05'],
+        decos:[{e:'🕹️',t:'10%',r:'15%'},{e:'⭐',b:'20%',l:'20%'}],
+        title:'ANIME VOCABULARY', sub:'Words from your favorite shows',
+        desc:'Many Japanese words have entered everyday English through anime! Words like "otaku" (fan), "senpai" (upperclassman), "chibi" (small/cute), and "baka" (idiot) are now recognized worldwide thanks to anime! 🌍',
+        fact:'The word "emoji" comes from Japanese: 絵 (e = picture) + 文字 (moji = character/letter). So every time you use 😊 you\'re using Japanese! 🇯🇵',
+        vocab:[{jp:'先輩',rom:'Senpai',en:'Upperclassman / Senior',c:'#00e676'},{jp:'後輩',rom:'Kōhai',en:'Junior / Underclassman',c:'#00e676'},{jp:'オタク',rom:'Otaku',en:'Passionate fan / Enthusiast',c:'#00e676'}],
+      },
+    ],
+  },
+
+  food: {
+    feature: {
+      emoji:'🍱', bg:['#2a1500','#1a0a00'],
+      tag:{ text:'🍜 Food Culture', color:'#ff6b2b' },
+      title:'JAPAN — FOOD PARADISE!',
+      desc:'Tokyo has MORE Michelin-starred restaurants than any other city in the world — over 230! Japan\'s food culture is deeply tied to seasons, regions, and tradition. The concept of "washoku" (Japanese cuisine 和食) was even added to UNESCO\'s Intangible Cultural Heritage list in 2013! Every region has its own specialty food called "meibutsu" (名物). 🌟',
+      vocab:[
+        {jp:'和食',rom:'Washoku',en:'Japanese cuisine',color:'#ff6b2b'},
+        {jp:'いただきます',rom:'Itadakimasu',en:'Let\'s eat! (said before meals)',color:'#ff6b2b'},
+        {jp:'ごちそうさま',rom:'Gochisousama',en:'Thank you for the meal!',color:'#ff6b2b'},
+        {jp:'おいしい',rom:'Oishii',en:'Delicious! 😋',color:'#ff6b2b'},
+        {jp:'名物',rom:'Meibutsu',en:'Regional specialty',color:'#ff6b2b'},
+        {jp:'定食',rom:'Teishoku',en:'Set meal (main + sides)',color:'#ff6b2b'},
+      ],
+    },
+    cards:[
+      {
+        emoji:'🍣', bg:['#0a1a2a','#050d18'],
+        decos:[{e:'🐟',t:'10%',r:'10%'},{e:'🥢',b:'20%',l:'20%'}],
+        title:'SUSHI & SASHIMI', sub:'Raw perfection',
+        desc:'Sushi (寿司) was originally Tokyo street food! Edo-mae sushi meant fish from Tokyo Bay (江戸前) pressed onto vinegared rice. Today there are conveyor belt sushi restaurants (回転寿司) where plates of sushi float past you on a belt — pick whatever you like! 🔄',
+        fact:'The world\'s most expensive sushi restaurant is Sukiyabashi Jiro in Tokyo. Chef Jiro Ono is 97 years old and still works every day. A meal costs $350+ and must be booked MONTHS in advance! The documentary "Jiro Dreams of Sushi" features him! 🎬',
+        vocab:[{jp:'寿司',rom:'Sushi',en:'Sushi 🍣',c:'#00e5ff'},{jp:'刺身',rom:'Sashimi',en:'Sliced raw fish 🐟',c:'#00e5ff'},{jp:'醤油',rom:'Shōyu',en:'Soy sauce',c:'#00e5ff'}],
+      },
+      {
+        emoji:'🍜', bg:['#2a0a00','#180500'],
+        decos:[{e:'🌶️',t:'10%',r:'10%'},{e:'🥚',b:'25%',r:'15%'}],
+        title:'RAMEN', sub:'Japan\'s soul food',
+        desc:'Ramen (ラーメン) is much more than just noodle soup — it\'s an art form! 🍜 There are 4 main regional styles: Sapporo (みそ miso), Tokyo (しょうゆ soy sauce), Kyushu (とんこつ pork bone), and Hakodate (しお salt). Ramen restaurants often have just 8-10 seats and the chef works for years perfecting ONE perfect bowl! 🏆',
+        fact:'There is a Ramen Museum (ラーメン博物館) in Yokohama where you can taste ramen from 9 different regions under one roof, in a 1950s-era town recreated indoors! 🕰️',
+        vocab:[{jp:'麺',rom:'Men',en:'Noodles 🍜',c:'#ff6b2b'},{jp:'出汁',rom:'Dashi',en:'Broth / Stock 🍲',c:'#ff6b2b'},{jp:'チャーシュー',rom:'Chāshū',en:'Braised pork 🐷',c:'#ff6b2b'}],
+      },
+      {
+        emoji:'🍡', bg:['#1a0a2a','#100518'],
+        decos:[{e:'🌸',t:'10%',r:'10%'},{e:'🍵',b:'20%',l:'15%'}],
+        title:'WAGASHI & MATCHA', sub:'Traditional sweets & tea',
+        desc:'Wagashi (和菓子) are traditional Japanese confections made from rice, bean paste, and seasonal ingredients. They are designed to look like nature — flowers, leaves, snowflakes! 🌸 Matcha (抹茶) green tea powder is used in everything from the tea ceremony to Kit Kats and ice cream! 🍵',
+        fact:'There are over 200 flavors of Kit Kat sold only in Japan! 🍫 Flavors include matcha, sakura, wasabi, sake, and even soy sauce! The name "Kit Kat" sounds like "Kitto Katsu" (きっと勝つ) meaning "You will surely win!" — making them popular as good-luck exam gifts!',
+        vocab:[{jp:'和菓子',rom:'Wagashi',en:'Traditional sweets 🍡',c:'#ff6eb4'},{jp:'抹茶',rom:'Matcha',en:'Green tea powder 🍵',c:'#00e676'},{jp:'甘い',rom:'Amai',en:'Sweet 🍬',c:'#ffd700'}],
+      },
+      {
+        emoji:'🍱', bg:['#0a1a0a','#051005'],
+        decos:[{e:'🥢',t:'10%',r:'10%'},{e:'🌿',b:'20%',l:'15%'}],
+        title:'BENTO CULTURE', sub:'Lunchbox as art form',
+        desc:'The bento box (弁当 bentō) is a Japanese lunchbox — but not just any lunchbox. Japanese parents and chefs create "charaben" (キャラ弁) — bento boxes decorated to look like anime characters, animals, and famous people! 🎨 Some take 2-3 hours to make. Japan has bento "train station lunches" (駅弁 ekiben) unique to each region! 🚂',
+        fact:'The most elaborate bento recorded in the Guinness World Records had over 100 individual ingredients, all prepared fresh each morning. A bento master called an "obento craftsperson" can earn more than a doctor in Japan! 💰',
+        vocab:[{jp:'弁当',rom:'Bentō',en:'Lunchbox 🍱',c:'#00e676'},{jp:'おにぎり',rom:'Onigiri',en:'Rice ball 🍙',c:'#00e676'},{jp:'唐揚げ',rom:'Karaage',en:'Fried chicken 🍗',c:'#ff6b2b'}],
+      },
+    ],
+  },
+
+  festivals: {
+    feature: {
+      emoji:'🎆', bg:['#2a0a10','#1a050a'],
+      tag:{ text:'🎉 Matsuri', color:'#ff6eb4' },
+      title:'JAPAN LOVES FESTIVALS!',
+      desc:'Japan has over 300,000 festivals (祭り matsuri) every year! Almost every shrine, temple, town, and season has its own unique celebration. Japanese festivals are famous for incredible fireworks (花火 hanabi), portable shrine processions (神輿 mikoshi), traditional dances (盆踊り bon odori), street food stalls (屋台 yatai), and participants wearing yukata (浴衣) — summer kimono! 🎇',
+      vocab:[
+        {jp:'祭り',rom:'Matsuri',en:'Festival',color:'#ff6eb4'},
+        {jp:'花火',rom:'Hanabi',en:'Fireworks (flower-fire!) 🎆',color:'#ff6eb4'},
+        {jp:'浴衣',rom:'Yukata',en:'Summer kimono 👘',color:'#ff6eb4'},
+        {jp:'神輿',rom:'Mikoshi',en:'Portable shrine 🏮',color:'#ff6eb4'},
+        {jp:'屋台',rom:'Yatai',en:'Street food stall 🏮',color:'#ff6eb4'},
+        {jp:'太鼓',rom:'Taiko',en:'Traditional drum 🥁',color:'#ff6eb4'},
+      ],
+    },
+    cards:[
+      {
+        emoji:'🌸', bg:['#2a0a1a','#18050f'],
+        decos:[{e:'🌸',t:'8%',r:'10%'},{e:'🌸',b:'20%',l:'15%'}],
+        title:'HANAMI', sub:'Cherry Blossom Viewing',
+        desc:'Hanami (花見 — flower viewing) is one of Japan\'s most beloved traditions! 🌸 Every spring, Japanese people gather under cherry blossom trees with food, drinks, and friends for outdoor picnic parties. The weather service even gives daily "sakura front" forecasts showing where the blossoms are blooming as they travel north! 📺',
+        fact:'The Japanese Meteorological Corporation has tracked sakura bloom dates since 1953. In recent years, due to climate change, cherry blossoms in Kyoto bloomed earlier than at any point in the past 1,200 years of recorded history! 🌡️',
+        vocab:[{jp:'花見',rom:'Hanami',en:'Flower viewing 🌸',c:'#ff6eb4'},{jp:'桜',rom:'Sakura',en:'Cherry blossom 🌸',c:'#ff6eb4'},{jp:'花びら',rom:'Hanabira',en:'Petal 🌸',c:'#ff6eb4'}],
+      },
+      {
+        emoji:'🏮', bg:['#1a0a00','#120600'],
+        decos:[{e:'🔥',t:'10%',r:'10%'},{e:'⛩️',b:'20%',l:'15%'}],
+        title:'OBON FESTIVAL', sub:'Honoring ancestors',
+        desc:'Obon (お盆) is held in mid-August when the spirits of ancestors are believed to return to visit their families. 👻 People light lanterns (盆提灯 bon chōchin) to guide the spirits home. Bon Odori dances are performed at shrines. The festival ends by floating paper lanterns (灯篭流し tōrō nagashi) down rivers to guide spirits back! 🏮',
+        fact:'During Obon, Japan has its longest national rush of travel — even more than New Year! 30 million people travel home to visit family shrines. Some highways become completely gridlocked for 50+ km! 🚗',
+        vocab:[{jp:'お盆',rom:'Obon',en:'Ancestor spirit festival 👻',c:'#ff6b2b'},{jp:'先祖',rom:'Senzo',en:'Ancestors 👨‍👩‍👧‍👦',c:'#ff6b2b'},{jp:'踊り',rom:'Odori',en:'Dance 💃',c:'#ff6eb4'}],
+      },
+      {
+        emoji:'⛩️', bg:['#001a10','#00120a'],
+        decos:[{e:'🎋',t:'10%',r:'10%'},{e:'⭐',b:'20%',l:'15%'}],
+        title:'TANABATA', sub:'Star Festival',
+        desc:'Tanabata (七夕) on July 7th celebrates the legend of two stars — Vega (the weaver princess Orihime 織姫) and Altair (the cowherd Hikoboshi 彦星) — who are separated by the Milky Way and can only meet once a year! 🌌 People write wishes on colorful strips of paper (短冊 tanzaku) and tie them to bamboo branches! 🎋',
+        fact:'The Sendai Tanabata Festival in August is Japan\'s largest, attracting 2 million visitors! The bamboo decorations can reach 10 meters tall and shops compete for prizes with the most elaborate designs — some take 6 months to make! 🏆',
+        vocab:[{jp:'七夕',rom:'Tanabata',en:'Star Festival ⭐',c:'#00e5ff'},{jp:'願い',rom:'Negai',en:'Wish / Prayer 🙏',c:'#00e5ff'},{jp:'天の川',rom:'Amanogawa',en:'Milky Way 🌌',c:'#a855f7'}],
+      },
+      {
+        emoji:'⛩️', bg:['#0a0a1a','#050510'],
+        decos:[{e:'🎊',t:'10%',r:'10%'},{e:'🎍',b:'20%',l:'10%'}],
+        title:'SHŌGATSU', sub:'Japanese New Year',
+        desc:'Japanese New Year (お正月 Oshōgatsu) is the most important holiday! 🎍 Families eat special "osechi" (おせち) box foods, visit shrines at midnight (初詣 hatsumōde), and children receive money envelopes (お年玉 otoshidama)! The first sunrise of the year (初日の出 hatsu hinode) is considered lucky to watch! 🌅',
+        fact:'Japanese people send New Year\'s cards (年賀状 nengajō) by the millions — so many that Japan Post hires 80,000 temporary workers just to deliver them all on January 1st! 📮 In 2021 alone, 1.9 BILLION cards were sent!',
+        vocab:[{jp:'初詣',rom:'Hatsumōde',en:'First shrine visit of year ⛩️',c:'#ffd700'},{jp:'お年玉',rom:'Otoshidama',en:'New Year money gift 💴',c:'#ffd700'},{jp:'年賀状',rom:'Nengajō',en:'New Year card 📮',c:'#ffd700'}],
+      },
+    ],
+  },
+
+  tradition: {
+    feature: {
+      emoji:'👘', bg:['#0a0a2a','#050518'],
+      tag:{ text:'⛩️ Traditional Japan', color:'#00e5ff' },
+      title:'TIMELESS TRADITIONS',
+      desc:'Japan is a country where ancient and modern coexist beautifully. You can see a businessperson in a suit walk past a geisha in a kimono! Traditional arts like ikebana (flower arranging 生け花), chanoyu (tea ceremony 茶の湯), and kabuki theater (歌舞伎) have been practiced for hundreds of years and are still thriving today. Japan has 23 UNESCO World Heritage Sites! 🏛️',
+      vocab:[
+        {jp:'茶道',rom:'Sadō',en:'Tea ceremony 🍵',color:'#00e5ff'},
+        {jp:'武道',rom:'Budō',en:'Martial arts 🥋',color:'#00e5ff'},
+        {jp:'着物',rom:'Kimono',en:'Traditional garment 👘',color:'#00e5ff'},
+        {jp:'侍',rom:'Samurai',en:'Warrior class ⚔️',color:'#00e5ff'},
+        {jp:'忍者',rom:'Ninja',en:'Shadow warrior 🥷',color:'#00e5ff'},
+        {jp:'禅',rom:'Zen',en:'Buddhist meditation school 🧘',color:'#00e5ff'},
+      ],
+    },
+    cards:[
+      {
+        emoji:'🍵', bg:['#001a10','#00120a'],
+        decos:[{e:'🌿',t:'10%',r:'10%'},{e:'🏯',b:'20%',l:'15%'}],
+        title:'THE TEA CEREMONY', sub:'ちゃどう Sadō',
+        desc:'The Japanese tea ceremony (茶道 sadō) is a ritualized preparation and presentation of matcha green tea. 🍵 Every movement has meaning — how you hold the bowl, how you bow, how you place the ladle. The philosophy behind it is summed up in 4 words: 和敬清寂 (wa-kei-sei-jaku) — harmony, respect, purity, and tranquility.',
+        fact:'A full formal tea ceremony can last up to 4 hours! Students study for years just to learn the correct way to fold a fukusa (the silk cloth used to purify utensils). There are over 700 recognized schools of tea ceremony in Japan! 🏫',
+        vocab:[{jp:'茶室',rom:'Chashitsu',en:'Tea ceremony room 🏯',c:'#00e5ff'},{jp:'抹茶',rom:'Matcha',en:'Green tea powder 🍵',c:'#00e676'},{jp:'和',rom:'Wa',en:'Harmony / Japan 🕊️',c:'#00e5ff'}],
+      },
+      {
+        emoji:'⚔️', bg:['#1a0a00','#120600'],
+        decos:[{e:'🏯',t:'10%',r:'10%'},{e:'🌸',b:'20%',l:'15%'}],
+        title:'SAMURAI & BUSHIDŌ', sub:'The Way of the Warrior',
+        desc:'Samurai (侍) were Japan\'s warrior class for nearly 700 years. They followed a strict code of honor called Bushidō (武士道 — "Way of the Warrior") which emphasized loyalty, martial mastery, and honor in death. Their curved swords (刀 katana) were considered sacred. The samurai era ended in 1868 with the Meiji Restoration! ⚔️',
+        fact:'The famous film director Akira Kurosawa\'s samurai movies (like Seven Samurai) directly inspired Star Wars! George Lucas admitted that Darth Vader\'s helmet was based on a samurai helmet, and the Jedi Knights were inspired by the concept of samurai warriors! 🎬',
+        vocab:[{jp:'侍',rom:'Samurai',en:'Warrior ⚔️',c:'#ff6b2b'},{jp:'武士道',rom:'Bushidō',en:'Way of the warrior 🛡️',c:'#ff6b2b'},{jp:'刀',rom:'Katana',en:'Japanese sword ⚔️',c:'#ff6b2b'}],
+      },
+      {
+        emoji:'🥷', bg:['#0a0a0a','#050505'],
+        decos:[{e:'🌙',t:'10%',r:'10%'},{e:'⭐',b:'20%',l:'15%'}],
+        title:'NINJA', sub:'Shadows of history',
+        desc:'Ninja (忍者 — person of stealth) were covert agents in feudal Japan who specialized in espionage, sabotage, and guerrilla warfare. 🥷 Unlike the flashy samurai, ninja blended into the shadows. They were masters of disguise, survival skills, and unconventional weapons. The village of Iga (伊賀) is still famous as the birthplace of ninja culture!',
+        fact:'Real historical ninja didn\'t wear black! 😲 They dressed as farmers, merchants, or monks to blend in. The black outfit we associate with ninja today came from Japanese puppet theater — the stagehands dressed in black to be "invisible"! 🎭',
+        vocab:[{jp:'忍者',rom:'Ninja',en:'Ninja / Stealth agent 🥷',c:'#gray'},{jp:'忍術',rom:'Ninjutsu',en:'Art of stealth 🌙',c:'#gray'},{jp:'変装',rom:'Hensō',en:'Disguise / Costume 🎭',c:'#00e5ff'}],
+      },
+      {
+        emoji:'🌸', bg:['#1a0010','#100008'],
+        decos:[{e:'🎎',t:'10%',r:'10%'},{e:'🌺',b:'20%',l:'15%'}],
+        title:'IKEBANA & ORIGAMI', sub:'Art in every leaf and fold',
+        desc:'Ikebana (生け花 — "living flowers") is the Japanese art of flower arrangement. It\'s not just decorating with flowers — it\'s a philosophy! ❀ Origami (折り紙 — "folding paper") transforms flat paper into 3D art using only folds — no scissors or glue! Both arts teach mindfulness, patience, and seeing beauty in simplicity. 🕊️',
+        fact:'The world record for smallest origami crane was folded from a piece of paper just 0.1mm × 0.1mm — smaller than a grain of sand! It can only be seen under a microscope. The folder used a needle and microscope to create it! 🔬',
+        vocab:[{jp:'生け花',rom:'Ikebana',en:'Flower arrangement ❀',c:'#ff6eb4'},{jp:'折り紙',rom:'Origami',en:'Paper folding 🕊️',c:'#ff6eb4'},{jp:'美',rom:'Bi',en:'Beauty / Aesthetic ✨',c:'#ffd700'}],
+      },
+    ],
+  },
+
+  pop: {
+    feature: {
+      emoji:'🎮', bg:['#001a0a','#000d05'],
+      tag:{ text:'🎮 Modern Japan', color:'#00e676' },
+      title:'JAPAN RULES POP CULTURE!',
+      desc:'Modern Japan gave the world Nintendo 🎮, PlayStation, Hello Kitty 🎀, Pokemon 🎮, karaoke 🎤, instant noodles 🍜, the Walkman 🎵, and emojis 😊! Japan\'s "soft power" — its cultural exports — is one of the most valuable in the world. The Cool Japan initiative estimates Japan\'s pop culture industry is worth over ¥18 trillion ($130 billion)! 💰',
+      vocab:[
+        {jp:'ゲーム',rom:'Gēmu',en:'Video game 🎮',color:'#00e676'},
+        {jp:'カラオケ',rom:'Karaoke',en:'Karaoke 🎤',color:'#00e676'},
+        {jp:'ロボット',rom:'Robotto',en:'Robot 🤖',color:'#00e676'},
+        {jp:'アイドル',rom:'Aidoru',en:'Idol singer 🌟',color:'#00e676'},
+        {jp:'コスプレ',rom:'Kosupure',en:'Cosplay 🎭',color:'#00e676'},
+        {jp:'まんが喫茶',rom:'Manga kissa',en:'Manga café ☕',color:'#00e676'},
+      ],
+    },
+    cards:[
+      {
+        emoji:'🎮', bg:['#001a05','#000d03'],
+        decos:[{e:'⭐',t:'10%',r:'10%'},{e:'🕹️',b:'20%',l:'15%'}],
+        title:'NINTENDO & GAMING', sub:'Japan invented modern gaming',
+        desc:'Japan\'s video game industry has shaped entertainment worldwide. Nintendo (任天堂 — "leave luck to heaven") created Mario, Zelda, and Pokemon. 🍄 Sony\'s PlayStation and Sega\'s arcade games set the standard for the industry. Japanese developers created genres like role-playing games (RPG), rhythm games, and fighting games! 🎮',
+        fact:'The original Game Boy was designed by Gunpei Yokoi, who had the idea after watching a bored businessman play with his LCD calculator on a train! 📟 Yokoi\'s philosophy was "Lateral Thinking with Withered Technology" — using cheap, proven technology in clever new ways! 💡',
+        vocab:[{jp:'任天堂',rom:'Nintendo',en:'"Leave luck to heaven" 🎮',c:'#00e676'},{jp:'勇者',rom:'Yūsha',en:'Hero / Brave one ⚔️',c:'#ffd700'},{jp:'レベルアップ',rom:'Reberu appu',en:'Level up! ⬆️',c:'#00e676'}],
+      },
+      {
+        emoji:'🎤', bg:['#1a0a1a','#100510'],
+        decos:[{e:'🎵',t:'10%',r:'10%'},{e:'🌟',b:'20%',l:'15%'}],
+        title:'KARAOKE & J-POP', sub:'Sing your heart out!',
+        desc:'Karaoke (カラオケ) means "empty orchestra" — kara (空 = empty) + oke (オーケストラ = orchestra). 🎤 Invented in Japan in the 1970s, it\'s now a global phenomenon! Japanese karaoke "boxes" are private rooms you rent with friends. J-Pop (Japanese pop music) and idol groups like AKB48 (with 130+ members!) are massive cultural phenomena! 🎶',
+        fact:'AKB48, the famous idol group, holds annual elections where FANS vote for which members get to be in the next single! Fans buy multiple CDs to get more votes, creating a unique industry model where engagement is everything! 📊',
+        vocab:[{jp:'歌',rom:'Uta',en:'Song 🎵',c:'#ff6eb4'},{jp:'アイドル',rom:'Aidoru',en:'Pop idol 🌟',c:'#ff6eb4'},{jp:'コンサート',rom:'Konsāto',en:'Concert 🎸',c:'#a855f7'}],
+      },
+      {
+        emoji:'🐱', bg:['#1a0a0a','#120505'],
+        decos:[{e:'🎀',t:'10%',r:'10%'},{e:'⭐',b:'20%',l:'15%'}],
+        title:'KAWAII CULTURE', sub:'The global power of cute',
+        desc:'Kawaii (かわいい — "cute") is a major cultural export and aesthetic philosophy. Hello Kitty 🎀, Pikachu ⚡, Rilakkuma 🐻, and Cinnamoroll 🌸 are recognized worldwide. The kawaii aesthetic emerged in the 1970s when Japanese girls started writing with childlike handwriting, rounded letters, and drawings — and it evolved into a global movement! 🌍',
+        fact:'Hello Kitty earns over $8 billion per year for Sanrio — making her one of the highest-earning fictional characters in history! There\'s no mouth on Hello Kitty because Sanrio wants you to project your own emotions onto her face! 😊',
+        vocab:[{jp:'かわいい',rom:'Kawaii',en:'Cute! 😊',c:'#ff6eb4'},{jp:'ぬいぐるみ',rom:'Nuigurumi',en:'Stuffed animal / Plush toy 🧸',c:'#ff6eb4'},{jp:'キャラクター',rom:'Kyarakutā',en:'Character / Mascot 🎭',c:'#ff6eb4'}],
+      },
+      {
+        emoji:'🤖', bg:['#0a0a1a','#050510'],
+        decos:[{e:'⚙️',t:'10%',r:'10%'},{e:'💡',b:'20%',l:'15%'}],
+        title:'ROBOTS & TECHNOLOGY', sub:'The future is Japanese',
+        desc:'Japan leads the world in humanoid robotics. ASIMO by Honda could walk, run, and climb stairs. Toyota\'s robots can play violin! 🤖 Japan also invented the bullet train (新幹線 Shinkansen) in 1964, LED lighting, the floppy disk, the digital camera, and the lithium-ion battery (which powers your phone!). Japan holds over 3.2 million patents! ⚡',
+        fact:'Japan has more vending machines per person than any country — one machine for every 23 people! 🏪 You can buy everything from hot ramen to umbrellas, live crabs, fresh produce, and even cars from Japanese vending machines! 😲',
+        vocab:[{jp:'新幹線',rom:'Shinkansen',en:'Bullet train 🚄',c:'#00e5ff'},{jp:'自動販売機',rom:'Jidōhanbaiki',en:'Vending machine 🏪',c:'#00e5ff'},{jp:'技術',rom:'Gijutsu',en:'Technology / Skill 🔧',c:'#00e676'}],
+      },
+    ],
+  },
+
+  nature: {
+    feature: {
+      emoji:'🌸', bg:['#1a0a00','#120700'],
+      tag:{ text:'🌸 Shizen · Nature', color:'#ffd700' },
+      title:'JAPAN AND NATURE',
+      desc:'Japan has a profound spiritual connection with nature. The concept of "mono no aware" (物の哀れ) — the bittersweet awareness of nature\'s impermanence — is central to Japanese aesthetics. Cherry blossoms are beautiful BECAUSE they fall! 🌸 The four seasons (四季 shiki) are deeply celebrated: spring cherry blossoms, summer festivals, autumn foliage, winter snow. Japan also has 111 active volcanoes and experiences over 1,500 earthquakes per year! 🌋',
+      vocab:[
+        {jp:'自然',rom:'Shizen',en:'Nature 🌿',color:'#ffd700'},
+        {jp:'四季',rom:'Shiki',en:'Four seasons 🍂',color:'#ffd700'},
+        {jp:'物の哀れ',rom:'Mono no aware',en:'Bittersweet beauty of impermanence',color:'#ffd700'},
+        {jp:'紅葉',rom:'Kōyō',en:'Autumn foliage 🍂',color:'#ff6b2b'},
+        {jp:'雪',rom:'Yuki',en:'Snow ❄️',color:'#00e5ff'},
+        {jp:'風',rom:'Kaze',en:'Wind / Breeze 🌬️',color:'#00e5ff'},
+      ],
+    },
+    cards:[
+      {
+        emoji:'🌸', bg:['#2a0a1a','#18050f'],
+        decos:[{e:'🌸',t:'8%',r:'10%'},{e:'🌸',b:'20%',l:'15%'}],
+        title:'SAKURA SEASON', sub:'Cherry blossom magic',
+        desc:'Sakura (桜 cherry blossoms) bloom for just 1-2 weeks each spring. 🌸 This brief beauty makes them even more precious — a reminder that beautiful things don\'t last forever. There are over 600 varieties of cherry tree in Japan! Pink, white, yellow, and even green sakura exist. The town of Yoshino in Nara has 30,000 cherry trees on a single mountain! 🏔️',
+        fact:'Japanese scientists discovered that the "sakura front" (the bloom line traveling north) moves at almost exactly the same speed as cherry blossom petals fall — about 7 km per hour! This gives Japan a rolling 6-week cherry blossom season as you travel north! 🌍',
+        vocab:[{jp:'桜',rom:'Sakura',en:'Cherry blossom 🌸',c:'#ff6eb4'},{jp:'春',rom:'Haru',en:'Spring 🌱',c:'#00e676'},{jp:'花びら',rom:'Hanabira',en:'Petal 🌸',c:'#ff6eb4'}],
+      },
+      {
+        emoji:'🍂', bg:['#2a1000','#180a00'],
+        decos:[{e:'🍁',t:'10%',r:'10%'},{e:'🌳',b:'20%',l:'15%'}],
+        title:'KŌYŌ — AUTUMN LEAVES', sub:'Red mountains of Japan',
+        desc:'Kōyō (紅葉) is autumn leaf-viewing — Japan\'s autumn version of hanami. 🍂 The mountains of Nikko, Kyoto, and Hokkaido turn brilliant red, orange, and gold from late September to December. Maples (momiji 紅葉) and ginkgo trees (ichō 銀杏) create spectacular displays. Kyoto\'s Eikan-do temple and Nikko\'s Toshogu are among the most famous spots! 🏯',
+        fact:'The oldest ginkgo tree in Japan, in Hofu city, Yamaguchi Prefecture, is over 1,000 years old! In autumn, its leaves turn brilliant gold and carpet the ground around it like sunshine. Ginkgo leaves are the logo of Tokyo city! 🌟',
+        vocab:[{jp:'紅葉',rom:'Kōyō',en:'Autumn foliage 🍂',c:'#ff6b2b'},{jp:'秋',rom:'Aki',en:'Autumn / Fall 🍁',c:'#ff6b2b'},{jp:'もみじ',rom:'Momiji',en:'Japanese maple 🍁',c:'#ff6b2b'}],
+      },
+      {
+        emoji:'🌋', bg:['#1a0500','#0d0300'],
+        decos:[{e:'💨',t:'10%',r:'10%'},{e:'🌊',b:'20%',l:'15%'}],
+        title:'MOUNTAINS & VOLCANOES', sub:'The islands of fire',
+        desc:'Japan is an archipelago of 6,852 islands formed by volcanic activity! 🌋 Mount Fuji (富士山 3,776m) is Japan\'s highest peak and an active volcano — though it last erupted in 1707. Japan sits on the "Ring of Fire" where 4 tectonic plates meet, creating beautiful landscapes but also earthquakes and tsunamis. Japanese buildings are engineered to sway — not break! 🏗️',
+        fact:'Japanese engineers have developed earthquake-resistant technology so advanced that Tokyo\'s Tokyo Skytree (634m — the world\'s tallest broadcast tower) has a "seismic isolation system" that allows it to sway up to 1 meter in an earthquake — and still be perfectly safe! ⚡',
+        vocab:[{jp:'火山',rom:'Kazan',en:'Volcano 🌋',c:'#ff6b2b'},{jp:'地震',rom:'Jishin',en:'Earthquake 🌎',c:'#ff6b2b'},{jp:'島',rom:'Shima',en:'Island 🏝️',c:'#00e5ff'}],
+      },
+      {
+        emoji:'♨️', bg:['#0a1a1a','#051010'],
+        decos:[{e:'🌊',t:'10%',r:'10%'},{e:'🌿',b:'20%',l:'15%'}],
+        title:'ONSEN HOT SPRINGS', sub:'Bathing in volcanic warmth',
+        desc:'Japan has over 27,000 hot spring sources (温泉 onsen)! ♨️ Volcanic activity heats underground water which rises naturally. Hot spring bathing is a beloved national tradition. "Rotenburo" (露天風呂) are outdoor baths — imagine soaking in a natural pool while surrounded by snowy mountains or autumn forests! 🏔️ Japan\'s famous Snow Monkeys even bathe in hot springs! 🐒',
+        fact:'The Beppu hot springs in Kyushu produce more hot spring water than any place on earth except Yellowstone National Park. The "Hells of Beppu" (別府地獄) are 8 spectacular hot springs in brilliant colors — blood red, bright blue, and even one where crocodiles live in the hot water! 🐊',
+        vocab:[{jp:'温泉',rom:'Onsen',en:'Hot spring ♨️',c:'#00e5ff'},{jp:'湯',rom:'Yu',en:'Hot water / Bath 🛁',c:'#00e5ff'},{jp:'リラックス',rom:'Rirakkusu',en:'Relax 😌',c:'#00e676'}],
+      },
+    ],
+  },
+};
+
+// ── QUIZ DATA ──
+const QUIZ_QUESTIONS = [
+  { cat:'anime', q:'What does "kawaii" (かわいい) mean?', jp:'かわいい！', opts:['Scary','Delicious','Cute!','Strong'], ans:'Cute!' , exp:'✅ かわいい (kawaii) means "cute!" — one of Japan\'s most famous words worldwide!' },
+  { cat:'anime', q:'What company created Mario and Pokemon?', jp:'任天堂', opts:['Sony','Nintendo','Sega','Capcom'], ans:'Nintendo', exp:'✅ 任天堂 (Nintendo) means "leave luck to heaven" — and they certainly found it with Mario! 🍄' },
+  { cat:'food', q:'What does "itadakimasu" mean?', jp:'いただきます', opts:['Goodbye','Let\'s eat!','Thank you','Goodnight'], ans:'Let\'s eat!', exp:'✅ いただきます is said before every meal — it means "I humbly receive (this food)"! 🍱' },
+  { cat:'food', q:'Which ramen style uses pork bone broth?', jp:'とんこつ', opts:['みそ (miso)','しょうゆ (soy sauce)','とんこつ (tonkotsu)','しお (salt)'], ans:'とんこつ (tonkotsu)', exp:'✅ 豚骨 (tonkotsu) = pork bone broth — the rich creamy style from Kyushu! 🐷' },
+  { cat:'festivals', q:'What is "hanabi" (花火)?', jp:'花火', opts:['Cherry blossom','Flower vase','Fireworks','Bonfire'], ans:'Fireworks', exp:'✅ 花火 means "flower fire" — 花 (hana = flower) + 火 (hi = fire). What a beautiful word for fireworks! 🎆' },
+  { cat:'festivals', q:'Hanami is the tradition of viewing what?', jp:'花見', opts:['Autumn leaves','Cherry blossoms','Fireworks','Snow'], ans:'Cherry blossoms', exp:'✅ 花見 (hanami) = flower viewing — specifically sakura (cherry blossoms) in spring! 🌸' },
+  { cat:'tradition', q:'What is "bushido" (武士道)?', jp:'武士道', opts:['Tea ceremony','Way of the warrior','Art of cooking','Ninja training'], ans:'Way of the warrior', exp:'✅ 武士道 (bushidō) = "Way of the Warrior" — the samurai\'s code of honor, loyalty, and courage! ⚔️' },
+  { cat:'tradition', q:'What does "origami" mean literally?', jp:'折り紙', opts:['Paper painting','Folding paper','Paper cutting','Paper art'], ans:'Folding paper', exp:'✅ 折り紙 (origami) = 折り (ori = fold) + 紙 (kami = paper). Just folding — no scissors or glue! 🕊️' },
+  { cat:'pop', q:'What does "karaoke" mean literally?', jp:'カラオケ', opts:['Sing loudly','Empty orchestra','Happy music','Evening song'], ans:'Empty orchestra', exp:'✅ カラオケ = 空 (kara = empty) + オーケストラ (ōkesutora = orchestra). You provide the voice! 🎤' },
+  { cat:'nature', q:'What is "kōyō" (紅葉)?', jp:'紅葉', opts:['Cherry blossoms','Snow viewing','Autumn leaf viewing','Star gazing'], ans:'Autumn leaf viewing', exp:'✅ 紅葉 (kōyō) is autumn leaf viewing — Japan\'s stunning red and gold mountains in fall! 🍂' },
+];
+
+let currentCat = 'anime';
+let sessionXP = 0;
+let quizState = { current: 0, correct: 0, done: false, questions: [] };
+
+// ── BUILD HERO FLOATS ──
+function buildFloats() {
+  const emojis = ['🌸','🍜','🎌','⛩️','🎮','🍡','🏯','🎋','🌺','🎆','🎎','🍵','⚔️','🎤','🏔️'];
+  const el = document.getElementById('heroFloats');
+  emojis.forEach((e, i) => {
+    const d = document.createElement('div');
+    d.className = 'hf';
+    d.textContent = e;
+    d.style.left = (Math.random() * 100) + '%';
+    d.style.animationDuration = (8 + Math.random() * 12) + 's';
+    d.style.animationDelay = (-Math.random() * 12) + 's';
+    d.style.fontSize = (2 + Math.random() * 2) + 'rem';
+    el.appendChild(d);
+  });
+}
+
+// ── BUILD CATEGORY PILLS ──
+function buildPills() {
+  document.getElementById('catPills').innerHTML = CATS.map(c => `
+    <div class="cat-pill ${c.id===currentCat?'active':''}" id="pill-${c.id}"
+      onclick="setCategory('${c.id}')"
+      style="${c.id===currentCat?`background:${c.color};border-color:${c.color};`:''}">
+      ${c.label}
+    </div>
+  `).join('');
+}
+
+// ── SET CATEGORY ──
+function setCategory(id) {
+  currentCat = id;
+  buildPills();
+  buildPage();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── BUILD FULL PAGE FOR CATEGORY ──
+function buildPage() {
+  const data = CONTENT[currentCat];
+  const cat  = CATS.find(c => c.id === currentCat);
+  if (!data || !cat) return;
+
+  const { feature, cards } = data;
+
+  const featureHtml = `
+    <div class="feature-card reveal" style="border-color:${cat.color}22">
+      <div class="fc-illus" style="background:linear-gradient(135deg,${feature.bg[0]},${feature.bg[1]})">
+        <div class="fc-illus-bg"></div>
+        <div class="fc-emoji">${feature.emoji}</div>
+      </div>
+      <div class="fc-body">
+        <div class="fc-tag" style="background:${cat.color}22;border:1px solid ${cat.color}44;color:${cat.color}">${feature.tag.text}</div>
+        <div class="fc-title">${feature.title}</div>
+        <div class="fc-desc" style="margin-bottom:12px">${feature.desc}</div>
+        <div class="fc-vocab">
+          ${feature.vocab.map(v => buildVcChip(v.jp, v.rom, v.en, v.color)).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+  const cardsHtml = `
+    <div class="sec-header reveal">
+      <div class="sec-icon">${cat.label.split(' ')[0]}</div>
+      <div>
+        <div class="sec-title" style="color:${cat.color}">${cat.label.slice(3)}</div>
+        <div class="sec-sub">Tap vocabulary chips to hear pronunciation · Learn Japanese through culture!</div>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="culture-grid">
+      ${cards.map(card => buildCultureCard(card, cat.color)).join('')}
+    </div>
+  `;
+
+  const quizHtml = `
+    <div class="quiz-banner reveal" onclick="openQuiz('${currentCat}')">
+      <div class="qb-icon">🧠</div>
+      <div>
+        <div class="qb-title">CULTURE QUIZ</div>
+        <div class="qb-sub">Test what you learned about ${cat.label.slice(3)}! Win XP and unlock your culture knowledge! 🏆</div>
+      </div>
+      <div class="qb-btn">Start Quiz →</div>
+    </div>
+  `;
+
+  document.getElementById('mainPage').innerHTML = featureHtml + cardsHtml + quizHtml;
+
+  // Observe reveals
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.06}s`;
+    observer.observe(el);
+  });
+
+  // Attach vocab chip events
+  document.querySelectorAll('.vc').forEach(chip => {
+    chip.addEventListener('mouseenter', (e) => showTooltip(chip, e));
+    chip.addEventListener('mouseleave', hideTooltip);
+    chip.addEventListener('click', () => speakJP(chip.dataset.jp));
+  });
+}
+
+function buildVcChip(jp, rom, en, color) {
+  return `<div class="vc" data-jp="${jp}" data-rom="${rom}" data-en="${en}" style="border-color:${color}33" onclick="speakJP('${jp}')">
+    <span class="vc-jp" style="color:${color}">${jp}</span>
+    <span class="vc-rom" style="color:${color}">${rom}</span>
+    <span class="vc-en">${en}</span>
+  </div>`;
+}
+
+function buildCultureCard(card, accent) {
+  const decos = (card.decos||[]).map(d => {
+    const s = [d.t?`top:${d.t}`:'', d.b?`bottom:${d.b}`:'', d.l?`left:${d.l}`:'', d.r?`right:${d.r}`:''].filter(Boolean).join(';');
+    return `<div class="cc-deco" style="${s}">${d.e}</div>`;
+  }).join('');
+
+  const vocabChips = (card.vocab||[]).map(v => buildVcChip(v.jp, v.rom, v.en, v.c||accent)).join('');
+
+  return `
+    <div class="culture-card reveal">
+      <div class="cc-illus" style="background:linear-gradient(135deg,${card.bg[0]},${card.bg[1]})">
+        <div class="cc-illus-bg"></div>
+        ${decos}
+        <div class="cc-emoji-main">${card.emoji}</div>
+      </div>
+      <div class="cc-body">
+        <div class="cc-title">${card.title}</div>
+        <div class="cc-sub">${card.sub}</div>
+        <div class="cc-desc">${card.desc}</div>
+        <div class="cc-fact"><div class="cc-fact-icon">💡</div><div class="cc-fact-text">${card.fact}</div></div>
+        <div class="cc-vocab">${vocabChips}</div>
+      </div>
+    </div>
+  `;
+}
+
+// ── QUIZ ──
+function openQuiz(catId) {
+  const qs = QUIZ_QUESTIONS.filter(q => q.cat === catId || Math.random() > 0.5).slice(0, 5);
+  // Always include at least 2 from the current category
+  const catQs = QUIZ_QUESTIONS.filter(q => q.cat === catId);
+  const mixed  = [...catQs.slice(0,3), ...QUIZ_QUESTIONS.filter(q => q.cat !== catId).slice(0,2)];
+  mixed.sort(() => Math.random() - 0.5);
+
+  quizState = { current: 0, correct: 0, done: false, questions: mixed.slice(0,5) };
+  document.getElementById('quizModal').classList.add('open');
+  renderQuizQ();
+}
+
+function closeQuiz() {
+  document.getElementById('quizModal').classList.remove('open');
+}
+
+function renderQuizQ() {
+  const { current, done, questions } = quizState;
+  document.getElementById('qmProgress').textContent = `Question ${current+1} / ${questions.length}`;
+
+  if (done) {
+    const s = quizState.correct, t = questions.length;
+    const pct = Math.round(s/t*100);
+    document.getElementById('qmBody').innerHTML = `
+      <div class="qm-result">
+        <div style="font-size:3rem;margin-bottom:10px">${pct===100?'🏆':pct>=60?'🌟':'💪'}</div>
+        <div class="qmr-score">${s} / ${t}</div>
+        <div class="qmr-msg">${pct===100?'Perfect! You\'re a Japan culture expert! 🎌':pct>=60?'Great work! Keep exploring Japan! 🌸':'Keep reading — Japan has so much to discover! 📚'}</div>
+        <button class="qmr-close" onclick="closeQuiz()">Back to Culture Hub 🎌</button>
+      </div>
+    `;
+    return;
+  }
+
+  const q = questions[current];
+  document.getElementById('qmBody').innerHTML = `
+    <div class="qm-q">${q.q}</div>
+    <div class="qm-jp">${q.jp}</div>
+    <div class="qm-opts">
+      ${q.opts.map(o => `<button class="qm-opt" onclick="answerQuiz('${o.replace(/'/g,"\\'")}',this)">${o}</button>`).join('')}
+    </div>
+    <div class="qm-feedback" id="qmFb"></div>
+    <button class="qm-next" id="qmNext" onclick="nextQuizQ()">${current < questions.length-1 ? 'Next →' : 'See Results 🏆'}</button>
+  `;
+}
+
+function answerQuiz(answer, btn) {
+  const q = quizState.questions[quizState.current];
+  const correct = answer === q.ans;
+  document.querySelectorAll('.qm-opt').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.ans) b.classList.add('correct');
+  });
+  if (correct) { btn.classList.add('correct'); quizState.correct++; addXP(25); }
+  else { btn.classList.add('wrong'); }
+  const fb = document.getElementById('qmFb');
+  fb.textContent = q.exp;
+  fb.className = 'qm-feedback show ' + (correct ? 'correct' : 'wrong');
+  document.getElementById('qmNext').style.display = 'inline-block';
+}
+
+function nextQuizQ() {
+  quizState.current++;
+  if (quizState.current >= quizState.questions.length) quizState.done = true;
+  renderQuizQ();
+}
+
+// ── VOCAB TOOLTIP ──
+function showTooltip(chip, e) {
+  const tt = document.getElementById('vtt');
+  document.getElementById('vtt-jp').textContent  = chip.dataset.jp;
+  document.getElementById('vtt-rom').textContent = chip.dataset.rom;
+  document.getElementById('vtt-en').textContent  = chip.dataset.en;
+  tt.className = 'vtt show';
+  const r = chip.getBoundingClientRect();
+  tt.style.left = Math.min(r.left, window.innerWidth-220) + 'px';
+  tt.style.top  = (r.bottom + 8 + window.scrollY) + 'px';
+}
+function hideTooltip() { document.getElementById('vtt').className = 'vtt'; }
+
+// ── SPEECH ──
+function speakJP(text) {
+  if (!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ja-JP'; u.rate = 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+  addXP(2);
+}
+
+// ── XP ──
+function addXP(n) {
+  sessionXP += n;
+  document.getElementById('xpDisplay').textContent = sessionXP + ' XP';
+}
+
+// ── INTERSECTION OBSERVER ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.05 });
+
+// ── INIT ──
+window.addEventListener('load', () => {
+  buildFloats();
+  buildPills();
+  buildPage();
+});
+</script>
+</body>
+</html>
+

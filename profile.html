@@ -1,0 +1,854 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — My Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #1c2230;
+  --gold: #ffd700; --gold2: #ffaa00; --gold3: #fff0a0;
+  --cyan: #00e5ff; --green: #00e676; --red: #ff3a5c;
+  --purple: #a855f7; --orange: #ff6b2b;
+  --white: #fff; --gray: #7a8099; --text: #d0d4e8;
+  --border: rgba(255,255,255,0.07);
+}
+html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); }
+a { text-decoration: none; color: inherit; }
+button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
+
+/* ── NAV ── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 20px;
+  background: rgba(13,17,23,0.97); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-back {
+  display: flex; align-items: center; gap: 6px; padding: 7px 14px;
+  border-radius: 20px; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10); color: rgba(255,255,255,0.75);
+  font-size: 0.82rem; font-weight: 800; cursor: pointer;
+  transition: all 0.2s;
+}
+.nav-back:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.nav-logo { font-family: 'Bangers', cursive; font-size: 1.15rem; letter-spacing: 3px; background: linear-gradient(90deg,var(--gold),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.nav-spacer { flex: 1; }
+.nav-settings {
+  width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10); color: var(--text); font-size: 1rem;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
+}
+.nav-settings:hover { background: rgba(255,255,255,0.1); }
+
+/* ── PAGE ── */
+.page { max-width: 680px; margin: 0 auto; padding: 28px 16px 60px; }
+
+/* ── AVATAR HERO ── */
+.hero {
+  background: linear-gradient(135deg, #1a1040 0%, #0d1a3a 40%, #0a2a1a 100%);
+  border-radius: 24px; border: 1px solid rgba(255,215,0,0.12);
+  padding: 32px 24px 26px; margin-bottom: 20px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 0%, rgba(255,215,0,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 100%, rgba(0,230,118,0.06) 0%, transparent 50%);
+}
+.hero-top { display: flex; align-items: flex-start; gap: 18px; position: relative; z-index: 1; }
+.avatar-wrap { position: relative; flex-shrink: 0; }
+.avatar {
+  width: 88px; height: 88px; border-radius: 50%;
+  background: linear-gradient(135deg, #2d1b69, #1a3a5c);
+  border: 3px solid var(--gold); display: flex; align-items: center; justify-content: center;
+  font-size: 2.8rem; box-shadow: 0 0 0 4px rgba(255,215,0,0.15), 0 8px 30px rgba(0,0,0,0.5);
+  cursor: pointer; transition: transform 0.2s;
+}
+.avatar:hover { transform: scale(1.05); }
+.avatar-edit {
+  position: absolute; bottom: 2px; right: 2px;
+  width: 24px; height: 24px; border-radius: 50%; background: var(--gold2);
+  display: flex; align-items: center; justify-content: center; font-size: 0.7rem;
+  border: 2px solid var(--bg); cursor: pointer;
+}
+.hero-info { flex: 1; }
+.hero-name { font-family: 'Bangers', cursive; font-size: 1.8rem; letter-spacing: 2px; color: var(--white); line-height: 1; margin-bottom: 4px; }
+.hero-email { font-size: 0.78rem; color: var(--gray); margin-bottom: 8px; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.badge {
+  padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 900;
+  letter-spacing: 0.5px;
+}
+.badge-premium { background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); }
+.badge-level { background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.25); color: var(--cyan); }
+.badge-country { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--text); }
+
+/* XP bar */
+.xp-section { position: relative; z-index: 1; margin-top: 18px; }
+.xp-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.xp-label { font-size: 0.72rem; font-weight: 900; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; }
+.xp-val { font-family: 'Orbitron', sans-serif; font-size: 0.78rem; color: var(--gold); }
+.xp-track { height: 10px; border-radius: 5px; background: rgba(255,255,255,0.07); overflow: hidden; }
+.xp-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--gold2), var(--gold)); transition: width 1.2s cubic-bezier(0.34,1.4,0.64,1); width: 0; }
+
+/* ── STREAK CARD ── */
+.streak-card {
+  background: linear-gradient(135deg, #2d1200, #1a1a00, #003020);
+  border-radius: 20px; border: 1px solid rgba(255,107,43,0.25);
+  padding: 22px 20px; margin-bottom: 20px; position: relative; overflow: hidden;
+}
+.streak-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% -20%, rgba(255,165,0,0.15), transparent 60%);
+}
+.streak-top { display: flex; align-items: center; gap: 14px; position: relative; z-index: 1; margin-bottom: 18px; }
+.flame-wrap { position: relative; }
+.flame-big { font-size: 3.5rem; filter: drop-shadow(0 0 16px rgba(255,120,0,0.8)); animation: flameWobble 1.5s ease-in-out infinite alternate; }
+@keyframes flameWobble { from{transform:scale(1) rotate(-3deg)} to{transform:scale(1.08) rotate(3deg)} }
+.streak-info { flex: 1; }
+.streak-number { font-family: 'Bangers', cursive; font-size: 3.5rem; letter-spacing: 2px; color: var(--orange); line-height: 1; text-shadow: 0 0 20px rgba(255,107,43,0.6); }
+.streak-label { font-size: 0.8rem; font-weight: 900; color: rgba(255,150,50,0.8); letter-spacing: 1px; text-transform: uppercase; }
+.streak-msg { font-size: 0.82rem; color: var(--gold3); margin-top: 2px; }
+.streak-best { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 12px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.15); font-size: 0.75rem; font-weight: 900; color: var(--gold); white-space: nowrap; }
+
+/* Weekly calendar */
+.streak-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; position: relative; z-index: 1; }
+.day-cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.day-name { font-size: 0.58rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; }
+.day-ring {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; transition: all 0.3s;
+}
+.day-ring.done { background: var(--orange); box-shadow: 0 0 12px rgba(255,107,43,0.5); }
+.day-ring.today { background: var(--gold2); box-shadow: 0 0 12px rgba(255,170,0,0.6); animation: todayPulse 2s ease-in-out infinite; }
+@keyframes todayPulse { 0%,100%{box-shadow:0 0 12px rgba(255,170,0,0.6)} 50%{box-shadow:0 0 20px rgba(255,170,0,0.9)} }
+.day-ring.missed { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.08); font-size: 0; }
+.day-ring.future { background: rgba(255,255,255,0.04); border: 2px dashed rgba(255,255,255,0.1); font-size: 0; }
+
+/* ── STATS GRID ── */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.stat-card {
+  border-radius: 16px; padding: 16px; background: var(--bg2);
+  border: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px;
+  transition: border-color 0.2s;
+}
+.stat-card:hover { border-color: rgba(255,255,255,0.15); }
+.stat-icon { font-size: 1.4rem; margin-bottom: 4px; }
+.stat-value { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 900; }
+.stat-label { font-size: 0.72rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+.stat-sub { font-size: 0.72rem; color: var(--gray); margin-top: 2px; }
+
+/* ── SECTION HEADER ── */
+.section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.section-title { font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 2px; color: var(--white); }
+.section-line { flex: 1; height: 1px; background: var(--border); }
+
+/* ── ACHIEVEMENT BADGES ── */
+.achievements { margin-bottom: 20px; }
+.badge-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.ach-card {
+  border-radius: 14px; padding: 14px 8px; text-align: center;
+  background: var(--bg2); border: 1px solid var(--border); cursor: default;
+  transition: all 0.25s; position: relative; overflow: hidden;
+}
+.ach-card.unlocked { border-color: rgba(255,255,255,0.18); }
+.ach-card.locked { opacity: 0.45; filter: grayscale(60%); }
+.ach-card.unlocked:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+.ach-emoji { font-size: 1.8rem; margin-bottom: 6px; display: block; }
+.ach-name { font-size: 0.62rem; font-weight: 900; color: var(--text); line-height: 1.3; }
+.ach-card.locked .ach-emoji { filter: grayscale(1); }
+.ach-shine {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%);
+}
+.ach-new { position: absolute; top: 5px; right: 5px; background: var(--red); border-radius: 20px; padding: 1px 5px; font-size: 0.5rem; font-weight: 900; color: #fff; letter-spacing: 0.5px; }
+
+/* ── SUBSCRIPTION CARD ── */
+.sub-card {
+  border-radius: 20px; padding: 20px; margin-bottom: 20px;
+  background: linear-gradient(135deg, #1a0d3a, #0d2040);
+  border: 1px solid rgba(168,85,247,0.25); position: relative; overflow: hidden;
+}
+.sub-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 100% 0%, rgba(168,85,247,0.1), transparent 60%);
+}
+.sub-row { display: flex; align-items: center; gap: 10px; position: relative; z-index: 1; }
+.sub-icon { font-size: 1.8rem; }
+.sub-info { flex: 1; }
+.sub-plan { font-family: 'Bangers', cursive; font-size: 1.3rem; letter-spacing: 2px; color: var(--gold); margin-bottom: 2px; }
+.sub-status { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; background: rgba(0,230,118,0.12); border: 1px solid rgba(0,230,118,0.25); color: var(--green); font-size: 0.68rem; font-weight: 900; }
+.sub-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.sub-manage {
+  padding: 9px 16px; border-radius: 12px; background: rgba(168,85,247,0.15);
+  border: 1px solid rgba(168,85,247,0.3); color: var(--purple); font-size: 0.75rem; font-weight: 900;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.sub-manage:hover { background: rgba(168,85,247,0.25); }
+
+.sub-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; position: relative; z-index: 1; }
+.sub-date-card {
+  border-radius: 12px; padding: 12px; background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.sub-date-label { font-size: 0.65rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.sub-date-val { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--white); }
+.sub-date-sub { font-size: 0.68rem; color: var(--gray); margin-top: 2px; }
+
+.sub-perks { margin-top: 14px; position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 6px; }
+.perk { display: flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); font-size: 0.7rem; font-weight: 700; color: var(--text); }
+
+/* ── LEARNING HISTORY ── */
+.history { margin-bottom: 20px; }
+.history-bars { display: flex; align-items: flex-end; gap: 5px; height: 80px; }
+.bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; }
+.bar-track { flex: 1; width: 100%; border-radius: 6px 6px 0 0; background: rgba(255,255,255,0.05); display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+.bar-fill { width: 100%; border-radius: 6px 6px 0 0; background: linear-gradient(180deg, var(--cyan), rgba(0,229,255,0.4)); transition: height 1s cubic-bezier(0.34,1.4,0.64,1); height: 0; }
+.bar-label { font-size: 0.55rem; font-weight: 900; color: var(--gray); text-transform: uppercase; }
+
+/* ── LANGUAGE PROGRESS ── */
+.lang-progress { margin-bottom: 20px; }
+.lang-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 10px; }
+.lang-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.lang-flag { font-size: 1.4rem; }
+.lang-name { font-weight: 900; font-size: 0.88rem; }
+.lang-pct { font-family: 'Orbitron', sans-serif; font-size: 0.82rem; color: var(--cyan); margin-left: auto; }
+.lang-bar-track { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.07); overflow: hidden; }
+.lang-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--cyan), #00bfa5); transition: width 1.3s cubic-bezier(0.34,1.2,0.64,1); width: 0; }
+.lang-skills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.skill-chip { padding: 3px 9px; border-radius: 10px; font-size: 0.65rem; font-weight: 900; background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.18); color: var(--cyan); }
+
+/* ── SETTINGS LIST ── */
+.settings-list { background: var(--bg2); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+.setting-row {
+  display: flex; align-items: center; gap: 12px; padding: 15px 16px;
+  border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s;
+}
+.setting-row:last-child { border-bottom: none; }
+.setting-row:hover { background: rgba(255,255,255,0.03); }
+.setting-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+.setting-text { flex: 1; }
+.setting-name { font-size: 0.85rem; font-weight: 800; color: var(--white); }
+.setting-sub { font-size: 0.72rem; color: var(--gray); margin-top: 1px; }
+.setting-arrow { color: var(--gray); font-size: 0.8rem; }
+.setting-toggle { width: 42px; height: 24px; border-radius: 12px; position: relative; cursor: pointer; transition: background 0.2s; }
+.setting-toggle.on { background: var(--green); }
+.setting-toggle.off { background: rgba(255,255,255,0.12); }
+.toggle-knob { position: absolute; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: left 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+.setting-toggle.on .toggle-knob { left: 21px; }
+.setting-toggle.off .toggle-knob { left: 3px; }
+
+/* ── DANGER ZONE ── */
+.danger-zone { border-radius: 16px; border: 1px solid rgba(255,58,92,0.2); overflow: hidden; margin-bottom: 20px; }
+.danger-header { padding: 12px 16px; background: rgba(255,58,92,0.06); font-size: 0.7rem; font-weight: 900; color: rgba(255,58,92,0.7); text-transform: uppercase; letter-spacing: 1px; }
+.danger-btn { width: 100%; padding: 14px 16px; background: transparent; border: none; border-top: 1px solid rgba(255,58,92,0.12); color: var(--red); font-size: 0.85rem; font-weight: 800; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: background 0.15s; }
+.danger-btn:hover { background: rgba(255,58,92,0.06); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  backdrop-filter: blur(6px);
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--bg2); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
+  padding: 28px 24px; max-width: 380px; width: 100%;
+  transform: scale(0.92); transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.modal-overlay.open .modal { transform: scale(1); }
+.modal-title { font-family: 'Bangers', cursive; font-size: 1.5rem; letter-spacing: 2px; color: var(--white); margin-bottom: 6px; }
+.modal-sub { font-size: 0.82rem; color: var(--gray); margin-bottom: 20px; line-height: 1.6; }
+.modal-field { margin-bottom: 14px; }
+.modal-label { font-size: 0.72rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.modal-input {
+  width: 100%; padding: 11px 14px; border-radius: 11px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+  color: var(--white); font-size: 0.88rem; font-family: 'Nunito', sans-serif;
+  outline: none; transition: border-color 0.2s;
+}
+.modal-input:focus { border-color: rgba(0,229,255,0.4); }
+.modal-btns { display: flex; gap: 10px; margin-top: 20px; }
+.modal-btn { flex: 1; padding: 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 900; cursor: pointer; transition: all 0.2s; }
+.modal-btn-cancel { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: var(--text); }
+.modal-btn-save { background: linear-gradient(135deg, var(--gold2), var(--gold)); border: none; color: #000; }
+.modal-btn-save:hover { filter: brightness(1.1); }
+.modal-btn-cancel:hover { background: rgba(255,255,255,0.1); }
+
+/* ── AVATAR PICKER ── */
+.avatar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 16px; }
+.avatar-opt {
+  aspect-ratio: 1; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; background: rgba(255,255,255,0.05); border: 2px solid transparent;
+  cursor: pointer; transition: all 0.2s;
+}
+.avatar-opt:hover { transform: scale(1.1); border-color: rgba(255,255,255,0.2); }
+.avatar-opt.selected { border-color: var(--gold); background: rgba(255,215,0,0.1); box-shadow: 0 0 0 2px rgba(255,215,0,0.3); }
+
+/* ── SCROLL ANIM ── */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.5s, transform 0.5s; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+<script src="gojuon-widget.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="top-nav">
+  <a class="nav-back" href="home.html">← Home</a>
+  <div class="nav-logo">👤 MY PROFILE</div>
+  <div class="nav-spacer"></div>
+  <button class="nav-settings" onclick="openModal('settings-modal')">⚙️</button>
+</div>
+
+<div class="page">
+
+  <!-- ── HERO ── -->
+  <div class="hero reveal">
+    <div class="hero-top">
+      <div class="avatar-wrap">
+        <div class="avatar" id="mainAvatar" onclick="openModal('avatar-modal')">🦊</div>
+        <div class="avatar-edit" onclick="openModal('avatar-modal')">✏️</div>
+      </div>
+      <div class="hero-info">
+        <div class="hero-name" id="displayName">YUKI KAI</div>
+        <div class="hero-email" id="displayEmail">keikoathomework@gmail.com</div>
+        <div class="hero-badges">
+          <span class="badge badge-premium">⭐ Premium</span>
+          <span class="badge badge-level" id="levelBadge">N5 Beginner</span>
+          <span class="badge badge-country">🇺🇸 English</span>
+        </div>
+      </div>
+    </div>
+    <div class="xp-section">
+      <div class="xp-row">
+        <div class="xp-label">Level Progress — N5 → N4</div>
+        <div class="xp-val" id="xpVal">1,240 / 3,000 XP</div>
+      </div>
+      <div class="xp-track">
+        <div class="xp-fill" id="xpFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STREAK CARD ── -->
+  <div class="streak-card reveal">
+    <div class="streak-top">
+      <div class="flame-wrap">
+        <div class="flame-big">🔥</div>
+      </div>
+      <div class="streak-info">
+        <div class="streak-number" id="streakNum">7</div>
+        <div class="streak-label">Day Streak!</div>
+        <div class="streak-msg" id="streakMsg">Amazing! Keep the fire burning! 🔥</div>
+      </div>
+      <div class="streak-best">
+        🏆 Best<br><span style="font-family:'Orbitron',sans-serif;font-size:0.95rem" id="bestStreak">21</span> days
+      </div>
+    </div>
+    <!-- Weekly calendar -->
+    <div class="streak-week" id="weekCalendar"></div>
+  </div>
+
+  <!-- ── STATS ── -->
+  <div class="stats-grid reveal">
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-value" style="color:var(--cyan)" id="wordsLearned">142</div>
+      <div class="stat-label">Words Learned</div>
+      <div class="stat-sub">+12 this week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⏱️</div>
+      <div class="stat-value" style="color:var(--green)" id="studyMins">4h 30m</div>
+      <div class="stat-label">Study Time</div>
+      <div class="stat-sub">Total this month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value" style="color:var(--gold)" id="accuracy">84%</div>
+      <div class="stat-label">Accuracy</div>
+      <div class="stat-sub">Quiz average</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🗾</div>
+      <div class="stat-value" style="color:var(--purple)" id="placesVisited">8</div>
+      <div class="stat-label">Places Visited</div>
+      <div class="stat-sub">On Japan Map</div>
+    </div>
+  </div>
+
+  <!-- ── ACHIEVEMENTS ── -->
+  <div class="achievements reveal">
+    <div class="section-header">
+      <div class="section-title">🏅 ACHIEVEMENTS</div>
+      <div class="section-line"></div>
+      <div style="font-size:0.72rem;color:var(--gray);white-space:nowrap">6 / 16 unlocked</div>
+    </div>
+    <div class="badge-grid" id="badgeGrid"></div>
+  </div>
+
+  <!-- ── WEEKLY ACTIVITY ── -->
+  <div class="history reveal">
+    <div class="section-header">
+      <div class="section-title">📊 WEEKLY XP</div>
+      <div class="section-line"></div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px">
+      <div class="history-bars" id="historyBars"></div>
+    </div>
+  </div>
+
+  <!-- ── LANGUAGE PROGRESS ── -->
+  <div class="lang-progress reveal">
+    <div class="section-header">
+      <div class="section-title">🎌 SKILLS PROGRESS</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="lang-card">
+      <div class="lang-row">
+        <div class="lang-flag">🔤</div>
+        <div class="lang-name">Hiragana</div>
+        <div class="lang-pct">78%</div>
+      </div>
+      <div class="lang-bar-track"><div class="lang-bar-fill" style="background:linear-gradient(90deg,#00e5ff,#00bfa5)" data-pct="78"></div></div>
+      <div class="lang-skills"><span class="skill-chip">あ〜お ✅</span><span class="skill-chip">か〜こ ✅</span><span class="skill-chip">さ〜そ ✅</span><span class="skill-chip">た〜と 🔄</span></div>
+    </div>
+    <div class="lang-card">
+      <div class="lang-row">
+        <div class="lang-flag">🔡</div>
+        <div class="lang-name">Katakana</div>
+        <div class="lang-pct">55%</div>
+      </div>
+      <div class="lang-bar-track"><div class="lang-bar-fill" style="background:linear-gradient(90deg,#a855f7,#7c3aed)" data-pct="55"></div></div>
+      <div class="lang-skills"><span class="skill-chip">ア〜オ ✅</span><span class="skill-chip">カ〜コ ✅</span><span class="skill-chip">サ〜ソ 🔄</span></div>
+    </div>
+    <div class="lang-card">
+      <div class="lang-row">
+        <div class="lang-flag">🖊️</div>
+        <div class="lang-name">Kanji</div>
+        <div class="lang-pct">20%</div>
+      </div>
+      <div class="lang-bar-track"><div class="lang-bar-fill" style="background:linear-gradient(90deg,#ff6b2b,#ff3a5c)" data-pct="20"></div></div>
+      <div class="lang-skills"><span class="skill-chip">日月山川火 ✅</span><span class="skill-chip">N5 Basic 🔄</span></div>
+    </div>
+    <div class="lang-card">
+      <div class="lang-row">
+        <div class="lang-flag">💬</div>
+        <div class="lang-name">Vocabulary</div>
+        <div class="lang-pct">42%</div>
+      </div>
+      <div class="lang-bar-track"><div class="lang-bar-fill" style="background:linear-gradient(90deg,#ffd700,#ffaa00)" data-pct="42"></div></div>
+      <div class="lang-skills"><span class="skill-chip">Greetings ✅</span><span class="skill-chip">Numbers ✅</span><span class="skill-chip">Food 🔄</span><span class="skill-chip">Travel 🔒</span></div>
+    </div>
+  </div>
+
+  <!-- ── SUBSCRIPTION ── -->
+  <div class="sub-card reveal">
+    <div class="section-header" style="margin-bottom:16px">
+      <div class="section-title">💎 SUBSCRIPTION</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="sub-row">
+      <div class="sub-icon">👑</div>
+      <div class="sub-info">
+        <div class="sub-plan">PREMIUM PLAN</div>
+        <div class="sub-status"><div class="sub-status-dot"></div> Active</div>
+      </div>
+      <button class="sub-manage" onclick="openModal('sub-modal')">Manage →</button>
+    </div>
+    <div class="sub-dates">
+      <div class="sub-date-card">
+        <div class="sub-date-label">📅 Start Date</div>
+        <div class="sub-date-val" id="subStart">Jun 1, 2026</div>
+        <div class="sub-date-sub" id="subDaysAgo">29 days ago</div>
+      </div>
+      <div class="sub-date-card">
+        <div class="sub-date-label">🔄 Next Renewal</div>
+        <div class="sub-date-val" id="subRenew">Jul 1, 2026</div>
+        <div class="sub-date-sub" id="subDaysLeft" style="color:var(--gold)">2 days left</div>
+      </div>
+    </div>
+    <div class="sub-perks">
+      <div class="perk">✅ All 5 Story Chapters</div>
+      <div class="perk">✅ Full Kanji Library</div>
+      <div class="perk">✅ Vocabulary Cards</div>
+      <div class="perk">✅ Japan Map</div>
+      <div class="perk">✅ XP Tracking</div>
+    </div>
+  </div>
+
+  <!-- ── SETTINGS ── -->
+  <div class="reveal">
+    <div class="section-header">
+      <div class="section-title">⚙️ SETTINGS</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="settings-list">
+      <div class="setting-row" onclick="openModal('profile-modal')">
+        <div class="setting-icon" style="background:rgba(255,215,0,0.1)">👤</div>
+        <div class="setting-text">
+          <div class="setting-name">Edit Profile</div>
+          <div class="setting-sub">Name, email, avatar</div>
+        </div>
+        <div class="setting-arrow">›</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(0,229,255,0.1)">🔔</div>
+        <div class="setting-text">
+          <div class="setting-name">Daily Reminder</div>
+          <div class="setting-sub">8:00 AM — Don't break the streak!</div>
+        </div>
+        <div class="setting-toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')">
+          <div class="toggle-knob"></div>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(0,230,118,0.1)">🔊</div>
+        <div class="setting-text">
+          <div class="setting-name">Sound Effects</div>
+          <div class="setting-sub">Quiz sounds and XP chimes</div>
+        </div>
+        <div class="setting-toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')">
+          <div class="toggle-knob"></div>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(168,85,247,0.1)">🌐</div>
+        <div class="setting-text">
+          <div class="setting-name">Interface Language</div>
+          <div class="setting-sub">English (US)</div>
+        </div>
+        <div class="setting-arrow">›</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(255,107,43,0.1)">🎯</div>
+        <div class="setting-text">
+          <div class="setting-name">Daily Goal</div>
+          <div class="setting-sub">15 minutes / day</div>
+        </div>
+        <div class="setting-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DANGER ZONE ── -->
+  <div class="danger-zone reveal">
+    <div class="danger-header">⚠️ Account Actions</div>
+    <button class="danger-btn" onclick="if(confirm('Cancel your Premium subscription?')) alert('Please manage your subscription via the Subscription section.')">❌ Cancel Subscription</button>
+    <button class="danger-btn" onclick="if(confirm('Sign out of Road to Japan?')) alert('Signed out. See you tomorrow! 👋')">🚪 Sign Out</button>
+    <button class="danger-btn" style="color:rgba(255,58,92,0.5)" onclick="if(confirm('Delete your account? This cannot be undone.')) alert('Account deletion request submitted. You will receive an email confirmation.')">🗑️ Delete Account</button>
+  </div>
+
+</div><!-- /page -->
+
+<!-- ── MODALS ── -->
+
+<!-- Avatar Picker -->
+<div class="modal-overlay" id="avatar-modal" onclick="if(event.target===this)closeModal('avatar-modal')">
+  <div class="modal">
+    <div class="modal-title">Choose Avatar</div>
+    <div class="modal-sub">Pick your learning companion! 🎮</div>
+    <div class="avatar-grid" id="avatarGrid"></div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('avatar-modal')">Cancel</button>
+      <button class="modal-btn modal-btn-save" onclick="saveAvatar()">Save! ✅</button>
+    </div>
+  </div>
+</div>
+
+<!-- Profile Edit -->
+<div class="modal-overlay" id="profile-modal" onclick="if(event.target===this)closeModal('profile-modal')">
+  <div class="modal">
+    <div class="modal-title">Edit Profile</div>
+    <div class="modal-sub">Update your name and email address.</div>
+    <div class="modal-field">
+      <div class="modal-label">Display Name</div>
+      <input class="modal-input" id="nameInput" type="text" placeholder="Your name" value="Yuki Kai">
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Email</div>
+      <input class="modal-input" id="emailInput" type="email" placeholder="your@email.com" value="keikoathomework@gmail.com">
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('profile-modal')">Cancel</button>
+      <button class="modal-btn modal-btn-save" onclick="saveProfile()">Save Changes ✅</button>
+    </div>
+  </div>
+</div>
+
+<!-- Subscription Modal -->
+<div class="modal-overlay" id="sub-modal" onclick="if(event.target===this)closeModal('sub-modal')">
+  <div class="modal">
+    <div class="modal-title">💎 Premium Plan</div>
+    <div class="modal-sub">Your subscription is <strong style="color:var(--green)">Active</strong>. It renews automatically each month via Square.</div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-size:0.72rem;color:var(--gray);margin-bottom:8px;font-weight:900;text-transform:uppercase;letter-spacing:1px">Billing History</div>
+      <div style="font-size:0.82rem;display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span>Jun 1, 2026</span><span style="color:var(--green)">$9.99 ✅</span></div>
+      <div style="font-size:0.82rem;display:flex;justify-content:space-between;padding:6px 0;color:var(--gray)"><span>Jul 1, 2026 (upcoming)</span><span>$9.99</span></div>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('sub-modal')">Close</button>
+      <button class="modal-btn modal-btn-save" onclick="closeModal('sub-modal');alert('To update payment info, please visit the billing page.')">Billing Info →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STATE (localStorage) ──
+const STATE_KEY = 'rtj_profile';
+let state = JSON.parse(localStorage.getItem(STATE_KEY) || '{}');
+
+function saveState() { localStorage.setItem(STATE_KEY, JSON.stringify(state)); }
+
+// ── STREAK LOGIC ──
+const TODAY = new Date();
+const TODAY_STR = TODAY.toISOString().split('T')[0];
+
+function initStreak() {
+  if (!state.streak) state.streak = 0;
+  if (!state.bestStreak) state.bestStreak = 0;
+  if (!state.lastStudy) state.lastStudy = null;
+  if (!state.studyDays) state.studyDays = [];
+
+  // Check if already studied today — if not, award today
+  if (state.lastStudy !== TODAY_STR) {
+    const yesterday = new Date(TODAY); yesterday.setDate(yesterday.getDate() - 1);
+    const yStr = yesterday.toISOString().split('T')[0];
+
+    if (state.lastStudy === yStr) {
+      state.streak += 1; // continued streak
+    } else if (state.lastStudy === null || state.lastStudy < yStr) {
+      state.streak = 1; // new or broken streak
+    }
+    state.lastStudy = TODAY_STR;
+    if (!state.studyDays.includes(TODAY_STR)) state.studyDays.push(TODAY_STR);
+    if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+    saveState();
+  }
+
+  // Demo: if fresh user, show demo data
+  if (state.streak === 1 && state.studyDays.length <= 1) {
+    state.streak = 7;
+    state.bestStreak = 21;
+    // Fill in last 6 days as studied
+    for (let i = 6; i >= 1; i--) {
+      const d = new Date(TODAY); d.setDate(d.getDate() - i);
+      const s = d.toISOString().split('T')[0];
+      if (!state.studyDays.includes(s)) state.studyDays.push(s);
+    }
+    saveState();
+  }
+}
+
+function renderStreak() {
+  document.getElementById('streakNum').textContent = state.streak;
+  document.getElementById('bestStreak').textContent = state.bestStreak;
+
+  const msgs = [
+    [1,'Great start! Day 1 begins! 🌱'],
+    [3,'3 days strong! You\'re building a habit! 💪'],
+    [7,'One week! You\'re on fire! 🔥'],
+    [14,'Two weeks! You\'re incredible! ⚡'],
+    [30,'ONE MONTH! LEGEND STATUS! 🏆'],
+    [100,'100 DAYS! You\'re unstoppable! 🌟'],
+  ];
+  let msg = 'Keep going! Every day counts! 🎯';
+  for (const [days, m] of msgs) { if (state.streak >= days) msg = m; }
+  document.getElementById('streakMsg').textContent = msg;
+
+  // Build week calendar
+  const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const calEl = document.getElementById('weekCalendar');
+  calEl.innerHTML = '';
+
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(TODAY); d.setDate(d.getDate() - i);
+    const dStr = d.toISOString().split('T')[0];
+    const dayName = days[d.getDay()];
+    const isToday = dStr === TODAY_STR;
+    const isDone = state.studyDays.includes(dStr) || isToday;
+    const cls = isToday ? 'today' : (isDone ? 'done' : 'missed');
+    const emoji = isToday ? '⭐' : (isDone ? '🔥' : '');
+
+    calEl.innerHTML += `
+      <div class="day-cell">
+        <div class="day-name" style="${isToday?'color:var(--gold)':''}">${dayName}</div>
+        <div class="day-ring ${cls}">${emoji}</div>
+      </div>
+    `;
+  }
+}
+
+// ── ACHIEVEMENTS ──
+const ACHIEVEMENTS = [
+  { emoji:'🌅', name:'First Step', desc:'Complete Day 1', unlocked:true },
+  { emoji:'🔥', name:'3-Day Streak', desc:'Study 3 days', unlocked:true },
+  { emoji:'⭐', name:'Quiz Star', desc:'Score 100% on a quiz', unlocked:true },
+  { emoji:'🌸', name:'Cherry Fan', desc:'Visit Kyoto on the map', unlocked:true, isNew:true },
+  { emoji:'🗻', name:'Fuji Climber', desc:'Complete Ch.4 story', unlocked:true },
+  { emoji:'🎌', name:'Story Hero', desc:'Finish all 5 chapters', unlocked:true, isNew:true },
+  { emoji:'🔤', name:'Hiragana Pro', desc:'Master all hiragana', unlocked:false },
+  { emoji:'🔡', name:'Katakana Pro', desc:'Master all katakana', unlocked:false },
+  { emoji:'🖊️', name:'Kanji Sage', desc:'Learn 50 kanji', unlocked:false },
+  { emoji:'📚', name:'Word Collector', desc:'Learn 200 words', unlocked:false },
+  { emoji:'🏆', name:'Week Champion', desc:'7-day streak', unlocked:false },
+  { emoji:'💎', name:'Month Master', desc:'30-day streak', unlocked:false },
+  { emoji:'🗾', name:'Japan Explorer', desc:'Visit all 25 places', unlocked:false },
+  { emoji:'🐉', name:'Dragon Dueler', desc:'Beat Ryu in Ch.2', unlocked:false },
+  { emoji:'👴', name:'Sensei\'s Student', desc:'Learn all 5 kanji in Ch.3', unlocked:false },
+  { emoji:'🌟', name:'Legend', desc:'100-day streak', unlocked:false },
+];
+
+function renderBadges() {
+  const grid = document.getElementById('badgeGrid');
+  grid.innerHTML = ACHIEVEMENTS.map(a => `
+    <div class="ach-card ${a.unlocked?'unlocked':'locked'}" title="${a.desc}">
+      <div class="ach-shine"></div>
+      ${a.isNew ? '<div class="ach-new">NEW</div>' : ''}
+      <div class="ach-emoji">${a.emoji}</div>
+      <div class="ach-name">${a.name}</div>
+    </div>
+  `).join('');
+}
+
+// ── WEEKLY BARS ──
+const WEEK_XP = [45, 90, 60, 110, 75, 130, 85]; // Mon–Sun mock data
+const WEEK_DAYS = ['M','T','W','T','F','S','S'];
+
+function renderBars() {
+  const max = Math.max(...WEEK_XP);
+  const el = document.getElementById('historyBars');
+  el.innerHTML = WEEK_DAYS.map((d,i) => `
+    <div class="bar-wrap">
+      <div class="bar-track">
+        <div class="bar-fill" data-h="${Math.round((WEEK_XP[i]/max)*100)}" style="height:0%"></div>
+      </div>
+      <div class="bar-label">${d}</div>
+    </div>
+  `).join('');
+}
+
+// ── SUBSCRIPTION DATES ──
+function renderSubDates() {
+  const start = new Date('2026-06-01');
+  const renew = new Date('2026-07-01');
+  const msPerDay = 86400000;
+
+  const daysAgo = Math.floor((TODAY - start) / msPerDay);
+  const daysLeft = Math.ceil((renew - TODAY) / msPerDay);
+
+  const fmtDate = d => d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  document.getElementById('subStart').textContent = fmtDate(start);
+  document.getElementById('subRenew').textContent = fmtDate(renew);
+  document.getElementById('subDaysAgo').textContent = `${daysAgo} day${daysAgo!==1?'s':''} ago`;
+
+  if (daysLeft <= 5) {
+    document.getElementById('subDaysLeft').textContent = `⚠️ ${daysLeft} days left`;
+    document.getElementById('subDaysLeft').style.color = 'var(--red)';
+  } else {
+    document.getElementById('subDaysLeft').textContent = `${daysLeft} days left`;
+    document.getElementById('subDaysLeft').style.color = 'var(--green)';
+  }
+}
+
+// ── AVATARS ──
+const AVATARS = ['🦊','🐼','🐸','🐯','🦁','🐻','🐺','🦋','🐉','🦄','🐙','🐬','🦜','🐧','🐮','🐨','🦊','🌸','⚡','🎌'];
+let selectedAvatar = state.avatar || '🦊';
+
+function renderAvatarGrid() {
+  const g = document.getElementById('avatarGrid');
+  g.innerHTML = AVATARS.map((a,i) => `
+    <div class="avatar-opt ${a===selectedAvatar?'selected':''}" onclick="selectAvatar('${a}',this)">${a}</div>
+  `).join('');
+}
+
+function selectAvatar(a, el) {
+  selectedAvatar = a;
+  document.querySelectorAll('.avatar-opt').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function saveAvatar() {
+  state.avatar = selectedAvatar;
+  saveState();
+  document.getElementById('mainAvatar').textContent = selectedAvatar;
+  closeModal('avatar-modal');
+}
+
+// ── PROFILE EDIT ──
+function saveProfile() {
+  const name = document.getElementById('nameInput').value.trim();
+  const email = document.getElementById('emailInput').value.trim();
+  if (name) document.getElementById('displayName').textContent = name.toUpperCase();
+  if (email) document.getElementById('displayEmail').textContent = email;
+  state.name = name; state.email = email; saveState();
+  closeModal('profile-modal');
+  showToast('Profile updated! ✅');
+}
+
+// ── MODALS ──
+function openModal(id) {
+  if (id==='avatar-modal') renderAvatarGrid();
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open')); });
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;background:rgba(0,230,118,0.15);border:1px solid rgba(0,230,118,0.3);color:#00e676;padding:12px 18px;border-radius:12px;font-size:0.85rem;font-weight:900;backdrop-filter:blur(10px);animation:slideUp 0.3s ease;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 3000);
+}
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+// ── INIT ──
+window.addEventListener('load', () => {
+  initStreak();
+  renderStreak();
+  renderBadges();
+  renderBars();
+  renderSubDates();
+
+  // Apply saved avatar & name
+  if (state.avatar) document.getElementById('mainAvatar').textContent = state.avatar;
+  if (state.name) document.getElementById('displayName').textContent = state.name.toUpperCase();
+  if (state.email) document.getElementById('displayEmail').textContent = state.email;
+
+  // Observe reveals
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Animate XP bar
+  setTimeout(() => { document.getElementById('xpFill').style.width = '41.3%'; }, 300);
+
+  // Animate lang bars
+  setTimeout(() => {
+    document.querySelectorAll('.lang-bar-fill').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 500);
+
+  // Animate history bars
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach(el => {
+      el.style.height = el.dataset.h + '%';
+    });
+  }, 600);
+});
+</script>
+</body>
+</html>
+

@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — 日本一周すごろく</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #04080e;
+  --gold: #ffd700; --gold2: #ffaa00;
+  --green: #00e676; --green2: #00c853; --green3: #69f0ae;
+  --emerald: #00897b; --teal: #00bfa5;
+  --red: #ff3a5c; --orange: #ff6b2b;
+  --cyan: #00e5ff; --purple: #a855f7;
+  --pink: #ff6eb4; --white: #ffffff;
+  --gray: #7a8099; --text: #d0d4e8;
+  --border: rgba(255,255,255,0.08);
+}
+html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+.stars-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,137,123,0.08) 0%, transparent 60%), var(--bg); }
+.star-dot { position: fixed; border-radius: 50%; background: #fff; pointer-events: none; animation: twinkle ease-in-out infinite alternate; }
+@keyframes twinkle { from{opacity:0.05} to{opacity:0.7} }
+
+/* ── TOP NAV ── */
+.top-nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: rgba(4,8,14,0.94); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,230,118,0.1); }
+.nav-back { display:flex; align-items:center; gap:6px; padding:7px 16px; border-radius:20px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); font-size:0.82rem; font-weight:800; cursor:pointer; transition:all 0.2s; text-decoration:none; }
+.nav-back:hover { background:rgba(0,0,0,0.6); color:#fff; }
+.nav-title { font-family:'Bangers',cursive; font-size:1.3rem; letter-spacing:3px; background:linear-gradient(135deg,var(--green),var(--teal)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.nav-spacer { flex:1; }
+.nav-xp { display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:20px; background:rgba(0,230,118,0.1); border:1px solid rgba(0,230,118,0.25); font-family:'Orbitron',sans-serif; font-size:0.8rem; font-weight:900; color:var(--green); }
+.nav-stamps { display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:20px; background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.2); font-size:0.82rem; font-weight:900; color:var(--gold); }
+
+/* ── MAIN LAYOUT ── */
+.main-wrap { position:relative; z-index:1; display:grid; grid-template-columns:1fr 300px; gap:16px; max-width:1200px; margin:0 auto; padding:16px; }
+@media(max-width:900px){ .main-wrap{grid-template-columns:1fr;} }
+
+/* ── MAP SECTION ── */
+.map-section { background:rgba(2,8,14,0.9); border:1px solid rgba(0,191,165,0.15); border-radius:20px; padding:14px; margin-bottom:14px; }
+.map-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.map-title { font-family:'Bangers',cursive; font-size:1rem; letter-spacing:2px; color:var(--teal); }
+.map-legend { display:flex; gap:10px; }
+.legend-item { display:flex; align-items:center; gap:4px; font-size:0.68rem; font-weight:900; color:var(--gray); }
+.legend-dot { width:8px; height:8px; border-radius:50%; }
+
+.map-svg-wrap { width:100%; position:relative; border-radius:12px; overflow:hidden; background:rgba(0,10,18,0.8); border:1px solid rgba(0,191,165,0.1); }
+.map-svg-wrap svg { width:100%; height:auto; display:block; }
+
+/* SVG map styles */
+.island-path { transition: fill 0.3s; }
+.route-bg { fill:none; stroke:rgba(0,191,165,0.12); stroke-width:2; stroke-dasharray:5,4; stroke-linecap:round; }
+.route-visited { fill:none; stroke:var(--green); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; transition:all 0.5s; }
+
+.map-marker { cursor:pointer; transition:all 0.3s; }
+.map-marker circle.ring { fill:none; transition:all 0.3s; }
+.map-marker circle.dot { transition:all 0.3s; }
+.map-marker text { font-family:'Orbitron',sans-serif; font-weight:900; pointer-events:none; transition:all 0.3s; }
+
+/* Marker states */
+.marker-unvisited circle.dot { fill:rgba(255,255,255,0.12); }
+.marker-unvisited circle.ring { stroke:rgba(255,255,255,0.15); stroke-width:1; }
+.marker-unvisited text { fill:rgba(255,255,255,0.4); }
+.marker-visited circle.dot { fill:var(--green2); }
+.marker-visited circle.ring { stroke:var(--green); stroke-width:1.5; }
+.marker-visited text { fill:#000; }
+.marker-current circle.dot { fill:var(--gold); animation:markerPulse 1.2s ease-in-out infinite alternate; }
+.marker-current circle.ring { stroke:var(--gold); stroke-width:2; opacity:0.6; animation:ringPulse 1.2s ease-in-out infinite alternate; }
+.marker-current text { fill:#000; }
+@keyframes markerPulse { from{r:7} to{r:9} }
+@keyframes ringPulse { from{r:11;opacity:0.6} to{r:14;opacity:0.1} }
+
+/* ── BOARD AREA ── */
+.board-area { background:rgba(2,8,14,0.9); border:1px solid rgba(0,230,118,0.1); border-radius:20px; padding:16px; }
+.board-title { font-family:'Bangers',cursive; font-size:0.95rem; letter-spacing:3px; color:var(--green); text-transform:uppercase; text-align:center; margin-bottom:12px; opacity:0.7; }
+.board-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+
+.sq { aspect-ratio:1; border-radius:12px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.03); display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; cursor:pointer; transition:all 0.25s; overflow:hidden; min-height:70px; }
+.sq:hover:not(.empty) { border-color:rgba(0,230,118,0.3); background:rgba(0,230,118,0.05); }
+.sq.start  { border-color:rgba(0,230,118,0.4); background:rgba(0,230,118,0.08); }
+.sq.goal   { border-color:rgba(255,215,0,0.5); background:rgba(255,215,0,0.08); animation:goalPulse 2s ease-in-out infinite alternate; }
+.sq.vocab  { border-color:rgba(0,229,255,0.25); background:rgba(0,229,255,0.05); }
+.sq.skip   { border-color:rgba(255,58,92,0.25); background:rgba(255,58,92,0.05); }
+.sq.warp   { border-color:rgba(168,85,247,0.3); background:rgba(168,85,247,0.06); }
+.sq.visited { opacity:0.55; }
+.sq.current { border-color:var(--green)!important; background:rgba(0,230,118,0.12)!important; box-shadow:0 0 16px rgba(0,230,118,0.25),inset 0 0 8px rgba(0,230,118,0.08); }
+.sq.empty  { background:transparent; border:none; cursor:default; }
+@keyframes goalPulse { from{box-shadow:0 0 8px rgba(255,215,0,0.2)} to{box-shadow:0 0 24px rgba(255,215,0,0.4)} }
+
+.sq-num { position:absolute; top:3px; left:5px; font-family:'Orbitron',sans-serif; font-size:0.55rem; font-weight:900; color:rgba(255,255,255,0.22); }
+.sq-emoji { font-size:1.4rem; margin-bottom:1px; line-height:1; }
+.sq-jp { font-size:0.6rem; font-weight:900; text-align:center; color:var(--green); display:block; margin-top:1px; line-height:1.2; }
+.sq-type-badge { position:absolute; bottom:2px; right:3px; font-size:0.5rem; font-weight:900; padding:1px 4px; border-radius:5px; letter-spacing:1px; text-transform:uppercase; }
+.sq.vocab .sq-type-badge { background:rgba(0,229,255,0.15); color:var(--cyan); }
+.sq.skip  .sq-type-badge { background:rgba(255,58,92,0.15); color:var(--red); }
+.sq.warp  .sq-type-badge { background:rgba(168,85,247,0.15); color:var(--purple); }
+
+.token { position:absolute; top:50%; left:50%; transform:translate(-50%,-70%); width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold2)); border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:0.8rem; z-index:10; box-shadow:0 4px 10px rgba(255,215,0,0.5); animation:tokenBob 1.5s ease-in-out infinite alternate; }
+@keyframes tokenBob { from{transform:translate(-50%,-70%)} to{transform:translate(-50%,-82%)} }
+.token.moving { animation:tokenJump 0.4s ease; }
+@keyframes tokenJump { 0%{transform:translate(-50%,-70%) scale(1)} 50%{transform:translate(-50%,-110%) scale(1.3)} 100%{transform:translate(-50%,-70%) scale(1)} }
+
+/* ── DICE PANEL ── */
+.dice-panel { margin-top:12px; padding:14px; background:rgba(0,230,118,0.04); border:1px solid rgba(0,230,118,0.08); border-radius:14px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.dice { width:50px; height:50px; border-radius:12px; background:linear-gradient(135deg,#1a2a1a,#0d1a0d); border:2px solid rgba(0,230,118,0.3); display:flex; align-items:center; justify-content:center; font-size:1.8rem; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 0 rgba(0,0,0,0.4); user-select:none; }
+.dice:hover:not(.rolling) { transform:translateY(-2px) rotate(5deg); box-shadow:0 6px 0 rgba(0,0,0,0.4); }
+.dice.rolling { animation:diceRoll 0.6s ease; }
+@keyframes diceRoll { 0%{transform:rotate(0deg) scale(1)} 25%{transform:rotate(90deg) scale(1.2)} 50%{transform:rotate(180deg) scale(1)} 75%{transform:rotate(270deg) scale(1.2)} 100%{transform:rotate(360deg) scale(1)} }
+.roll-btn { padding:10px 22px; background:linear-gradient(135deg,var(--green2),var(--emerald)); color:#000; font-family:'Bangers',cursive; font-size:1.1rem; letter-spacing:2px; border:none; border-radius:10px; cursor:pointer; transition:all 0.25s; box-shadow:0 4px 0 #004d40; }
+.roll-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 0 #004d40; }
+.roll-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.dice-result { font-family:'Orbitron',sans-serif; font-size:0.8rem; font-weight:900; color:var(--green); flex:1; min-width:100px; }
+.dice-result .move-num { font-size:1.3rem; color:var(--gold); }
+
+/* ── SIDEBAR ── */
+.sidebar { display:flex; flex-direction:column; gap:14px; }
+
+.loc-card { background:rgba(0,0,0,0.4); border:1px solid rgba(0,230,118,0.15); border-radius:18px; padding:18px; }
+.loc-card-inner { display:none; }
+.loc-card-inner.show { display:block; animation:cardPop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes cardPop { from{transform:scale(0.9);opacity:0} to{transform:scale(1);opacity:1} }
+.loc-emoji-big { font-size:3rem; display:block; text-align:center; margin-bottom:6px; }
+.loc-prefecture { font-size:0.65rem; font-weight:900; letter-spacing:2px; color:var(--emerald); text-transform:uppercase; text-align:center; margin-bottom:3px; }
+.loc-jp { font-size:1.8rem; font-weight:900; text-align:center; color:var(--green); display:block; margin-bottom:1px; }
+.loc-en { font-family:'Bangers',cursive; font-size:1.1rem; letter-spacing:2px; text-align:center; color:var(--white); display:block; margin-bottom:10px; }
+.loc-desc { font-size:0.82rem; line-height:1.6; color:var(--text); margin-bottom:12px; }
+.loc-vocab { background:rgba(0,230,118,0.06); border:1px solid rgba(0,230,118,0.14); border-radius:10px; padding:10px; margin-bottom:10px; }
+.loc-vocab-title { font-size:0.65rem; font-weight:900; letter-spacing:2px; color:var(--green); text-transform:uppercase; margin-bottom:7px; }
+.vocab-word { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+.vocab-word:last-child { border-bottom:none; }
+.vw-jp { font-size:1rem; font-weight:900; color:var(--green); min-width:56px; }
+.vw-rom { font-size:0.72rem; color:var(--teal); font-weight:900; }
+.vw-en { font-size:0.75rem; color:var(--text); margin-left:auto; text-align:right; }
+.loc-type-special { display:flex; align-items:center; gap:6px; padding:7px 10px; border-radius:9px; font-size:0.78rem; font-weight:900; margin-bottom:9px; }
+.loc-type-special.vocab-sq { background:rgba(0,229,255,0.1); color:var(--cyan); border:1px solid rgba(0,229,255,0.2); }
+.loc-type-special.skip-sq  { background:rgba(255,58,92,0.1); color:var(--red); border:1px solid rgba(255,58,92,0.2); }
+.loc-type-special.warp-sq  { background:rgba(168,85,247,0.1); color:var(--purple); border:1px solid rgba(168,85,247,0.2); }
+.loc-continue-btn { width:100%; padding:11px; background:linear-gradient(135deg,var(--green2),var(--emerald)); color:#000; font-family:'Bangers',cursive; font-size:1rem; letter-spacing:2px; border:none; border-radius:10px; cursor:pointer; transition:all 0.25s; box-shadow:0 3px 0 #004d40; }
+.loc-continue-btn:hover { transform:translateY(-2px); box-shadow:0 5px 0 #004d40; }
+.loc-placeholder { text-align:center; padding:18px 0; }
+.loc-placeholder-emoji { font-size:2.2rem; display:block; margin-bottom:6px; opacity:0.35; }
+.loc-placeholder-txt { font-size:0.82rem; color:var(--gray); line-height:1.5; }
+
+.progress-section { background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:12px; }
+.prog-label { font-size:0.7rem; font-weight:900; color:var(--gray); letter-spacing:1px; text-transform:uppercase; margin-bottom:7px; display:flex; justify-content:space-between; }
+.prog-bar { height:7px; background:rgba(255,255,255,0.08); border-radius:4px; overflow:hidden; }
+.prog-fill { height:100%; background:linear-gradient(90deg,var(--green2),var(--teal)); border-radius:4px; transition:width 0.6s ease; }
+.prog-steps { display:flex; align-items:center; gap:8px; margin-top:7px; font-size:0.78rem; color:var(--gray); }
+.prog-steps span { font-weight:900; color:var(--green); font-family:'Orbitron',sans-serif; }
+
+.stamp-book { background:rgba(0,0,0,0.4); border:1px solid rgba(255,215,0,0.1); border-radius:18px; padding:14px; }
+.stamp-book-title { font-family:'Bangers',cursive; font-size:0.9rem; letter-spacing:2px; color:var(--gold); margin-bottom:10px; }
+.stamp-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:5px; }
+.stamp-item { aspect-ratio:1; border-radius:8px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:1rem; transition:all 0.3s; opacity:0.22; position:relative; overflow:hidden; }
+.stamp-item.collected { opacity:1; background:rgba(0,230,118,0.08); border-color:rgba(0,230,118,0.25); }
+.stamp-item.collected::after { content:'✓'; position:absolute; bottom:1px; right:3px; font-size:0.5rem; font-weight:900; color:var(--green); }
+.stamp-tooltip { font-size:0.45rem; color:var(--gray); text-align:center; margin-top:1px; line-height:1.1; }
+
+/* ── QUIZ OVERLAY ── */
+.quiz-overlay { position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.92); backdrop-filter:blur(16px); display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeIn 0.3s; }
+.quiz-overlay.hidden { display:none; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.quiz-card { background:#040e08; border:1px solid rgba(0,230,118,0.3); border-radius:24px; padding:32px 28px; max-width:460px; width:100%; text-align:center; animation:cardPop 0.4s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 0 70px rgba(0,230,118,0.1); }
+.quiz-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; margin-bottom:10px; background:rgba(0,230,118,0.1); border:1px solid rgba(0,230,118,0.25); font-size:0.7rem; font-weight:900; color:var(--green); letter-spacing:2px; text-transform:uppercase; }
+.quiz-jp { font-size:3rem; font-weight:900; display:block; margin:8px 0 4px; background:linear-gradient(135deg,var(--green3),var(--teal)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.quiz-context { font-size:0.8rem; color:var(--gray); margin-bottom:6px; font-style:italic; }
+.quiz-q { font-family:'Bangers',cursive; font-size:1.3rem; letter-spacing:1px; color:var(--white); margin:6px 0 18px; }
+.quiz-opts { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:12px; }
+.quiz-opt { padding:12px 8px; border-radius:11px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); cursor:pointer; transition:all 0.25s; font-family:'Nunito',sans-serif; font-size:0.88rem; font-weight:800; color:var(--text); }
+.quiz-opt:hover { background:rgba(0,230,118,0.08); border-color:rgba(0,230,118,0.3); transform:scale(1.03); }
+.quiz-opt.correct { background:rgba(0,230,118,0.15)!important; border-color:var(--green)!important; color:var(--green); animation:correctPop 0.4s ease; }
+.quiz-opt.wrong   { background:rgba(255,58,92,0.12)!important; border-color:var(--red)!important; color:var(--red); animation:wrongShake 0.4s ease; }
+@keyframes correctPop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+@keyframes wrongShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.quiz-feedback { margin:8px 0; padding:10px; border-radius:9px; font-size:0.85rem; line-height:1.5; display:none; }
+.quiz-feedback.show { display:block; }
+.quiz-feedback.ok  { background:rgba(0,230,118,0.1); border:1px solid rgba(0,230,118,0.2); color:var(--green3); }
+.quiz-feedback.bad { background:rgba(255,58,92,0.1); border:1px solid rgba(255,58,92,0.2); color:#ff8a9a; }
+.quiz-next { width:100%; padding:12px; background:linear-gradient(135deg,var(--green2),var(--emerald)); color:#000; font-family:'Bangers',cursive; font-size:1.1rem; letter-spacing:2px; border:none; border-radius:11px; cursor:pointer; transition:all 0.25s; margin-top:8px; display:none; }
+.quiz-next.show { display:block; }
+.quiz-next:hover { transform:translateY(-2px); }
+
+/* ── WIN OVERLAY ── */
+.win-overlay { position:fixed; inset:0; z-index:300; background:rgba(0,0,0,0.97); display:flex; align-items:center; justify-content:center; padding:24px; }
+.win-overlay.hidden { display:none; }
+.win-card { background:linear-gradient(135deg,rgba(0,230,118,0.08),rgba(255,215,0,0.06)); border:1px solid rgba(0,230,118,0.3); border-radius:24px; padding:44px 36px; max-width:500px; width:100%; text-align:center; animation:cardPop 0.6s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 0 100px rgba(0,230,118,0.12); }
+.win-emoji { font-size:3.8rem; display:block; margin-bottom:10px; animation:winBounce 0.8s ease; }
+@keyframes winBounce { 0%,100%{transform:scale(1)} 30%{transform:scale(1.3)} 60%{transform:scale(0.95)} }
+.win-pre { font-size:0.72rem; font-weight:900; letter-spacing:4px; color:var(--green); text-transform:uppercase; margin-bottom:7px; }
+.win-title { font-family:'Bangers',cursive; font-size:2.6rem; letter-spacing:3px; background:linear-gradient(135deg,#fff,var(--green)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; }
+.win-sub { font-size:0.88rem; line-height:1.6; color:var(--text); margin-bottom:24px; }
+.win-stats { display:flex; gap:0; border:1px solid rgba(0,230,118,0.15); border-radius:14px; overflow:hidden; margin-bottom:24px; }
+.win-stat { flex:1; padding:14px 8px; text-align:center; border-right:1px solid rgba(0,230,118,0.1); }
+.win-stat:last-child { border-right:none; }
+.ws-num { font-family:'Orbitron',sans-serif; font-size:1.3rem; font-weight:900; color:var(--green); }
+.ws-lbl { font-size:0.68rem; color:var(--gray); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+.win-btn { width:100%; padding:14px; background:linear-gradient(135deg,var(--green2),var(--emerald)); color:#000; font-family:'Bangers',cursive; font-size:1.2rem; letter-spacing:2px; border:none; border-radius:12px; cursor:pointer; transition:all 0.25s; box-shadow:0 4px 0 #004d40; margin-bottom:9px; }
+.win-btn:hover { transform:translateY(-2px); box-shadow:0 6px 0 #004d40; }
+.win-btn-sec { width:100%; padding:12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:11px; color:var(--text); font-family:'Nunito',sans-serif; font-weight:900; font-size:0.9rem; cursor:pointer; transition:all 0.2s; }
+.win-btn-sec:hover { background:rgba(0,230,118,0.06); color:var(--green); }
+
+/* ── TOAST ── */
+.toast { position:fixed; bottom:24px; right:24px; z-index:500; padding:11px 18px; border-radius:12px; background:rgba(4,8,14,0.96); border:1px solid rgba(0,230,118,0.3); color:var(--text); font-size:0.85rem; font-weight:800; box-shadow:0 8px 24px rgba(0,0,0,0.5); animation:toastSlide 0.4s cubic-bezier(0.34,1.56,0.64,1); max-width:260px; }
+.toast.hidden { display:none; }
+@keyframes toastSlide { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+@media(max-width:600px){
+  .board-grid{gap:4px;} .sq{min-height:54px;} .sq-emoji{font-size:1.1rem;} .sq-jp{font-size:0.48rem;}
+  .win-card{padding:28px 18px;} .main-wrap{padding:10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="stars-bg" id="starsBg"></div>
+
+<div class="top-nav">
+  <a class="nav-back" href="home.html">← Home</a>
+  <div class="nav-title">🗾 日本一周すごろく</div>
+  <div class="nav-spacer"></div>
+  <div class="nav-stamps" id="navStamps">🏮 0 / 20</div>
+  <div class="nav-xp" id="navXp">⚡ +0 XP</div>
+</div>
+
+<div class="main-wrap">
+
+  <!-- LEFT COLUMN -->
+  <div>
+
+    <!-- ── JAPAN MAP ── -->
+    <div class="map-section">
+      <div class="map-header">
+        <div class="map-title">🗺 Japan Map · 日本地図</div>
+        <div class="map-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Current</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Visited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.2)"></div>Ahead</div>
+        </div>
+      </div>
+      <div class="map-svg-wrap">
+        <svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" id="japanMapSvg">
+
+          <!-- ── ISLAND OUTLINES ── -->
+
+          <!-- Hokkaido -->
+          <path class="island-path"
+            d="M318,90 L324,72 L340,60 L364,57 L390,63 L412,78 L416,96 L406,110 L384,120 L358,118 L334,108 L320,96 Z"
+            fill="rgba(0,137,123,0.18)" stroke="rgba(0,191,165,0.45)" stroke-width="1.5" stroke-linejoin="round"/>
+
+          <!-- Honshu -->
+          <path class="island-path"
+            d="M348,115 L354,134 L357,155 L356,178 L352,200 L348,220 L340,240 L332,252 L320,262 L304,266 L288,267 L272,272 L255,276 L238,280 L220,282 L204,282 L188,280 L175,283 L166,294 L160,310
+               L170,298 L184,290 L200,285 L218,282 L236,278 L254,272 L272,267 L290,262 L306,257 L320,252 L330,244 L338,233 L344,216 L349,198 L352,177 L352,155 L350,134 Z"
+            fill="rgba(0,137,123,0.18)" stroke="rgba(0,191,165,0.45)" stroke-width="1.5" stroke-linejoin="round"/>
+
+          <!-- Shikoku -->
+          <path class="island-path"
+            d="M210,287 L228,280 L252,280 L274,286 L284,296 L278,308 L256,313 L228,312 L212,303 Z"
+            fill="rgba(0,137,123,0.15)" stroke="rgba(0,191,165,0.38)" stroke-width="1.2" stroke-linejoin="round"/>
+
+          <!-- Kyushu -->
+          <path class="island-path"
+            d="M160,308 L174,288 L192,283 L206,289 L210,304 L202,322 L188,336 L170,340 L152,334 L140,320 L138,307 Z"
+            fill="rgba(0,137,123,0.18)" stroke="rgba(0,191,165,0.45)" stroke-width="1.5" stroke-linejoin="round"/>
+
+          <!-- Awaji Island (small) -->
+          <ellipse cx="246" cy="288" rx="6" ry="10"
+            fill="rgba(0,137,123,0.12)" stroke="rgba(0,191,165,0.3)" stroke-width="1" transform="rotate(-20,246,288)"/>
+
+          <!-- Tsushima (tiny, near Kyushu) -->
+          <ellipse cx="126" cy="272" rx="4" ry="7"
+            fill="rgba(0,137,123,0.1)" stroke="rgba(0,191,165,0.25)" stroke-width="1"/>
+
+          <!-- ── OKINAWA INSET BOX ── -->
+          <rect x="4" y="268" width="96" height="68" rx="7"
+            fill="rgba(0,10,18,0.8)" stroke="rgba(0,191,165,0.3)" stroke-width="1.2"/>
+          <text x="52" y="280" text-anchor="middle" font-size="7" fill="rgba(0,191,165,0.7)" font-family="Nunito,sans-serif" font-weight="900" letter-spacing="1">沖縄 OKINAWA</text>
+          <!-- Small Okinawa island shape -->
+          <ellipse cx="52" cy="304" rx="22" ry="8"
+            fill="rgba(0,137,123,0.18)" stroke="rgba(0,191,165,0.4)" stroke-width="1.2" transform="rotate(-12,52,304)"/>
+          <!-- Smaller islands chain -->
+          <ellipse cx="32" cy="308" rx="6" ry="3" fill="rgba(0,137,123,0.15)" stroke="rgba(0,191,165,0.3)" stroke-width="1"/>
+          <ellipse cx="74" cy="300" rx="5" ry="2.5" fill="rgba(0,137,123,0.15)" stroke="rgba(0,191,165,0.3)" stroke-width="1"/>
+          <!-- Dashed arrow from Kyushu to inset -->
+          <line x1="140" y1="328" x2="100" y2="318" stroke="rgba(0,191,165,0.3)" stroke-width="1.5" stroke-dasharray="5,4"/>
+          <text x="52" y="328" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,0.35)" font-family="Nunito,sans-serif">GOAL 🎌</text>
+
+          <!-- ── ROUTE LINE (background, all segments dim) ── -->
+          <polyline id="routeBg" class="route-bg" points=""/>
+
+          <!-- ── ROUTE LINE (visited, bright) ── -->
+          <polyline id="routeVisited" class="route-visited" points=""/>
+
+          <!-- ── LOCATION MARKERS ── (rendered by JS) -->
+          <g id="markersGroup"></g>
+
+          <!-- ── COMPASS ROSE ── -->
+          <g transform="translate(464,22)">
+            <circle cx="0" cy="0" r="14" fill="rgba(0,0,0,0.5)" stroke="rgba(0,191,165,0.2)" stroke-width="1"/>
+            <text x="0" y="-6" text-anchor="middle" font-size="7" fill="rgba(0,191,165,0.7)" font-family="Bangers,cursive">N</text>
+            <text x="0" y="11" text-anchor="middle" font-size="6" fill="rgba(255,255,255,0.3)" font-family="Bangers,cursive">S</text>
+            <text x="-8" y="3"  text-anchor="middle" font-size="6" fill="rgba(255,255,255,0.3)" font-family="Bangers,cursive">W</text>
+            <text x="9"  y="3"  text-anchor="middle" font-size="6" fill="rgba(255,255,255,0.3)" font-family="Bangers,cursive">E</text>
+            <line x1="0" y1="-10" x2="0" y2="-3" stroke="rgba(0,191,165,0.6)" stroke-width="1.5"/>
+            <line x1="0" y1="3" x2="0" y2="9" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          </g>
+
+          <!-- Scale label -->
+          <text x="110" y="336" font-size="6.5" fill="rgba(255,255,255,0.25)" font-family="Nunito,sans-serif">北海道 → 九州 → 沖縄</text>
+
+        </svg>
+      </div>
+    </div>
+
+    <!-- ── BOARD ── -->
+    <div class="board-area">
+      <div class="board-title">📋 Game Board · すごろくボード</div>
+      <div class="board-grid" id="boardGrid"></div>
+      <div class="dice-panel">
+        <div class="dice" id="dice" onclick="rollDice()">🎲</div>
+        <button class="roll-btn" id="rollBtn" onclick="rollDice()">🎲 ROLL!</button>
+        <div class="dice-result" id="diceResult">
+          <div style="font-size:0.78rem;color:var(--gray)">Roll to start your journey!</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /left column -->
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar">
+    <div class="loc-card" id="locCard">
+      <div class="loc-placeholder">
+        <span class="loc-placeholder-emoji">🗾</span>
+        <div class="loc-placeholder-txt">Roll the dice to begin<br>your journey across Japan!</div>
+      </div>
+      <div class="loc-card-inner" id="locCardInner"></div>
+    </div>
+    <div class="progress-section">
+      <div class="prog-label"><span>Journey Progress</span><span id="progPct">0%</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+      <div class="prog-steps">Square <span id="progPos">0</span> of <span id="progTotal">20</span></div>
+    </div>
+    <div class="stamp-book">
+      <div class="stamp-book-title">🏮 Stamp Rally · スタンプラリー</div>
+      <div class="stamp-grid" id="stampGrid"></div>
+    </div>
+  </div>
+
+</div><!-- /main-wrap -->
+
+<!-- QUIZ -->
+<div class="quiz-overlay hidden" id="quizOverlay">
+  <div class="quiz-card" id="quizCard"></div>
+</div>
+
+<!-- WIN -->
+<div class="win-overlay hidden" id="winOverlay">
+  <div class="win-card">
+    <span class="win-emoji">🎌</span>
+    <div class="win-pre">日本一周 完了！</div>
+    <div class="win-title">JAPAN TOUR COMPLETE!</div>
+    <p class="win-sub">Hokkaido to Okinawa — you traveled all of Japan, learned vocabulary at every stop, and collected every stamp! <em style="color:var(--green)">日本へようこそ！</em></p>
+    <div class="win-stats">
+      <div class="win-stat"><div class="ws-num" id="winXp">+500</div><div class="ws-lbl">XP</div></div>
+      <div class="win-stat"><div class="ws-num" id="winStamps">20</div><div class="ws-lbl">Stamps</div></div>
+      <div class="win-stat"><div class="ws-num">40+</div><div class="ws-lbl">Words</div></div>
+    </div>
+    <button class="win-btn" onclick="restartGame()">🎲 Play Again!</button>
+    <button class="win-btn-sec" onclick="window.location.href='home.html'">🏠 Back to Home</button>
+  </div>
+</div>
+
+<div class="toast hidden" id="toast"></div>
+
+<script>
+// ── MAP COORDINATES (mx, my in SVG viewBox 0 0 500 340) ──
+// Each location has mx,my = position of marker on the Japan SVG map
+const LOCATIONS = [
+  {
+    id:0, jp:'スタート', en:'START!', emoji:'🚀', prefecture:'', type:'start',
+    desc:'Your journey begins! Roll the dice and travel across Japan from Hokkaido to Okinawa!',
+    vocab:[], mx:372, my:67,
+  },
+  {
+    id:1, jp:'札幌', en:'Sapporo', emoji:'❄️', prefecture:'北海道 Hokkaido', type:'normal',
+    desc:'Capital of Hokkaido, famous for the Snow Festival (雪まつり) and rich miso ramen. In winter, the city becomes a wonderland of giant ice sculptures.',
+    vocab:[{jp:'雪',rom:'yuki',en:'Snow'},{jp:'ラーメン',rom:'rāmen',en:'Ramen noodles'}],
+    mx:360, my:84,
+  },
+  {
+    id:2, jp:'函館', en:'Hakodate', emoji:'🌃', prefecture:'北海道 Hokkaido', type:'normal',
+    desc:'One of Japan\'s most romantic port cities. The night view from Mt. Hakodate is ranked among the three most beautiful in the world.',
+    vocab:[{jp:'夜景',rom:'yakei',en:'Night view'},{jp:'港',rom:'minato',en:'Harbor / Port'}],
+    mx:344, my:116,
+  },
+  {
+    id:3, jp:'青森', en:'Aomori', emoji:'🍎', prefecture:'青森県 Aomori Pref.', type:'vocab',
+    desc:'Famous for the spectacular Nebuta Festival — enormous glowing lantern floats paraded through the streets. Japan\'s top apple-producing region!',
+    vocab:[{jp:'りんご',rom:'ringo',en:'Apple'},{jp:'祭り',rom:'matsuri',en:'Festival'}],
+    mx:350, my:130,
+  },
+  {
+    id:4, jp:'仙台', en:'Sendai', emoji:'🎋', prefecture:'宮城県 Miyagi Pref.', type:'normal',
+    desc:'City of Trees, famous for the Tanabata Festival — the most beautiful bamboo and paper decoration festival in Japan, held every August.',
+    vocab:[{jp:'竹',rom:'take',en:'Bamboo'},{jp:'星',rom:'hoshi',en:'Star'}],
+    mx:352, my:188,
+  },
+  {
+    id:5, jp:'日光', en:'Nikkō', emoji:'⛩️', prefecture:'栃木県 Tochigi Pref.', type:'warp',
+    desc:'WARP! ⚡ The Tōshō-gū shrine complex is breathtaking. They say "Don\'t say splendid until you\'ve seen Nikkō!" Moving forward 3 squares!',
+    vocab:[{jp:'神社',rom:'jinja',en:'Shinto shrine'},{jp:'滝',rom:'taki',en:'Waterfall'}],
+    warpTo:3, mx:334, my:225,
+  },
+  {
+    id:6, jp:'東京', en:'Tokyo', emoji:'🗼', prefecture:'東京都 Tokyo', type:'normal',
+    desc:'Japan\'s electric capital — the world\'s largest metropolitan area! Neon lights of Shinjuku, ancient temples of Asakusa, futuristic Odaiba. There\'s nowhere like it.',
+    vocab:[{jp:'電車',rom:'densha',en:'Train / Subway'},{jp:'渋谷',rom:'Shibuya',en:'Famous crossing district'}],
+    mx:340, my:248,
+  },
+  {
+    id:7, jp:'浅草', en:'Asakusa', emoji:'🏮', prefecture:'東京都 Tokyo', type:'vocab',
+    desc:'Home of Sensō-ji, Tokyo\'s oldest temple. The Nakamise shopping street leads to the iconic Thunder Gate (雷門 Kaminarimon). Old Edo atmosphere in modern Tokyo.',
+    vocab:[{jp:'お寺',rom:'o-tera',en:'Buddhist temple'},{jp:'雷門',rom:'Kaminarimon',en:'Thunder Gate'}],
+    mx:325, my:243,
+  },
+  {
+    id:8, jp:'鎌倉', en:'Kamakura', emoji:'🙏', prefecture:'神奈川県 Kanagawa Pref.', type:'normal',
+    desc:'Ancient samurai capital overlooking the sea. The Great Buddha (大仏 Daibutsu) stands 13.35m tall — and you can walk inside the hollow statue!',
+    vocab:[{jp:'大仏',rom:'Daibutsu',en:'Great Buddha statue'},{jp:'侍',rom:'samurai',en:'Samurai warrior'}],
+    mx:334, my:260,
+  },
+  {
+    id:9, jp:'富士山', en:'Mt. Fuji', emoji:'🗻', prefecture:'静岡・山梨県', type:'warp',
+    desc:'WARP! ⛰️ Japan\'s iconic volcano and highest peak at 3,776m. Visible on clear days from Tokyo, it has inspired Japanese art and poetry for centuries. +2 forward!',
+    vocab:[{jp:'山',rom:'yama',en:'Mountain'},{jp:'火山',rom:'kazan',en:'Volcano'}],
+    warpTo:2, mx:315, my:258,
+  },
+  {
+    id:10, jp:'箱根', en:'Hakone', emoji:'♨️', prefecture:'神奈川県 Kanagawa Pref.', type:'normal',
+    desc:'The ultimate hot spring resort with views of Mt. Fuji. Onsen culture (温泉) is the heart of Japanese relaxation — soak your worries away in natural volcanic waters.',
+    vocab:[{jp:'温泉',rom:'onsen',en:'Hot spring bath'},{jp:'旅館',rom:'ryokan',en:'Traditional Japanese inn'}],
+    mx:322, my:263,
+  },
+  {
+    id:11, jp:'名古屋', en:'Nagoya', emoji:'🏯', prefecture:'愛知県 Aichi Pref.', type:'skip',
+    desc:'STOP! 🚦 You got lost in the vast underground shopping mall! Skip 1 turn. Nagoya Castle\'s golden shachihoko fish statues are worth the wait!',
+    vocab:[{jp:'城',rom:'shiro',en:'Castle'},{jp:'地図',rom:'chizu',en:'Map'}],
+    mx:283, my:262,
+  },
+  {
+    id:12, jp:'京都', en:'Kyōto', emoji:'⛩', prefecture:'京都府 Kyoto Pref.', type:'normal',
+    desc:'Japan\'s ancient capital for over 1,000 years. 10,000 torii gates at Fushimi Inari, the Golden Pavilion of Kinkaku-ji, and 1,600 Buddhist temples.',
+    vocab:[{jp:'鳥居',rom:'torii',en:'Shrine gate'},{jp:'着物',rom:'kimono',en:'Traditional Japanese garment'}],
+    mx:262, my:265,
+  },
+  {
+    id:13, jp:'奈良', en:'Nara', emoji:'🦌', prefecture:'奈良県 Nara Pref.', type:'vocab',
+    desc:'Japan\'s first permanent capital. Over 1,200 friendly deer (鹿) roam Nara Park — they bow their heads asking for deer crackers (鹿せんべい shika-senbei)!',
+    vocab:[{jp:'鹿',rom:'shika',en:'Deer'},{jp:'公園',rom:'kōen',en:'Park'}],
+    mx:273, my:275,
+  },
+  {
+    id:14, jp:'大阪', en:'Ōsaka', emoji:'🎡', prefecture:'大阪府 Osaka Pref.', type:'normal',
+    desc:'Japan\'s kitchen and comedy capital! Dotonbori\'s neon lights reflect on the canal. Locals say "kuidaore" (食い倒れ) — eat until you drop! Try takoyaki and okonomiyaki.',
+    vocab:[{jp:'たこやき',rom:'takoyaki',en:'Octopus balls'},{jp:'おいしい',rom:'oishii',en:'Delicious'}],
+    mx:254, my:271,
+  },
+  {
+    id:15, jp:'広島', en:'Hiroshima', emoji:'🕊️', prefecture:'広島県 Hiroshima Pref.', type:'normal',
+    desc:'A city reborn from tragedy into a global symbol of peace and hope. The Peace Memorial Park and A-Bomb Dome (原爆ドーム Genbaku Dōmu) are powerful reminders.',
+    vocab:[{jp:'平和',rom:'heiwa',en:'Peace'},{jp:'希望',rom:'kibō',en:'Hope'}],
+    mx:206, my:278,
+  },
+  {
+    id:16, jp:'宮島', en:'Miyajima', emoji:'🌊', prefecture:'広島県 Hiroshima Pref.', type:'warp',
+    desc:'WARP! 🌊 The "floating" Itsukushima Shrine torii gate rises from the sea at high tide — one of Japan\'s three most scenic views. Moving forward 2 squares!',
+    vocab:[{jp:'島',rom:'shima',en:'Island'},{jp:'海',rom:'umi',en:'Sea / Ocean'}],
+    warpTo:2, mx:197, my:287,
+  },
+  {
+    id:17, jp:'福岡', en:'Fukuoka', emoji:'🍜', prefecture:'福岡県 Fukuoka Pref.', type:'vocab',
+    desc:'Gateway to Kyushu and birthplace of Hakata ramen — the rich tonkotsu (pork bone) broth style loved worldwide. Riverside yatai (屋台) stalls open every evening.',
+    vocab:[{jp:'屋台',rom:'yatai',en:'Street food stall'},{jp:'豚骨',rom:'tonkotsu',en:'Pork bone (ramen style)'}],
+    mx:172, my:297,
+  },
+  {
+    id:18, jp:'長崎', en:'Nagasaki', emoji:'🌉', prefecture:'長崎県 Nagasaki Pref.', type:'skip',
+    desc:'STOP! 🌉 You\'re enchanted by the night view from Glover Garden and miss your ship! Skip 1 turn. Nagasaki beautifully blends Eastern and Western culture.',
+    vocab:[{jp:'橋',rom:'hashi',en:'Bridge'},{jp:'夕日',rom:'yūhi',en:'Sunset'}],
+    mx:140, my:321,
+  },
+  {
+    id:19, jp:'熊本', en:'Kumamoto', emoji:'🐻', prefecture:'熊本県 Kumamoto Pref.', type:'normal',
+    desc:'Home of Kumamon (くまモン) — Japan\'s most beloved mascot character! Also famous for Kumamoto Castle, one of Japan\'s largest and most impressive fortresses.',
+    vocab:[{jp:'くまモン',rom:'Kumamon',en:'Kumamoto\'s bear mascot'},{jp:'熊',rom:'kuma',en:'Bear'}],
+    mx:180, my:313,
+  },
+  {
+    id:20, jp:'沖縄', en:'Okinawa — GOAL!', emoji:'🌺', prefecture:'沖縄県 Okinawa Pref.', type:'goal',
+    desc:'🎉 GOAL! Japan\'s subtropical paradise — crystal-clear emerald water, coral reefs, and unique Ryukyuan culture. The southernmost prefecture, with its own language, music, and cuisine.',
+    vocab:[{jp:'海',rom:'umi',en:'Ocean / Sea'},{jp:'ありがとう',rom:'arigatō',en:'Thank you — you made it!'}],
+    mx:52, my:304,  // inside the Okinawa inset box
+  },
+];
+
+// Quiz data for vocab squares
+const VOCAB_QUIZZES = {
+  3:  {jp:'りんご',  ctx:'You\'re in Aomori — Japan\'s apple capital!',  q:'りんご means:', opts:['Orange','Apple','Peach','Grape'], ans:'Apple'},
+  7:  {jp:'お寺',   ctx:'You\'re at Sensō-ji in Asakusa, Tokyo!',       q:'お寺 (o-tera) means:', opts:['Shinto shrine','Buddhist temple','Castle','Park'], ans:'Buddhist temple'},
+  13: {jp:'鹿',     ctx:'The friendly deer of Nara bow their heads!',   q:'鹿 (shika) means:', opts:['Dog','Cat','Deer','Bird'], ans:'Deer'},
+  17: {jp:'屋台',   ctx:'Fukuoka\'s riverside stalls are world-famous!', q:'屋台 (yatai) means:', opts:['Restaurant','Food stall','Market hall','Train station'], ans:'Food stall'},
+};
+
+// ── GAME STATE ──
+let pos = 0, earnedXP = 0, stamps = new Set(), isAnimating = false, skipTurn = false;
+const TOTAL = 20;
+
+// ── INIT ──
+buildStars();
+buildBoard();
+buildStampGrid();
+buildMapMarkers();
+updateUI();
+updateMap();
+
+// ── STARS ──
+function buildStars(){
+  const bg=document.getElementById('starsBg');
+  for(let i=0;i<55;i++){
+    const el=document.createElement('div'); el.className='star-dot';
+    const sz=Math.random()*2+0.5;
+    el.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*4}s`;
+    bg.appendChild(el);
+  }
+}
+
+// ── BUILD MAP MARKERS ──
+function buildMapMarkers(){
+  const g = document.getElementById('markersGroup');
+  g.innerHTML = '';
+
+  // Build all route points string for background
+  const allPts = LOCATIONS.map(l=>`${l.mx},${l.my}`).join(' ');
+  document.getElementById('routeBg').setAttribute('points', allPts);
+
+  LOCATIONS.forEach((loc, i) => {
+    const grp = document.createElementNS('http://www.w3.org/2000/svg','g');
+    grp.setAttribute('class','map-marker marker-unvisited');
+    grp.setAttribute('id',`mmarker-${i}`);
+    grp.setAttribute('transform',`translate(${loc.mx},${loc.my})`);
+
+    // Outer ring (pulse for current)
+    const ring = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    ring.setAttribute('class','ring');
+    ring.setAttribute('cx','0'); ring.setAttribute('cy','0'); ring.setAttribute('r','11');
+    ring.setAttribute('fill','none'); ring.setAttribute('stroke','transparent'); ring.setAttribute('stroke-width','1.5');
+
+    // Main dot
+    const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    dot.setAttribute('class','dot');
+    dot.setAttribute('cx','0'); dot.setAttribute('cy','0'); dot.setAttribute('r','7');
+
+    // Number label
+    const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x','0'); txt.setAttribute('y','2.5');
+    txt.setAttribute('text-anchor','middle');
+    txt.setAttribute('font-size', i === 0 ? '6' : '6.5');
+    txt.setAttribute('font-family','Orbitron,sans-serif');
+    txt.setAttribute('font-weight','900');
+    txt.textContent = i === 0 ? 'GO' : i === 20 ? '🏁' : String(i);
+
+    // Japanese name label below marker
+    const nameTxt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    nameTxt.setAttribute('x','0');
+    nameTxt.setAttribute('y', i === 20 ? '24' : '22');
+    nameTxt.setAttribute('text-anchor','middle');
+    nameTxt.setAttribute('font-size','6.5');
+    nameTxt.setAttribute('font-family','Nunito,sans-serif');
+    nameTxt.setAttribute('font-weight','900');
+    nameTxt.setAttribute('fill','rgba(255,255,255,0.55)');
+    nameTxt.setAttribute('class','map-label');
+    nameTxt.setAttribute('id',`mlabel-${i}`);
+
+    // Show label for key cities, abbreviated
+    const shortNames = {
+      0:'スタート', 1:'札幌', 2:'函館', 3:'青森', 4:'仙台',
+      5:'日光', 6:'東京', 7:'浅草', 8:'鎌倉', 9:'富士山',
+      10:'箱根', 11:'名古屋', 12:'京都', 13:'奈良', 14:'大阪',
+      15:'広島', 16:'宮島', 17:'福岡', 18:'長崎', 19:'熊本', 20:'沖縄'
+    };
+    nameTxt.textContent = shortNames[i] || '';
+
+    // Tooltip on hover
+    const title = document.createElementNS('http://www.w3.org/2000/svg','title');
+    title.textContent = `${loc.jp} ${loc.en} (Square ${i})`;
+
+    grp.appendChild(title);
+    grp.appendChild(ring);
+    grp.appendChild(dot);
+    grp.appendChild(txt);
+    grp.appendChild(nameTxt);
+
+    // Click to show info
+    grp.addEventListener('click', () => {
+      if(i <= pos) showLocCard(i);
+      else showToast(`${loc.emoji} ${loc.jp} — ${loc.en} (Square ${i})`, 2000);
+    });
+
+    g.appendChild(grp);
+  });
+}
+
+// ── UPDATE MAP ──
+function updateMap(){
+  // Update route visited line
+  const visitedPts = LOCATIONS.slice(0, pos + 1).map(l=>`${l.mx},${l.my}`).join(' ');
+  document.getElementById('routeVisited').setAttribute('points', visitedPts || `${LOCATIONS[0].mx},${LOCATIONS[0].my}`);
+
+  // Update each marker state
+  LOCATIONS.forEach((loc, i) => {
+    const grp = document.getElementById(`mmarker-${i}`);
+    const lbl = document.getElementById(`mlabel-${i}`);
+    if (!grp) return;
+
+    grp.classList.remove('marker-unvisited','marker-visited','marker-current');
+    const dot = grp.querySelector('.dot');
+    const ring = grp.querySelector('.ring');
+    const txt = grp.querySelector('text');
+
+    if (i === pos) {
+      grp.classList.add('marker-current');
+      dot.setAttribute('r','8');
+      ring.setAttribute('stroke', 'rgba(255,215,0,0.6)');
+      ring.setAttribute('r','13');
+      if(lbl) lbl.setAttribute('fill','rgba(255,215,0,0.9)');
+    } else if (stamps.has(i) || i < pos) {
+      grp.classList.add('marker-visited');
+      dot.setAttribute('r','7');
+      ring.setAttribute('stroke', 'rgba(0,230,118,0.5)');
+      ring.setAttribute('r','10');
+      if(lbl) lbl.setAttribute('fill','rgba(0,230,118,0.7)');
+    } else {
+      grp.classList.add('marker-unvisited');
+      dot.setAttribute('r','6');
+      ring.setAttribute('stroke','transparent');
+      ring.setAttribute('r','10');
+      if(lbl) lbl.setAttribute('fill','rgba(255,255,255,0.35)');
+    }
+  });
+
+  // Scroll map marker into view (mobile)
+  const current = document.getElementById(`mmarker-${pos}`);
+  if(current) current.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+// ── BOARD ──
+function buildBoard(){
+  const grid=document.getElementById('boardGrid');
+  grid.innerHTML='';
+
+  // Snake layout: 5 cols × 5 rows
+  const gridLayout=[
+    [0,  1,  2,  3,  4 ],
+    [9,  8,  7,  6,  5 ],
+    [10, 11, 12, 13, 14],
+    [19, 18, 17, 16, 15],
+    [20, -1, -1, -1, -1],
+  ];
+
+  for(let row=0;row<5;row++){
+    for(let col=0;col<5;col++){
+      const idx=gridLayout[row][col];
+      const cell=document.createElement('div');
+      if(idx===-1){ cell.className='sq empty'; grid.appendChild(cell); continue; }
+
+      const loc=LOCATIONS[idx];
+      cell.className=`sq ${loc.type}`;
+      cell.id=`sq-${idx}`;
+      cell.onclick=()=>showLocInfo(idx);
+
+      const numEl=document.createElement('div'); numEl.className='sq-num';
+      numEl.textContent=idx===0?'GO':idx===20?'🎌':idx;
+
+      const emojiEl=document.createElement('div'); emojiEl.className='sq-emoji';
+      emojiEl.textContent=loc.emoji;
+
+      const jpEl=document.createElement('span'); jpEl.className='sq-jp';
+      jpEl.textContent=loc.jp;
+
+      cell.appendChild(numEl); cell.appendChild(emojiEl); cell.appendChild(jpEl);
+
+      if(loc.type==='vocab'){ const b=document.createElement('div'); b.className='sq-type-badge'; b.textContent='?'; cell.appendChild(b); }
+      else if(loc.type==='skip'){ const b=document.createElement('div'); b.className='sq-type-badge'; b.textContent='STOP'; cell.appendChild(b); }
+      else if(loc.type==='warp'){ const b=document.createElement('div'); b.className='sq-type-badge'; b.textContent='⚡'; cell.appendChild(b); }
+
+      grid.appendChild(cell);
+    }
+  }
+  placeToken(0);
+}
+
+function buildStampGrid(){
+  const sg=document.getElementById('stampGrid'); sg.innerHTML='';
+  LOCATIONS.filter(l=>l.type!=='start').forEach(loc=>{
+    const el=document.createElement('div'); el.className='stamp-item';
+    el.id=`stamp-${loc.id}`; el.title=`${loc.jp} ${loc.en}`;
+    el.innerHTML=`<div>${loc.emoji}</div><div class="stamp-tooltip">${loc.jp}</div>`;
+    sg.appendChild(el);
+  });
+}
+
+// ── TOKEN ──
+function placeToken(sqIdx){
+  document.querySelectorAll('.token').forEach(t=>t.remove());
+  const cell=document.getElementById(`sq-${sqIdx}`); if(!cell) return;
+  const token=document.createElement('div'); token.className='token'; token.id='playerToken'; token.textContent='⚡';
+  cell.appendChild(token);
+}
+
+function animateToken(from, to, callback){
+  let cur=from;
+  function step(){
+    if(cur>=to){ placeToken(to); if(callback) setTimeout(callback,200); return; }
+    cur++;
+    placeToken(cur);
+    const t=document.getElementById('playerToken'); if(t) t.classList.add('moving');
+    setTimeout(step,280);
+  }
+  setTimeout(step,80);
+}
+
+// ── ROLL ──
+function rollDice(){
+  if(isAnimating) return;
+  if(pos>=TOTAL) return;
+  const diceEl=document.getElementById('dice');
+  const resultEl=document.getElementById('diceResult');
+
+  if(skipTurn){
+    skipTurn=false;
+    showToast('🚦 Turn restored! Roll again.', 2200);
+    resultEl.innerHTML=`<div style="color:var(--orange)">Skipped turn! Your turn is back.</div>`;
+    return;
+  }
+
+  isAnimating=true;
+  document.getElementById('rollBtn').disabled=true;
+  diceEl.classList.add('rolling');
+  const faces=['⚀','⚁','⚂','⚃','⚄','⚅'];
+  let n=0;
+  const iv=setInterval(()=>{
+    diceEl.textContent=faces[Math.floor(Math.random()*6)];
+    if(++n>10){
+      clearInterval(iv);
+      const roll=Math.floor(Math.random()*6)+1;
+      diceEl.textContent=faces[roll-1];
+      diceEl.classList.remove('rolling');
+      resultEl.innerHTML=`<div>Rolled: <span class="move-num">${roll}</span></div>`;
+      doMove(roll);
+    }
+  },80);
+}
+
+function doMove(roll){
+  const oldPos=pos;
+  const newPos=Math.min(pos+roll,TOTAL);
+
+  animateToken(oldPos, newPos, ()=>{
+    pos=newPos;
+    updateUI();
+    updateMap();
+    const loc=LOCATIONS[pos];
+
+    if(!stamps.has(pos)&&pos>0){ stamps.add(pos); collectStamp(pos); }
+    showLocCard(pos);
+
+    if(loc.type==='skip'){
+      skipTurn=true;
+      showToast(`⛔ ${loc.jp} — Skip next turn!`, 3000);
+      finishMove();
+    } else if(loc.type==='warp'){
+      showToast(`⚡ WARP! Moving forward ${loc.warpTo} more!`, 2000);
+      setTimeout(()=>{
+        const wp=Math.min(pos+loc.warpTo,TOTAL);
+        animateToken(pos,wp,()=>{
+          pos=wp; updateUI(); updateMap();
+          if(!stamps.has(pos)){ stamps.add(pos); collectStamp(pos); }
+          showLocCard(pos);
+          pos>=TOTAL ? setTimeout(showWin,1200) : finishMove();
+        });
+      },1500);
+    } else if(loc.type==='vocab'){
+      const quiz=VOCAB_QUIZZES[pos];
+      if(quiz){ setTimeout(()=>showVocabQuiz(quiz),800); }
+      else finishMove();
+    } else {
+      pos>=TOTAL ? setTimeout(showWin,1200) : finishMove();
+    }
+  });
+}
+
+function finishMove(){
+  isAnimating=false;
+  document.getElementById('rollBtn').disabled=false;
+}
+
+// ── LOC CARD ──
+function showLocCard(idx){
+  const loc=LOCATIONS[idx];
+  const inner=document.getElementById('locCardInner');
+  document.querySelector('.loc-placeholder').style.display='none';
+  inner.classList.remove('show');
+
+  let specialHtml='';
+  if(loc.type==='vocab') specialHtml=`<div class="loc-type-special vocab-sq">🎯 Vocabulary Challenge!</div>`;
+  if(loc.type==='skip')  specialHtml=`<div class="loc-type-special skip-sq">⛔ Skip Square! Next turn skipped.</div>`;
+  if(loc.type==='warp')  specialHtml=`<div class="loc-type-special warp-sq">⚡ Warp! +${loc.warpTo} extra squares!</div>`;
+
+  const vocabHtml=loc.vocab.length?`
+    <div class="loc-vocab">
+      <div class="loc-vocab-title">📖 Learn at ${loc.jp}</div>
+      ${loc.vocab.map(v=>`<div class="vocab-word"><span class="vw-jp">${v.jp}</span><span class="vw-rom">${v.rom}</span><span class="vw-en">${v.en}</span></div>`).join('')}
+    </div>`:'';
+
+  inner.innerHTML=`
+    <span class="loc-emoji-big">${loc.emoji}</span>
+    <div class="loc-prefecture">${loc.prefecture}</div>
+    <span class="loc-jp">${loc.jp}</span>
+    <span class="loc-en">${loc.en}</span>
+    <p class="loc-desc">${loc.desc}</p>
+    ${specialHtml}${vocabHtml}
+    ${loc.type!=='goal'?`<button class="loc-continue-btn" onclick="">✓ Got it!</button>`:''}
+  `;
+  requestAnimationFrame(()=>inner.classList.add('show'));
+  if(loc.type!=='start'){ earnedXP+=10; document.getElementById('navXp').textContent=`⚡ +${earnedXP} XP`; }
+}
+
+function showLocInfo(idx){
+  const loc=LOCATIONS[idx];
+  if(idx===pos){ showLocCard(idx); return; }
+  showToast(`${loc.emoji} ${loc.jp} — ${loc.en} (Square ${idx})`, 2000);
+}
+
+// ── STAMP ──
+function collectStamp(idx){
+  const el=document.getElementById(`stamp-${idx}`);
+  if(el) el.classList.add('collected');
+  document.getElementById('navStamps').textContent=`🏮 ${stamps.size} / 20`;
+  earnedXP+=5; document.getElementById('navXp').textContent=`⚡ +${earnedXP} XP`;
+}
+
+// ── VOCAB QUIZ ──
+function showVocabQuiz(quiz){
+  const opts=shuffle([...quiz.opts]);
+  document.getElementById('quizCard').innerHTML=`
+    <div class="quiz-badge">🎯 VOCAB CHALLENGE</div>
+    <p class="quiz-context">${quiz.ctx}</p>
+    <span class="quiz-jp">${quiz.jp}</span>
+    <div class="quiz-q">${quiz.q}</div>
+    <div class="quiz-opts">${opts.map(o=>`<button class="quiz-opt" onclick="answerVocab(this,'${quiz.ans}')">${o}</button>`).join('')}</div>
+    <div class="quiz-feedback" id="quizFb"></div>
+    <button class="quiz-next" id="quizNext" onclick="closeQuiz()">Continue →</button>
+  `;
+  document.getElementById('quizOverlay').classList.remove('hidden');
+}
+
+function answerVocab(btn,correct){
+  const isOk=btn.textContent.trim()===correct;
+  document.querySelectorAll('.quiz-opt').forEach(b=>{
+    if(b.textContent.trim()===correct) b.classList.add('correct');
+    else if(b===btn&&!isOk) b.classList.add('wrong');
+    b.disabled=true;
+  });
+  const fb=document.getElementById('quizFb');
+  fb.className='quiz-feedback show '+(isOk?'ok':'bad');
+  if(isOk){ fb.innerHTML=`✅ Correct! <strong>+30 XP</strong> bonus!`; earnedXP+=30; document.getElementById('navXp').textContent=`⚡ +${earnedXP} XP`; showToast('🎯 Correct! +30 XP!',2000); }
+  else fb.innerHTML=`❌ Answer: <strong>${correct}</strong>. Keep studying!`;
+  document.getElementById('quizNext').classList.add('show');
+}
+
+function closeQuiz(){ document.getElementById('quizOverlay').classList.add('hidden'); finishMove(); }
+
+// ── WIN ──
+function showWin(){ document.getElementById('winXp').textContent='+'+earnedXP; document.getElementById('winStamps').textContent=stamps.size; document.getElementById('winOverlay').classList.remove('hidden'); }
+
+// ── RESTART ──
+function restartGame(){
+  pos=0; earnedXP=0; stamps=new Set(); skipTurn=false; isAnimating=false;
+  document.getElementById('winOverlay').classList.add('hidden');
+  document.getElementById('navXp').textContent='⚡ +0 XP';
+  document.getElementById('navStamps').textContent='🏮 0 / 20';
+  document.querySelectorAll('.stamp-item').forEach(el=>el.classList.remove('collected'));
+  document.querySelectorAll('.sq').forEach(el=>el.classList.remove('current','visited'));
+  buildBoard(); updateUI(); updateMap();
+  const inner=document.getElementById('locCardInner');
+  inner.classList.remove('show'); inner.innerHTML='';
+  document.querySelector('.loc-placeholder').style.display='';
+  document.getElementById('rollBtn').disabled=false;
+  document.getElementById('diceResult').innerHTML=`<div style="font-size:0.78rem;color:var(--gray)">Roll to start your journey!</div>`;
+}
+
+// ── UI ──
+function updateUI(){
+  document.querySelectorAll('.sq[id^="sq-"]').forEach(el=>{
+    el.classList.remove('current');
+    const i=parseInt(el.id.split('-')[1]);
+    if(i<pos) el.classList.add('visited');
+    if(i===pos) el.classList.add('current');
+  });
+  const pct=Math.round(pos/TOTAL*100);
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('progPos').textContent=pos;
+  document.getElementById('progTotal').textContent=TOTAL;
+}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg,dur=2500){
+  const t=document.getElementById('toast'); t.innerHTML=msg; t.classList.remove('hidden');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.add('hidden'),dur);
+}
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr;
+}
+
+document.addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter'){e.preventDefault();rollDice();} });
+</script>
+</body>
+</html>

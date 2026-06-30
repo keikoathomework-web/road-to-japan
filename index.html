@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #08090f;
+  --bg2: #0d0f1e;
+  --navy: #111527;
+  --card: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --gold: #ffd700;
+  --gold2: #ffaa00;
+  --red: #ff3a5c;
+  --cyan: #00e5ff;
+  --purple: #a855f7;
+  --pink: #ff6eb4;
+  --green: #00e676;
+  --white: #ffffff;
+  --gray: #7a8099;
+  --text: #d0d4e8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 2px; }
+
+/* HEADER */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px;
+  background: rgba(8,9,15,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Bangers', cursive; font-size: 1.6rem; letter-spacing: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--red));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.lang-btns { display: flex; gap: 6px; }
+.lang-btn {
+  padding: 5px 14px; border: 1px solid var(--border);
+  background: transparent; color: var(--gray);
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.8rem;
+  border-radius: 20px; cursor: pointer; transition: all 0.2s;
+}
+.lang-btn.active, .lang-btn:hover { background: var(--gold); color: #000; border-color: var(--gold); }
+
+/* NAV DOTS */
+.nav-dots {
+  position: fixed; right: 16px; top: 50%; transform: translateY(-50%);
+  z-index: 199; display: flex; flex-direction: column; gap: 8px;
+}
+.nav-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border); cursor: pointer; border: none; transition: all 0.25s;
+}
+.nav-dot.active { background: var(--gold); transform: scale(1.5); }
+
+/* SECTIONS */
+section {
+  min-height: 100vh; padding: 80px 24px 60px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+section > * { position: relative; z-index: 1; }
+
+.glow-orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(80px); pointer-events: none; z-index: 0;
+}
+
+/* LABELS */
+.section-label {
+  display: inline-block; padding: 5px 18px;
+  border-radius: 20px; font-size: 0.75rem;
+  font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.label-gold { background: rgba(255,215,0,0.12); color: var(--gold); border: 1px solid rgba(255,215,0,0.25); }
+.label-red  { background: rgba(255,58,92,0.12); color: var(--red); border: 1px solid rgba(255,58,92,0.25); }
+.label-cyan { background: rgba(0,229,255,0.1); color: var(--cyan); border: 1px solid rgba(0,229,255,0.25); }
+.label-purple { background: rgba(168,85,247,0.1); color: var(--purple); border: 1px solid rgba(168,85,247,0.25); }
+.label-pink { background: rgba(255,110,180,0.1); color: var(--pink); border: 1px solid rgba(255,110,180,0.25); }
+.label-green { background: rgba(0,230,118,0.1); color: var(--green); border: 1px solid rgba(0,230,118,0.25); }
+
+.section-title {
+  font-family: 'Bangers', cursive;
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  letter-spacing: 3px; text-align: center; line-height: 1.05; margin-bottom: 12px;
+}
+.section-subtitle {
+  color: var(--gray); font-size: 1rem; text-align: center;
+  max-width: 600px; line-height: 1.6; margin-bottom: 40px;
+}
+.gradient-text { background: linear-gradient(135deg, var(--gold), var(--red)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.gradient-text-cyan { background: linear-gradient(135deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.gradient-text-pink { background: linear-gradient(135deg, var(--pink), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* BUTTONS */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 36px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #000; font-family: 'Bangers', cursive;
+  font-size: 1.3rem; letter-spacing: 2px;
+  border: none; border-radius: 50px; cursor: pointer; transition: all 0.25s;
+  box-shadow: 0 0 30px rgba(255,215,0,0.3), 0 4px 0 #a07000;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(255,215,0,0.5), 0 6px 0 #a07000; }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px; background: transparent; color: var(--white);
+  font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 2px;
+  border: 1px solid var(--border); border-radius: 50px; cursor: pointer; transition: all 0.25s;
+}
+.btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.06); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ============ SECTION 1: LANDING ============ */
+#landing { text-align: center; gap: 20px; background: var(--bg); }
+#landing .g1 { width:500px;height:500px;background:radial-gradient(circle,rgba(255,215,0,0.15),transparent 70%);top:-100px;right:-100px; }
+#landing .g2 { width:400px;height:400px;background:radial-gradient(circle,rgba(255,58,92,0.12),transparent 70%);bottom:-60px;left:-80px; }
+#landing .g3 { width:300px;height:300px;background:radial-gradient(circle,rgba(168,85,247,0.1),transparent 70%);top:40%;left:10%; }
+
+.floating-kanji {
+  position: absolute; pointer-events: none; user-select: none; z-index: 0;
+  animation: floatKanji linear infinite; opacity: 0.06; color: var(--white);
+}
+@keyframes floatKanji {
+  from { transform: translateY(100vh) rotate(0deg); }
+  to   { transform: translateY(-200px) rotate(360deg); }
+}
+
+.hero-eyebrow { font-size: 0.8rem; font-weight: 900; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; animation: fadeUp 0.6s 0.1s both; }
+.hero-title {
+  font-family: 'Bangers', cursive;
+  font-size: clamp(4rem, 16vw, 10rem);
+  letter-spacing: 6px; line-height: 0.9;
+  background: linear-gradient(135deg, #fff 0%, var(--gold) 40%, var(--red) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: titleSlam 0.7s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes titleSlam {
+  from { transform: scale(1.3) translateY(-20px); opacity: 0; filter: blur(8px); }
+  to   { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
+}
+.hero-jp { font-family: 'Bangers', cursive; font-size: clamp(1rem, 4vw, 2rem); letter-spacing: 8px; color: rgba(255,255,255,0.2); animation: fadeUp 0.6s 0.5s both; }
+.hero-subtitle { font-size: clamp(1rem, 2.5vw, 1.2rem); font-weight: 600; color: var(--text); max-width: 520px; line-height: 1.6; animation: fadeUp 0.6s 0.4s both; }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.6s 0.6s both; }
+.hero-scroll-hint {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: var(--gray); font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
+  animation: bounce 2s infinite;
+}
+.hero-scroll-hint::after { content: '↓'; font-size: 1.2rem; }
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+@keyframes fadeUp { from{transform:translateY(24px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* ============ SECTION 2: STATS ============ */
+#stats {
+  min-height: auto; padding: 40px 24px;
+  background: linear-gradient(135deg, rgba(255,215,0,0.06), rgba(255,58,92,0.04));
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.stats-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 0; width: 100%; max-width: 900px; }
+.stat-item { flex:1; min-width:160px; text-align:center; padding:20px 16px; border-right:1px solid var(--border); }
+.stat-item:last-child { border-right: none; }
+.stat-number { font-family:'Orbitron',sans-serif; font-size:clamp(1.6rem,4vw,2.4rem); font-weight:900; line-height:1; background:linear-gradient(135deg,var(--gold),var(--red)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.stat-label { font-size:0.8rem; font-weight:700; color:var(--gray); margin-top:4px; letter-spacing:1px; text-transform:uppercase; }
+
+/* ============ SECTION 3: CHARACTERS ============ */
+#characters { background: var(--bg); gap: 0; }
+.char-cards { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; width:100%; max-width:1000px; }
+.char-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 24px; padding: 32px 24px;
+  flex:1; min-width:220px; max-width:280px;
+  text-align: center; transition: all 0.35s; position: relative; overflow: hidden;
+}
+.char-card::before { content:''; position:absolute; inset:0; border-radius:24px; opacity:0; transition:opacity 0.35s; }
+.char-card:nth-child(1)::before{background:linear-gradient(135deg,rgba(255,215,0,0.06),transparent)}
+.char-card:nth-child(2)::before{background:linear-gradient(135deg,rgba(255,110,180,0.06),transparent)}
+.char-card:nth-child(3)::before{background:linear-gradient(135deg,rgba(0,229,255,0.06),transparent)}
+.char-card:nth-child(4)::before{background:linear-gradient(135deg,rgba(168,85,247,0.06),transparent)}
+.char-card:nth-child(5)::before{background:linear-gradient(135deg,rgba(0,230,118,0.06),transparent)}
+.char-card:hover::before { opacity: 1; }
+.char-card:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(0,0,0,0.5); }
+.char-card:hover .char-avatar { transform: scale(1.08); }
+.char-avatar { width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.8rem;margin:0 auto 16px;transition:transform 0.3s; }
+.char-name { font-family:'Bangers',cursive; font-size:1.8rem; letter-spacing:2px; margin-bottom:4px; }
+.char-role { font-size:0.7rem; font-weight:900; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; padding:3px 12px; border-radius:20px; display:inline-block; }
+.char-desc { font-size:0.85rem; color:var(--text); line-height:1.6; }
+.char-skill { margin-top:14px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:10px; font-size:0.78rem; color:var(--gray); text-align:left; }
+.char-skill strong { color:var(--white); display:block; font-size:0.65rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:2px; }
+
+/* ============ SECTION 4: LEARNING ============ */
+#learning { background: var(--bg2); gap: 0; }
+.learning-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; width:100%; max-width:1000px; }
+.learn-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:28px; transition:all 0.3s; position:relative; overflow:hidden; }
+.learn-card:hover { border-color:rgba(255,255,255,0.15); transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,0.4); }
+.learn-icon { width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:16px; }
+.learn-card-title { font-family:'Bangers',cursive; font-size:1.5rem; letter-spacing:2px; margin-bottom:8px; }
+.learn-card-desc { font-size:0.88rem; color:var(--text); line-height:1.6; margin-bottom:16px; }
+.learn-items { display:flex; flex-wrap:wrap; gap:6px; }
+.learn-chip { padding:3px 10px; border-radius:20px; font-size:0.75rem; font-weight:700; background:rgba(255,255,255,0.06); border:1px solid var(--border); color:var(--text); }
+.learn-lock { position:absolute; top:16px; right:16px; font-size:1rem; opacity:0.4; }
+.mini-cards { display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
+.mini-card { width:44px;height:48px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:1.1rem; }
+.mini-card:hover { background:var(--gold); color:#000; border-color:var(--gold); transform:scale(1.1); }
+.mini-card.done { background:rgba(0,230,118,0.15); border-color:var(--green); }
+
+/* ============ SECTION 5: CULTURE ============ */
+#culture { background: var(--bg); gap: 0; }
+.culture-bento { display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:auto auto; gap:14px; width:100%; max-width:1000px; }
+.bento-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:24px; transition:all 0.3s; overflow:hidden; position:relative; }
+.bento-card:hover { transform:translateY(-4px); box-shadow:0 20px 40px rgba(0,0,0,0.5); }
+.bento-card.wide { grid-column: span 2; }
+.bento-card.tall { grid-row: span 2; }
+.bento-icon { font-size:2.2rem; margin-bottom:12px; display:block; }
+.bento-title { font-family:'Bangers',cursive; font-size:1.3rem; letter-spacing:2px; margin-bottom:6px; }
+.bento-sub { font-size:0.84rem; color:var(--text); line-height:1.5; }
+.bento-tag-list { display:flex; flex-wrap:wrap; gap:5px; margin-top:10px; }
+.bento-tag { padding:2px 8px; border-radius:10px; font-size:0.7rem; font-weight:700; background:rgba(255,255,255,0.07); border:1px solid var(--border); color:var(--gray); }
+.bento-glow { position:absolute; width:200px;height:200px; border-radius:50%; filter:blur(60px); pointer-events:none; bottom:-60px;right:-60px; z-index:0; }
+.bento-card > * { position:relative; z-index:1; }
+.bento-card.anime{border-color:rgba(255,110,180,0.2)} .bento-card.anime .bento-glow{background:rgba(255,110,180,0.15)} .bento-card.anime .bento-title{color:var(--pink)}
+.bento-card.music{border-color:rgba(0,229,255,0.2)} .bento-card.music .bento-glow{background:rgba(0,229,255,0.1)} .bento-card.music .bento-title{color:var(--cyan)}
+.bento-card.food{border-color:rgba(255,215,0,0.2)} .bento-card.food .bento-glow{background:rgba(255,215,0,0.1)} .bento-card.food .bento-title{color:var(--gold)}
+.bento-card.travel{border-color:rgba(0,230,118,0.2)} .bento-card.travel .bento-glow{background:rgba(0,230,118,0.1)} .bento-card.travel .bento-title{color:var(--green)}
+.bento-card.history{border-color:rgba(168,85,247,0.2)} .bento-card.history .bento-glow{background:rgba(168,85,247,0.1)} .bento-card.history .bento-title{color:var(--purple)}
+.bento-card.famous{border-color:rgba(255,58,92,0.2)} .bento-card.famous .bento-glow{background:rgba(255,58,92,0.1)} .bento-card.famous .bento-title{color:var(--red)}
+.photo-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:12px; }
+.photo-thumb { aspect-ratio:1; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; background:rgba(255,255,255,0.06); border:1px solid var(--border); }
+.music-bars { display:flex; align-items:flex-end; gap:3px; height:40px; margin-top:12px; }
+.music-bar { width:8px; border-radius:4px 4px 0 0; background:var(--cyan); opacity:0.6; animation:musicAnim 0.8s ease-in-out infinite alternate; }
+.music-bar:nth-child(2){animation-delay:0.1s}.music-bar:nth-child(3){animation-delay:0.2s}.music-bar:nth-child(4){animation-delay:0.15s}.music-bar:nth-child(5){animation-delay:0.05s}.music-bar:nth-child(6){animation-delay:0.25s}.music-bar:nth-child(7){animation-delay:0.12s}.music-bar:nth-child(8){animation-delay:0.18s}
+@keyframes musicAnim { from{height:8px} to{height:var(--h,32px)} }
+
+/* ============ SECTION 6: STORY ============ */
+#story { background: var(--bg2); gap: 0; }
+.story-timeline { display:flex; flex-direction:column; gap:0; width:100%; max-width:760px; position:relative; }
+.story-timeline::before { content:''; position:absolute; left:28px; top:0; bottom:0; width:2px; background:linear-gradient(180deg,var(--gold),var(--red),var(--purple),rgba(255,255,255,0.05)); }
+.timeline-item { display:flex; gap:20px; padding:16px 0; align-items:flex-start; }
+.timeline-dot { width:58px;height:58px;border-radius:50%;background:var(--card);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;z-index:1;transition:all 0.3s; }
+.timeline-item:hover .timeline-dot { border-color:var(--gold); box-shadow:0 0 20px rgba(255,215,0,0.3); transform:scale(1.1); }
+.timeline-content { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px 20px; flex:1; transition:all 0.3s; }
+.timeline-item:hover .timeline-content { border-color:rgba(255,255,255,0.15); }
+.timeline-chapter { font-size:0.7rem; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
+.timeline-title { font-family:'Bangers',cursive; font-size:1.2rem; letter-spacing:1px; margin-bottom:6px; }
+.timeline-desc { font-size:0.85rem; color:var(--text); line-height:1.5; }
+.timeline-locked { display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; color:var(--gray); margin-top:8px; padding:3px 10px; border-radius:10px; background:rgba(255,255,255,0.04); border:1px solid var(--border); }
+
+/* ============ SECTION 7: GAMIFICATION ============ */
+#gamification { background: var(--bg); gap: 0; }
+.game-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; width:100%; max-width:960px; }
+.game-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:24px; text-align:center; transition:all 0.3s; }
+.game-card:hover { transform:translateY(-6px); box-shadow:0 20px 40px rgba(0,0,0,0.4); }
+.game-icon { font-size:2.8rem; display:block; margin-bottom:14px; }
+.game-title { font-family:'Bangers',cursive; font-size:1.3rem; letter-spacing:2px; margin-bottom:8px; }
+.game-desc { font-size:0.85rem; color:var(--text); line-height:1.5; }
+.xp-preview { margin-top:14px; background:rgba(255,255,255,0.06); border-radius:10px; height:8px; overflow:hidden; }
+.xp-fill { height:100%; border-radius:10px; background:linear-gradient(90deg,var(--gold),var(--red)); animation:xpFill 2s ease-out both; }
+@keyframes xpFill { from{width:0%} to{width:68%} }
+.badges-row { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:14px; }
+.badge-item { width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:transform 0.2s; }
+.badge-item:hover { transform:scale(1.2); }
+.badge-item.earned { background:rgba(255,215,0,0.1); border-color:rgba(255,215,0,0.3); }
+.streak-counter { display:flex; align-items:center; justify-content:center; gap:6px; font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:900; color:var(--red); margin-top:12px; }
+
+/* ============ SECTION 8: HIRAGANA DEMO ============ */
+#hiragana { background: var(--bg2); gap: 20px; }
+.flashcard-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; width:100%; max-width:560px; }
+.flashcard { aspect-ratio:1; perspective:600px; cursor:pointer; }
+.flashcard-inner { width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);border-radius:14px; }
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+.card-front, .card-back { position:absolute;inset:0;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden; }
+.card-front { background:var(--card);border:1px solid var(--border);font-size:clamp(1.4rem,3vw,2rem);color:var(--white);font-weight:700;transition:border-color 0.2s; }
+.flashcard:hover .card-front { border-color:rgba(255,215,0,0.4); }
+.card-back { background:linear-gradient(135deg,var(--gold),var(--gold2));transform:rotateY(180deg);gap:2px; }
+.card-back .romaji { font-family:'Bangers',cursive; font-size:1.4rem; color:#000; }
+.card-back .hsmall { font-size:1.1rem; color:rgba(0,0,0,0.5); }
+.progress-bar-wrap { width:100%;max-width:560px;background:rgba(255,255,255,0.08);border-radius:10px;height:8px;overflow:hidden; }
+.progress-bar-fill { height:100%;border-radius:10px;background:linear-gradient(90deg,var(--gold),var(--red));transition:width 0.4s ease; }
+.progress-txt { font-size:0.8rem;color:var(--gray);width:100%;max-width:560px;text-align:right;margin-top:4px; }
+.example-box { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 28px;text-align:center;width:100%;max-width:560px; }
+.example-jp { font-size:1.4rem;font-weight:700;margin-bottom:4px; }
+.example-tr { font-size:0.9rem;color:var(--gold);font-weight:600; }
+
+/* ============ SECTION 9: PLANS ============ */
+#plans { background: var(--bg); gap: 0; }
+#plans .g1 { width:500px;height:500px;background:radial-gradient(circle,rgba(168,85,247,0.1),transparent 70%);top:0;left:-100px; }
+#plans .g2 { width:400px;height:400px;background:radial-gradient(circle,rgba(255,58,92,0.08),transparent 70%);bottom:0;right:-80px; }
+.plan-cards { display:flex;gap:18px;flex-wrap:wrap;justify-content:center;width:100%;max-width:960px; }
+.plan-card { background:var(--card);border:1px solid var(--border);border-radius:24px;padding:36px 28px;flex:1;min-width:240px;max-width:290px;text-align:center;position:relative;transition:all 0.3s;overflow:hidden; }
+.plan-card:hover { transform: translateY(-8px); }
+.plan-card.hot { border-color:rgba(255,215,0,0.4);background:linear-gradient(135deg,rgba(255,215,0,0.06),rgba(255,58,92,0.04)); }
+.hot-badge { position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-family:'Bangers',cursive;letter-spacing:1px;font-size:0.85rem;padding:4px 20px;border-radius:20px;white-space:nowrap; }
+.plan-emoji { font-size:2rem;display:block;margin-bottom:10px; }
+.plan-name { font-family:'Bangers',cursive;font-size:1.8rem;letter-spacing:2px;margin-bottom:4px; }
+.plan-price { font-family:'Orbitron',sans-serif;font-size:2.6rem;font-weight:900;line-height:1;margin-bottom:4px; }
+.plan-price.gold { background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.plan-price.red { background:linear-gradient(135deg,var(--red),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.plan-period { font-size:0.8rem;color:var(--gray);margin-bottom:24px; }
+.plan-features { list-style:none;text-align:left;margin-bottom:28px; }
+.plan-features li { font-size:0.88rem;color:var(--text);padding:7px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px; }
+.plan-features li:last-child { border-bottom:none; }
+.plan-btn { width:100%;padding:13px;font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:1px;border:none;border-radius:50px;cursor:pointer;transition:all 0.25s; }
+.btn-gold { background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;box-shadow:0 0 20px rgba(255,215,0,0.2); }
+.btn-gold:hover { box-shadow:0 0 40px rgba(255,215,0,0.4);transform:scale(1.03); }
+.btn-ghost { background:transparent;color:var(--gray);border:1px solid var(--border); }
+.btn-ghost:hover { border-color:var(--white);color:var(--white); }
+.btn-premium { background:linear-gradient(135deg,var(--red),var(--purple));color:#fff;box-shadow:0 0 20px rgba(168,85,247,0.2); }
+.btn-premium:hover { box-shadow:0 0 40px rgba(168,85,247,0.4);transform:scale(1.03); }
+
+/* FOOTER */
+footer { text-align:center;padding:32px 24px;border-top:1px solid var(--border);color:var(--gray);font-size:0.82rem; }
+
+/* MODAL */
+.modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn 0.2s;backdrop-filter:blur(8px); }
+.modal-overlay.hidden { display:none; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.modal { background:var(--navy);border:1px solid var(--border);border-radius:24px;padding:40px 36px;max-width:400px;width:100%;text-align:center;animation:modalPop 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes modalPop { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+.modal-icon { font-size:3rem;margin-bottom:16px; }
+.modal-title { font-family:'Bangers',cursive;font-size:2rem;letter-spacing:2px;color:var(--gold);margin-bottom:12px; }
+.modal-text { color:var(--text);font-size:0.95rem;line-height:1.6;margin-bottom:24px; }
+.modal-close { padding:11px 36px;background:var(--gold);color:#000;font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:1px;border:none;border-radius:50px;cursor:pointer;transition:all 0.2s; }
+.modal-close:hover { background:var(--gold2); }
+
+/* RESPONSIVE */
+@media (max-width:700px) {
+  .culture-bento{grid-template-columns:1fr}
+  .bento-card.wide,.bento-card.tall{grid-column:span 1;grid-row:span 1}
+  .stat-item{border-right:none;border-bottom:1px solid var(--border)}
+  .char-cards,.plan-cards{flex-direction:column;align-items:center}
+  .plan-card{min-width:280px;max-width:100%}
+  .flashcard-grid{gap:6px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Road to Japan</div>
+  <div class="lang-btns">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</header>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots">
+  <button class="nav-dot active" onclick="goTo(0)"></button>
+  <button class="nav-dot" onclick="goTo(1)"></button>
+  <button class="nav-dot" onclick="goTo(2)"></button>
+  <button class="nav-dot" onclick="goTo(3)"></button>
+  <button class="nav-dot" onclick="goTo(4)"></button>
+  <button class="nav-dot" onclick="goTo(5)"></button>
+  <button class="nav-dot" onclick="goTo(6)"></button>
+  <button class="nav-dot" onclick="goTo(7)"></button>
+  <button class="nav-dot" onclick="goTo(8)"></button>
+</nav>
+
+<!-- ====== SECTION 1: LANDING ====== -->
+<section id="landing">
+  <div class="glow-orb g1"></div>
+  <div class="glow-orb g2"></div>
+  <div class="glow-orb g3"></div>
+
+  <span class="floating-kanji" style="left:5%;font-size:4rem;animation-duration:18s;animation-delay:0s">日</span>
+  <span class="floating-kanji" style="left:15%;font-size:2.5rem;animation-duration:22s;animation-delay:3s">本</span>
+  <span class="floating-kanji" style="left:80%;font-size:3.5rem;animation-duration:16s;animation-delay:1s">語</span>
+  <span class="floating-kanji" style="left:70%;font-size:2rem;animation-duration:20s;animation-delay:5s">侍</span>
+  <span class="floating-kanji" style="left:90%;font-size:2rem;animation-duration:19s;animation-delay:2s">忍</span>
+  <span class="floating-kanji" style="left:30%;font-size:3rem;animation-duration:23s;animation-delay:6s">夢</span>
+
+  <p class="hero-eyebrow" data-en="✦ The Ultimate Japan Learning Adventure ✦" data-es="✦ La Aventura Definitiva de Aprendizaje de Japón ✦">✦ The Ultimate Japan Learning Adventure ✦</p>
+  <h1 class="hero-title">ROAD<br>TO JAPAN</h1>
+  <p class="hero-jp">ようこそ日本へ</p>
+  <p class="hero-subtitle" data-en="Master Japanese, discover anime, J-Pop, samurai history, and every hidden corner of Japan — all in one epic adventure." data-es="Domina el japonés, descubre anime, J-Pop, historia samurái y cada rincón de Japón — todo en una épica aventura.">Master Japanese, discover anime, J-Pop, samurai history, and every hidden corner of Japan — all in one epic adventure.</p>
+
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="goTo(8)" data-en="🎌 Start Your Quest" data-es="🎌 Iniciar tu Quest">🎌 Start Your Quest</button>
+    <button class="btn-outline" onclick="goTo(7)" data-en="▶ Try Demo" data-es="▶ Probar Demo">▶ Try Demo</button>
+  </div>
+
+  <div class="hero-scroll-hint">SCROLL</div>
+</section>
+
+<!-- ====== SECTION 2: STATS ====== -->
+<section id="stats">
+  <div class="stats-grid reveal">
+    <div class="stat-item">
+      <div class="stat-number" id="cnt1">0</div>
+      <div class="stat-label" data-en="Kana Characters" data-es="Caracteres Kana">Kana Characters</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="cnt2">0</div>
+      <div class="stat-label" data-en="Kanji to Master" data-es="Kanji para dominar">Kanji to Master</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="cnt3">0</div>
+      <div class="stat-label" data-en="Culture Topics" data-es="Temas Culturales">Culture Topics</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="cnt4">0</div>
+      <div class="stat-label" data-en="Japan Prefectures" data-es="Prefecturas de Japón">Japan Prefectures</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="cnt5">0</div>
+      <div class="stat-label" data-en="Story Chapters" data-es="Capítulos de Historia">Story Chapters</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 3: CHARACTERS ====== -->
+<section id="characters">
+  <div class="glow-orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(255,215,0,0.08),transparent 70%);top:0;left:50%;transform:translateX(-50%)"></div>
+  <span class="section-label label-gold reveal">⚔️ Meet the Crew</span>
+  <h2 class="section-title reveal">Your <span class="gradient-text">Legendary</span> Companions</h2>
+  <p class="section-subtitle reveal" data-en="An original crew of heroes, teachers, and rivals — each one unlocks a new side of Japan." data-es="Un equipo de héroes, maestros y rivales — cada uno revela un nuevo lado de Japón.">An original crew of heroes, teachers, and rivals — each one unlocks a new side of Japan.</p>
+
+  <div class="char-cards">
+    <div class="char-card reveal">
+      <div class="char-avatar" style="background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,58,92,0.1))">⚡</div>
+      <div class="char-name" style="color:var(--gold)">KAI</div>
+      <span class="char-role" style="background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.3)" data-en="The Adventurer" data-es="El Aventurero">The Adventurer</span>
+      <p class="char-desc" data-en="Fearless Brazilian explorer chasing the Grand Scroll. Levels up as YOU learn — his outfit evolves from rookie to Grand Master!" data-es="Explorador brasileño sin miedo. ¡Sube de nivel mientras TÚ aprendes — su atuendo evoluciona de principiante a Gran Maestro!">Fearless Brazilian explorer chasing the Grand Scroll. Levels up as YOU learn — his outfit evolves from rookie to Grand Master!</p>
+      <div class="char-skill"><strong>⚡ Special Ability</strong><span data-en="Your avatar — grows stronger with every lesson you complete" data-es="Tu avatar — se fortalece con cada lección que completes">Your avatar — grows stronger with every lesson you complete</span></div>
+    </div>
+
+    <div class="char-card reveal" style="transition-delay:0.1s">
+      <div class="char-avatar" style="background:linear-gradient(135deg,rgba(255,110,180,0.2),rgba(168,85,247,0.1))">🌸</div>
+      <div class="char-name" style="color:var(--pink)">SAKURA</div>
+      <span class="char-role" style="background:rgba(255,110,180,0.1);color:var(--pink);border:1px solid rgba(255,110,180,0.3)" data-en="The Navigator" data-es="La Navegante">The Navigator</span>
+      <p class="char-desc" data-en="Tokyo's wisest guide and guardian of ancient scrolls. Writes hiragana in the air as magic — teaching you while she fights!" data-es="La guía más sabia de Tokio. ¡Escribe hiragana en el aire como magia — enseñándote mientras lucha!">Tokyo's wisest guide and guardian of ancient scrolls. Writes hiragana in the air as magic — teaching you while she fights!</p>
+      <div class="char-skill"><strong>🌸 Special Ability</strong><span data-en="Teaches grammar mid-battle with hiragana spells" data-es="Enseña gramática en plena batalla con hechizos hiragana">Teaches grammar mid-battle with hiragana spells</span></div>
+    </div>
+
+    <div class="char-card reveal" style="transition-delay:0.2s">
+      <div class="char-avatar" style="background:linear-gradient(135deg,rgba(0,229,255,0.2),rgba(0,230,118,0.1))">🍜</div>
+      <div class="char-name" style="color:var(--cyan)">TARO</div>
+      <span class="char-role" style="background:rgba(0,229,255,0.1);color:var(--cyan);border:1px solid rgba(0,229,255,0.3)" data-en="Culture Master" data-es="Maestro Cultural">Culture Master</span>
+      <p class="char-desc" data-en="Osaka's funniest samurai foodie. Knows every ramen shop, festival, and hidden gem in Japan. Hosts quiz battles!" data-es="El samurái más gracioso de Osaka. ¡Conoce cada tienda de ramen, festival y joya escondida de Japón. ¡Conduce batallas de preguntas!">Osaka's funniest samurai foodie. Knows every ramen shop, festival, and hidden gem. Hosts quiz battles!</p>
+      <div class="char-skill"><strong>🍜 Special Ability</strong><span data-en="Osaka Cannon — launches takoyaki while narrating food culture" data-es="Cañón Osaka — lanza takoyaki mientras narra la cultura gastronómica">Osaka Cannon — launches takoyaki while narrating food culture</span></div>
+    </div>
+
+    <div class="char-card reveal" style="transition-delay:0.3s">
+      <div class="char-avatar" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(0,229,255,0.1))">🗡️</div>
+      <div class="char-name" style="color:var(--purple)">YUKI</div>
+      <span class="char-role" style="background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.3)" data-en="JLPT Rival" data-es="Rival JLPT">JLPT Rival</span>
+      <p class="char-desc" data-en="Kyoto's ice-cold prodigy who breathes N1. Starts as your fiercest rival — becomes your greatest ally at the final boss." data-es="El frío prodigio de Kioto que respira N1. Empieza como tu rival más feroz — se convierte en tu mayor aliado en el jefe final.">Kyoto's ice-cold prodigy who breathes N1. Starts as your fiercest rival — becomes your greatest ally.</p>
+      <div class="char-skill"><strong>🗡️ Special Ability (Premium)</strong><span data-en="Kanji Blade — slices through JLPT N1 vocabulary" data-es="Hoja Kanji — corta el vocabulario JLPT N1">Kanji Blade — slices through JLPT N1 vocabulary</span></div>
+    </div>
+
+    <div class="char-card reveal" style="transition-delay:0.4s">
+      <div class="char-avatar" style="background:linear-gradient(135deg,rgba(0,230,118,0.2),rgba(255,215,0,0.1))">🍡</div>
+      <div class="char-name" style="color:var(--green)">MOCHI</div>
+      <span class="char-role" style="background:rgba(0,230,118,0.1);color:var(--green);border:1px solid rgba(0,230,118,0.3)">Mascot</span>
+      <p class="char-desc" data-en="The round fluffy spirit who manages your MochiCoins and goes wild when you answer correctly. もちもち！" data-es="El espíritu redondo y esponjoso que gestiona tus MochiCoins y enloquece cuando aciertas. ¡もちもち！">The round fluffy spirit who manages your MochiCoins and goes wild when you answer correctly. もちもち！</p>
+      <div class="char-skill"><strong>🍡 Special Ability</strong><span data-en="Rewards MochiCoins every lesson — spend them on epic outfits!" data-es="¡Recompensa MochiCoins cada lección — gástalas en atuendos épicos!">Rewards MochiCoins every lesson — spend them on epic outfits!</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 4: LEARNING PATH ====== -->
+<section id="learning">
+  <span class="section-label label-cyan reveal">📚 Learning Journey</span>
+  <h2 class="section-title reveal">From Zero to <span class="gradient-text-cyan">Fluent</span></h2>
+  <p class="section-subtitle reveal" data-en="Every lesson is a step through Japan's language and culture. No boring drills — just pure adventure." data-es="Cada lección es un paso por el idioma y la cultura de Japón. Sin ejercicios aburridos — solo pura aventura.">Every lesson is a step through Japan's language and culture. No boring drills — just pure adventure.</p>
+
+  <div class="learning-grid">
+    <div class="learn-card reveal" style="border-color:rgba(0,229,255,0.2)">
+      <div class="learn-icon" style="background:rgba(0,229,255,0.1)">あ</div>
+      <div class="learn-card-title" style="color:var(--cyan)" data-en="Hiragana &amp; Katakana" data-es="Hiragana y Katakana">Hiragana &amp; Katakana</div>
+      <p class="learn-card-desc" data-en="Master all 100 phonetic characters with our flip-card system. Each one connects to real Japanese words and native audio." data-es="Domina los 100 caracteres fonéticos con nuestro sistema de tarjetas. Cada uno conecta con palabras reales y audio nativo.">Master all 100 phonetic characters with our flip-card system. Each one connects to real Japanese words and native audio.</p>
+      <div class="learn-items">
+        <span class="learn-chip" data-en="50 Hiragana" data-es="50 Hiragana">50 Hiragana</span>
+        <span class="learn-chip" data-en="50 Katakana" data-es="50 Katakana">50 Katakana</span>
+        <span class="learn-chip">SRS System</span>
+        <span class="learn-chip" data-en="Native Audio" data-es="Audio Nativo">Native Audio</span>
+      </div>
+      <div class="mini-cards" id="miniCards"></div>
+    </div>
+
+    <div class="learn-card reveal" style="border-color:rgba(255,215,0,0.2);transition-delay:0.1s">
+      <div class="learn-icon" style="background:rgba(255,215,0,0.1)">漢</div>
+      <div class="learn-card-title" style="color:var(--gold)" data-en="Kanji Mastery" data-es="Dominio Kanji">Kanji Mastery</div>
+      <p class="learn-card-desc" data-en="Follow Japan's elementary school curriculum — 1,006 kanji across 6 grades. Every character reveals Japanese culture." data-es="Sigue el currículo de la escuela primaria japonesa — 1,006 kanji en 6 grados. Cada carácter revela la cultura japonesa.">Follow Japan's elementary school curriculum — 1,006 kanji across 6 grades. Every character reveals Japanese culture.</p>
+      <div class="learn-items">
+        <span class="learn-chip">Grade 1〜6</span>
+        <span class="learn-chip">1,006字</span>
+        <span class="learn-chip" data-en="Stroke Order" data-es="Orden de trazos">Stroke Order</span>
+        <span class="learn-chip" data-en="Compounds" data-es="Compuestos">Compounds</span>
+      </div>
+    </div>
+
+    <div class="learn-card reveal" style="border-color:rgba(255,110,180,0.2);transition-delay:0.2s">
+      <div class="learn-icon" style="background:rgba(255,110,180,0.1)">📖</div>
+      <div class="learn-card-title" style="color:var(--pink)" data-en="Reading &amp; Comprehension" data-es="Lectura y Comprensión">Reading &amp; Comprehension</div>
+      <p class="learn-card-desc" data-en="Tap any word while reading to get an instant translation. Stories range from N5 articles to N1 literature." data-es="Toca cualquier palabra para obtener traducción instantánea. Historias desde artículos N5 hasta literatura N1.">Tap any word while reading to get an instant translation. Stories range from N5 articles to N1 literature.</p>
+      <div class="learn-items">
+        <span class="learn-chip">N5 → N1</span>
+        <span class="learn-chip" data-en="Tap-to-translate" data-es="Toca para traducir">Tap-to-translate</span>
+        <span class="learn-chip" data-en="Audio playback" data-es="Audio">Audio playback</span>
+      </div>
+    </div>
+
+    <div class="learn-card reveal" style="border-color:rgba(168,85,247,0.2);transition-delay:0.3s">
+      <div class="learn-icon" style="background:rgba(168,85,247,0.1)">🎯</div>
+      <div class="learn-card-title" style="color:var(--purple)">JLPT N5 → N1</div>
+      <p class="learn-card-desc" data-en="Full exam prep with timed mock tests, grammar drills, listening exercises, and AI-powered weakness reports." data-es="Preparación completa con simulacros cronometrados, ejercicios de gramática, escucha e informes de debilidades IA.">Full exam prep with timed mock tests, grammar drills, listening exercises, and AI weakness reports.</p>
+      <div class="learn-items">
+        <span class="learn-chip">N5 N4 N3 N2 N1</span>
+        <span class="learn-chip" data-en="Mock Exams" data-es="Simulacros">Mock Exams</span>
+        <span class="learn-chip">AI Analysis</span>
+      </div>
+      <div class="learn-lock">🔒</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 5: CULTURE HUB ====== -->
+<section id="culture">
+  <span class="section-label label-pink reveal">🎌 Japan Culture Hub</span>
+  <h2 class="section-title reveal">Everything About <span class="gradient-text-pink">Japan</span></h2>
+  <p class="section-subtitle reveal" data-en="Anime, music, food, samurai history, celebrities, travel — it's all here. This isn't just a language app." data-es="Anime, música, comida, historia samurái, celebridades, viajes — todo está aquí. Esto no es solo una app de idiomas.">Anime, music, food, samurai history, celebrities, travel — it's all here. This isn't just a language app.</p>
+
+  <div class="culture-bento reveal">
+    <div class="bento-card anime wide">
+      <div class="bento-glow"></div>
+      <span class="bento-icon">🎌</span>
+      <div class="bento-title" data-en="Anime &amp; Manga Encyclopedia" data-es="Enciclopedia Anime y Manga">Anime &amp; Manga Encyclopedia</div>
+      <p class="bento-sub" data-en="1,000+ titles with characters, storylines, and how each series connects to real Japanese language and culture." data-es="Más de 1,000 títulos con personajes, tramas y cómo cada serie conecta con el idioma y la cultura japonesa real.">1,000+ titles with characters, storylines, and how each series connects to real Japanese language and culture.</p>
+      <div class="bento-tag-list">
+        <span class="bento-tag">One Piece</span><span class="bento-tag">Naruto</span><span class="bento-tag">Demon Slayer</span>
+        <span class="bento-tag">Attack on Titan</span><span class="bento-tag">My Hero Academia</span><span class="bento-tag">Dragon Ball</span>
+        <span class="bento-tag">Jujutsu Kaisen</span><span class="bento-tag">Studio Ghibli</span><span class="bento-tag">Bleach</span>
+      </div>
+    </div>
+
+    <div class="bento-card history tall">
+      <div class="bento-glow"></div>
+      <span class="bento-icon">⛩️</span>
+      <div class="bento-title" data-en="History &amp; Traditions" data-es="Historia y Tradiciones">History &amp; Traditions</div>
+      <p class="bento-sub" data-en="From Jomon to modern Tokyo. Samurai, shoguns, ninjas, emperors, and the making of modern Japan." data-es="Desde el período Jomon hasta el Tokio moderno. Samurais, shogunes, ninjas y la creación del Japón moderno.">From Jomon to modern Tokyo. Samurai, shoguns, ninjas, emperors, and the making of modern Japan.</p>
+      <div class="bento-tag-list" style="margin-top:12px">
+        <span class="bento-tag" data-en="Samurai Era" data-es="Era Samurái">Samurai Era</span>
+        <span class="bento-tag">Edo Period</span><span class="bento-tag">Meiji</span>
+        <span class="bento-tag">WW2</span><span class="bento-tag">茶道</span><span class="bento-tag">武道</span>
+      </div>
+    </div>
+
+    <div class="bento-card music">
+      <div class="bento-glow"></div>
+      <span class="bento-icon">🎵</span>
+      <div class="bento-title" data-en="J-Pop &amp; Music" data-es="J-Pop y Música">J-Pop &amp; Music</div>
+      <p class="bento-sub" data-en="Learn Japanese through hit songs. Real lyrics, kanji breakdown, and cultural context for every track." data-es="Aprende japonés a través de canciones. Letras reales, desglose de kanji y contexto cultural.">Learn Japanese through hit songs. Real lyrics, kanji breakdown.</p>
+      <div class="music-bars">
+        <div class="music-bar" style="--h:28px"></div><div class="music-bar" style="--h:38px"></div>
+        <div class="music-bar" style="--h:18px"></div><div class="music-bar" style="--h:32px"></div>
+        <div class="music-bar" style="--h:40px"></div><div class="music-bar" style="--h:22px"></div>
+        <div class="music-bar" style="--h:36px"></div><div class="music-bar" style="--h:16px"></div>
+      </div>
+    </div>
+
+    <div class="bento-card food">
+      <div class="bento-glow"></div>
+      <span class="bento-icon">🍣</span>
+      <div class="bento-title" data-en="Food Culture" data-es="Cultura Gastronómica">Food Culture</div>
+      <p class="bento-sub" data-en="Ramen, sushi, wagyu, mochi — learn the vocabulary and the story behind every Japanese dish." data-es="Ramen, sushi, wagyu, mochi — aprende el vocabulario y la historia detrás de cada plato japonés.">Ramen, sushi, wagyu, mochi — learn the vocab and story behind every dish.</p>
+      <div class="photo-grid">
+        <div class="photo-thumb">🍜</div><div class="photo-thumb">🍱</div><div class="photo-thumb">🍡</div>
+        <div class="photo-thumb">🥟</div><div class="photo-thumb">🍤</div><div class="photo-thumb">🍛</div>
+      </div>
+    </div>
+
+    <div class="bento-card travel">
+      <div class="bento-glow"></div>
+      <span class="bento-icon">🗼</span>
+      <div class="bento-title" data-en="Travel Guide" data-es="Guía de Viaje">Travel Guide</div>
+      <p class="bento-sub" data-en="All 47 prefectures. Tourist spots, hidden local gems, and essential phrases for your Japan trip." data-es="Las 47 prefecturas. Lugares turísticos, joyas ocultas y frases esenciales para tu viaje a Japón.">All 47 prefectures. Tourist spots, hidden gems, and essential travel phrases.</p>
+      <div class="bento-tag-list" style="margin-top:10px">
+        <span class="bento-tag">Tokyo 東京</span><span class="bento-tag">Kyoto 京都</span>
+        <span class="bento-tag">Osaka 大阪</span><span class="bento-tag">Mt.Fuji 富士山</span>
+      </div>
+    </div>
+
+    <div class="bento-card famous wide">
+      <div class="bento-glow"></div>
+      <span class="bento-icon">⭐</span>
+      <div class="bento-title" data-en="Celebrity &amp; Creator Encyclopedia" data-es="Enciclopedia de Celebridades y Creadores">Celebrity &amp; Creator Encyclopedia</div>
+      <p class="bento-sub" data-en="Manga artists, anime directors, athletes, musicians, actors — the people who define Japan's global culture." data-es="Artistas de manga, directores de anime, atletas, músicos, actores — las personas que definen la cultura global de Japón.">Manga artists, anime directors, athletes, musicians, actors — the people who define Japan's global culture.</p>
+      <div class="bento-tag-list" style="margin-top:8px">
+        <span class="bento-tag">Eiichiro Oda</span><span class="bento-tag">Hayao Miyazaki</span>
+        <span class="bento-tag">Ichiro</span><span class="bento-tag">Naomi Osaka</span><span class="bento-tag">Kenshi Yonezu</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 6: STORY ====== -->
+<section id="story">
+  <span class="section-label label-red reveal">⚔️ Epic Story</span>
+  <h2 class="section-title reveal">10 Chapters. <span class="gradient-text">One Grand Scroll.</span></h2>
+  <p class="section-subtitle reveal" data-en="Every lesson you complete unlocks the next chapter. Learning IS the adventure." data-es="Cada lección que completes desbloquea el siguiente capítulo. Aprender ES la aventura.">Every lesson you complete unlocks the next chapter. Learning IS the adventure.</p>
+
+  <div class="story-timeline reveal">
+    <div class="timeline-item">
+      <div class="timeline-dot">⛵</div>
+      <div class="timeline-content">
+        <div class="timeline-chapter" data-en="Chapter 1 · Free" data-es="Capítulo 1 · Gratis">Chapter 1 · Free</div>
+        <div class="timeline-title" data-en="Port of Departure — Rio de Janeiro" data-es="Puerto de Partida — Río de Janeiro">Port of Departure — Rio de Janeiro</div>
+        <p class="timeline-desc" data-en="Kai discovers the legend of the Grand Scroll. To board the ship, he must unlock the secret password — written in Hiragana." data-es="Kai descubre la leyenda del Gran Pergamino. Para abordar el barco, debe descifrar la contraseña secreta — escrita en Hiragana.">Kai discovers the legend of the Grand Scroll. To board the ship, he must unlock the secret password — written in Hiragana.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🌊</div>
+      <div class="timeline-content">
+        <div class="timeline-chapter" data-en="Chapters 2–3 · Free / Standard" data-es="Capítulos 2–3 · Gratis / Estándar">Chapters 2–3 · Free / Standard</div>
+        <div class="timeline-title" data-en="Storm at Sea → Katakana Island" data-es="Tormenta en el Mar → Isla Katakana">Storm at Sea → Katakana Island</div>
+        <p class="timeline-desc" data-en="Sakura appears in the storm. Then — a mysterious island where everyone speaks ONLY Katakana. Taro joins the crew." data-es="Sakura aparece en la tormenta. Luego — una isla misteriosa donde todos hablan SOLO en Katakana. Taro se une a la tripulación.">Sakura appears in the storm. Then — a mysterious island where everyone speaks ONLY Katakana. Taro joins the crew.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🗼</div>
+      <div class="timeline-content">
+        <div class="timeline-chapter" data-en="Chapters 4–7 · Standard" data-es="Capítulos 4–7 · Estándar">Chapters 4–7 · Standard</div>
+        <div class="timeline-title" data-en="Tokyo → Kyoto → Fuji → Osaka" data-es="Tokio → Kioto → Fuji → Osaka">Tokyo → Kyoto → Fuji → Osaka</div>
+        <p class="timeline-desc" data-en="Conquer Kanji grade by grade across Japan's greatest cities. Face rival Yuki in Kyoto. Climb Mt. Fuji. Party at Osaka's festival!" data-es="Conquista el Kanji grado a grado en las mejores ciudades de Japón. ¡Enfrenta a Yuki en Kioto. Escala el Fuji. Fiesta en Osaka!">Conquer Kanji grade by grade. Face rival Yuki in Kyoto. Climb Mt. Fuji. Party at Osaka's summer festival!</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🏆</div>
+      <div class="timeline-content">
+        <div class="timeline-chapter" data-en="Chapters 8–10 · Premium Only 👑" data-es="Capítulos 8–10 · Solo Premium 👑">Chapters 8–10 · Premium Only 👑</div>
+        <div class="timeline-title" data-en="The Grand Scroll — JLPT N1 Final Boss" data-es="El Gran Pergamino — Jefe Final JLPT N1">The Grand Scroll — JLPT N1 Final Boss</div>
+        <p class="timeline-desc" data-en="Yuki joins Kai to defeat the Language Demon King. Become Grand Master — the scroll's ancient secret is finally revealed." data-es="Yuki se une a Kai para derrotar al Rey Demonio del Lenguaje. Conviértete en Gran Maestro — el antiguo secreto del pergamino se revela.">Yuki joins Kai to defeat the Language Demon King. Become Grand Master — the ancient secret is finally revealed.</p>
+        <span class="timeline-locked">🔒 <span data-en="Premium $30/mo" data-es="Premium $30/mes">Premium $30/mo</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 7: GAMIFICATION ====== -->
+<section id="gamification">
+  <span class="section-label label-green reveal">🎮 Gamification</span>
+  <h2 class="section-title reveal">Learning That <span class="gradient-text">Hits Different</span></h2>
+  <p class="section-subtitle reveal" data-en="Streaks. XP. Boss battles. Leaderboards. MochiCoins. It feels like a game — because it is." data-es="Rachas. XP. Batallas de jefes. Clasificaciones. MochiCoins. Se siente como un videojuego — porque lo es.">Streaks. XP. Boss battles. Leaderboards. MochiCoins. It feels like a game — because it is.</p>
+
+  <div class="game-grid">
+    <div class="game-card reveal" style="border-color:rgba(255,58,92,0.2)">
+      <span class="game-icon">🔥</span>
+      <div class="game-title" style="color:var(--red)" data-en="Daily Streak" data-es="Racha Diaria">Daily Streak</div>
+      <p class="game-desc" data-en="Keep your streak alive every day. Longer streaks = bigger Mochi rewards and bonus XP." data-es="Mantén tu racha viva cada día. Rachas más largas = mayores recompensas de Mochi y XP bonus.">Keep your streak alive every day. Longer streaks = bigger Mochi rewards.</p>
+      <div class="streak-counter">🔥 <span id="streakNum">0</span></div>
+    </div>
+
+    <div class="game-card reveal" style="border-color:rgba(255,215,0,0.2);transition-delay:0.1s">
+      <span class="game-icon">⚡</span>
+      <div class="game-title" style="color:var(--gold)" data-en="XP &amp; Levels" data-es="XP y Niveles">XP &amp; Levels</div>
+      <p class="game-desc" data-en="Earn XP every lesson. Kai's outfit evolves as you level up — from rookie to Grand Master of Japan." data-es="Gana XP cada lección. El atuendo de Kai evoluciona con cada nivel — de principiante a Gran Maestro de Japón.">Earn XP every lesson. Kai evolves with your level — rookie to Grand Master.</p>
+      <div class="xp-preview"><div class="xp-fill"></div></div>
+      <div style="font-size:0.75rem;color:var(--gray);margin-top:6px;text-align:right" data-en="Level 12 → 13 · 68%" data-es="Nivel 12 → 13 · 68%">Level 12 → 13 · 68%</div>
+    </div>
+
+    <div class="game-card reveal" style="border-color:rgba(168,85,247,0.2);transition-delay:0.2s">
+      <span class="game-icon">🏅</span>
+      <div class="game-title" style="color:var(--purple)" data-en="Achievements" data-es="Logros">Achievements</div>
+      <p class="game-desc" data-en="100+ badges for mastering kana, surviving boss battles, and exploring all of Japan's 47 prefectures." data-es="Más de 100 insignias por dominar kana, sobrevivir batallas de jefes y explorar las 47 prefecturas de Japón.">100+ badges for mastering kana, boss battles, and exploring all 47 prefectures.</p>
+      <div class="badges-row">
+        <div class="badge-item earned">🌸</div><div class="badge-item earned">⚡</div>
+        <div class="badge-item earned">🗡️</div><div class="badge-item earned">🍜</div>
+        <div class="badge-item">🏔️</div><div class="badge-item">🐉</div>
+      </div>
+    </div>
+
+    <div class="game-card reveal" style="border-color:rgba(0,229,255,0.2);transition-delay:0.3s">
+      <span class="game-icon">🏆</span>
+      <div class="game-title" style="color:var(--cyan)" data-en="Leaderboard" data-es="Clasificación">Leaderboard</div>
+      <p class="game-desc" data-en="Compete globally or by country. Weekly and monthly rankings. Will you be the #1 Japan fan?" data-es="Compite globalmente o por país. Rankings semanales y mensuales. ¿Serás el mejor fan de Japón?">Compete globally. Weekly and monthly rankings. Will you be #1?</p>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;gap:8px;font-size:0.85rem"><span style="color:var(--gold);font-weight:900">🥇</span><span>Sakura_fan99</span><span style="margin-left:auto;color:var(--gold);font-family:'Orbitron',sans-serif;font-size:0.72rem">12,480 XP</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:0.85rem"><span style="color:var(--gray)">🥈</span><span style="color:var(--text)">OnePieceKai</span><span style="margin-left:auto;color:var(--gray);font-family:'Orbitron',sans-serif;font-size:0.72rem">11,220 XP</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:0.85rem"><span style="color:var(--red)">🥉</span><span style="color:var(--text)">TokyoDream</span><span style="margin-left:auto;color:var(--gray);font-family:'Orbitron',sans-serif;font-size:0.72rem">9,980 XP</span></div>
+      </div>
+    </div>
+
+    <div class="game-card reveal" style="border-color:rgba(0,230,118,0.2);transition-delay:0.4s">
+      <span class="game-icon">🍡</span>
+      <div class="game-title" style="color:var(--green)">MochiCoins</div>
+      <p class="game-desc" data-en="Earn Mochi's coins to unlock character outfits, story chapters, and exclusive Japan content." data-es="Gana las monedas de Mochi para desbloquear atuendos, capítulos y contenido exclusivo de Japón.">Earn Mochi's coins to unlock character outfits, chapters, and exclusive content.</p>
+      <div style="margin-top:14px;display:flex;align-items:center;gap:8px">
+        <span style="font-family:'Orbitron',sans-serif;font-size:1.4rem;color:var(--green);font-weight:900">🍡 1,240</span>
+        <span style="font-size:0.75rem;color:var(--gray)" data-en="coins earned" data-es="monedas ganadas">coins earned</span>
+      </div>
+    </div>
+
+    <div class="game-card reveal" style="border-color:rgba(255,58,92,0.2);transition-delay:0.5s">
+      <span class="game-icon">👹</span>
+      <div class="game-title" style="color:var(--red)" data-en="Boss Battles" data-es="Batallas de Jefes">Boss Battles</div>
+      <p class="game-desc" data-en="Quiz battles against Japanese language monsters. Answer fast to deal damage — wrong answers mean the boss attacks!" data-es="Batallas de preguntas contra monstruos del idioma japonés. ¡Responde rápido para infligir daño — las respuestas incorrectas significan que el jefe ataca!">Quiz battles against language monsters. Answer fast to deal damage!</p>
+      <div style="margin-top:14px;padding:10px;background:rgba(255,58,92,0.08);border:1px solid rgba(255,58,92,0.2);border-radius:12px;font-size:0.82rem;text-align:center;color:var(--text)" data-en="Next Boss: 「ア・イ・ウ・エ・オ将軍」" data-es="Próximo Jefe: 「ア・イ・ウ・エ・オ将軍」">Next Boss: 「ア・イ・ウ・エ・オ将軍」</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SECTION 8: HIRAGANA DEMO ====== -->
+<section id="hiragana">
+  <span class="section-label label-cyan reveal">⚡ Live Demo</span>
+  <h2 class="section-title reveal">Try It <span class="gradient-text-cyan">Right Now</span></h2>
+  <p class="section-subtitle reveal" data-en="Tap the cards below to flip and learn your first Japanese characters — for free!" data-es="¡Toca las tarjetas de abajo para voltearlas y aprender tus primeros caracteres japoneses — gratis!">Tap the cards below to flip and learn your first Japanese characters — for free!</p>
+
+  <div class="progress-bar-wrap reveal">
+    <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+  </div>
+  <p class="progress-txt reveal" id="progressLabel">0 / 15 mastered</p>
+
+  <div class="flashcard-grid reveal" id="flashcardGrid"></div>
+
+  <div class="example-box reveal">
+    <div class="example-jp" id="exampleJp">あ・い・う・え・お</div>
+    <div class="example-tr" id="exampleTr" data-en="a · i · u · e · o — your first five Japanese sounds!" data-es="a · i · u · e · o — ¡tus primeros cinco sonidos en japonés!">a · i · u · e · o — your first five Japanese sounds!</div>
+  </div>
+</section>
+
+<!-- ====== SECTION 9: PLANS ====== -->
+<section id="plans">
+  <div class="glow-orb g1"></div>
+  <div class="glow-orb g2"></div>
+
+  <span class="section-label label-gold reveal">💎 Choose Your Path</span>
+  <h2 class="section-title reveal">Power Up <span class="gradient-text">Your Quest</span></h2>
+  <p class="section-subtitle reveal" data-en="Start free. Level up anytime. No contracts — cancel whenever you want." data-es="Empieza gratis. Sube de nivel cuando quieras. Sin contratos — cancela cuando quieras.">Start free. Level up anytime. No contracts — cancel whenever you want.</p>
+
+  <div class="plan-cards">
+    <div class="plan-card reveal">
+      <span class="plan-emoji">🌱</span>
+      <div class="plan-name" data-en="Free" data-es="Gratis">Free</div>
+      <div class="plan-price">$0</div>
+      <div class="plan-period" data-en="Forever · No credit card" data-es="Para siempre · Sin tarjeta">Forever · No credit card</div>
+      <ul class="plan-features">
+        <li><span class="check">✦</span><span data-en="Hiragana complete (50 chars)" data-es="Hiragana completo (50 chars)">Hiragana complete (50 chars)</span></li>
+        <li><span class="check">✦</span><span data-en="Katakana intro (25 chars)" data-es="Katakana intro (25 chars)">Katakana intro (25 chars)</span></li>
+        <li><span class="check">✦</span><span data-en="5 daily lessons" data-es="5 lecciones diarias">5 daily lessons</span></li>
+        <li><span class="check">✦</span><span data-en="Story Chapters 1–2" data-es="Capítulos de historia 1–2">Story Chapters 1–2</span></li>
+        <li><span class="check">✦</span><span data-en="Kai &amp; Sakura story begins" data-es="La historia de Kai y Sakura comienza">Kai &amp; Sakura story begins</span></li>
+        <li><span class="check" style="opacity:0.35">🔒</span><span style="opacity:0.4" data-en="Full Kanji + Culture Hub" data-es="Kanji completo + Culture Hub">Full Kanji + Culture Hub</span></li>
+      </ul>
+      <button class="plan-btn btn-ghost" onclick="showModal()" data-en="Start Free →" data-es="Empezar Gratis →">Start Free →</button>
+    </div>
+
+    <div class="plan-card hot reveal" style="transition-delay:0.15s">
+      <div class="hot-badge" data-en="🔥 Most Popular" data-es="🔥 Más Popular">🔥 Most Popular</div>
+      <span class="plan-emoji">⚔️</span>
+      <div class="plan-name">Standard</div>
+      <div class="plan-price gold">$15</div>
+      <div class="plan-period" data-en="per month" data-es="por mes">per month</div>
+      <ul class="plan-features">
+        <li><span class="check">✦</span><span data-en="Everything in Free" data-es="Todo lo de Gratis">Everything in Free</span></li>
+        <li><span class="check">✦</span><span data-en="Katakana complete (50 chars)" data-es="Katakana completo (50 chars)">Katakana complete (50 chars)</span></li>
+        <li><span class="check">✦</span><span data-en="1,006 Kanji (Grade 1–6)" data-es="1.006 Kanji (Grado 1–6)">1,006 Kanji (Grade 1–6)</span></li>
+        <li><span class="check">✦</span><span data-en="Japan Culture Hub — ALL" data-es="Japan Culture Hub — TODO">Japan Culture Hub — ALL</span></li>
+        <li><span class="check">✦</span><span data-en="Unlimited lessons" data-es="Lecciones ilimitadas">Unlimited lessons</span></li>
+        <li><span class="check">✦</span><span data-en="Story Chapters 1–7" data-es="Capítulos 1–7">Story Chapters 1–7</span></li>
+        <li><span class="check">✦</span><span data-en="Reading comprehension N5→N3" data-es="Comprensión lectora N5→N3">Reading comprehension N5→N3</span></li>
+        <li><span class="check" style="opacity:0.35">🔒</span><span style="opacity:0.4" data-en="JLPT prep" data-es="Preparación JLPT">JLPT prep</span></li>
+      </ul>
+      <button class="plan-btn btn-gold" onclick="showModal()" data-en="Choose Standard →" data-es="Elegir Estándar →">Choose Standard →</button>
+    </div>
+
+    <div class="plan-card reveal" style="transition-delay:0.3s;border-color:rgba(168,85,247,0.3)">
+      <span class="plan-emoji">👑</span>
+      <div class="plan-name">Premium</div>
+      <div class="plan-price red">$30</div>
+      <div class="plan-period" data-en="per month" data-es="por mes">per month</div>
+      <ul class="plan-features">
+        <li><span class="check">✦</span><span data-en="Everything in Standard" data-es="Todo lo de Estándar">Everything in Standard</span></li>
+        <li><span class="check">✦</span><span>JLPT N5 → N1 Full Prep</span></li>
+        <li><span class="check">✦</span><span data-en="Timed Mock Exams" data-es="Exámenes simulados">Timed Mock Exams</span></li>
+        <li><span class="check">✦</span><span data-en="AI Conversation Partner" data-es="Compañero IA">AI Conversation Partner</span></li>
+        <li><span class="check">✦</span><span data-en="Story Chapters 1–10 (FINALE)" data-es="Capítulos 1–10 (FINAL)">Story Chapters 1–10 (FINALE)</span></li>
+        <li><span class="check">✦</span><span data-en="Business Japanese" data-es="Japonés de negocios">Business Japanese</span></li>
+        <li><span class="check">✦</span><span data-en="Live Tutor Sessions" data-es="Sesiones con tutor en vivo">Live Tutor Sessions</span></li>
+        <li><span class="check">✦</span><span data-en="AI Weakness Report" data-es="Informe de debilidades IA">AI Weakness Report</span></li>
+      </ul>
+      <button class="plan-btn btn-premium" onclick="showModal()" data-en="Go Premium →" data-es="Ir a Premium →">Go Premium →</button>
+    </div>
+  </div>
+
+  <p style="color:var(--gray);font-size:0.82rem;margin-top:20px;text-align:center" data-en="✦ All plans: EN &amp; ES interface · Cancel anytime · iOS · Android · Web" data-es="✦ Todos los planes: interfaz EN y ES · Cancela cuando quieras · iOS · Android · Web">✦ All plans: EN &amp; ES interface · Cancel anytime · iOS · Android · Web</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo" style="font-size:1.4rem">Road to Japan</div>
+  <p style="margin-top:8px" data-en="ようこそ日本へ — Learn the language. Live the culture." data-es="ようこそ日本へ — Aprende el idioma. Vive la cultura.">ようこそ日本へ — Learn the language. Live the culture.</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-icon">🎌</div>
+    <div class="modal-title" data-en="Coming Soon!" data-es="¡Próximamente!">Coming Soon!</div>
+    <p class="modal-text" data-en="Road to Japan launches soon! Kai and Sakura are packing their scrolls — the adventure is almost ready!" data-es="Road to Japan se lanza pronto. ¡Kai y Sakura están empacando sus pergaminos — la aventura casi está lista!">Road to Japan launches soon! Kai and Sakura are packing their scrolls — the adventure is almost ready!</p>
+    <button class="modal-close" onclick="closeModal()" data-en="もちもち! Got it!" data-es="もちもち! ¡Entendido!">もちもち! Got it!</button>
+  </div>
+</div>
+
+<script>
+const HIRAGANA = [
+  {c:'あ',r:'a'},{c:'い',r:'i'},{c:'う',r:'u'},{c:'え',r:'e'},{c:'お',r:'o'},
+  {c:'か',r:'ka'},{c:'き',r:'ki'},{c:'く',r:'ku'},{c:'け',r:'ke'},{c:'こ',r:'ko'},
+  {c:'さ',r:'sa'},{c:'し',r:'shi'},{c:'す',r:'su'},{c:'せ',r:'se'},{c:'そ',r:'so'},
+];
+const EXAMPLES = [
+  {jp:'あおい (aoi)', en:'Blue — color of the ocean Kai sails!', es:'Azul — ¡el color del océano que navega Kai!'},
+  {jp:'かい (Kai)', en:"Our hero's name in hiragana!", es:'¡El nombre de nuestro héroe en hiragana!'},
+  {jp:'さくら (Sakura)', en:'Cherry blossom — and our navigator!', es:'¡Flor de cerezo — y nuestra navegante!'},
+];
+const SECTIONS = ['landing','stats','characters','learning','culture','story','gamification','hiragana','plans'];
+
+let lang = 'en', flipped = new Set();
+
+function buildCards() {
+  const g = document.getElementById('flashcardGrid');
+  HIRAGANA.forEach((h, i) => {
+    const c = document.createElement('div');
+    c.className = 'flashcard';
+    c.innerHTML = `<div class="flashcard-inner"><div class="card-front">${h.c}</div><div class="card-back"><span class="hsmall">${h.c}</span><span class="romaji">${h.r}</span></div></div>`;
+    c.addEventListener('click', () => {
+      c.classList.toggle('flipped');
+      flipped[c.classList.contains('flipped') ? 'add' : 'delete'](i);
+      updateProgress(); updateEx(i);
+    });
+    g.appendChild(c);
+  });
+}
+
+function buildMini() {
+  const el = document.getElementById('miniCards');
+  if (!el) return;
+  ['あ','い','う','え','お','か','き'].forEach(ch => {
+    const d = document.createElement('div');
+    d.className = 'mini-card'; d.textContent = ch;
+    d.addEventListener('click', () => d.classList.toggle('done'));
+    el.appendChild(d);
+  });
+}
+
+function updateProgress() {
+  const pct = Math.round(flipped.size / HIRAGANA.length * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent =
+    lang === 'en' ? `${flipped.size} / ${HIRAGANA.length} mastered` : `${flipped.size} / ${HIRAGANA.length} dominados`;
+}
+
+function updateEx(i) {
+  const ex = EXAMPLES[Math.floor(i / 5)] || EXAMPLES[0];
+  document.getElementById('exampleJp').textContent = ex.jp;
+  document.getElementById('exampleTr').textContent = lang === 'en' ? ex.en : ex.es;
+}
+
+function animateCount(id, target, suffix = '') {
+  const el = document.getElementById(id);
+  let n = 0; const step = Math.ceil(target / 60);
+  const iv = setInterval(() => {
+    n = Math.min(n + step, target);
+    el.textContent = n.toLocaleString() + suffix;
+    if (n >= target) clearInterval(iv);
+  }, 20);
+}
+
+let countersStarted = false;
+function startCounters() {
+  if (countersStarted) return; countersStarted = true;
+  animateCount('cnt1', 100, '+'); animateCount('cnt2', 1006, '+');
+  animateCount('cnt3', 500, '+'); animateCount('cnt4', 47); animateCount('cnt5', 10);
+}
+
+let streakVal = 0, streakDone = false;
+function animateStreak() {
+  const el = document.getElementById('streakNum');
+  const iv = setInterval(() => { el.textContent = ++streakVal; if (streakVal >= 7) clearInterval(iv); }, 80);
+}
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach((b, i) => b.classList.toggle('active', (l==='en'&&i===0)||(l==='es'&&i===1)));
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const val = el.getAttribute('data-' + l);
+    if (el.children.length === 0) el.textContent = val;
+    else el.innerHTML = val;
+  });
+  updateProgress();
+}
+
+function goTo(idx) { document.getElementById(SECTIONS[idx])?.scrollIntoView({ behavior: 'smooth' }); }
+
+function updateDots() {
+  const mid = window.scrollY + window.innerHeight / 2;
+  SECTIONS.forEach((id, i) => {
+    const el = document.getElementById(id); if (!el) return;
+    const top = el.offsetTop;
+    document.querySelectorAll('.nav-dot')[i]?.classList.toggle('active', mid >= top && mid < top + el.offsetHeight);
+  });
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('visible');
+    if (e.target.closest('#stats')) startCounters();
+    if (e.target.closest('#gamification') && !streakDone) { streakDone = true; setTimeout(animateStreak, 400); }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+function showModal() { document.getElementById('modalOverlay').classList.remove('hidden'); }
+function closeModal() { document.getElementById('modalOverlay').classList.add('hidden'); }
+function closeModalOutside(e) { if (e.target.id === 'modalOverlay') closeModal(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+buildCards();
+buildMini();
+window.addEventListener('scroll', updateDots, { passive: true });
+updateDots();
+</script>
+</body>
+</html>

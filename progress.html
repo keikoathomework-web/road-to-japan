@@ -1,0 +1,601 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — 12-Month Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #1c2230;
+  --gold: #ffd700; --gold2: #ffaa00; --gold3: #fff0a0;
+  --cyan: #00e5ff; --green: #00e676; --red: #ff3a5c;
+  --purple: #a855f7; --orange: #ff6b2b; --pink: #ff6eb4;
+  --teal: #00bfa5; --blue: #2979ff;
+  --white: #fff; --gray: #7a8099; --text: #d0d4e8;
+  --border: rgba(255,255,255,0.07);
+}
+html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); }
+
+/* ── NAV ── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100; height: 56px;
+  display: flex; align-items: center; gap: 12px; padding: 0 20px;
+  background: rgba(13,17,23,0.97); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-back {
+  display: flex; align-items: center; gap: 6px; padding: 7px 14px;
+  border-radius: 20px; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10); color: rgba(255,255,255,0.75);
+  font-size: 0.82rem; font-weight: 800; text-decoration: none; transition: all 0.2s;
+}
+.nav-back:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.nav-logo { font-family: 'Bangers', cursive; font-size: 1.15rem; letter-spacing: 3px; background: linear-gradient(90deg,var(--gold),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.nav-spacer { flex: 1; }
+.nav-month-badge {
+  padding: 6px 14px; border-radius: 20px;
+  background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25);
+  font-family: 'Orbitron', sans-serif; font-size: 0.72rem; font-weight: 900; color: var(--gold);
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, #0a0a2e 0%, #1a0d3a 40%, #0a2010 100%);
+  padding: 36px 20px 32px; text-align: center; position: relative; overflow: hidden;
+  border-bottom: 1px solid rgba(255,215,0,0.1);
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% -10%, rgba(255,215,0,0.12), transparent 60%),
+              radial-gradient(ellipse at 20% 110%, rgba(168,85,247,0.1), transparent 50%),
+              radial-gradient(ellipse at 80% 110%, rgba(0,230,118,0.08), transparent 50%);
+}
+.hero-kana { position: absolute; font-size: 5rem; opacity: 0.04; font-weight: 900; top: 10px; left: 10px; }
+.hero-kana2 { position: absolute; font-size: 4rem; opacity: 0.04; font-weight: 900; bottom: 10px; right: 10px; }
+.hero-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25); color: var(--gold); font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; margin-bottom: 14px; position: relative; z-index: 1; }
+.hero-title { font-family: 'Bangers', cursive; font-size: 2.8rem; letter-spacing: 4px; color: var(--white); line-height: 1; margin-bottom: 8px; position: relative; z-index: 1; }
+.hero-title span { background: linear-gradient(90deg, var(--gold), var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-sub { font-size: 0.88rem; color: var(--text); line-height: 1.7; max-width: 480px; margin: 0 auto 22px; position: relative; z-index: 1; }
+
+/* Overall progress bar */
+.hero-progress { max-width: 420px; margin: 0 auto; position: relative; z-index: 1; }
+.hp-labels { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.hp-label { font-size: 0.72rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+.hp-pct { font-family: 'Orbitron', sans-serif; font-size: 0.82rem; color: var(--gold); }
+.hp-track { height: 12px; border-radius: 6px; background: rgba(255,255,255,0.07); overflow: hidden; position: relative; }
+.hp-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--orange), var(--gold), var(--green)); transition: width 1.5s cubic-bezier(0.34,1.2,0.64,1); width: 0; position: relative; }
+.hp-fill::after { content: ''; position: absolute; right: -1px; top: 0; bottom: 0; width: 3px; background: rgba(255,255,255,0.8); border-radius: 2px; box-shadow: 0 0 8px rgba(255,255,255,0.6); }
+.hp-milestones { display: flex; justify-content: space-between; margin-top: 6px; }
+.hp-ms { font-size: 0.6rem; color: var(--gray); }
+
+/* Quick stats row */
+.stats-strip { display: flex; justify-content: center; gap: 0; margin-top: 22px; position: relative; z-index: 1; }
+.stat-pill { padding: 10px 18px; text-align: center; border-right: 1px solid rgba(255,255,255,0.08); }
+.stat-pill:last-child { border-right: none; }
+.stat-pill-val { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 900; margin-bottom: 2px; }
+.stat-pill-label { font-size: 0.62rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── PAGE ── */
+.page { max-width: 860px; margin: 0 auto; padding: 36px 16px 60px; }
+
+/* ── MONTH CARDS ── */
+.months-grid { display: flex; flex-direction: column; gap: 16px; }
+
+.month-card {
+  border-radius: 20px; border: 1px solid var(--border); background: var(--bg2);
+  overflow: hidden; transition: all 0.3s; cursor: default;
+  position: relative;
+}
+.month-card.completed { border-color: rgba(0,230,118,0.2); }
+.month-card.current { border-color: rgba(255,215,0,0.35); box-shadow: 0 0 0 1px rgba(255,215,0,0.15), 0 8px 32px rgba(0,0,0,0.4); }
+.month-card.locked { opacity: 0.55; }
+.month-card.unlocked { border-color: rgba(255,255,255,0.12); }
+.month-card:not(.locked):hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+
+/* Current pulse border */
+.month-card.current::before {
+  content: ''; position: absolute; inset: -1px; border-radius: 21px;
+  background: linear-gradient(90deg, var(--gold), transparent, var(--gold));
+  z-index: 0; animation: borderRotate 3s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; padding: 1px;
+}
+
+.month-inner { position: relative; z-index: 1; display: flex; align-items: stretch; }
+
+/* Left color bar */
+.month-bar { width: 6px; flex-shrink: 0; border-radius: 20px 0 0 20px; }
+
+/* Month number column */
+.month-num-col {
+  padding: 18px 16px; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 4px; width: 76px; flex-shrink: 0;
+  border-right: 1px solid var(--border);
+}
+.month-num { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 900; line-height: 1; }
+.month-word { font-size: 0.55rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+.month-status-icon { font-size: 1.2rem; margin-top: 4px; }
+
+/* Main content */
+.month-content { flex: 1; padding: 16px 18px; }
+.month-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.month-emoji { font-size: 1.6rem; flex-shrink: 0; }
+.month-title { font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 2px; color: var(--white); line-height: 1; margin-bottom: 3px; }
+.month-sub { font-size: 0.72rem; color: var(--gray); font-weight: 700; }
+.month-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.month-tag { padding: 3px 9px; border-radius: 10px; font-size: 0.62rem; font-weight: 900; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--text); }
+.month-tag.done { background: rgba(0,230,118,0.1); border-color: rgba(0,230,118,0.2); color: var(--green); }
+
+/* Progress within month */
+.month-progress { margin-top: 8px; }
+.mp-track { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.07); overflow: hidden; }
+.mp-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+.mp-label { font-size: 0.62rem; color: var(--gray); margin-top: 4px; font-weight: 700; }
+
+/* Right: action column */
+.month-action { padding: 16px 14px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 8px; flex-shrink: 0; }
+.action-btn {
+  padding: 8px 16px; border-radius: 12px; font-size: 0.75rem; font-weight: 900;
+  border: none; cursor: pointer; white-space: nowrap; transition: all 0.2s;
+  text-decoration: none; display: inline-block; text-align: center;
+}
+.action-btn.go { background: linear-gradient(135deg, var(--gold2), var(--gold)); color: #000; }
+.action-btn.go:hover { filter: brightness(1.1); transform: scale(1.05); }
+.action-btn.review { background: rgba(0,230,118,0.12); border: 1px solid rgba(0,230,118,0.25); color: var(--green); }
+.action-btn.review:hover { background: rgba(0,230,118,0.2); }
+.action-btn.locked-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--gray); cursor: default; }
+.xp-reward { font-family: 'Orbitron', sans-serif; font-size: 0.65rem; color: var(--gold); font-weight: 900; }
+
+/* ── CURRENT MONTH SPOTLIGHT ── */
+.current-spotlight {
+  border-radius: 20px; padding: 20px; margin-bottom: 24px;
+  background: linear-gradient(135deg, #1a1200, #0d2010, #1a0d30);
+  border: 1px solid rgba(255,215,0,0.2);
+  position: relative; overflow: hidden;
+}
+.current-spotlight::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 0%, rgba(255,215,0,0.08), transparent 60%);
+}
+.cs-tag { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); font-size: 0.65rem; font-weight: 900; letter-spacing: 1px; margin-bottom: 10px; position: relative; z-index: 1; }
+.cs-row { display: flex; align-items: center; gap: 14px; position: relative; z-index: 1; }
+.cs-emoji { font-size: 2.5rem; }
+.cs-info { flex: 1; }
+.cs-title { font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 2px; color: var(--white); margin-bottom: 4px; }
+.cs-desc { font-size: 0.8rem; line-height: 1.6; color: var(--text); }
+.cs-lessons { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; position: relative; z-index: 1; }
+.cs-lesson {
+  display: flex; align-items: center; gap: 6px; padding: 8px 12px;
+  border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.75rem; font-weight: 800; text-decoration: none; color: var(--text); cursor: pointer;
+  transition: all 0.2s;
+}
+.cs-lesson:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+.cs-lesson.available { border-color: rgba(255,215,0,0.25); color: var(--gold); }
+.cs-lesson.available:hover { background: rgba(255,215,0,0.08); }
+.cs-lesson.done { border-color: rgba(0,230,118,0.25); color: var(--green); background: rgba(0,230,118,0.05); }
+
+/* ── SECTION HEADER ── */
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.section-title { font-family: 'Bangers', cursive; font-size: 1.3rem; letter-spacing: 2px; color: var(--white); }
+.section-line { flex: 1; height: 1px; background: var(--border); }
+
+/* ── GRADUATION CARD ── */
+.grad-card {
+  border-radius: 20px; padding: 28px; margin-top: 28px;
+  background: linear-gradient(135deg, #1a1200 0%, #0d0d30 50%, #001a10 100%);
+  border: 1px solid rgba(255,215,0,0.2); text-align: center; position: relative; overflow: hidden;
+}
+.grad-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.1), transparent 60%);
+}
+.grad-emoji { font-size: 3rem; margin-bottom: 12px; position: relative; z-index: 1; }
+.grad-title { font-family: 'Bangers', cursive; font-size: 1.8rem; letter-spacing: 3px; color: var(--gold); margin-bottom: 8px; position: relative; z-index: 1; }
+.grad-sub { font-size: 0.85rem; color: var(--text); line-height: 1.7; max-width: 400px; margin: 0 auto 18px; position: relative; z-index: 1; }
+.grad-btn {
+  display: inline-block; padding: 13px 28px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--gold2), var(--gold)); color: #000;
+  font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 2px;
+  text-decoration: none; transition: all 0.2s; position: relative; z-index: 1;
+}
+.grad-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,215,0,0.3); }
+
+/* ── MOBILE ── */
+@media(max-width: 580px) {
+  .month-action { display: none; }
+  .month-num-col { width: 60px; padding: 14px 10px; }
+  .hero-title { font-size: 2rem; }
+  .stats-strip { gap: 0; }
+  .stat-pill { padding: 8px 12px; }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes borderRotate { 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s, transform 0.5s; }
+.reveal.visible { opacity: 1; transform: none; }
+</style>
+<script src="gojuon-widget.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="top-nav">
+  <a class="nav-back" href="home.html">← Home</a>
+  <div class="nav-logo">🗓️ 12-MONTH JOURNEY</div>
+  <div class="nav-spacer"></div>
+  <div class="nav-month-badge" id="navMonthBadge">Month 1 / 12</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-kana">日本語</div>
+  <div class="hero-kana2">旅</div>
+  <div class="hero-tag">🎌 1 Year · 1 Language · 1 Dream</div>
+  <div class="hero-title">Your Road<br>to <span>Japan</span></div>
+  <div class="hero-sub">Every great journey starts with a single step — あ. Follow this 12-month roadmap and watch yourself go from zero to Japanese! 🌸</div>
+  <div class="hero-progress">
+    <div class="hp-labels">
+      <div class="hp-label">🗺️ Overall Journey</div>
+      <div class="hp-pct" id="overallPct">8%</div>
+    </div>
+    <div class="hp-track">
+      <div class="hp-fill" id="overallFill"></div>
+    </div>
+    <div class="hp-milestones">
+      <div class="hp-ms">Start 🌱</div>
+      <div class="hp-ms">Month 3</div>
+      <div class="hp-ms">Month 6 🏆</div>
+      <div class="hp-ms">Month 9</div>
+      <div class="hp-ms">🎌 Master</div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-pill">
+      <div class="stat-pill-val" style="color:var(--green)" id="completedCount">1</div>
+      <div class="stat-pill-label">Months Done</div>
+    </div>
+    <div class="stat-pill">
+      <div class="stat-pill-val" style="color:var(--gold)" id="currentMonthNum">2</div>
+      <div class="stat-pill-label">Current Month</div>
+    </div>
+    <div class="stat-pill">
+      <div class="stat-pill-val" style="color:var(--cyan)" id="remainingCount">10</div>
+      <div class="stat-pill-label">Months Left</div>
+    </div>
+    <div class="stat-pill">
+      <div class="stat-pill-val" style="color:var(--purple)" id="totalXP">1,240</div>
+      <div class="stat-pill-label">Total XP</div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- CURRENT MONTH SPOTLIGHT -->
+  <div class="current-spotlight reveal" id="currentSpotlight">
+    <div class="cs-tag">⭐ YOU ARE HERE — Month 2</div>
+    <div class="cs-row">
+      <div class="cs-emoji">👋</div>
+      <div class="cs-info">
+        <div class="cs-title">FIRST CONVERSATIONS</div>
+        <div class="cs-desc">This month you'll learn how to greet people, introduce yourself, and use the most important everyday phrases! By the end, you can say "Hello, my name is ___. Nice to meet you!" in Japanese! 🌸</div>
+      </div>
+    </div>
+    <div class="cs-lessons">
+      <a class="cs-lesson available" href="phrases.html">💬 Greetings & Phrases →</a>
+      <a class="cs-lesson available" href="grammar.html">📝 Grammar Particles →</a>
+      <a class="cs-lesson available" href="story2.html">📕 Story Ch.2 →</a>
+      <div class="cs-lesson done">✅ Hiragana Complete</div>
+      <div class="cs-lesson done">✅ Katakana Complete</div>
+      <div class="cs-lesson done">✅ Story Ch.1</div>
+    </div>
+  </div>
+
+  <!-- ALL MONTHS -->
+  <div class="section-header reveal">
+    <div class="section-title">🗓️ FULL ROADMAP</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="months-grid" id="monthsGrid"></div>
+
+  <!-- GRADUATION CARD -->
+  <div class="grad-card reveal">
+    <div class="grad-emoji">🎓🎌</div>
+    <div class="grad-title">GRADUATION AWAITS!</div>
+    <div class="grad-sub">Complete all 12 months and earn your <strong style="color:var(--gold)">Road to Japan Certificate</strong> — proof that you dedicated a full year to mastering Japanese! がんばって！(Ganbatte — Do your best!)</div>
+    <a href="payment.html" class="grad-btn">🚀 Start Your Journey — Upgrade to Premium</a>
+  </div>
+
+</div>
+
+<script>
+// ── MONTH DATA ──
+const MONTHS = [
+  {
+    num: 1, emoji: '🔤', color: '#00bfa5',
+    title: 'THE ALPHABET',
+    sub: 'Hiragana & Katakana',
+    desc: 'Master all 46 hiragana and 46 katakana characters — the foundation of Japanese reading!',
+    status: 'completed',
+    progress: 100,
+    xp: 300,
+    tags: ['Hiragana あいうえお', 'Katakana アイウエオ', 'Writing Practice'],
+    lessons: [
+      { label: '📖 Hiragana', href: 'hiragana.html', done: true },
+      { label: '🔡 Katakana', href: 'katakana.html', done: true },
+    ],
+  },
+  {
+    num: 2, emoji: '👋', color: '#ffd700',
+    title: 'FIRST CONVERSATIONS',
+    sub: 'Greetings & Self-Introduction',
+    desc: 'Say hello, goodbye, thank you, and introduce yourself in Japanese!',
+    status: 'current',
+    progress: 55,
+    xp: 250,
+    tags: ['Greetings', 'Self-Introduction', 'Story Chapter 1 & 2'],
+    lessons: [
+      { label: '💬 Vocabulary', href: 'vocabulary.html', done: false },
+      { label: '📕 Story Ch.1', href: 'story.html', done: true },
+      { label: '📕 Story Ch.2', href: 'story2.html', done: false },
+    ],
+  },
+  {
+    num: 3, emoji: '🔢', color: '#2979ff',
+    title: 'NUMBERS & TIME',
+    sub: 'Count, Tell Time, Say Dates',
+    desc: 'Count to 10,000, tell the time, and say today\'s date in Japanese!',
+    status: 'unlocked',
+    progress: 0,
+    xp: 280,
+    tags: ['Numbers 1-10,000', 'Telling Time', 'Days of the Week', 'Story Ch.3'],
+    lessons: [
+      { label: '🔢 Numbers Lesson', href: '#', done: false },
+      { label: '📕 Story Ch.3', href: 'story3.html', done: false },
+    ],
+  },
+  {
+    num: 4, emoji: '🖊️', color: '#ff6b2b',
+    title: 'FIRST KANJI',
+    sub: 'JLPT N5 Kanji — Part 1',
+    desc: 'Learn your first 20 essential kanji: sun, moon, mountain, river, fire, water and more!',
+    status: 'unlocked',
+    progress: 0,
+    xp: 320,
+    tags: ['20 Essential Kanji', 'N5 Level', 'Stroke Order', 'Story Ch.4'],
+    lessons: [
+      { label: '🖊️ Kanji Lessons', href: 'kanji.html', done: false },
+      { label: '📕 Story Ch.4', href: 'story4.html', done: false },
+    ],
+  },
+  {
+    num: 5, emoji: '🍜', color: '#ff6eb4',
+    title: 'FOOD & SHOPPING',
+    sub: 'Order food, shop, use numbers',
+    desc: 'Walk into any restaurant or shop in Japan and order confidently!',
+    status: 'unlocked',
+    progress: 0,
+    xp: 300,
+    tags: ['Food Vocabulary', 'Shopping Phrases', 'Prices & Money', 'Story Ch.5'],
+    lessons: [
+      { label: '💬 Food Vocab', href: 'vocabulary.html', done: false },
+      { label: '📕 Story Ch.5', href: 'story5.html', done: false },
+    ],
+  },
+  {
+    num: 6, emoji: '✈️', color: '#00e5ff',
+    title: 'TRAVEL JAPANESE',
+    sub: 'Airports, Trains, Hotels',
+    desc: 'Navigate Japan like a pro — buy tickets, check into hotels, and ask for directions!',
+    status: 'unlocked',
+    progress: 0,
+    xp: 340,
+    tags: ['Train Vocabulary', 'Hotel Check-in', 'Directions', 'Japan Map'],
+    lessons: [
+      { label: '🗾 Japan Map', href: 'japan-map.html', done: false },
+      { label: '✈️ Travel Phrases', href: '#', done: false },
+    ],
+    milestone: '🏆 Mid-Year Milestone!',
+  },
+  {
+    num: 7, emoji: '🖊️', color: '#a855f7',
+    title: 'KANJI MASTER I',
+    sub: 'JLPT N5 Kanji — Part 2 (40 total)',
+    desc: 'Double your kanji knowledge to 40 characters. You can now read basic signs and menus!',
+    status: 'unlocked',
+    progress: 0,
+    xp: 380,
+    tags: ['Kanji 21-40', 'Compound Words', 'Reading Practice'],
+    lessons: [
+      { label: '🖊️ Advanced Kanji', href: 'kanji.html', done: false },
+    ],
+  },
+  {
+    num: 8, emoji: '📝', color: '#00e676',
+    title: 'BASIC GRAMMAR',
+    sub: 'は · が · を · に · で',
+    desc: 'Unlock the building blocks of Japanese sentences! Learn the key grammar particles.',
+    status: 'unlocked',
+    progress: 0,
+    xp: 400,
+    tags: ['Particles は が を', 'Verb Forms', 'Basic Sentences', 'Grammar Lessons'],
+    lessons: [
+      { label: '📝 Grammar Lesson 1', href: '#', done: false },
+      { label: '📝 Grammar Lesson 2', href: '#', done: false },
+    ],
+    comingSoon: true,
+  },
+  {
+    num: 9, emoji: '🎌', color: '#ff3a5c',
+    title: 'CULTURE & ANIME',
+    sub: 'Japan through media & traditions',
+    desc: 'Explore Japan\'s amazing culture — anime, manga, festivals, food culture, and traditions!',
+    status: 'unlocked',
+    progress: 0,
+    xp: 300,
+    tags: ['Japanese Culture', 'Anime Vocabulary', 'Festivals & Events', 'Pop Culture'],
+    lessons: [
+      { label: '🎌 Culture Hub', href: '#', done: false },
+    ],
+    comingSoon: true,
+  },
+  {
+    num: 10, emoji: '📚', color: '#ffaa00',
+    title: 'N4 FOUNDATIONS',
+    sub: 'Level up from N5 to N4',
+    desc: 'Begin the next level! 500+ vocabulary words, 80 kanji, and intermediate grammar awaits.',
+    status: 'unlocked',
+    progress: 0,
+    xp: 450,
+    tags: ['N4 Vocabulary', 'Kanji 41-80', 'Intermediate Grammar'],
+    lessons: [
+      { label: '📚 N4 Vocabulary', href: '#', done: false },
+    ],
+    comingSoon: true,
+  },
+  {
+    num: 11, emoji: '👂', color: '#00bfa5',
+    title: 'LISTENING & SPEAKING',
+    sub: 'Understand real Japanese audio',
+    desc: 'Train your ears with listening exercises based on real everyday Japanese conversations!',
+    status: 'unlocked',
+    progress: 0,
+    xp: 420,
+    tags: ['Listening Practice', 'Pronunciation', 'Shadowing Exercise', 'Audio Quiz'],
+    lessons: [
+      { label: '👂 Listening Quiz', href: '#', done: false },
+    ],
+    comingSoon: true,
+  },
+  {
+    num: 12, emoji: '🎓', color: '#ffd700',
+    title: 'GRAND GRADUATION',
+    sub: 'Final Exam + Certificate',
+    desc: 'A comprehensive final test covering everything from Month 1 to 12 — then earn your certificate!',
+    status: 'unlocked',
+    progress: 0,
+    xp: 500,
+    tags: ['Full Review', 'Grand Final Exam', 'Certificate 🎓', 'N5 Ready!'],
+    lessons: [
+      { label: '🎓 Final Exam', href: '#', done: false },
+    ],
+    comingSoon: true,
+    milestone: '🎌 1-Year Achievement!',
+  },
+];
+
+// ── BUILD MONTH CARDS ──
+function buildMonthCards() {
+  const grid = document.getElementById('monthsGrid');
+
+  MONTHS.forEach((m, idx) => {
+    const card = document.createElement('div');
+    card.className = `month-card ${m.status} reveal`;
+    card.style.setProperty('--mc', m.color);
+
+    const statusIcon = m.status === 'completed' ? '✅' : m.status === 'current' ? '⭐' : m.status === 'unlocked' ? '🔓' : '🔒';
+    const actionBtn = m.status === 'completed'
+      ? `<a class="action-btn review" href="${m.lessons[0]?.href || '#'}">Review →</a>`
+      : m.status === 'current'
+      ? `<a class="action-btn go" href="${m.lessons.find(l=>!l.done)?.href || '#'}">Continue →</a>`
+      : m.status === 'unlocked'
+      ? `<a class="action-btn go" href="${m.lessons[0]?.href || '#'}">Start →</a>`
+      : `<div class="action-btn locked-btn">🔒 Locked</div>`;
+
+    const progressFillColor = m.status === 'completed' ? 'var(--green)' : m.status === 'current' ? 'var(--gold)' : 'var(--gray)';
+    const tagsHtml = m.tags.map(t => `<div class="month-tag ${m.status==='completed'?'done':''}">${t}</div>`).join('');
+
+    const milestoneHtml = m.milestone ? `<div style="margin-top:6px;padding:4px 10px;border-radius:20px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.2);display:inline-block;font-size:0.65rem;font-weight:900;color:var(--gold)">${m.milestone}</div>` : '';
+    const comingSoonHtml = m.comingSoon ? `<div style="margin-top:4px;font-size:0.62rem;color:var(--gray);font-weight:700">🚧 Content coming soon — releasing monthly!</div>` : '';
+
+    card.innerHTML = `
+      <div class="month-inner">
+        <div class="month-bar" style="background:${m.color}"></div>
+        <div class="month-num-col">
+          <div class="month-num" style="color:${m.color}">${String(m.num).padStart(2,'0')}</div>
+          <div class="month-word">Month</div>
+          <div class="month-status-icon">${statusIcon}</div>
+        </div>
+        <div class="month-content">
+          <div class="month-header">
+            <div class="month-emoji">${m.emoji}</div>
+            <div>
+              <div class="month-title">${m.title}</div>
+              <div class="month-sub">${m.sub}</div>
+            </div>
+          </div>
+          <div class="month-tags">${tagsHtml}</div>
+          ${milestoneHtml}
+          ${comingSoonHtml}
+          ${m.status !== 'locked' ? `
+            <div class="month-progress">
+              <div class="mp-track"><div class="mp-fill" style="width:${m.progress}%;background:${progressFillColor}"></div></div>
+              <div class="mp-label">${m.progress}% complete${m.status==='completed'?' — Well done! 🎉':''}</div>
+            </div>
+          ` : ''}
+        </div>
+        <div class="month-action">
+          ${actionBtn}
+          <div class="xp-reward">+${m.xp} XP</div>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+// ── UPDATE HERO STATS ──
+function updateStats() {
+  const completed = MONTHS.filter(m => m.status === 'completed').length;
+  const current   = MONTHS.find(m => m.status === 'current')?.num || 1;
+  const remaining = 12 - current;
+  const pct       = Math.round((completed / 12) * 100);
+
+  document.getElementById('completedCount').textContent = completed;
+  document.getElementById('currentMonthNum').textContent = current;
+  document.getElementById('remainingCount').textContent  = remaining;
+  document.getElementById('navMonthBadge').textContent   = `Month ${current} / 12`;
+  document.getElementById('overallPct').textContent      = `${pct}%`;
+
+  setTimeout(() => {
+    document.getElementById('overallFill').style.width = `${pct}%`;
+  }, 400);
+}
+
+// ── INTERSECTION OBSERVER ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), 60);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.05 });
+
+// ── INIT ──
+window.addEventListener('load', () => {
+  buildMonthCards();
+  updateStats();
+
+  // Load XP from profile state
+  try {
+    const s = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
+    if (s.xp) document.getElementById('totalXP').textContent = s.xp.toLocaleString();
+  } catch(e) {}
+
+  // Stagger the reveal animations
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.04}s`;
+    observer.observe(el);
+  });
+});
+</script>
+</body>
+</html>
+
+
