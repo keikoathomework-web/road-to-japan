@@ -1194,16 +1194,32 @@ function reviewAnswer(rating) {
 // =====================================================================
 // AUDIO
 // =====================================================================
+let currentUtterance = null; // keep a reference so Chrome doesn't garbage-collect it mid-speech
+
 function playAudio() {
   const btn = document.getElementById('audioBtn');
   btn.classList.add('playing'); btn.textContent = '🔊 Playing...';
-  if ('speechSynthesis' in window) {
+
+  if (!('speechSynthesis' in window)) {
+    setTimeout(() => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Sound'; }, 600);
+    return;
+  }
+
+  speechSynthesis.cancel(); // clear any stuck queue (common cause of silent playback)
+
+  const reset = () => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Sound'; };
+
+  if (window.rtjPlayKana) {
+    rtjPlayKana(selectedChar, '');
+    currentUtterance = speechSynthesis;
+    setTimeout(reset, 1200);
+  } else {
     const u = new SpeechSynthesisUtterance(selectedChar);
     u.lang = 'ja-JP'; u.rate = 0.8;
-    u.onend = () => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Sound'; };
+    u.onend = reset;
+    u.onerror = reset;
+    currentUtterance = u;
     speechSynthesis.speak(u);
-  } else {
-    setTimeout(() => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Sound'; }, 600);
   }
 }
 

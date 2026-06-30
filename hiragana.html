@@ -1067,19 +1067,34 @@ function reviewAnswer(rating) {
 // =====================================================================
 // AUDIO (simulated)
 // =====================================================================
+let currentUtterance = null; // keep a reference so Chrome doesn't garbage-collect it mid-speech
+
 function playAudio() {
   const btn = document.getElementById('audioBtn');
   btn.classList.add('playing');
   btn.textContent = '🔊 Playing...';
 
-  // Use Web Speech API for Japanese TTS
-  if ('speechSynthesis' in window) {
+  if (!('speechSynthesis' in window)) {
+    setTimeout(() => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Sound'; }, 600);
+    return;
+  }
+
+  speechSynthesis.cancel(); // clear any stuck queue (common cause of silent playback)
+
+  const reset = () => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Sound'; };
+
+  if (window.rtjPlayKana) {
+    // Reuse the shared widget's voice picker (random male/female ja-JP voice)
+    rtjPlayKana(selectedChar, '');
+    currentUtterance = speechSynthesis;
+    setTimeout(reset, 1200);
+  } else {
     const utter = new SpeechSynthesisUtterance(selectedChar);
     utter.lang = 'ja-JP'; utter.rate = 0.8;
-    utter.onend = () => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Sound'; };
+    utter.onend = reset;
+    utter.onerror = reset;
+    currentUtterance = utter;
     speechSynthesis.speak(utter);
-  } else {
-    setTimeout(() => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Sound'; }, 600);
   }
 }
 
