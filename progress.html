@@ -47,7 +47,7 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
   border-bottom: 1px solid rgba(255,215,0,0.1);
 }
 .hero::before {
-  content: ''; position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(ellipse at 50% -10%, rgba(255,215,0,0.12), transparent 60%),
               radial-gradient(ellipse at 20% 110%, rgba(168,85,247,0.1), transparent 50%),
               radial-gradient(ellipse at 80% 110%, rgba(0,230,118,0.08), transparent 50%);
@@ -156,7 +156,7 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
   position: relative; overflow: hidden;
 }
 .current-spotlight::before {
-  content: ''; position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(ellipse at 80% 0%, rgba(255,215,0,0.08), transparent 60%);
 }
 .cs-tag { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); font-size: 0.65rem; font-weight: 900; letter-spacing: 1px; margin-bottom: 10px; position: relative; z-index: 1; }
@@ -189,7 +189,7 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
   border: 1px solid rgba(255,215,0,0.2); text-align: center; position: relative; overflow: hidden;
 }
 .grad-card::before {
-  content: ''; position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.1), transparent 60%);
 }
 .grad-emoji { font-size: 3rem; margin-bottom: 12px; position: relative; z-index: 1; }

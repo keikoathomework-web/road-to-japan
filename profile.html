@@ -54,7 +54,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
   position: relative; overflow: hidden;
 }
 .hero::before {
-  content: ''; position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(ellipse at 70% 0%, rgba(255,215,0,0.08) 0%, transparent 60%),
               radial-gradient(ellipse at 20% 100%, rgba(0,230,118,0.06) 0%, transparent 50%);
 }
@@ -101,7 +101,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
   padding: 22px 20px; margin-bottom: 20px; position: relative; overflow: hidden;
 }
 .streak-card::before {
-  content: ''; position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(ellipse at 50% -20%, rgba(255,165,0,0.15), transparent 60%);
 }
 .streak-top { display: flex; align-items: center; gap: 14px; position: relative; z-index: 1; margin-bottom: 18px; }
@@ -174,7 +174,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
   border: 1px solid rgba(168,85,247,0.25); position: relative; overflow: hidden;
 }
 .sub-card::before {
-  content: ''; position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(ellipse at 100% 0%, rgba(168,85,247,0.1), transparent 60%);
 }
 .sub-row { display: flex; align-items: center; gap: 10px; position: relative; z-index: 1; }
