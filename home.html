@@ -613,6 +613,7 @@ body {
   <div id="langSwitcherSlot" style="margin-right:8px"></div>
 
   <div class="avatar-btn" id="avatarBtn" onclick="toggleProfileDropdown()" title="My Profile">🦊</div>
+  <style>#avatarBtn img, .pd-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }</style>
 </header>
 
 <!-- PROFILE DROPDOWN -->
@@ -620,7 +621,7 @@ body {
 
   <!-- Header: avatar + name + plan -->
   <div class="pd-header">
-    <div class="pd-avatar">🦊</div>
+    <div class="pd-avatar" id="pdAvatar">🦊</div>
     <div>
       <div class="pd-name" id="pdName">KAI-KUN</div>
       <div class="pd-plan" id="pdPlan">🌱 Free Plan</div>
@@ -646,6 +647,10 @@ body {
 
   <!-- Menu items -->
   <div class="pd-menu">
+    <a class="pd-item" href="account.html">
+      <span class="pd-item-icon">⚙️</span> Account Settings
+      <span class="pd-item-arrow">→</span>
+    </a>
     <a class="pd-item" href="profile.html">
       <span class="pd-item-icon">👤</span> My Profile
       <span class="pd-item-arrow">→</span>
@@ -715,7 +720,7 @@ body {
     </a>
 
     <div class="nav-section-title">Account</div>
-    <a class="nav-item" href="#">
+    <a class="nav-item" href="account.html">
       <span class="nav-icon">⚙️</span><span class="nav-label">Settings</span>
     </a>
     <a class="nav-item" href="auth.html">
@@ -1194,6 +1199,12 @@ function initDashboardFromProfile() {
   document.getElementById('greetLevel').textContent = level;
   document.getElementById('xpBar').style.width = Math.round((xpIntoLevel / 300) * 100) + '%';
   document.getElementById('xpBarTxt').textContent = `${xpIntoLevel} / 300 XP`;
+
+  // Avatar (uploaded photo takes priority over the default emoji)
+  if (profile.avatar) {
+    document.getElementById('avatarBtn').innerHTML = `<img src="${profile.avatar}" alt="avatar">`;
+    document.getElementById('pdAvatar').innerHTML = `<img src="${profile.avatar}" alt="avatar">`;
+  }
 
   // Profile dropdown
   document.getElementById('pdName').textContent = name;

@@ -823,6 +823,9 @@ function showForgot() {
 function handleSocial(provider) {
   showToast(`Connecting to ${provider}...`, '');
   setTimeout(() => {
+    const profile = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
+    if (!profile.email) profile.email = `demo.${provider.toLowerCase()}@roadtojapan.com`;
+    localStorage.setItem('rtj_profile', JSON.stringify(profile));
     showScreen('screenOnboarding');
     showToast(`✓ Signed in with ${provider}!`, 'success');
   }, 1200);
@@ -879,6 +882,9 @@ function handleRegister(e) {
   btn.classList.add('loading'); btn.disabled = true;
   setTimeout(() => {
     btn.classList.remove('loading'); btn.disabled = false;
+    const profile = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
+    profile.email = email;
+    localStorage.setItem('rtj_profile', JSON.stringify(profile));
     showScreen('screenOnboarding');
     showToast('🎉 Account created! Let\'s set up your adventure.', 'success');
   }, 1800);
