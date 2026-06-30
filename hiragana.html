@@ -1079,16 +1079,15 @@ function playAudio() {
     return;
   }
 
-  speechSynthesis.cancel(); // clear any stuck queue (common cause of silent playback)
-
   const reset = () => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Sound'; };
 
   if (window.rtjPlayKana) {
-    // Reuse the shared widget's voice picker (random male/female ja-JP voice)
+    // Reuse the shared widget's voice picker (random male/female ja-JP voice).
+    // rtjPlayKana already handles cancel()+delay internally — don't cancel here too.
     rtjPlayKana(selectedChar, '');
-    currentUtterance = speechSynthesis;
     setTimeout(reset, 1200);
   } else {
+    speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(selectedChar);
     utter.lang = 'ja-JP'; utter.rate = 0.8;
     utter.onend = reset;

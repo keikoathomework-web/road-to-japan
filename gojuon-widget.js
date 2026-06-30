@@ -186,25 +186,35 @@
     return pool[Math.floor(Math.random() * pool.length)];
   }
 
+  let lastUtterance = null; // module-level reference — Chrome silently drops utterances that get GC'd
+
   window.rtjPlayKana = function(kana, romaji) {
     if (!('speechSynthesis' in window)) return;
     speechSynthesis.cancel();
-    const utt = new SpeechSynthesisUtterance(kana);
-    utt.lang = 'ja-JP';
-    utt.rate = 0.85;
-    utt.pitch = 1.0;
-    const v = getVoice();
-    if (v) {
-      utt.voice = v;
-      // Show voice badge
-      const badge = document.getElementById('rtj-voice-badge');
-      const gender = /kyoko|female|woman|haruka|mizuki/i.test(v.name) ? '👩 Female' : '👨 Male';
-      badge.textContent = `${gender} · ${romaji}`;
-      badge.classList.add('show');
-      clearTimeout(badgeTimer);
-      badgeTimer = setTimeout(() => badge.classList.remove('show'), 1800);
-    }
-    speechSynthesis.speak(utt);
+    // Chrome bug: speak() called in the same tick as cancel() is often silently dropped.
+    // A short delay lets the cancel actually flush before we queue the next utterance.
+    setTimeout(() => {
+      const utt = new SpeechSynthesisUtterance(kana);
+      utt.lang = 'ja-JP';
+      utt.rate = 0.85;
+      utt.pitch = 1.0;
+      const v = getVoice();
+      if (v) {
+        utt.voice = v;
+        const badge = document.getElementById('rtj-voice-badge');
+        const gender = /kyoko|female|woman|haruka|mizuki/i.test(v.name) ? '👩 Female' : '👨 Male';
+        if (badge) {
+          badge.textContent = romaji ? `${gender} · ${romaji}` : gender;
+          badge.classList.add('show');
+          clearTimeout(badgeTimer);
+          badgeTimer = setTimeout(() => badge.classList.remove('show'), 1800);
+        }
+      }
+      lastUtterance = utt;
+      speechSynthesis.speak(utt);
+      // Some Chrome builds need a kick — speak() can silently no-op without it.
+      if (speechSynthesis.paused) speechSynthesis.resume();
+    }, 60);
   };
 
   window.rtjCloseGojuon = function() {
@@ -215,11 +225,15 @@
   window.rtjPlayText = function(text, lang) {
     if (!('speechSynthesis' in window)) return;
     speechSynthesis.cancel();
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = lang || 'ja-JP';
-    utt.rate = 0.9;
-    const v = getVoice();
-    if (v) utt.voice = v;
-    speechSynthesis.speak(utt);
+    setTimeout(() => {
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.lang = lang || 'ja-JP';
+      utt.rate = 0.9;
+      const v = getVoice();
+      if (v) utt.voice = v;
+      lastUtterance = utt;
+      speechSynthesis.speak(utt);
+      if (speechSynthesis.paused) speechSynthesis.resume();
+    }, 60);
   };
 })();
