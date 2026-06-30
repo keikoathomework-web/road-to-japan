@@ -210,6 +210,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--white);min
 }
 </style>
 <script src="gojuon-widget.js"></script>
+<script src="progress-tracker.js"></script>
 </head>
 <body>
 
@@ -570,7 +571,9 @@ const CATS = {
 
 // STATE
 let state={};
-WORDS.forEach(w=>{state[w.jp]={status:'new',correct:0,wrong:0};});
+const savedState = window.RTJProgress ? RTJProgress.load('vocabulary') : {};
+WORDS.forEach(w=>{state[w.jp]=savedState[w.jp] || {status:'new',correct:0,wrong:0};});
+function persistState(){ if(window.RTJProgress) RTJProgress.save('vocabulary', state); }
 let selWord=WORDS[0].jp, curMode='study', curCat='all', selQT='jp2en';
 let quizQ=[],qIdx=0,qC=0,qW=0,qXP=0,quizAns=false;
 let revQ=[],rIdx=0,flipped=false;
@@ -799,6 +802,7 @@ function buildOpts(opts,correct){
       const jp=quizQ[qIdx].jp;
       if(ok){qC++;qXP+=10;state[jp].correct++;if(state[jp].correct>=3)state[jp].status='mastered';else state[jp].status='learning';updateProgress();refreshTile(jp);if(state[jp].status==='mastered')showToast('⭐',jp+' Mastered!',quizQ[qIdx].en+' — +10XP');}
       else{qW++;state[jp].wrong++;}
+      persistState();
       document.getElementById('aqC').textContent=qC;
       document.getElementById('aqW').textContent=qW;
       document.getElementById('aqXP').textContent=qXP;
@@ -817,7 +821,9 @@ function showQResult(){
   document.getElementById('qrSub').textContent=`${qC}/${total} correct · ${acc}% accuracy`;
   document.getElementById('qrScore').textContent=`${qC}/${total}`;
   document.getElementById('qrAcc').textContent=acc+'%';
-  document.getElementById('qrXP').textContent='+'+(qXP+(perfect?30:0));
+  const totalXP = qXP+(perfect?30:0);
+  document.getElementById('qrXP').textContent='+'+totalXP;
+  if(window.RTJProgress && totalXP>0) RTJProgress.addXP(totalXP);
   if(perfect) showToast('🏆','PERFECT!',`+${qXP+30} XP earned!`);
 }
 
@@ -856,8 +862,15 @@ function flipRevCard(){
 function revAns(r){
   const w=revQ[rIdx];
   if(r==='again'){state[w.jp].wrong++;state[w.jp].status='learning';revQ.push(revQ[rIdx]);}
-  else if(r==='easy'){state[w.jp].correct+=2;state[w.jp].status='mastered';showToast('⭐',w.jp+' Mastered!',w.en);}
-  else{state[w.jp].correct++;if(state[w.jp].correct>=3)state[w.jp].status='mastered';}
+  else if(r==='easy'){
+    state[w.jp].correct+=2;state[w.jp].status='mastered';
+    showToast('⭐',w.jp+' Mastered!',w.en);
+    if(window.RTJProgress) RTJProgress.addXP(10);
+  } else {
+    state[w.jp].correct++;if(state[w.jp].correct>=3)state[w.jp].status='mastered';
+    if(window.RTJProgress) RTJProgress.addXP(5);
+  }
+  persistState();
   updateProgress();rIdx++;showRevCard();
 }
 

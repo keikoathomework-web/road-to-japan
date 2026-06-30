@@ -274,6 +274,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--white);min
 }
 </style>
 <script src="gojuon-widget.js"></script>
+<script src="progress-tracker.js"></script>
 </head>
 <body>
 
@@ -621,7 +622,9 @@ const CATS = {
 
 // STATE
 let state = {};
-KANJI.forEach(k => { state[k.k] = {status:'new', correct:0, wrong:0}; });
+const savedState = window.RTJProgress ? RTJProgress.load('kanji') : {};
+KANJI.forEach(k => { state[k.k] = savedState[k.k] || {status:'new', correct:0, wrong:0}; });
+function persistState() { if (window.RTJProgress) RTJProgress.save('kanji', state); }
 let selectedK = KANJI[0].k;
 let currentMode = 'study';
 let currentCat = 'all';
@@ -893,6 +896,7 @@ function buildOpts(opts, correct, smallText) {
       const kk = quizQueue[qIdx].k;
       if (isRight) { qCorrect++; qXP += 10; state[kk].correct++; if (state[kk].correct >= 3) state[kk].status = 'mastered'; else state[kk].status = 'learning'; updateProgress(); refreshTile(kk); if (state[kk].status === 'mastered') showToast('⭐', kk + ' Mastered!', quizQueue[qIdx].m + ' — +10 XP'); }
       else { qWrong++; state[kk].wrong++; }
+      persistState();
       document.getElementById('aqCorrect').textContent = qCorrect;
       document.getElementById('aqWrong').textContent = qWrong;
       document.getElementById('aqXP').textContent = qXP;
@@ -915,6 +919,7 @@ function showResult() {
   document.getElementById('qrScore').textContent = `${qCorrect}/${total}`;
   document.getElementById('qrAcc').textContent = acc + '%';
   document.getElementById('qrXP').textContent = '+' + (qXP + bonus);
+  if (window.RTJProgress && (qXP + bonus) > 0) RTJProgress.addXP(qXP + bonus);
   if (perfect) showToast('🏆', 'PERFECT!', `Master of kanji! +${qXP+bonus} XP`);
 }
 
@@ -956,8 +961,15 @@ function flipCard() {
 function reviewAns(r) {
   const kj = reviewQueue[rIdx];
   if (r === 'again') { state[kj.k].wrong++; state[kj.k].status = 'learning'; reviewQueue.push(reviewQueue[rIdx]); }
-  else if (r === 'easy') { state[kj.k].correct += 2; state[kj.k].status = 'mastered'; showToast('⭐', kj.k + ' Mastered!', kj.m); }
-  else { state[kj.k].correct++; if (state[kj.k].correct >= 3) state[kj.k].status = 'mastered'; }
+  else if (r === 'easy') {
+    state[kj.k].correct += 2; state[kj.k].status = 'mastered';
+    showToast('⭐', kj.k + ' Mastered!', kj.m);
+    if (window.RTJProgress) RTJProgress.addXP(10);
+  } else {
+    state[kj.k].correct++; if (state[kj.k].correct >= 3) state[kj.k].status = 'mastered';
+    if (window.RTJProgress) RTJProgress.addXP(5);
+  }
+  persistState();
   updateProgress(); rIdx++; showReviewCard();
 }
 
