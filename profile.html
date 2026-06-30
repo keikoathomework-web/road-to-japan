@@ -296,6 +296,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 </style>
 <script src="gojuon-widget.js"></script>
+<script src="progress-tracker.js"></script>
 </head>
 <body>
 
@@ -319,17 +320,16 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
       <div class="hero-info">
         <div class="hero-name" id="displayName">YUKI KAI</div>
         <div class="hero-email" id="displayEmail">keikoathomework@gmail.com</div>
-        <div class="hero-badges">
-          <span class="badge badge-premium">⭐ Premium</span>
+        <div class="hero-badges" id="heroBadges">
           <span class="badge badge-level" id="levelBadge">N5 Beginner</span>
-          <span class="badge badge-country">🇺🇸 English</span>
+          <span class="badge badge-country" id="langBadge">🇺🇸 English</span>
         </div>
       </div>
     </div>
     <div class="xp-section">
       <div class="xp-row">
         <div class="xp-label">Level Progress — N5 → N4</div>
-        <div class="xp-val" id="xpVal">1,240 / 3,000 XP</div>
+        <div class="xp-val" id="xpVal">0 / 3,000 XP</div>
       </div>
       <div class="xp-track">
         <div class="xp-fill" id="xpFill"></div>
@@ -858,6 +858,59 @@ function showToast(msg) {
   setTimeout(()=>t.remove(), 3000);
 }
 
+// ── HERO XP / PLAN / LANGUAGE (real data) ──
+function renderHero() {
+  const xp = state.xp || 0;
+  const xpGoal = 3000;
+  document.getElementById('xpVal').textContent = `${xp.toLocaleString()} / ${xpGoal.toLocaleString()} XP`;
+  const pct = Math.min(100, (xp / xpGoal) * 100);
+  setTimeout(() => { document.getElementById('xpFill').style.width = pct + '%'; }, 300);
+
+  const badges = document.getElementById('heroBadges');
+  const plan = state.plan || 'free';
+  const existingPremium = badges.querySelector('.badge-premium');
+  if (existingPremium) existingPremium.remove();
+  if (plan !== 'free') {
+    const span = document.createElement('span');
+    span.className = 'badge badge-premium';
+    span.textContent = plan === 'standard' ? '⚔️ Standard' : '👑 Premium';
+    badges.prepend(span);
+  }
+
+  const langFlags = { en: '🇺🇸 English', es: '🇪🇸 Español' };
+  document.getElementById('langBadge').textContent = langFlags[state.lang] || langFlags.en;
+}
+
+// ── SKILLS PROGRESS (real data from progress-tracker.js) ──
+const SKILL_CATEGORIES = [
+  { key: 'hiragana',   total: 46, prefix: 'Hiragana' },
+  { key: 'katakana',   total: 46, prefix: 'Katakana' },
+  { key: 'kanji',      total: 20, prefix: 'Kanji' },
+  { key: 'vocabulary', total: 50, prefix: 'Vocabulary' },
+];
+
+function renderSkillsProgress() {
+  if (!window.RTJProgress) return;
+  SKILL_CATEGORIES.forEach(cat => {
+    const cap = cat.key.charAt(0).toUpperCase() + cat.key.slice(1);
+    const pctEl = document.getElementById('pct' + cap);
+    const barEl = document.getElementById('bar' + cap);
+    const skillsEl = document.getElementById('skills' + cap);
+    if (!pctEl || !barEl || !skillsEl) return;
+
+    const stats = RTJProgress.getStats(cat.key, cat.total);
+    pctEl.textContent = stats.pct + '%';
+    barEl.style.width = stats.pct + '%';
+    barEl.setAttribute('data-pct', stats.pct);
+
+    if (stats.mastered === 0 && stats.learning === 0) {
+      skillsEl.innerHTML = '<span class="skill-chip">Not started yet 🔒</span>';
+    } else {
+      skillsEl.innerHTML = `<span class="skill-chip">${stats.mastered} mastered ✅</span><span class="skill-chip">${stats.learning} learning 🔄</span><span class="skill-chip">${stats.new} new 🔒</span>`;
+    }
+  });
+}
+
 // ── SCROLL REVEAL ──
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
@@ -870,6 +923,8 @@ window.addEventListener('load', () => {
   renderBadges();
   renderBars();
   renderSubDates();
+  renderSkillsProgress();
+  renderHero();
 
   // Apply saved avatar & name
   if (state.avatar) document.getElementById('mainAvatar').textContent = state.avatar;
@@ -878,9 +933,6 @@ window.addEventListener('load', () => {
 
   // Observe reveals
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Animate XP bar
-  setTimeout(() => { document.getElementById('xpFill').style.width = '41.3%'; }, 300);
 
   // Animate lang bars
   setTimeout(() => {

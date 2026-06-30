@@ -369,6 +369,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--white);min
 }
 </style>
 <script src="gojuon-widget.js"></script>
+<script src="progress-tracker.js"></script>
 </head>
 <body>
 
@@ -701,8 +702,10 @@ let quizQueue = [], qIdx = 0, qCorrect = 0, qWrong = 0, qXP = 0;
 let reviewQueue = [], rIdx = 0, cardFlipped = false;
 let totalXP = 0, toastTimer;
 
-// Init state
-HIRA.forEach(h => { state[h.c] = {status:'new', correct:0, wrong:0}; });
+// Init state — load any real progress saved from previous visits
+const savedState = window.RTJProgress ? RTJProgress.load('hiragana') : {};
+HIRA.forEach(h => { state[h.c] = savedState[h.c] || {status:'new', correct:0, wrong:0}; });
+function persistState() { if (window.RTJProgress) RTJProgress.save('hiragana', state); }
 
 // =====================================================================
 // BUILD GRID
@@ -969,6 +972,7 @@ function renderOpts(opts, correct, isLarge) {
         state[quizQueue[qIdx].c].wrong++;
         state[quizQueue[qIdx].c].status = 'learning';
       }
+      persistState();
 
       document.getElementById('aqCorrect').textContent = qCorrect;
       document.getElementById('aqWrong').textContent = qWrong;
@@ -995,6 +999,7 @@ function showQuizResult() {
   document.getElementById('qrAcc').textContent = acc + '%';
   document.getElementById('qrXP').textContent = '+' + (qXP + bonus);
   totalXP += qXP + bonus;
+  if (window.RTJProgress && (qXP + bonus) > 0) RTJProgress.addXP(qXP + bonus);
 
   if (perfect) showToast('🏆', 'PERFECT SCORE!', `+${qXP + bonus} XP earned!`);
   else if (acc >= 70) showToast('⭐', 'Great job!', `${qCorrect}/${total} correct · +${qXP} XP`);
@@ -1055,10 +1060,13 @@ function reviewAnswer(rating) {
     state[h.c].correct += 2;
     state[h.c].status = 'mastered';
     showToast('⭐', h.c + ' Mastered!', 'もちもち! Great memory!');
+    if (window.RTJProgress) RTJProgress.addXP(10);
   } else {
     state[h.c].correct++;
     if (state[h.c].correct >= 3) state[h.c].status = 'mastered';
+    if (window.RTJProgress) RTJProgress.addXP(5);
   }
+  persistState();
   updateProgress();
   rIdx++;
   showReviewCard();
