@@ -458,7 +458,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; }
 // ── STRIPE CONFIG ──
 // ⚠️ Replace with your Stripe test publishable key (pk_test_...)
 const STRIPE_PK = 'pk_test_51ToE6OQTSGTc7shotMEB8ASCsEf8DQo0689xQ6qIYVZiV9G415GDsVBBCIVGWQUI5z0zybEl74IcwXN9w8lFWqC700CDk0atuI';
-const SUPABASE_URL = 'https://bskvxjlbywangxdiqhfi.supabase.co';
+const EDGE_FN_BASE = 'https://bskvxjlbywangxdiqhfi.supabase.co';
 
 let stripe, cardElement;
 let currentPlan = 'premium';
@@ -575,7 +575,7 @@ async function handlePayment() {
     }
 
     // 3. Call Edge Function
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/charge-subscription`, {
+    const res = await fetch(`${EDGE_FN_BASE}/functions/v1/charge-subscription`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
