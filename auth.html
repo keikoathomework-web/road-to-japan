@@ -511,7 +511,7 @@ html, body {
     </form>
 
     <div class="terms-txt" id="termsTxt">
-      By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+      By continuing you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.
     </div>
 
     <div class="auth-switch">
@@ -573,7 +573,7 @@ html, body {
     </form>
 
     <div class="terms-txt" id="regTermsTxt">
-      By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+      By signing up you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.
     </div>
 
     <div class="auth-switch">
@@ -778,6 +778,7 @@ html, body {
   <span id="toastMsg">Success!</span>
 </div>
 
+<script src="progress-tracker.js"></script>
 <script src="lang.js"></script>
 <script>
 // ===== STATE =====
@@ -814,6 +815,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const profile = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
       profile.email = session.user.email;
       localStorage.setItem('rtj_profile', JSON.stringify(profile));
+      if (window.RTJProgress) await RTJProgress.syncOnLogin();
       showScreen('screenOnboarding');
     } else if (params.get('signup') === '1') {
       showScreen('screenRegister');
@@ -828,13 +830,13 @@ const T = {
     googleTxt:'Continue with Google', appleTxt:'Continue with Apple',
     dividerOr:'or with email', emailLabel:'Email', pwLabel:'Password',
     forgotTxt:'Forgot password?', loginBtnTxt:'🎌 Let\'s Go!',
-    termsTxt:'By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.',
+    termsTxt:'By continuing you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.',
     noAccountTxt:'Don\'t have an account?', signUpLink:' Sign up free →',
     backBtn:'← Back to Site',
     regTitle:'JOIN THE QUEST', regSub:'Create your free account and start the adventure!',
     regGoogleTxt:'Sign up with Google', regDivider:'or with email',
     regEmailLabel:'Email', regPwLabel:'Password', regPwCLabel:'Confirm Password',
-    regBtnTxt:'🌸 Create Free Account', regTermsTxt:'By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.',
+    regBtnTxt:'🌸 Create Free Account', regTermsTxt:'By signing up you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.',
     haveAccountTxt:'Already have an account?', signInLink:' Sign in →',
     ob1Title:'CHOOSE YOUR LANGUAGE', ob1Sub:'Which language do you prefer for the app?',
     ob2Title:'YOUR JAPANESE LEVEL?', ob2Sub:'We\'ll personalize your adventure based on your level.',
@@ -987,8 +989,9 @@ function handleLogin(e) {
 
   btn.classList.add('loading'); btn.disabled = true;
   RTJAuth.signInWithEmail(email, pw)
-    .then(() => {
+    .then(async () => {
       btn.classList.remove('loading'); btn.disabled = false;
+      if (window.RTJProgress) await RTJProgress.syncOnLogin();
       showScreen('screenOnboarding');
       showToast('✓ Logged in successfully!', 'success');
     })
@@ -1024,11 +1027,12 @@ function handleRegister(e) {
 
   btn.classList.add('loading'); btn.disabled = true;
   RTJAuth.signUpWithEmail(email, pw)
-    .then(() => {
+    .then(async () => {
       btn.classList.remove('loading'); btn.disabled = false;
       const profile = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
       profile.email = email;
       localStorage.setItem('rtj_profile', JSON.stringify(profile));
+      if (window.RTJProgress) await RTJProgress.syncOnLogin();
       showScreen('screenOnboarding');
       showToast('🎉 Account created! Let\'s set up your adventure.', 'success');
     })

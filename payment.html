@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Road to Japan — Upgrade to Premium</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-<!-- Square Web Payments SDK (Sandbox) -->
-<!-- ⚠️ PRODUCTION: change to https://web.squarecdn.com/v1/square.js -->
-<script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
 <script src="supabase-client.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,7 +57,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; }
 .plan-opt:hover:not(.selected) { border-color: rgba(255,255,255,0.15); }
 .plan-badge {
   position: absolute; top: 10px; right: 10px; padding: 3px 9px; border-radius: 20px;
-  font-size: 0.6rem; font-weight: 900; letter-spacing: 0.5px;
+  font-size: 0.6rem; font-weight: 900; letter-spacing: 0.5px; pointer-events: none;
 }
 .plan-badge.popular { background: var(--gold2); color: #000; }
 .plan-badge.free-badge { background: rgba(255,255,255,0.1); color: var(--gray); }
@@ -223,9 +221,9 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; }
     <!-- ── LEFT COLUMN ── -->
     <div class="left-col">
 
-      <!-- Sandbox notice (remove in production) -->
+      <!-- Test mode notice -->
       <div class="sandbox-badge">
-        ⚠️ <span><strong>Sandbox Mode (testing only)</strong> — no real charges. Test card: <strong>4111 1111 1111 1111</strong>, any future expiry, any CVV.</span>
+        ⚠️ <span><strong>Test Mode (testing only)</strong> — no real charges. Test card: <strong>4242 4242 4242 4242</strong>, any future expiry, any CVV.</span>
       </div>
 
       <!-- Plan selector -->
@@ -353,9 +351,12 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; }
 
         <div class="secure-row">
           <div class="secure-item">🔒 SSL Encrypted</div>
-          <div class="secure-item">⬛ Powered by Square</div>
+          <div class="secure-item">💳 Powered by Stripe</div>
           <div class="secure-item">🔄 Cancel Anytime</div>
         </div>
+        <p style="text-align:center;margin-top:14px;font-size:0.72rem;color:var(--gray)">
+          By subscribing you agree to our <a href="terms.html" style="color:var(--gold);text-decoration:none">Terms of Service</a> and <a href="privacy.html" style="color:var(--gold);text-decoration:none">Privacy Policy</a>.
+        </p>
       </div>
 
       <!-- Free plan note -->
@@ -454,18 +455,17 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; }
 </div>
 
 <script>
-// ── SQUARE CONFIG ──
-// ⚠️ Replace these with your real Square credentials from the Square Developer Dashboard
-const APPLICATION_ID = 'sandbox-sq0idb-C-e6GtxXWyESMlRKw-dgNA';
-const LOCATION_ID    = 'LXQQSSFPKWW7H';
+// ── STRIPE CONFIG ──
+// ⚠️ Replace with your Stripe test publishable key (pk_test_...)
+const STRIPE_PK = 'pk_test_51ToE6OQTSGTc7shotMEB8ASCsEf8DQo0689xQ6qIYVZiV9G415GDsVBBCIVGWQUI5z0zybEl74IcwXN9w8lFWqC700CDk0atuI';
+const SUPABASE_URL = 'https://bskvxjlbywangxdiqhfi.supabase.co';
 
+let stripe, cardElement;
 let currentPlan = 'premium';
-let card = null;
-let sqReady = false;
 
 const PLANS = {
-  free:    { price: 0,     annual: false, label: 'FREE PLAN',    sub: 'Road to Japan — Free', btnText: '🌱 CONTINUE WITH FREE PLAN' },
-  premium: { price: 9.99,  annual: false, label: 'PREMIUM PLAN', sub: 'Road to Japan — Monthly', btnText: '🔒 START PREMIUM — $9.99 / month' },
+  free:    { price: 0,     annual: false, label: 'FREE PLAN',    sub: 'Road to Japan — Free',             btnText: '🌱 CONTINUE WITH FREE PLAN' },
+  premium: { price: 9.99,  annual: false, label: 'PREMIUM PLAN', sub: 'Road to Japan — Monthly',          btnText: '🔒 START PREMIUM — $9.99 / month' },
   annual:  { price: 79.00, annual: true,  label: 'ANNUAL PLAN',  sub: 'Road to Japan — Annual (Save 34%!)', btnText: '🔒 START ANNUAL — $79 / year ($6.58/mo)' },
 };
 
@@ -487,7 +487,6 @@ function selectPlan(plan) {
 function updateOrderTotal() {
   const p = PLANS[currentPlan];
   const savingsLine = document.getElementById('orderSavingsLine');
-
   if (currentPlan === 'annual') {
     const monthlyEquiv = (9.99 * 12).toFixed(2);
     const savings = (9.99 * 12 - 79).toFixed(2);
@@ -500,54 +499,40 @@ function updateOrderTotal() {
     document.getElementById('orderPrice').textContent = `$${p.price.toFixed(2)}`;
     savingsLine.style.display = 'none';
   }
-
   document.getElementById('orderTotal').textContent = `$${p.price.toFixed(2)}`;
   document.getElementById('pay-btn-text').textContent = p.btnText;
 }
 
-// ── SQUARE SDK INIT ──
-async function initSquare() {
-  if (!window.Square) {
-    console.warn('Square SDK not loaded — check APPLICATION_ID / LOCATION_ID');
-    showError('Payment system unavailable. Please check your Square credentials.');
+// ── STRIPE INIT ──
+function initStripe() {
+  if (!window.Stripe) {
+    showError('Payment system unavailable. Please refresh and try again.');
     return;
   }
-
-  try {
-    const payments = Square.payments(APPLICATION_ID, LOCATION_ID);
-
-    // Create card instance
-    card = await payments.card({
-      style: {
-        '.input-container': {
-          borderColor: 'rgba(255,255,255,0.1)',
-          borderRadius: '8px',
-        },
-        '.input-container.is-focus': {
-          borderColor: 'rgba(168,85,247,0.5)',
-        },
-        '.input-container.is-error': {
-          borderColor: 'rgba(255,58,92,0.6)',
-        },
-        '.message-text': { color: '#ff3a5c' },
-        '.message-icon': { color: '#ff3a5c' },
-        input: { color: '#fff', fontSize: '14px' },
-        'input::placeholder': { color: '#7a8099' },
-      }
-    });
-
-    await card.attach('#card-container');
-    sqReady = true;
-  } catch (e) {
-    console.error('Square init error:', e);
-    const detail = e?.message || e?.name || JSON.stringify(e);
-    showError(`Could not load the card form: ${detail}`);
-  }
+  stripe = Stripe(STRIPE_PK);
+  const elements = stripe.elements();
+  cardElement = elements.create('card', {
+    style: {
+      base: {
+        color: '#ffffff',
+        fontFamily: 'Nunito, sans-serif',
+        fontSize: '15px',
+        '::placeholder': { color: '#7a8099' },
+        iconColor: '#a855f7',
+      },
+      invalid: { color: '#ff3a5c', iconColor: '#ff3a5c' },
+    }
+  });
+  cardElement.mount('#card-container');
+  cardElement.on('change', (e) => {
+    if (e.error) showError(e.error.message);
+    else hideError();
+  });
 }
 
 // ── HANDLE PAYMENT ──
 async function handlePayment() {
-  if (!sqReady || !card) {
+  if (!stripe || !cardElement) {
     showError('Payment form is not ready. Please wait a moment and try again.');
     return;
   }
@@ -559,7 +544,6 @@ async function handlePayment() {
   if (!firstName || !lastName) { showError('Please enter your first and last name.'); return; }
   if (!email || !email.includes('@')) { showError('Please enter a valid email address.'); return; }
 
-  // Loading state
   const btn = document.getElementById('pay-btn');
   const btnText = document.getElementById('pay-btn-text');
   btn.classList.add('loading');
@@ -567,78 +551,86 @@ async function handlePayment() {
   hideError();
 
   try {
-    // Tokenize card
-    const result = await card.tokenize();
+    // 1. Create PaymentMethod via Stripe.js
+    const { paymentMethod, error } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+      billing_details: { name: `${firstName} ${lastName}`, email },
+    });
 
-    if (result.status === 'OK') {
-      const token = result.token;
-
-      // ── ⚠️ BACKEND REQUIRED ──
-      // Send `token`, `email`, `firstName`, `lastName`, and plan to your
-      // server-side endpoint, which calls the Square Payments API to charge the card.
-      //
-      // Example (replace with your actual endpoint):
-      //
-      // const response = await fetch('/api/create-subscription', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ token, email, firstName, lastName, plan: currentPlan })
-      // });
-      // const data = await response.json();
-      // if (!response.ok) throw new Error(data.error);
-
-      // DEMO: simulate server success (remove in production)
-      await new Promise(r => setTimeout(r, 1200));
-
-      // Show success
-      showSuccess(email);
-    } else {
-      const errs = result.errors?.map(e => e.message).join(' ') || 'Card error. Please check your details.';
-      showError(errs);
+    if (error) {
+      showError(error.message);
       btn.classList.remove('loading');
       btnText.textContent = PLANS[currentPlan].btnText;
+      return;
     }
+
+    // 2. Get Supabase session token
+    const session = await RTJAuth.getSession();
+    if (!session) {
+      showError('Please sign in to continue.');
+      btn.classList.remove('loading');
+      btnText.textContent = PLANS[currentPlan].btnText;
+      return;
+    }
+
+    // 3. Call Edge Function
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/charge-subscription`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`,
+      },
+      body: JSON.stringify({
+        paymentMethodId: paymentMethod.id,
+        plan: currentPlan,
+        email,
+        firstName,
+        lastName,
+      }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Payment failed');
+
+    // 4. Show success
+    showSuccess(email, data.renewDate);
+
   } catch (e) {
     console.error('Payment error:', e);
-    showError('Something went wrong. Please try again.');
+    showError(e.message || 'Something went wrong. Please try again.');
     btn.classList.remove('loading');
-    btnText.textContent = `🔒 START PREMIUM — $9.99 / month`;
+    btnText.textContent = PLANS[currentPlan].btnText;
   }
 }
 
 // ── SUCCESS ──
-function showSuccess(email) {
+function showSuccess(email, renewDateISO) {
   const now = new Date();
-  const renew = new Date(now);
-  const isAnnual = PLANS[currentPlan].annual;
-  if (isAnnual) renew.setFullYear(renew.getFullYear() + 1);
-  else renew.setMonth(renew.getMonth() + 1);
+  const renew = renewDateISO ? new Date(renewDateISO) : (() => {
+    const d = new Date(now);
+    PLANS[currentPlan].annual ? d.setFullYear(d.getFullYear()+1) : d.setMonth(d.getMonth()+1);
+    return d;
+  })();
 
   const fmt = d => d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-  const total = PLANS[currentPlan].price.toFixed(2);
 
   document.getElementById('successDate').textContent   = fmt(now);
   document.getElementById('successRenew').textContent  = fmt(renew);
   document.getElementById('successEmail').textContent  = email;
-  document.getElementById('successAmount').textContent = `$${total}`;
-
+  document.getElementById('successAmount').textContent = `$${PLANS[currentPlan].price.toFixed(2)}`;
   document.getElementById('successScreen').classList.add('show');
   launchConfetti();
 
-  // Save real subscription data — profile.html and home.html read this.
+  // Update localStorage so access-control.js immediately unlocks Premium pages
   try {
     const s = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
-    s.plan          = currentPlan === 'annual' ? 'premium' : currentPlan; // 'free' | 'standard' | 'premium'
-    s.billingCycle   = isAnnual ? 'annual' : 'monthly';
-    s.premium        = currentPlan !== 'free';
-    s.premiumStart    = now.toISOString();
-    s.premiumRenew    = renew.toISOString();
+    s.plan         = 'premium';
+    s.billingCycle = PLANS[currentPlan].annual ? 'annual' : 'monthly';
+    s.premiumStart = now.toISOString();
+    s.premiumRenew = renew.toISOString();
     localStorage.setItem('rtj_profile', JSON.stringify(s));
-
-    if (window.RTJAuth && RTJAuth.isConfigured()) {
-      RTJAuth.updateProfile({ plan: s.plan }).catch(err => console.error('[RTJAuth] plan sync failed:', err));
-    }
-  } catch(e) { console.error('Failed to save subscription state:', e); }
+  } catch(e) { console.error('localStorage update failed:', e); }
 }
 
 // ── CONFETTI ──
@@ -669,8 +661,9 @@ function hideError() {
 }
 
 // ── INIT ──
+window.addEventListener('rtjauth:ready', initStripe);
 window.addEventListener('load', () => {
-  initSquare();
+  if (window.RTJAuth) initStripe();
   updateOrderTotal();
 });
 </script>

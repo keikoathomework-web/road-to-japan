@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Road to Japan — Account Settings</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<script src="supabase-client.js"></script>
 <script src="gojuon-widget.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -388,13 +389,43 @@ function savePassword() {
   showMsg('✅ Password updated! (demo mode — not persisted to a server)', true);
 }
 
-function cancelSubscription() {
-  if (!confirm('Cancel your subscription? You will be downgraded to the Free Plan.')) return;
-  const p = getProfile();
-  p.plan = 'free';
-  saveProfileObj(p);
-  renderPage();
-  showMsg('Subscription cancelled. You are now on the Free Plan.', true);
+async function cancelSubscription() {
+  if (!confirm('Cancel your subscription?\n\nYou will keep Premium access until the end of your current billing period, then be downgraded to the Free Plan.')) return;
+
+  showMsg('⏳ Cancelling subscription...', true);
+
+  try {
+    const session = await RTJAuth.getSession();
+    if (!session) { showMsg('Please sign in to cancel.', false); return; }
+
+    const res = await fetch('https://bskvxjlbywangxdiqhfi.supabase.co/functions/v1/cancel-subscription', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`,
+      },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Cancellation failed');
+
+    /* Update localStorage */
+    const p = getProfile();
+    p.plan = 'free';
+    p.billingCycle = null;
+    p.premiumRenew = null;
+    saveProfileObj(p);
+    renderPage();
+
+    const cancelDate = data.cancelDate
+      ? new Date(data.cancelDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+      : '';
+    showMsg(`✅ Subscription cancelled. Premium access continues until ${cancelDate}.`, true);
+
+  } catch (e) {
+    console.error('[cancelSubscription]', e);
+    showMsg(`❌ ${e.message}`, false);
+  }
 }
 
 function logoutAccount() {
