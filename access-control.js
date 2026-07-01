@@ -60,6 +60,7 @@
       document.documentElement.style.visibility = 'hidden';
 
       const show = () => {
+        document.documentElement.style.visibility = 'visible';
         document.body.appendChild(buildPaywall(featureName || 'This feature'));
       };
       if (document.readyState === 'loading') {
