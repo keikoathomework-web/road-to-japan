@@ -661,10 +661,19 @@ function hideError() {
 }
 
 // ── INIT ──
-window.addEventListener('rtjauth:ready', initStripe);
+let stripeInited = false;
+function maybeInitStripe() {
+  if (stripeInited) return;
+  stripeInited = true;
+  initStripe();
+}
+window.addEventListener('rtjauth:ready', maybeInitStripe);
 window.addEventListener('load', () => {
-  if (window.RTJAuth) initStripe();
   updateOrderTotal();
+  // RTJAuth already ready (sync load) or wait up to 3s for async Supabase SDK
+  if (window.RTJAuth) { maybeInitStripe(); return; }
+  const t = setTimeout(() => maybeInitStripe(), 3000);
+  window.addEventListener('rtjauth:ready', () => clearTimeout(t), { once: true });
 });
 </script>
 </body>
