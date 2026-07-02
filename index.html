@@ -261,7 +261,7 @@ section > * { position: relative; z-index: 1; }
 .bento-tag-list { display:flex; flex-wrap:wrap; gap:5px; margin-top:10px; }
 .bento-tag { padding:3px 9px; border-radius:10px; font-size:0.7rem; font-weight:800; background:#F1F5F9; border:1px solid var(--border); color:var(--text); }
 .bento-glow { position:absolute; width:180px;height:180px; border-radius:50%; filter:blur(50px); pointer-events:none; bottom:-50px;right:-50px; z-index:0; opacity:0.6; }
-.bento-card > * { position:relative; z-index:1; }
+.bento-card > *:not(.bento-glow) { position:relative; z-index:1; }
 .bento-card.anime{border-color:#FBCFE8} .bento-card.anime .bento-glow{background:rgba(236,72,153,0.2)} .bento-card.anime .bento-title{color:var(--pink)}
 .bento-card.music{border-color:#A5F3FC} .bento-card.music .bento-glow{background:rgba(6,182,212,0.15)} .bento-card.music .bento-title{color:var(--cyan)}
 .bento-card.food{border-color:#FDE68A} .bento-card.food .bento-glow{background:rgba(245,158,11,0.15)} .bento-card.food .bento-title{color:#92400E}
