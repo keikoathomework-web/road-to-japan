@@ -618,9 +618,6 @@ body {
 
   <div class="header-spacer"></div>
 
-  <!-- Language Switcher (compact) -->
-  <div id="langSwitcherSlot" style="margin-right:8px"></div>
-
   <div class="avatar-btn" id="avatarBtn" onclick="toggleProfileDropdown()" title="My Profile">🦊</div>
   <style>#avatarBtn img, .pd-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }</style>
 </header>
@@ -679,11 +676,6 @@ body {
       <span class="pd-item-icon">⭐</span> Upgrade to Premium
       <span class="pd-item-arrow">→</span>
     </a>
-    <div class="pd-item" onclick="toggleLangFromDropdown()">
-      <span class="pd-item-icon">🌐</span>
-      <span id="pdLangLabel">Language: English</span>
-      <span class="pd-item-arrow">→</span>
-    </div>
 
     <div class="pd-divider"></div>
 
@@ -1296,10 +1288,7 @@ function confirmSignOut() {
   }
 }
 
-function toggleLangFromDropdown() {
-  document.getElementById('profileDropdown').classList.remove('open');
-  if (typeof RTJLang !== 'undefined') RTJLang.showScreen();
-}
+
 
 // ── LANGUAGE SWITCHER INIT ──
 (function initLang() {

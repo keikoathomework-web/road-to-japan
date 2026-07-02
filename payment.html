@@ -660,12 +660,13 @@ function hideError() {
   document.getElementById('error-msg').classList.remove('show');
 }
 
-// ── AUTH GUARD: redirect to login if not signed in ──
-window.addEventListener('rtjauth:ready', async () => {
-  const session = await RTJAuth.getSession();
-  if (!session) {
-    window.location.href = 'auth.html?next=payment.html';
-  }
+// ── AUTH GUARD: wait for INITIAL_SESSION before deciding ──
+window.addEventListener('rtjauth:ready', () => {
+  RTJAuth.client.auth.onAuthStateChange((event, session) => {
+    if (event === 'INITIAL_SESSION' && !session) {
+      window.location.href = 'auth.html?next=payment.html';
+    }
+  });
 });
 
 // ── INIT ──
