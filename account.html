@@ -11,11 +11,11 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #08090f;
-  --bg2: #0d0f1e;
-  --card: rgba(255,255,255,0.04);
-  --card2: rgba(255,255,255,0.07);
-  --border: rgba(255,255,255,0.08);
+  --bg: #F8FAFF;
+  --bg2: #EEF2FF;
+  --card: #FFFFFF;
+  --card2: #F0F4FF;
+  --border: rgba(0,87,168,0.12);
   --gold: #60A5FA;
   --gold2: #3B82F6;
   --red: #FF6B9D;
@@ -23,16 +23,16 @@
   --purple: #818CF8;
   --pink: #FF6B9D;
   --green: #34D399;
-  --white: #ffffff;
-  --gray: #7a8099;
-  --text: #d0d4e8;
+  --white: #1E293B;
+  --gray: #64748B;
+  --text: #1E293B;
 }
 
 html { scroll-behavior: smooth; }
 body {
   font-family: 'Nunito', sans-serif;
   background: var(--bg);
-  color: var(--white);
+  color: var(--text);
   min-height: 100vh;
   padding-bottom: 60px;
 }
@@ -40,8 +40,8 @@ body {
 /* HEADER */
 .top-header {
   position: sticky; top: 0; z-index: 100; height: 64px;
-  background: rgba(8,9,15,0.92); backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,87,168,0.1);
   display: flex; align-items: center; padding: 0 20px; gap: 14px;
 }
 .header-logo {
@@ -52,11 +52,11 @@ body {
 }
 .nav-back {
   display: flex; align-items: center; gap: 6px; padding: 7px 14px;
-  border-radius: 20px; background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10); color: rgba(255,255,255,0.75);
+  border-radius: 20px; background: rgba(0,87,168,0.06);
+  border: 1px solid rgba(0,87,168,0.1); color: rgba(255,255,255,0.75);
   font-size: 0.82rem; font-weight: 800; text-decoration: none; transition: all 0.2s;
 }
-.nav-back:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.nav-back:hover { background: rgba(0,87,168,0.1); color: #1E293B; }
 .header-spacer { flex: 1; }
 
 /* CONTAINER */
@@ -98,16 +98,16 @@ body {
 .plan-badge.premium { background: rgba(129,140,248,0.15); border: 1px solid rgba(129,140,248,0.4); color: #c490ff; }
 
 /* TABS */
-.tabs { display: flex; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 6px; margin-bottom: 20px; }
+.tabs { display: flex; gap: 8px; background: #FFFFFF; border: 1px solid rgba(0,87,168,0.12); border-radius: 16px; padding: 6px; margin-bottom: 20px; }
 .tab-btn {
   flex: 1; padding: 11px; border-radius: 11px; border: none; cursor: pointer;
   background: transparent; color: var(--gray); font-family: 'Nunito', sans-serif;
   font-size: 0.85rem; font-weight: 800; transition: all 0.2s;
 }
-.tab-btn.active { background: linear-gradient(135deg, #0057A8, #004494); color: #fff; }
+.tab-btn.active { background: linear-gradient(135deg, #0057A8, #004494); color: #1E293B; }
 
 /* CARD */
-.panel { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 26px; }
+.panel { background: #FFFFFF; border: 1px solid rgba(0,87,168,0.12); border-radius: 20px; padding: 26px; }
 .panel h2 { font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 1px; margin-bottom: 18px; color: var(--white); }
 
 .field { margin-bottom: 16px; }
@@ -116,8 +116,8 @@ body {
   text-transform: uppercase; color: var(--gray); margin-bottom: 7px;
 }
 .field input {
-  width: 100%; padding: 13px 16px; background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border); border-radius: 12px; color: var(--white);
+  width: 100%; padding: 13px 16px; background: #FFFFFF;
+  border: 1px solid rgba(0,87,168,0.12); border-radius: 12px; color: var(--white);
   font-family: 'Nunito', sans-serif; font-size: 0.92rem; font-weight: 600; outline: none;
   transition: all 0.2s;
 }
@@ -127,7 +127,7 @@ body {
 
 .btn-save {
   width: 100%; padding: 15px; margin-top: 6px;
-  background: linear-gradient(135deg, #0057A8, #004494); color: #fff;
+  background: linear-gradient(135deg, #0057A8, #004494); color: #1E293B;
   font-family: 'Bangers', cursive; font-size: 1.15rem; letter-spacing: 1px;
   border: none; border-radius: 13px; cursor: pointer; transition: all 0.2s;
   box-shadow: 0 4px 0 #002d6b;
@@ -149,24 +149,24 @@ body {
 .sub-active .sub-icon { font-size: 2.4rem; margin-bottom: 8px; }
 .sub-active h2 { font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 1px; margin-bottom: 16px; }
 .sub-row {
-  background: rgba(255,255,255,0.06); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px;
+  background: rgba(0,87,168,0.06); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px;
 }
 .sub-row .sr-label { font-size: 0.72rem; color: var(--gray); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
 .sub-row .sr-val { font-family: 'Orbitron', sans-serif; font-size: 1.05rem; font-weight: 900; color: var(--white); }
 .btn-cancel {
   width: 100%; margin-top: 8px; padding: 12px; border-radius: 12px;
-  background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+  background: rgba(0,87,168,0.06); border: 1px solid rgba(0,87,168,0.12);
   color: var(--text); font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
 }
 .btn-cancel:hover { background: rgba(255,107,157,0.1); border-color: rgba(255,107,157,0.3); color: var(--red); }
 
-.sub-free { text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 36px 26px; }
+.sub-free { text-align: center; background: #FFFFFF; border: 1px solid rgba(0,87,168,0.12); border-radius: 20px; padding: 36px 26px; }
 .sub-free .sf-icon { font-size: 3rem; margin-bottom: 10px; }
 .sub-free h2 { font-family: 'Bangers', cursive; font-size: 1.3rem; margin-bottom: 8px; }
 .sub-free p { color: var(--gray); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.5; }
 .btn-upgrade {
   display: block; width: 100%; padding: 15px; text-align: center; text-decoration: none;
-  background: linear-gradient(135deg, #0057A8, #004494); color: #fff;
+  background: linear-gradient(135deg, #0057A8, #004494); color: #1E293B;
   font-family: 'Bangers', cursive; font-size: 1.15rem; letter-spacing: 1px;
   border-radius: 13px; box-shadow: 0 4px 0 #002d6b; transition: all 0.2s;
 }
