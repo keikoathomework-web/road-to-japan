@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -11,11 +11,11 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg: #08090f;
-  --gold: #ffd700; --gold2: #ffaa00;
-  --red: #ff3a5c; --orange: #ff6b2b;
-  --cyan: #00e5ff; --teal: #00bfa5; --teal2: #00e5c5;
-  --purple: #a855f7; --pink: #ff6eb4;
-  --green: #00e676; --white: #ffffff;
+  --gold: #60A5FA; --gold2: #3B82F6;
+  --red: #FF6B9D; --orange: #F472B6;
+  --cyan: #38BDF8; --teal: #14B8A6; --teal2: #00e5c5;
+  --purple: #818CF8; --pink: #FF6B9D;
+  --green: #34D399; --white: #ffffff;
   --gray: #7a8099; --text: #d0d4e8;
   --border: rgba(255,255,255,0.08);
 }
@@ -57,7 +57,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
   position: absolute; inset: 0; pointer-events: none; z-index: 1;
   display: flex; align-items: center; justify-content: center;
   font-family: 'Bangers', cursive; font-size: 16vw; font-weight: 900;
-  color: rgba(0,229,255,0.04); letter-spacing: -1vw;
+  color: rgba(56,189,248,0.04); letter-spacing: -1vw;
   user-select: none; overflow: hidden;
   animation: kPulse 5s ease-in-out infinite alternate;
 }
@@ -131,8 +131,8 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .quiz-options { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
 .quiz-opt { padding:14px 10px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); cursor:pointer; transition:all 0.25s; font-family:'Nunito',sans-serif; font-size:0.9rem; font-weight:800; color:var(--text); }
 .quiz-opt:hover { background:rgba(0,191,165,0.08); border-color:rgba(0,191,165,0.3); transform:scale(1.03); }
-.quiz-opt.correct { background:rgba(0,230,118,0.15)!important; border-color:var(--green)!important; color:var(--green); animation:correctPop 0.4s ease; }
-.quiz-opt.wrong   { background:rgba(255,58,92,0.12)!important; border-color:var(--red)!important; color:var(--red); animation:wrongShake 0.4s ease; }
+.quiz-opt.correct { background:rgba(52,211,153,0.15)!important; border-color:var(--green)!important; color:var(--green); animation:correctPop 0.4s ease; }
+.quiz-opt.wrong   { background:rgba(255,107,157,0.12)!important; border-color:var(--red)!important; color:var(--red); animation:wrongShake 0.4s ease; }
 @keyframes correctPop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
 @keyframes wrongShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
 .quiz-progress-bar { height:4px; background:rgba(255,255,255,0.08); border-radius:2px; margin-bottom:20px; overflow:hidden; }
@@ -156,7 +156,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 /* ── CHAPTER END ── */
 .chapter-end { position:fixed; inset:0; z-index:150; background:rgba(0,0,0,0.97); display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeIn 0.6s; }
 .chapter-end.hidden { display:none; }
-.end-card { background:linear-gradient(135deg,rgba(0,191,165,0.08),rgba(0,229,255,0.05)); border:1px solid rgba(0,191,165,0.25); border-radius:28px; padding:48px 40px; max-width:500px; width:100%; text-align:center; box-shadow:0 0 100px rgba(0,191,165,0.1); animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.end-card { background:linear-gradient(135deg,rgba(0,191,165,0.08),rgba(56,189,248,0.05)); border:1px solid rgba(0,191,165,0.25); border-radius:28px; padding:48px 40px; max-width:500px; width:100%; text-align:center; box-shadow:0 0 100px rgba(0,191,165,0.1); animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
 .end-stars { font-size:2.5rem; margin-bottom:12px; letter-spacing:4px; }
 .end-label { font-size:0.75rem; font-weight:900; letter-spacing:3px; color:var(--teal); text-transform:uppercase; margin-bottom:8px; }
 .end-title { font-family:'Bangers',cursive; font-size:2.8rem; letter-spacing:3px; margin-bottom:6px; background:linear-gradient(135deg,#fff,var(--teal)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
@@ -179,7 +179,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .menu-btn { width:100%; padding:13px; margin-bottom:10px; border-radius:12px; font-family:'Nunito',sans-serif; font-weight:900; font-size:0.95rem; cursor:pointer; transition:all 0.2s; border:1px solid var(--border); }
 .menu-btn.primary { background:linear-gradient(135deg,var(--teal),var(--cyan)); color:#000; border:none; }
 .menu-btn.secondary { background:rgba(255,255,255,0.04); color:var(--text); }
-.menu-btn.danger { background:rgba(255,58,92,0.1); color:var(--red); border-color:rgba(255,58,92,0.2); }
+.menu-btn.danger { background:rgba(255,107,157,0.1); color:var(--red); border-color:rgba(255,107,157,0.2); }
 .menu-btn:hover { transform:scale(1.02); }
 
 @media (max-width:600px) {
@@ -218,23 +218,23 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 
   <div class="scene-area">
     <div class="char-sprite left hidden" id="spriteKai">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(0,191,165,0.15))">⚡</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(96,165,250,0.2),rgba(0,191,165,0.15))">⚡</div>
       <div class="sprite-name" style="color:var(--gold)">KAI</div>
     </div>
     <div class="char-sprite right hidden" id="spriteRyu">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(0,229,255,0.1))">🐉</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(129,140,248,0.2),rgba(56,189,248,0.1))">🐉</div>
       <div class="sprite-name" style="color:var(--purple)">RYU</div>
     </div>
     <div class="char-sprite center hidden" id="spriteSakura">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(255,110,180,0.2),rgba(0,191,165,0.1))">🌸</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(255,107,157,0.2),rgba(0,191,165,0.1))">🌸</div>
       <div class="sprite-name" style="color:var(--pink)">SAKURA</div>
     </div>
     <div class="char-sprite hidden" id="spriteMochi" style="right:20%;bottom:0">
-      <div class="sprite-bubble" style="width:70px;height:70px;font-size:3rem;background:linear-gradient(135deg,rgba(0,230,118,0.15),rgba(0,191,165,0.1))">🍡</div>
+      <div class="sprite-bubble" style="width:70px;height:70px;font-size:3rem;background:linear-gradient(135deg,rgba(52,211,153,0.15),rgba(0,191,165,0.1))">🍡</div>
       <div class="sprite-name" style="color:var(--green);font-size:0.8rem">MOCHI</div>
     </div>
     <div class="char-sprite center hidden" id="spriteYuki">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(0,229,255,0.2),rgba(0,191,165,0.15))">🎐</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(56,189,248,0.2),rgba(0,191,165,0.15))">🎐</div>
       <div class="sprite-name" style="color:var(--cyan)">YUKI</div>
     </div>
   </div>
@@ -308,18 +308,18 @@ const STORY = [
   {
     show:['kai','sakura'], hide:[],
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"I\'m here. I\'m actually IN Japan. Look at all these signs — I can read some of them now! <span class="jp-word" data-jp="出口" data-rom="deguchi" data-en="Exit">出口</span>... <span class="jp-word" data-jp="入口" data-rom="iriguchi" data-en="Entrance">入口</span>..."',
   },
   {
     speaking:'sakura',
-    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,110,180,0.12)',
+    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,107,157,0.12)',
     text:'"<span class="jp-word" data-jp="よくできました！" data-rom="Yoku dekimashita!" data-en="Well done!">よくできました！</span> You\'re already navigating! Exit and entrance — you\'re reading real signage, Kai-kun."',
   },
   {
     show:['ryu'], hide:[],
     speaking:'ryu',
-    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(168,85,247,0.15)',
+    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(129,140,248,0.15)',
     text:'"Don\'t celebrate too early. The scroll is somewhere in Kyōto — a city of 1,600 temples. We need information."',
   },
   // ── STATION ──
@@ -327,18 +327,18 @@ const STORY = [
     bg:'bg-station', kanjiBg:'駅',
     show:['mochi'], hide:[],
     speaking:'mochi',
-    speaker:'MOCHI', speakerColor:'var(--green)', tag:'Mascot', tagColor:'rgba(0,230,118,0.12)',
+    speaker:'MOCHI', speakerColor:'var(--green)', tag:'Mascot', tagColor:'rgba(52,211,153,0.12)',
     text:'"もちもち！ Mochi smells FOOD! <span class="jp-word" data-jp="ラーメン" data-rom="rāmen" data-en="Ramen noodle soup">ラーメン</span>! <span class="jp-word" data-jp="たこやき" data-rom="takoyaki" data-en="Octopus balls (street food)">たこやき</span>! JAPAN IS AMAZING!"',
     particles:'cyan',
   },
   {
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"Focus, Mochi! We need to find the <span class="jp-word" data-jp="案内所" data-rom="annaijo" data-en="Information center">案内所</span> — the information center. How do I ask in Japanese?"',
   },
   {
     speaking:'sakura',
-    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,110,180,0.12)',
+    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,107,157,0.12)',
     text:'"Try: <span class="jp-word" data-jp="すみません" data-rom="Sumimasen" data-en="Excuse me / Sorry to bother you">すみません</span>! That\'s your magic word — \"excuse me\". It opens every door in Japan."',
   },
   {
@@ -351,13 +351,13 @@ const STORY = [
   {
     id:'askedWell',
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"すみません! Fushimi Inari — <span class="jp-word" data-jp="どこですか？" data-rom="Doko desu ka?" data-en="Where is it?">どこですか？</span>"',
   },
   {
     id:'askedBasic',
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"Uh... <span class="jp-word" data-jp="すみません" data-rom="Sumimasen" data-en="Excuse me">すみません</span>... Fushimi Inari... <span class="jp-word" data-jp="どこですか？" data-rom="Doko desu ka?" data-en="Where is it?">どこですか？</span>"',
   },
   // Yuki appears
@@ -366,27 +366,27 @@ const STORY = [
     bg:'bg-station',
     show:['yuki'], hide:['mochi'],
     speaking:'yuki',
-    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(0,229,255,0.12)',
+    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(56,189,248,0.12)',
     text:'"<span class="jp-word" data-jp="あ！外国人だ！" data-rom="A! Gaikokujin da!" data-en="Oh! A foreigner!">あ！外国人だ！</span> You speak Japanese?! I am Yuki — I go to Kyōto high school. I love teaching Japanese to visitors!"',
   },
   {
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"<span class="jp-word" data-jp="はじめまして！" data-rom="Hajimemashite!" data-en="Nice to meet you! (first meeting)">はじめまして！</span> I\'m Kai! We\'re looking for Fushimi Inari Shrine. We think something important is hidden there."',
   },
   {
     speaking:'yuki',
-    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(0,229,255,0.12)',
+    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(56,189,248,0.12)',
     text:'"Fushimi Inari! <span class="jp-word" data-jp="もちろん！" data-rom="Mochiron!" data-en="Of course!">もちろん！</span> Ten thousand torii gates — the most beautiful place in Kyōto. But it\'s complicated to reach. I can guide you... if you pass my test!"',
   },
   {
     speaking:'ryu',
-    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(168,85,247,0.15)',
+    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(129,140,248,0.15)',
     text:'"Another test. Of course. What is it this time?"',
   },
   {
     speaking:'yuki',
-    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(0,229,255,0.12)',
+    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(56,189,248,0.12)',
     text:'"Simple! Ten Japanese words that you would USE in this city today — <span class="jp-word" data-jp="食べ物" data-rom="tabemono" data-en="Food">食べ物</span>, <span class="jp-word" data-jp="方向" data-rom="hōkō" data-en="Direction">方向</span>, <span class="jp-word" data-jp="時間" data-rom="jikan" data-en="Time">時間</span>... Vocabulary you can use RIGHT NOW."',
   },
   // VOCABULARY QUIZ
@@ -411,34 +411,34 @@ const STORY = [
     bg:'bg-gion', kanjiBg:'祇園',
     show:['kai','yuki','sakura'], hide:['ryu'],
     speaking:'yuki',
-    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(0,229,255,0.12)',
+    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(56,189,248,0.12)',
     text:'"<span class="jp-word" data-jp="すごい！" data-rom="Sugoi!" data-en="Amazing!">すごい！</span> Perfect score! You learn so fast, Kai-san! Come — this is <span class="jp-word" data-jp="祇園" data-rom="Gion" data-en="Historic geisha district of Kyōto">祇園</span>, the historic heart of Kyōto."',
     particles:'cyan',
   },
   {
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"It\'s... I can\'t believe I\'m here. Everything I\'ve been studying — it\'s all real. The signs, the people, the language... it all connects."',
   },
   {
     show:['ryu'], hide:[],
     speaking:'ryu',
-    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(168,85,247,0.15)',
+    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(129,140,248,0.15)',
     text:'"Yuki... you know this city well. Have you heard any legend about a Grand Scroll — <span class="jp-word" data-jp="大和の書" data-rom="Yamato no Sho" data-en="The Grand Scroll of Japan">大和の書</span>?"',
   },
   {
     speaking:'yuki',
-    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(0,229,255,0.12)',
+    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(56,189,248,0.12)',
     text:'"大和の書... <span class="jp-word" data-jp="知っています！" data-rom="Shitte imasu!" data-en="I know it!">知っています！</span> My <span class="jp-word" data-jp="おじいさん" data-rom="ojīsan" data-en="Grandfather">おじいさん</span> — grandfather — used to tell me stories. He said it\'s kept beneath the thousand torii of Fushimi Inari!"',
   },
   {
     speaking:'sakura',
-    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,110,180,0.12)',
+    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,107,157,0.12)',
     text:'"Then that\'s exactly where we\'re going. Yuki — will you come with us?"',
   },
   {
     speaking:'yuki',
-    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(0,229,255,0.12)',
+    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(56,189,248,0.12)',
     text:'"<span class="jp-word" data-jp="もちろん！" data-rom="Mochiron!" data-en="Of course!">もちろん！</span> I\'ve been waiting my whole life for someone to finally go looking for it!"',
   },
   // ── FUSHIMI GATE ──
@@ -451,17 +451,17 @@ const STORY = [
   },
   {
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"<span class="jp-word" data-jp="きれい..." data-rom="Kirei..." data-en="Beautiful...">きれい...</span> I just used a Japanese word I learned an hour ago to describe... this."',
   },
   {
     speaking:'mochi',
-    speaker:'MOCHI', speakerColor:'var(--green)', tag:'Mascot', tagColor:'rgba(0,230,118,0.12)',
+    speaker:'MOCHI', speakerColor:'var(--green)', tag:'Mascot', tagColor:'rgba(52,211,153,0.12)',
     text:'"もちもち... Mochi feels it. Something is at the top. Something ANCIENT. もちもち!"',
   },
   {
     speaking:'yuki',
-    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(0,229,255,0.12)',
+    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(56,189,248,0.12)',
     text:'"The final gate is at the summit. <span class="jp-word" data-jp="いきましょう！" data-rom="Ikimashō!" data-en="Let\'s go!">いきましょう！</span> Let\'s go! Together!"',
   },
   {
@@ -492,8 +492,8 @@ function buildStars() {
 function buildParticles(type='cyan'){
   const p=document.getElementById('particles'); p.innerHTML='';
   const cfg={
-    cyan:{count:14,colors:['rgba(0,229,255,0.3)','rgba(0,191,165,0.3)','rgba(0,255,220,0.2)'],sizes:[2,5]},
-    gold:{count:20,colors:['rgba(255,215,0,0.5)','rgba(255,180,0,0.4)','rgba(255,255,255,0.3)'],sizes:[3,7]},
+    cyan:{count:14,colors:['rgba(56,189,248,0.3)','rgba(0,191,165,0.3)','rgba(0,255,220,0.2)'],sizes:[2,5]},
+    gold:{count:20,colors:['rgba(96,165,250,0.5)','rgba(255,180,0,0.4)','rgba(255,255,255,0.3)'],sizes:[3,7]},
   };
   const c=cfg[type]||cfg.cyan;
   for(let i=0;i<c.count;i++){

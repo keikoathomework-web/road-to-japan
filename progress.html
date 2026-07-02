@@ -9,10 +9,10 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg: #0d1117; --bg2: #161b22; --bg3: #1c2230;
-  --gold: #ffd700; --gold2: #ffaa00; --gold3: #fff0a0;
-  --cyan: #00e5ff; --green: #00e676; --red: #ff3a5c;
-  --purple: #a855f7; --orange: #ff6b2b; --pink: #ff6eb4;
-  --teal: #00bfa5; --blue: #2979ff;
+  --gold: #60A5FA; --gold2: #3B82F6; --gold3: #DBEAFE;
+  --cyan: #38BDF8; --green: #34D399; --red: #FF6B9D;
+  --purple: #818CF8; --orange: #F472B6; --pink: #FF6B9D;
+  --teal: #14B8A6; --blue: #2979ff;
   --white: #fff; --gray: #7a8099; --text: #d0d4e8;
   --border: rgba(255,255,255,0.07);
 }
@@ -36,7 +36,7 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
 .nav-spacer { flex: 1; }
 .nav-month-badge {
   padding: 6px 14px; border-radius: 20px;
-  background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25);
+  background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.25);
   font-family: 'Orbitron', sans-serif; font-size: 0.72rem; font-weight: 900; color: var(--gold);
 }
 
@@ -44,17 +44,17 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
 .hero {
   background: linear-gradient(160deg, #0a0a2e 0%, #1a0d3a 40%, #0a2010 100%);
   padding: 36px 20px 32px; text-align: center; position: relative; overflow: hidden;
-  border-bottom: 1px solid rgba(255,215,0,0.1);
+  border-bottom: 1px solid rgba(96,165,250,0.1);
 }
 .hero::before {
   content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 50% -10%, rgba(255,215,0,0.12), transparent 60%),
-              radial-gradient(ellipse at 20% 110%, rgba(168,85,247,0.1), transparent 50%),
-              radial-gradient(ellipse at 80% 110%, rgba(0,230,118,0.08), transparent 50%);
+  background: radial-gradient(ellipse at 50% -10%, rgba(96,165,250,0.12), transparent 60%),
+              radial-gradient(ellipse at 20% 110%, rgba(129,140,248,0.1), transparent 50%),
+              radial-gradient(ellipse at 80% 110%, rgba(52,211,153,0.08), transparent 50%);
 }
 .hero-kana { position: absolute; font-size: 5rem; opacity: 0.04; font-weight: 900; top: 10px; left: 10px; }
 .hero-kana2 { position: absolute; font-size: 4rem; opacity: 0.04; font-weight: 900; bottom: 10px; right: 10px; }
-.hero-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25); color: var(--gold); font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; margin-bottom: 14px; position: relative; z-index: 1; }
+.hero-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.25); color: var(--gold); font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; margin-bottom: 14px; position: relative; z-index: 1; }
 .hero-title { font-family: 'Bangers', cursive; font-size: 2.8rem; letter-spacing: 4px; color: var(--white); line-height: 1; margin-bottom: 8px; position: relative; z-index: 1; }
 .hero-title span { background: linear-gradient(90deg, var(--gold), var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .hero-sub { font-size: 0.88rem; color: var(--text); line-height: 1.7; max-width: 480px; margin: 0 auto 22px; position: relative; z-index: 1; }
@@ -88,8 +88,8 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
   overflow: hidden; transition: all 0.3s; cursor: default;
   position: relative;
 }
-.month-card.completed { border-color: rgba(0,230,118,0.2); }
-.month-card.current { border-color: rgba(255,215,0,0.35); box-shadow: 0 0 0 1px rgba(255,215,0,0.15), 0 8px 32px rgba(0,0,0,0.4); }
+.month-card.completed { border-color: rgba(52,211,153,0.2); }
+.month-card.current { border-color: rgba(96,165,250,0.35); box-shadow: 0 0 0 1px rgba(0,87,168,0.15), 0 8px 32px rgba(0,0,0,0.4); }
 .month-card.locked { opacity: 0.55; }
 .month-card.unlocked { border-color: rgba(255,255,255,0.12); }
 .month-card:not(.locked):hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
@@ -126,7 +126,7 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
 .month-sub { font-size: 0.72rem; color: var(--gray); font-weight: 700; }
 .month-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
 .month-tag { padding: 3px 9px; border-radius: 10px; font-size: 0.62rem; font-weight: 900; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--text); }
-.month-tag.done { background: rgba(0,230,118,0.1); border-color: rgba(0,230,118,0.2); color: var(--green); }
+.month-tag.done { background: rgba(52,211,153,0.1); border-color: rgba(52,211,153,0.2); color: var(--green); }
 
 /* Progress within month */
 .month-progress { margin-top: 8px; }
@@ -141,10 +141,10 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
   border: none; cursor: pointer; white-space: nowrap; transition: all 0.2s;
   text-decoration: none; display: inline-block; text-align: center;
 }
-.action-btn.go { background: linear-gradient(135deg, var(--gold2), var(--gold)); color: #000; }
+.action-btn.go { background: linear-gradient(135deg, #0057A8, #004494); color: #fff; }
 .action-btn.go:hover { filter: brightness(1.1); transform: scale(1.05); }
-.action-btn.review { background: rgba(0,230,118,0.12); border: 1px solid rgba(0,230,118,0.25); color: var(--green); }
-.action-btn.review:hover { background: rgba(0,230,118,0.2); }
+.action-btn.review { background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.25); color: var(--green); }
+.action-btn.review:hover { background: rgba(52,211,153,0.2); }
 .action-btn.locked-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--gray); cursor: default; }
 .xp-reward { font-family: 'Orbitron', sans-serif; font-size: 0.65rem; color: var(--gold); font-weight: 900; }
 
@@ -152,14 +152,14 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
 .current-spotlight {
   border-radius: 20px; padding: 20px; margin-bottom: 24px;
   background: linear-gradient(135deg, #1a1200, #0d2010, #1a0d30);
-  border: 1px solid rgba(255,215,0,0.2);
+  border: 1px solid rgba(96,165,250,0.2);
   position: relative; overflow: hidden;
 }
 .current-spotlight::before {
   content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 80% 0%, rgba(255,215,0,0.08), transparent 60%);
+  background: radial-gradient(ellipse at 80% 0%, rgba(96,165,250,0.08), transparent 60%);
 }
-.cs-tag { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); font-size: 0.65rem; font-weight: 900; letter-spacing: 1px; margin-bottom: 10px; position: relative; z-index: 1; }
+.cs-tag { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; background: rgba(96,165,250,0.15); border: 1px solid rgba(96,165,250,0.3); color: var(--gold); font-size: 0.65rem; font-weight: 900; letter-spacing: 1px; margin-bottom: 10px; position: relative; z-index: 1; }
 .cs-row { display: flex; align-items: center; gap: 14px; position: relative; z-index: 1; }
 .cs-emoji { font-size: 2.5rem; }
 .cs-info { flex: 1; }
@@ -173,9 +173,9 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
   transition: all 0.2s;
 }
 .cs-lesson:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
-.cs-lesson.available { border-color: rgba(255,215,0,0.25); color: var(--gold); }
-.cs-lesson.available:hover { background: rgba(255,215,0,0.08); }
-.cs-lesson.done { border-color: rgba(0,230,118,0.25); color: var(--green); background: rgba(0,230,118,0.05); }
+.cs-lesson.available { border-color: rgba(96,165,250,0.25); color: var(--gold); }
+.cs-lesson.available:hover { background: rgba(96,165,250,0.08); }
+.cs-lesson.done { border-color: rgba(52,211,153,0.25); color: var(--green); background: rgba(52,211,153,0.05); }
 
 /* ── SECTION HEADER ── */
 .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
@@ -186,22 +186,22 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
 .grad-card {
   border-radius: 20px; padding: 28px; margin-top: 28px;
   background: linear-gradient(135deg, #1a1200 0%, #0d0d30 50%, #001a10 100%);
-  border: 1px solid rgba(255,215,0,0.2); text-align: center; position: relative; overflow: hidden;
+  border: 1px solid rgba(96,165,250,0.2); text-align: center; position: relative; overflow: hidden;
 }
 .grad-card::before {
   content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.1), transparent 60%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(96,165,250,0.1), transparent 60%);
 }
 .grad-emoji { font-size: 3rem; margin-bottom: 12px; position: relative; z-index: 1; }
 .grad-title { font-family: 'Bangers', cursive; font-size: 1.8rem; letter-spacing: 3px; color: var(--gold); margin-bottom: 8px; position: relative; z-index: 1; }
 .grad-sub { font-size: 0.85rem; color: var(--text); line-height: 1.7; max-width: 400px; margin: 0 auto 18px; position: relative; z-index: 1; }
 .grad-btn {
   display: inline-block; padding: 13px 28px; border-radius: 16px;
-  background: linear-gradient(135deg, var(--gold2), var(--gold)); color: #000;
+  background: linear-gradient(135deg, #0057A8, #004494); color: #fff;
   font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 2px;
   text-decoration: none; transition: all 0.2s; position: relative; z-index: 1;
 }
-.grad-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,215,0,0.3); }
+.grad-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(96,165,250,0.3); }
 
 /* ── MOBILE ── */
 @media(max-width: 580px) {
@@ -509,7 +509,7 @@ function buildMonthCards() {
     const progressFillColor = m.status === 'completed' ? 'var(--green)' : m.status === 'current' ? 'var(--gold)' : 'var(--gray)';
     const tagsHtml = m.tags.map(t => `<div class="month-tag ${m.status==='completed'?'done':''}">${t}</div>`).join('');
 
-    const milestoneHtml = m.milestone ? `<div style="margin-top:6px;padding:4px 10px;border-radius:20px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.2);display:inline-block;font-size:0.65rem;font-weight:900;color:var(--gold)">${m.milestone}</div>` : '';
+    const milestoneHtml = m.milestone ? `<div style="margin-top:6px;padding:4px 10px;border-radius:20px;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.2);display:inline-block;font-size:0.65rem;font-weight:900;color:var(--gold)">${m.milestone}</div>` : '';
     const comingSoonHtml = m.comingSoon ? `<div style="margin-top:4px;font-size:0.62rem;color:var(--gray);font-weight:700">🚧 Content coming soon — releasing monthly!</div>` : '';
 
     card.innerHTML = `

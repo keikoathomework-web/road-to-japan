@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -11,11 +11,11 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg: #08090f;
-  --gold: #ffd700; --gold2: #ffaa00; --gold3: #fff0a0;
-  --red: #ff3a5c; --orange: #ff6b2b;
-  --cyan: #00e5ff; --teal: #00bfa5;
-  --purple: #a855f7; --pink: #ff6eb4;
-  --green: #00e676; --white: #ffffff;
+  --gold: #60A5FA; --gold2: #3B82F6; --gold3: #DBEAFE;
+  --red: #FF6B9D; --orange: #F472B6;
+  --cyan: #38BDF8; --teal: #14B8A6;
+  --purple: #818CF8; --pink: #FF6B9D;
+  --green: #34D399; --white: #ffffff;
   --gray: #7a8099; --text: #d0d4e8;
   --border: rgba(255,255,255,0.08);
 }
@@ -34,11 +34,11 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
     linear-gradient(180deg,#0e0800 0%,#1a1000 20%,#241500 40%,#1a1000 60%,#0e0800 80%,#050300 100%);
 }
 .bg-scroll-glow {
-  background: linear-gradient(180deg,rgba(255,215,0,0.06)0%,rgba(0,0,0,0.5)100%),
+  background: linear-gradient(180deg,rgba(96,165,250,0.06)0%,rgba(0,0,0,0.5)100%),
     linear-gradient(180deg,#100a00 0%,#1e1200 20%,#2a1800 40%,#1e1200 60%,#100a00 80%,#060400 100%);
 }
 .bg-ending {
-  background: linear-gradient(180deg,rgba(255,215,0,0.1)0%,rgba(255,107,43,0.05)50%,rgba(0,0,0,0.4)100%),
+  background: linear-gradient(180deg,rgba(96,165,250,0.1)0%,rgba(255,107,43,0.05)50%,rgba(0,0,0,0.4)100%),
     linear-gradient(180deg,#080600 0%,#151000 25%,#201800 45%,#151000 70%,#080600 90%,#030200 100%);
 }
 
@@ -61,7 +61,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
   position: absolute; inset: 0; pointer-events: none; z-index: 1;
   display: flex; align-items: center; justify-content: center;
   font-family: 'Bangers', cursive; font-size: 18vw; font-weight: 900;
-  color: rgba(255,215,0,0.04); user-select: none; overflow: hidden;
+  color: rgba(96,165,250,0.04); user-select: none; overflow: hidden;
   animation: kPulse 4s ease-in-out infinite alternate; letter-spacing: -2vw;
 }
 @keyframes kPulse { from{opacity:0.4;transform:scale(1)} to{opacity:1;transform:scale(1.04)} }
@@ -69,7 +69,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 /* Gold radial glow (scroll activated) */
 .scroll-glow {
   position: absolute; inset: 0; pointer-events: none; z-index: 1;
-  background: radial-gradient(ellipse 60% 40% at 50% 60%, rgba(255,215,0,0.08) 0%, transparent 70%);
+  background: radial-gradient(ellipse 60% 40% at 50% 60%, rgba(96,165,250,0.08) 0%, transparent 70%);
   animation: glowPulse 2s ease-in-out infinite alternate; opacity: 0;
   transition: opacity 2s;
 }
@@ -80,14 +80,14 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .hud { position:relative; z-index:50; display:flex; align-items:center; gap:12px; padding:12px 20px; background:linear-gradient(180deg,rgba(0,0,0,0.8)0%,transparent 100%); }
 .hud-back { display:flex; align-items:center; gap:6px; padding:7px 16px; border-radius:20px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); font-size:0.82rem; font-weight:800; cursor:pointer; transition:all 0.2s; text-decoration:none; }
 .hud-back:hover { background:rgba(0,0,0,0.6); color:#fff; }
-.chapter-badge { display:flex; align-items:center; gap:8px; padding:7px 16px; border-radius:20px; background:rgba(255,215,0,0.15); border:1px solid rgba(255,215,0,0.4); font-size:0.8rem; font-weight:900; color:var(--gold); letter-spacing:1px; text-transform:uppercase; animation:badgePulse 2s ease-in-out infinite alternate; }
-@keyframes badgePulse { from{box-shadow:none} to{box-shadow:0 0 20px rgba(255,215,0,0.2)} }
+.chapter-badge { display:flex; align-items:center; gap:8px; padding:7px 16px; border-radius:20px; background:rgba(96,165,250,0.15); border:1px solid rgba(96,165,250,0.4); font-size:0.8rem; font-weight:900; color:var(--gold); letter-spacing:1px; text-transform:uppercase; animation:badgePulse 2s ease-in-out infinite alternate; }
+@keyframes badgePulse { from{box-shadow:none} to{box-shadow:0 0 20px rgba(0,87,168,0.2)} }
 .hud-spacer { flex:1; }
 .chapter-progress { display:flex; align-items:center; gap:6px; padding:7px 16px; border-radius:20px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); }
 .ch-dot { width:28px; height:5px; border-radius:3px; background:rgba(255,255,255,0.15); transition:all 0.4s; }
 .ch-dot.done { background:var(--gold); }
-.ch-dot.active { background:var(--gold); width:44px; box-shadow:0 0 10px rgba(255,215,0,0.5); }
-.hud-xp { display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:20px; background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); font-family:'Orbitron',sans-serif; font-size:0.8rem; font-weight:900; color:var(--gold); }
+.ch-dot.active { background:var(--gold); width:44px; box-shadow:0 0 10px rgba(0,87,168,0.5); }
+.hud-xp { display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:20px; background:rgba(96,165,250,0.1); border:1px solid rgba(96,165,250,0.3); font-family:'Orbitron',sans-serif; font-size:0.8rem; font-weight:900; color:var(--gold); }
 .hud-menu { width:36px; height:36px; border-radius:10px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
 .hud-menu:hover { background:rgba(255,255,255,0.08); }
 
@@ -108,12 +108,12 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 
 /* ── DIALOGUE ── */
 .dialogue-wrap { position:relative; z-index:20; padding:0 20px 20px; }
-.dialogue-box { background:rgba(6,4,0,0.94); border:1px solid rgba(255,215,0,0.12); border-radius:20px; padding:20px 24px; backdrop-filter:blur(24px); box-shadow:0 -20px 60px rgba(0,0,0,0.7); position:relative; cursor:pointer; transition:border-color 0.3s; }
-.dialogue-box:hover { border-color:rgba(255,215,0,0.25); }
+.dialogue-box { background:rgba(6,4,0,0.94); border:1px solid rgba(96,165,250,0.12); border-radius:20px; padding:20px 24px; backdrop-filter:blur(24px); box-shadow:0 -20px 60px rgba(0,0,0,0.7); position:relative; cursor:pointer; transition:border-color 0.3s; }
+.dialogue-box:hover { border-color:rgba(96,165,250,0.25); }
 .speaker-name { font-family:'Bangers',cursive; font-size:1.2rem; letter-spacing:2px; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
 .speaker-tag { font-size:0.65rem; font-weight:900; padding:2px 10px; border-radius:10px; letter-spacing:1px; text-transform:uppercase; }
 .dialogue-text { font-size:clamp(0.95rem,2.5vw,1.1rem); line-height:1.7; color:var(--text); min-height:3.3em; }
-.jp-word { color:var(--gold2); font-weight:900; cursor:pointer; border-bottom:2px dashed rgba(255,215,0,0.5); transition:all 0.2s; display:inline-block; }
+.jp-word { color:var(--gold2); font-weight:900; cursor:pointer; border-bottom:2px dashed rgba(96,165,250,0.5); transition:all 0.2s; display:inline-block; }
 .jp-word:hover { color:var(--gold); border-bottom-color:var(--gold); }
 .continue-hint { position:absolute; bottom:16px; right:20px; display:flex; align-items:center; gap:5px; font-size:0.72rem; font-weight:800; color:rgba(255,255,255,0.3); letter-spacing:1px; animation:blink 1.2s ease-in-out infinite; }
 .continue-hint.hidden { display:none; }
@@ -126,26 +126,26 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .choice-panel.hidden { display:none; }
 .choice-title { font-size:0.75rem; font-weight:900; letter-spacing:2px; color:var(--gray); text-transform:uppercase; text-align:center; margin-bottom:4px; }
 .choice-btn { padding:14px 20px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:14px; color:var(--white); font-family:'Nunito',sans-serif; font-weight:800; font-size:0.95rem; cursor:pointer; transition:all 0.25s; text-align:left; display:flex; align-items:center; gap:12px; }
-.choice-btn:hover { background:rgba(255,215,0,0.07); border-color:rgba(255,215,0,0.3); transform:translateX(6px); }
+.choice-btn:hover { background:rgba(96,165,250,0.07); border-color:rgba(96,165,250,0.3); transform:translateX(6px); }
 .choice-btn .choice-num { width:28px; height:28px; border-radius:8px; flex-shrink:0; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; font-family:'Bangers',cursive; font-size:0.9rem; }
-.choice-btn:hover .choice-num { background:rgba(255,215,0,0.15); border-color:rgba(255,215,0,0.4); color:var(--gold); }
+.choice-btn:hover .choice-num { background:rgba(96,165,250,0.15); border-color:rgba(96,165,250,0.4); color:var(--gold); }
 
 /* ── QUIZ ── */
 .quiz-overlay { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.94); backdrop-filter:blur(16px); display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeIn 0.3s; }
 .quiz-overlay.hidden { display:none; }
 @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-.quiz-card { background:#090600; border:1px solid rgba(255,215,0,0.3); border-radius:28px; padding:36px 32px; max-width:540px; width:100%; text-align:center; animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 0 100px rgba(255,215,0,0.1); }
+.quiz-card { background:#090600; border:1px solid rgba(96,165,250,0.3); border-radius:28px; padding:36px 32px; max-width:540px; width:100%; text-align:center; animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 0 100px rgba(0,87,168,0.1); }
 @keyframes popIn { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
-.quiz-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 16px; border-radius:20px; margin-bottom:12px; background:rgba(255,215,0,0.12); border:1px solid rgba(255,215,0,0.3); font-size:0.72rem; font-weight:900; color:var(--gold); letter-spacing:2px; text-transform:uppercase; }
-.quiz-jp-big { font-size:4.5rem; font-weight:900; display:block; margin:10px 0 4px; background:linear-gradient(135deg,var(--gold3),var(--gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:kanjiReveal 0.4s cubic-bezier(0.34,1.56,0.64,1); filter:drop-shadow(0 0 16px rgba(255,215,0,0.3)); }
+.quiz-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 16px; border-radius:20px; margin-bottom:12px; background:rgba(96,165,250,0.12); border:1px solid rgba(96,165,250,0.3); font-size:0.72rem; font-weight:900; color:var(--gold); letter-spacing:2px; text-transform:uppercase; }
+.quiz-jp-big { font-size:4.5rem; font-weight:900; display:block; margin:10px 0 4px; background:linear-gradient(135deg,var(--gold3),var(--gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:kanjiReveal 0.4s cubic-bezier(0.34,1.56,0.64,1); filter:drop-shadow(0 0 16px rgba(0,87,168,0.3)); }
 @keyframes kanjiReveal { from{transform:scale(0.5) rotate(-8deg);opacity:0} to{transform:scale(1) rotate(0deg);opacity:1} }
 .quiz-rom { font-size:0.8rem; color:var(--gold2); font-weight:900; letter-spacing:2px; margin-bottom:6px; }
 .quiz-question { font-family:'Bangers',cursive; font-size:1.5rem; letter-spacing:1px; color:var(--white); margin-bottom:20px; line-height:1.3; }
 .quiz-options { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
 .quiz-opt { padding:14px 10px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); cursor:pointer; transition:all 0.25s; font-family:'Nunito',sans-serif; font-size:0.9rem; font-weight:800; color:var(--text); }
-.quiz-opt:hover { background:rgba(255,215,0,0.08); border-color:rgba(255,215,0,0.3); transform:scale(1.03); }
-.quiz-opt.correct { background:rgba(0,230,118,0.15)!important; border-color:var(--green)!important; color:var(--green); animation:correctPop 0.4s ease; }
-.quiz-opt.wrong   { background:rgba(255,58,92,0.12)!important; border-color:var(--red)!important; color:var(--red); animation:wrongShake 0.4s ease; }
+.quiz-opt:hover { background:rgba(96,165,250,0.08); border-color:rgba(96,165,250,0.3); transform:scale(1.03); }
+.quiz-opt.correct { background:rgba(52,211,153,0.15)!important; border-color:var(--green)!important; color:var(--green); animation:correctPop 0.4s ease; }
+.quiz-opt.wrong   { background:rgba(255,107,157,0.12)!important; border-color:var(--red)!important; color:var(--red); animation:wrongShake 0.4s ease; }
 @keyframes correctPop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
 @keyframes wrongShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
 .quiz-progress-bar { height:4px; background:rgba(255,255,255,0.08); border-radius:2px; margin-bottom:20px; overflow:hidden; }
@@ -155,12 +155,12 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .result-emoji { font-size:4rem; display:block; margin-bottom:12px; }
 .result-title { font-family:'Bangers',cursive; font-size:2.4rem; letter-spacing:2px; margin-bottom:8px; }
 .result-sub { color:var(--text); font-size:0.9rem; line-height:1.6; margin-bottom:24px; }
-.result-xp { display:inline-flex; align-items:center; gap:8px; padding:10px 24px; border-radius:20px; background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.35); font-family:'Orbitron',sans-serif; font-size:1.2rem; font-weight:900; color:var(--gold); margin-bottom:20px; }
-.result-continue-btn { width:100%; padding:16px; background:linear-gradient(135deg,var(--gold2),var(--gold)); color:#000; font-family:'Bangers',cursive; font-size:1.4rem; letter-spacing:2px; border:none; border-radius:14px; cursor:pointer; transition:all 0.25s; box-shadow:0 4px 0 #a07000; }
-.result-continue-btn:hover { transform:translateY(-2px); box-shadow:0 6px 0 #a07000; }
+.result-xp { display:inline-flex; align-items:center; gap:8px; padding:10px 24px; border-radius:20px; background:rgba(96,165,250,0.1); border:1px solid rgba(96,165,250,0.35); font-family:'Orbitron',sans-serif; font-size:1.2rem; font-weight:900; color:var(--gold); margin-bottom:20px; }
+.result-continue-btn { width:100%; padding:16px; background:linear-gradient(135deg,var(--gold2),var(--gold)); color:#000; font-family:'Bangers',cursive; font-size:1.4rem; letter-spacing:2px; border:none; border-radius:14px; cursor:pointer; transition:all 0.25s; box-shadow:0 4px 0 #002d6b; }
+.result-continue-btn:hover { transform:translateY(-2px); box-shadow:0 6px 0 #002d6b; }
 
 /* ── VOCAB POPUP ── */
-.vocab-popup { position:fixed; z-index:200; background:rgba(8,5,0,0.97); border:1px solid rgba(255,215,0,0.3); border-radius:16px; padding:14px 18px; max-width:240px; backdrop-filter:blur(20px); box-shadow:0 12px 40px rgba(0,0,0,0.8); animation:fadeIn 0.2s; pointer-events:none; }
+.vocab-popup { position:fixed; z-index:200; background:rgba(8,5,0,0.97); border:1px solid rgba(96,165,250,0.3); border-radius:16px; padding:14px 18px; max-width:240px; backdrop-filter:blur(20px); box-shadow:0 12px 40px rgba(0,0,0,0.8); animation:fadeIn 0.2s; pointer-events:none; }
 .vocab-popup.hidden { display:none; }
 .vp-jp { font-size:1.8rem; font-weight:700; color:var(--gold2); margin-bottom:4px; }
 .vp-rom { font-size:0.85rem; font-weight:900; color:var(--gold); margin-bottom:2px; }
@@ -180,7 +180,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .scroll-glyph {
   font-size: 7rem; display: block; margin-bottom: 16px;
   animation: scrollAppear 1.2s cubic-bezier(0.34,1.56,0.64,1) both;
-  filter: drop-shadow(0 0 40px rgba(255,215,0,0.6));
+  filter: drop-shadow(0 0 40px rgba(0,87,168,0.6));
 }
 @keyframes scrollAppear {
   from{transform:scale(0) rotate(-20deg);opacity:0}
@@ -195,18 +195,18 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .scroll-text {
   font-size:1rem; line-height:1.8; color:var(--text);
   margin-bottom:28px; animation:fadeIn 1s 0.8s both;
-  border-left:3px solid rgba(255,215,0,0.3);
+  border-left:3px solid rgba(96,165,250,0.3);
   padding-left:16px; text-align:left;
 }
 .scroll-text em { color:var(--gold2); font-style:normal; font-weight:900; }
 .scroll-continue {
   padding:14px 48px;
   background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#000; font-family:'Bangers',cursive; font-size:1.3rem; letter-spacing:2px;
+  color:#fff; font-family:'Bangers',cursive; font-size:1.3rem; letter-spacing:2px;
   border:none; border-radius:14px; cursor:pointer; transition:all 0.25s;
-  box-shadow:0 4px 0 #a07000; animation:fadeIn 1s 1.2s both;
+  box-shadow:0 4px 0 #002d6b; animation:fadeIn 1s 1.2s both;
 }
-.scroll-continue:hover { transform:translateY(-2px); box-shadow:0 6px 0 #a07000; }
+.scroll-continue:hover { transform:translateY(-2px); box-shadow:0 6px 0 #002d6b; }
 
 /* ── FINAL ENDING SCREEN ── */
 .final-ending {
@@ -225,7 +225,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
   font-family:'Bangers',cursive; font-size:clamp(2.4rem,7vw,4rem); letter-spacing:4px; line-height:1.1;
   background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  margin-bottom:12px; filter:drop-shadow(0 0 20px rgba(255,215,0,0.2));
+  margin-bottom:12px; filter:drop-shadow(0 0 20px rgba(0,87,168,0.2));
 }
 .ending-sub { color:var(--text); font-size:0.95rem; line-height:1.7; margin-bottom:32px; max-width:480px; margin-left:auto; margin-right:auto; }
 .ending-sub em { color:var(--gold2); font-style:normal; font-weight:900; }
@@ -236,7 +236,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
   margin-bottom:32px;
 }
 .parade-char {
-  background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.2);
+  background:rgba(96,165,250,0.08); border:1px solid rgba(96,165,250,0.2);
   border-radius:20px; padding:14px 18px; display:flex; flex-direction:column; align-items:center; gap:6px;
   animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
 }
@@ -246,30 +246,30 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 /* Stat grid */
 .stat-grid {
   display:grid; grid-template-columns:repeat(4,1fr); gap:0;
-  border:1px solid rgba(255,215,0,0.2); border-radius:20px; overflow:hidden;
+  border:1px solid rgba(96,165,250,0.2); border-radius:20px; overflow:hidden;
   margin-bottom:32px;
 }
-.stat-item { padding:16px 8px; text-align:center; border-right:1px solid rgba(255,215,0,0.1); }
+.stat-item { padding:16px 8px; text-align:center; border-right:1px solid rgba(96,165,250,0.1); }
 .stat-item:last-child { border-right:none; }
 .stat-num { font-family:'Orbitron',sans-serif; font-size:1.3rem; font-weight:900; color:var(--gold); }
 .stat-lbl { font-size:0.68rem; color:var(--gray); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-top:3px; }
 
 .ending-btn-group { display:flex; gap:12px; flex-direction:column; }
-.ending-btn-main { width:100%; padding:16px; background:linear-gradient(135deg,var(--gold2),var(--gold)); color:#000; font-family:'Bangers',cursive; font-size:1.4rem; letter-spacing:2px; border:none; border-radius:14px; cursor:pointer; transition:all 0.25s; box-shadow:0 4px 0 #a07000; }
-.ending-btn-main:hover { transform:translateY(-2px); box-shadow:0 6px 0 #a07000; }
+.ending-btn-main { width:100%; padding:16px; background:linear-gradient(135deg,var(--gold2),var(--gold)); color:#000; font-family:'Bangers',cursive; font-size:1.4rem; letter-spacing:2px; border:none; border-radius:14px; cursor:pointer; transition:all 0.25s; box-shadow:0 4px 0 #002d6b; }
+.ending-btn-main:hover { transform:translateY(-2px); box-shadow:0 6px 0 #002d6b; }
 .ending-btn-row { display:flex; gap:10px; }
 .ending-btn-sec { flex:1; padding:13px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; color:var(--text); font-family:'Nunito',sans-serif; font-weight:900; font-size:0.9rem; cursor:pointer; transition:all 0.2s; }
-.ending-btn-sec:hover { background:rgba(255,215,0,0.06); border-color:rgba(255,215,0,0.2); color:var(--gold); }
+.ending-btn-sec:hover { background:rgba(96,165,250,0.06); border-color:rgba(96,165,250,0.2); color:var(--gold); }
 
 /* ── MENU ── */
 .menu-overlay { position:fixed; inset:0; z-index:90; background:rgba(0,0,0,0.85); backdrop-filter:blur(12px); display:flex; align-items:center; justify-content:center; }
 .menu-overlay.hidden { display:none; }
-.menu-card { background:#090600; border:1px solid rgba(255,215,0,0.15); border-radius:24px; padding:32px 28px; max-width:320px; width:100%; text-align:center; animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+.menu-card { background:#090600; border:1px solid rgba(96,165,250,0.15); border-radius:24px; padding:32px 28px; max-width:320px; width:100%; text-align:center; animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
 .menu-title { font-family:'Bangers',cursive; font-size:1.8rem; letter-spacing:2px; color:var(--gold); margin-bottom:20px; }
 .menu-btn { width:100%; padding:13px; margin-bottom:10px; border-radius:12px; font-family:'Nunito',sans-serif; font-weight:900; font-size:0.95rem; cursor:pointer; transition:all 0.2s; border:1px solid var(--border); }
 .menu-btn.primary { background:linear-gradient(135deg,var(--gold2),var(--gold)); color:#000; border:none; }
 .menu-btn.secondary { background:rgba(255,255,255,0.04); color:var(--text); }
-.menu-btn.danger { background:rgba(255,58,92,0.1); color:var(--red); border-color:rgba(255,58,92,0.2); }
+.menu-btn.danger { background:rgba(255,107,157,0.1); color:var(--red); border-color:rgba(255,107,157,0.2); }
 .menu-btn:hover { transform:scale(1.02); }
 
 @media (max-width:600px) {
@@ -314,23 +314,23 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
   <!-- SCENE AREA -->
   <div class="scene-area">
     <div class="char-sprite left hidden" id="spriteKai">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(255,215,0,0.25),rgba(255,107,43,0.15))">⚡</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(96,165,250,0.25),rgba(255,107,43,0.15))">⚡</div>
       <div class="sprite-name" style="color:var(--gold)">KAI</div>
     </div>
     <div class="char-sprite right hidden" id="spriteRyu">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(0,229,255,0.12))">🐉</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(129,140,248,0.2),rgba(56,189,248,0.12))">🐉</div>
       <div class="sprite-name" style="color:var(--purple)">RYU</div>
     </div>
     <div class="char-sprite center hidden" id="spriteSakura">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(255,110,180,0.2),rgba(255,215,0,0.1))">🌸</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(255,107,157,0.2),rgba(96,165,250,0.1))">🌸</div>
       <div class="sprite-name" style="color:var(--pink)">SAKURA</div>
     </div>
     <div class="char-sprite hidden" id="spriteMochi" style="right:20%;bottom:0">
-      <div class="sprite-bubble" style="width:70px;height:70px;font-size:3rem;background:linear-gradient(135deg,rgba(0,230,118,0.15),rgba(255,215,0,0.12))">🍡</div>
+      <div class="sprite-bubble" style="width:70px;height:70px;font-size:3rem;background:linear-gradient(135deg,rgba(52,211,153,0.15),rgba(96,165,250,0.12))">🍡</div>
       <div class="sprite-name" style="color:var(--green);font-size:0.8rem">MOCHI</div>
     </div>
     <div class="char-sprite right hidden" id="spriteYuki">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(0,229,255,0.2),rgba(255,215,0,0.1))">🎐</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(56,189,248,0.2),rgba(96,165,250,0.1))">🎐</div>
       <div class="sprite-name" style="color:var(--cyan)">YUKI</div>
     </div>
   </div>
@@ -441,24 +441,24 @@ const STORY = [
   {
     show:['kai','sakura','ryu'], hide:[],
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"<span class="jp-word" data-jp="大" data-rom="dai / ō" data-en="Great / Large / Grand">大</span>... That means Great. This is it. The entrance to the Grand Scroll."',
     particles:'gold',
   },
   {
     show:['yuki','mochi'], hide:[],
     speaking:'yuki',
-    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(0,229,255,0.12)',
+    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(56,189,248,0.12)',
     text:'"My <span class="jp-word" data-jp="おじいさん" data-rom="ojīsan" data-en="Grandfather">おじいさん</span> always said the door only opens for someone who has earned it — not with money or power, but with <span class="jp-word" data-jp="言葉" data-rom="kotoba" data-en="Words / Language">言葉</span>. Words."',
   },
   {
     speaking:'ryu',
-    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(168,85,247,0.15)',
+    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(129,140,248,0.15)',
     text:'"There\'s writing above the door. More kanji. Five lines — a final lock."',
   },
   {
     speaking:'sakura',
-    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,110,180,0.12)',
+    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,107,157,0.12)',
     text:'"This is the Grand Trial. If we can read all five lines — the door opens. Kai... it has to be you."',
   },
   {
@@ -471,13 +471,13 @@ const STORY = [
   {
     id:'doubt',
     speaking:'sakura',
-    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,110,180,0.12)',
+    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,107,157,0.12)',
     text:'"Kai-kun... you crossed an ocean. You read a storm\'s navigation in Katakana. You passed Sensei Takumi\'s trial. You asked for directions in a foreign city. You haven\'t failed once — you\'ve <em>learned</em> every time."',
   },
   {
     id:'ready',
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"Hiragana. Katakana. Kanji. Vocabulary. Every character I\'ve learned... it all led to this door. Let\'s open it."',
   },
 
@@ -516,17 +516,17 @@ const STORY = [
   {
     show:['mochi','yuki'], hide:[],
     speaking:'mochi',
-    speaker:'MOCHI', speakerColor:'var(--green)', tag:'Mascot', tagColor:'rgba(0,230,118,0.12)',
+    speaker:'MOCHI', speakerColor:'var(--green)', tag:'Mascot', tagColor:'rgba(52,211,153,0.12)',
     text:'"もちもち！ MOCHI CRIED! THE DOOR IS OPEN! もちもちもちもち！"',
   },
   {
     speaking:'ryu',
-    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(168,85,247,0.15)',
+    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(129,140,248,0.15)',
     text:'"...I\'ve studied three years for this moment. And it opened because of what YOU read, Kai. That\'s... impressive."',
   },
   {
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"We both read it, Ryu. We all did."',
   },
 
@@ -541,12 +541,12 @@ const STORY = [
   },
   {
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"The <span class="jp-word" data-jp="大和の書" data-rom="Yamato no Sho" data-en="The Grand Scroll of Japan">大和の書</span>. It\'s... not locked. It\'s just... open. Like it was always meant to be read."',
   },
   {
     speaking:'sakura',
-    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,110,180,0.12)',
+    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,107,157,0.12)',
     text:'"Read it, Kai. Read what it says."',
   },
   // Scroll reveal — special screen
@@ -578,42 +578,42 @@ And you have read it.<br><br>
   },
   {
     speaking:'ryu',
-    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(168,85,247,0.15)',
+    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(129,140,248,0.15)',
     text:'"Kai... I came here to beat you. To get here first. To prove I was the best."',
   },
   {
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"And?"',
   },
   {
     speaking:'ryu',
-    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(168,85,247,0.15)',
+    speaker:'RYU', speakerColor:'var(--purple)', tag:'Rival', tagColor:'rgba(129,140,248,0.15)',
     text:'"...And I realize I\'ve been thinking about language wrong. It\'s not a competition. It\'s a <span class="jp-word" data-jp="贈り物" data-rom="okurimono" data-en="Gift">贈り物</span>. A gift. You give it to yourself — and suddenly you can hear what the whole world is saying."',
   },
   {
     speaking:'yuki',
-    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(0,229,255,0.12)',
+    speaker:'YUKI', speakerColor:'var(--cyan)', tag:'Local Guide', tagColor:'rgba(56,189,248,0.12)',
     text:'"<span class="jp-word" data-jp="そうですね" data-rom="Sō desu ne" data-en="That\'s right / Exactly">そうですね、</span>Ryu-san. This is why I teach. This is why my grandfather told me stories. Japanese is not a lock — it\'s a key."',
   },
   {
     speaking:'sakura',
-    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,110,180,0.12)',
+    speaker:'SAKURA', speakerColor:'var(--pink)', tag:'Navigator', tagColor:'rgba(255,107,157,0.12)',
     text:'"Kai-kun... when you stepped onto that ship in Rio and learned あいうえお just to open a door — you were already a Japanese speaker. You just didn\'t know it yet."',
   },
   {
     speaking:'mochi',
-    speaker:'MOCHI', speakerColor:'var(--green)', tag:'Mascot', tagColor:'rgba(0,230,118,0.12)',
+    speaker:'MOCHI', speakerColor:'var(--green)', tag:'Mascot', tagColor:'rgba(52,211,153,0.12)',
     text:'"もちもち！ Mochi is so proud. Mochi knew from the start. もちもち means — \"I believe in you\"!"',
   },
   {
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"<span class="jp-word" data-jp="みんな、ありがとう。" data-rom="Minna, arigatō." data-en="Everyone, thank you.">みんな、ありがとう。</span>"',
   },
   {
     speaking:'kai',
-    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(255,215,0,0.15)',
+    speaker:'KAI', speakerColor:'var(--gold)', tag:'Hero', tagColor:'rgba(96,165,250,0.15)',
     text:'"I came to find a scroll. I found a language. And through the language... I found all of you. That\'s the real <span class="jp-word" data-jp="大和の書" data-rom="Yamato no Sho" data-en="The Grand Scroll — the sum of what Japan has shared with the world">大和の書</span>."',
   },
   // FINAL FRAME — triggers ending
@@ -645,8 +645,8 @@ function buildStars(){
 function buildParticles(type='gold'){
   const p=document.getElementById('particles'); p.innerHTML='';
   const cfg={
-    gold:{count:18,colors:['rgba(255,215,0,0.5)','rgba(255,180,0,0.4)','rgba(255,255,200,0.3)'],sizes:[2,6]},
-    cherry:{count:20,colors:['rgba(255,110,180,0.5)','rgba(255,180,200,0.4)','rgba(255,255,255,0.3)'],sizes:[3,8]},
+    gold:{count:18,colors:['rgba(96,165,250,0.5)','rgba(255,180,0,0.4)','rgba(255,255,200,0.3)'],sizes:[2,6]},
+    cherry:{count:20,colors:['rgba(255,107,157,0.5)','rgba(255,180,200,0.4)','rgba(255,255,255,0.3)'],sizes:[3,8]},
   };
   const c=cfg[type]||cfg.gold;
   for(let i=0;i<c.count;i++){

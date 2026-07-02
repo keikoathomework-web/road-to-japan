@@ -9,9 +9,9 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg: #0d1117; --bg2: #161b22; --bg3: #1c2230;
-  --gold: #ffd700; --gold2: #ffaa00; --gold3: #fff0a0;
-  --cyan: #00e5ff; --green: #00e676; --red: #ff3a5c;
-  --purple: #a855f7; --orange: #ff6b2b;
+  --gold: #60A5FA; --gold2: #3B82F6; --gold3: #DBEAFE;
+  --cyan: #38BDF8; --green: #34D399; --red: #FF6B9D;
+  --purple: #818CF8; --orange: #F472B6;
   --white: #fff; --gray: #7a8099; --text: #d0d4e8;
   --border: rgba(255,255,255,0.07);
 }
@@ -49,14 +49,14 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
 /* ── AVATAR HERO ── */
 .hero {
   background: linear-gradient(135deg, #1a1040 0%, #0d1a3a 40%, #0a2a1a 100%);
-  border-radius: 24px; border: 1px solid rgba(255,215,0,0.12);
+  border-radius: 24px; border: 1px solid rgba(96,165,250,0.12);
   padding: 32px 24px 26px; margin-bottom: 20px;
   position: relative; overflow: hidden;
 }
 .hero::before {
   content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 70% 0%, rgba(255,215,0,0.08) 0%, transparent 60%),
-              radial-gradient(ellipse at 20% 100%, rgba(0,230,118,0.06) 0%, transparent 50%);
+  background: radial-gradient(ellipse at 70% 0%, rgba(96,165,250,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 100%, rgba(52,211,153,0.06) 0%, transparent 50%);
 }
 .hero-top { display: flex; align-items: flex-start; gap: 18px; position: relative; z-index: 1; }
 .avatar-wrap { position: relative; flex-shrink: 0; }
@@ -64,7 +64,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
   width: 88px; height: 88px; border-radius: 50%;
   background: linear-gradient(135deg, #2d1b69, #1a3a5c);
   border: 3px solid var(--gold); display: flex; align-items: center; justify-content: center;
-  font-size: 2.8rem; box-shadow: 0 0 0 4px rgba(255,215,0,0.15), 0 8px 30px rgba(0,0,0,0.5);
+  font-size: 2.8rem; box-shadow: 0 0 0 4px rgba(0,87,168,0.15), 0 8px 30px rgba(0,0,0,0.5);
   cursor: pointer; transition: transform 0.2s;
 }
 .avatar:hover { transform: scale(1.05); }
@@ -82,8 +82,8 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
   padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 900;
   letter-spacing: 0.5px;
 }
-.badge-premium { background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); }
-.badge-level { background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.25); color: var(--cyan); }
+.badge-premium { background: rgba(96,165,250,0.15); border: 1px solid rgba(96,165,250,0.3); color: var(--gold); }
+.badge-level { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); color: var(--cyan); }
 .badge-country { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--text); }
 
 /* XP bar */
@@ -112,7 +112,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
 .streak-number { font-family: 'Bangers', cursive; font-size: 3.5rem; letter-spacing: 2px; color: var(--orange); line-height: 1; text-shadow: 0 0 20px rgba(255,107,43,0.6); }
 .streak-label { font-size: 0.8rem; font-weight: 900; color: rgba(255,150,50,0.8); letter-spacing: 1px; text-transform: uppercase; }
 .streak-msg { font-size: 0.82rem; color: var(--gold3); margin-top: 2px; }
-.streak-best { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 12px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.15); font-size: 0.75rem; font-weight: 900; color: var(--gold); white-space: nowrap; }
+.streak-best { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 12px; background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.15); font-size: 0.75rem; font-weight: 900; color: var(--gold); white-space: nowrap; }
 
 /* Weekly calendar */
 .streak-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; position: relative; z-index: 1; }
@@ -171,25 +171,25 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
 .sub-card {
   border-radius: 20px; padding: 20px; margin-bottom: 20px;
   background: linear-gradient(135deg, #1a0d3a, #0d2040);
-  border: 1px solid rgba(168,85,247,0.25); position: relative; overflow: hidden;
+  border: 1px solid rgba(129,140,248,0.25); position: relative; overflow: hidden;
 }
 .sub-card::before {
   content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 100% 0%, rgba(168,85,247,0.1), transparent 60%);
+  background: radial-gradient(ellipse at 100% 0%, rgba(129,140,248,0.1), transparent 60%);
 }
 .sub-row { display: flex; align-items: center; gap: 10px; position: relative; z-index: 1; }
 .sub-icon { font-size: 1.8rem; }
 .sub-info { flex: 1; }
 .sub-plan { font-family: 'Bangers', cursive; font-size: 1.3rem; letter-spacing: 2px; color: var(--gold); margin-bottom: 2px; }
-.sub-status { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; background: rgba(0,230,118,0.12); border: 1px solid rgba(0,230,118,0.25); color: var(--green); font-size: 0.68rem; font-weight: 900; }
+.sub-status { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.25); color: var(--green); font-size: 0.68rem; font-weight: 900; }
 .sub-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 .sub-manage {
-  padding: 9px 16px; border-radius: 12px; background: rgba(168,85,247,0.15);
-  border: 1px solid rgba(168,85,247,0.3); color: var(--purple); font-size: 0.75rem; font-weight: 900;
+  padding: 9px 16px; border-radius: 12px; background: rgba(129,140,248,0.15);
+  border: 1px solid rgba(129,140,248,0.3); color: var(--purple); font-size: 0.75rem; font-weight: 900;
   cursor: pointer; transition: all 0.2s; white-space: nowrap;
 }
-.sub-manage:hover { background: rgba(168,85,247,0.25); }
+.sub-manage:hover { background: rgba(129,140,248,0.25); }
 
 .sub-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; position: relative; z-index: 1; }
 .sub-date-card {
@@ -208,7 +208,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
 .history-bars { display: flex; align-items: flex-end; gap: 5px; height: 80px; }
 .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; }
 .bar-track { flex: 1; width: 100%; border-radius: 6px 6px 0 0; background: rgba(255,255,255,0.05); display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
-.bar-fill { width: 100%; border-radius: 6px 6px 0 0; background: linear-gradient(180deg, var(--cyan), rgba(0,229,255,0.4)); transition: height 1s cubic-bezier(0.34,1.4,0.64,1); height: 0; }
+.bar-fill { width: 100%; border-radius: 6px 6px 0 0; background: linear-gradient(180deg, var(--cyan), rgba(56,189,248,0.4)); transition: height 1s cubic-bezier(0.34,1.4,0.64,1); height: 0; }
 .bar-label { font-size: 0.55rem; font-weight: 900; color: var(--gray); text-transform: uppercase; }
 
 /* ── LANGUAGE PROGRESS ── */
@@ -221,7 +221,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
 .lang-bar-track { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.07); overflow: hidden; }
 .lang-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--cyan), #00bfa5); transition: width 1.3s cubic-bezier(0.34,1.2,0.64,1); width: 0; }
 .lang-skills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
-.skill-chip { padding: 3px 9px; border-radius: 10px; font-size: 0.65rem; font-weight: 900; background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.18); color: var(--cyan); }
+.skill-chip { padding: 3px 9px; border-radius: 10px; font-size: 0.65rem; font-weight: 900; background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.18); color: var(--cyan); }
 
 /* ── SETTINGS LIST ── */
 .settings-list { background: var(--bg2); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
@@ -244,10 +244,10 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
 .setting-toggle.off .toggle-knob { left: 3px; }
 
 /* ── DANGER ZONE ── */
-.danger-zone { border-radius: 16px; border: 1px solid rgba(255,58,92,0.2); overflow: hidden; margin-bottom: 20px; }
-.danger-header { padding: 12px 16px; background: rgba(255,58,92,0.06); font-size: 0.7rem; font-weight: 900; color: rgba(255,58,92,0.7); text-transform: uppercase; letter-spacing: 1px; }
-.danger-btn { width: 100%; padding: 14px 16px; background: transparent; border: none; border-top: 1px solid rgba(255,58,92,0.12); color: var(--red); font-size: 0.85rem; font-weight: 800; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: background 0.15s; }
-.danger-btn:hover { background: rgba(255,58,92,0.06); }
+.danger-zone { border-radius: 16px; border: 1px solid rgba(255,107,157,0.2); overflow: hidden; margin-bottom: 20px; }
+.danger-header { padding: 12px 16px; background: rgba(255,107,157,0.06); font-size: 0.7rem; font-weight: 900; color: rgba(255,107,157,0.7); text-transform: uppercase; letter-spacing: 1px; }
+.danger-btn { width: 100%; padding: 14px 16px; background: transparent; border: none; border-top: 1px solid rgba(255,107,157,0.12); color: var(--red); font-size: 0.85rem; font-weight: 800; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: background 0.15s; }
+.danger-btn:hover { background: rgba(255,107,157,0.06); }
 
 /* ── MODAL ── */
 .modal-overlay {
@@ -273,7 +273,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
   color: var(--white); font-size: 0.88rem; font-family: 'Nunito', sans-serif;
   outline: none; transition: border-color 0.2s;
 }
-.modal-input:focus { border-color: rgba(0,229,255,0.4); }
+.modal-input:focus { border-color: rgba(56,189,248,0.4); }
 .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
 .modal-btn { flex: 1; padding: 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 900; cursor: pointer; transition: all 0.2s; }
 .modal-btn-cancel { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: var(--text); }
@@ -289,7 +289,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
   cursor: pointer; transition: all 0.2s;
 }
 .avatar-opt:hover { transform: scale(1.1); border-color: rgba(255,255,255,0.2); }
-.avatar-opt.selected { border-color: var(--gold); background: rgba(255,215,0,0.1); box-shadow: 0 0 0 2px rgba(255,215,0,0.3); }
+.avatar-opt.selected { border-color: var(--gold); background: rgba(96,165,250,0.1); box-shadow: 0 0 0 2px rgba(0,87,168,0.3); }
 
 /* ── SCROLL ANIM ── */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.5s, transform 0.5s; }
@@ -489,7 +489,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
     </div>
     <div class="settings-list">
       <div class="setting-row" onclick="openModal('profile-modal')">
-        <div class="setting-icon" style="background:rgba(255,215,0,0.1)">👤</div>
+        <div class="setting-icon" style="background:rgba(96,165,250,0.1)">👤</div>
         <div class="setting-text">
           <div class="setting-name">Edit Profile</div>
           <div class="setting-sub">Name, email, avatar</div>
@@ -497,7 +497,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
         <div class="setting-arrow">›</div>
       </div>
       <div class="setting-row">
-        <div class="setting-icon" style="background:rgba(0,229,255,0.1)">🔔</div>
+        <div class="setting-icon" style="background:rgba(56,189,248,0.1)">🔔</div>
         <div class="setting-text">
           <div class="setting-name">Daily Reminder</div>
           <div class="setting-sub">8:00 AM — Don't break the streak!</div>
@@ -507,7 +507,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
         </div>
       </div>
       <div class="setting-row">
-        <div class="setting-icon" style="background:rgba(0,230,118,0.1)">🔊</div>
+        <div class="setting-icon" style="background:rgba(52,211,153,0.1)">🔊</div>
         <div class="setting-text">
           <div class="setting-name">Sound Effects</div>
           <div class="setting-sub">Quiz sounds and XP chimes</div>
@@ -517,7 +517,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
         </div>
       </div>
       <div class="setting-row">
-        <div class="setting-icon" style="background:rgba(168,85,247,0.1)">🌐</div>
+        <div class="setting-icon" style="background:rgba(129,140,248,0.1)">🌐</div>
         <div class="setting-text">
           <div class="setting-name">Interface Language</div>
           <div class="setting-sub">English (US)</div>
@@ -540,7 +540,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
     <div class="danger-header">⚠️ Account Actions</div>
     <button class="danger-btn" onclick="if(confirm('Cancel your Premium subscription?')) alert('Please manage your subscription via the Subscription section.')">❌ Cancel Subscription</button>
     <button class="danger-btn" onclick="if(confirm('Sign out of Road to Japan?')) alert('Signed out. See you tomorrow! 👋')">🚪 Sign Out</button>
-    <button class="danger-btn" style="color:rgba(255,58,92,0.5)" onclick="if(confirm('Delete your account? This cannot be undone.')) alert('Account deletion request submitted. You will receive an email confirmation.')">🗑️ Delete Account</button>
+    <button class="danger-btn" style="color:rgba(255,107,157,0.5)" onclick="if(confirm('Delete your account? This cannot be undone.')) alert('Account deletion request submitted. You will receive an email confirmation.')">🗑️ Delete Account</button>
   </div>
 
 </div><!-- /page -->
@@ -852,7 +852,7 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') document.queryS
 // ── TOAST ──
 function showToast(msg) {
   const t = document.createElement('div');
-  t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;background:rgba(0,230,118,0.15);border:1px solid rgba(0,230,118,0.3);color:#00e676;padding:12px 18px;border-radius:12px;font-size:0.85rem;font-weight:900;backdrop-filter:blur(10px);animation:slideUp 0.3s ease;';
+  t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.3);color:#00e676;padding:12px 18px;border-radius:12px;font-size:0.85rem;font-weight:900;backdrop-filter:blur(10px);animation:slideUp 0.3s ease;';
   t.textContent = msg;
   document.body.appendChild(t);
   setTimeout(()=>t.remove(), 3000);

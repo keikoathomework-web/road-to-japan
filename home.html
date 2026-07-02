@@ -15,13 +15,13 @@
   --card: rgba(255,255,255,0.04);
   --card2: rgba(255,255,255,0.07);
   --border: rgba(255,255,255,0.08);
-  --gold: #ffd700;
-  --gold2: #ffaa00;
-  --red: #ff3a5c;
-  --cyan: #00e5ff;
-  --purple: #a855f7;
-  --pink: #ff6eb4;
-  --green: #00e676;
+  --gold: #60A5FA;
+  --gold2: #3B82F6;
+  --red: #FF6B9D;
+  --cyan: #38BDF8;
+  --purple: #818CF8;
+  --pink: #FF6B9D;
+  --green: #34D399;
   --white: #ffffff;
   --gray: #7a8099;
   --text: #d0d4e8;
@@ -54,7 +54,7 @@ body {
 
 .header-logo {
   font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 3px;
-  background: linear-gradient(90deg, var(--gold), var(--red));
+  background: linear-gradient(90deg, #60A5FA, #FF6B9D);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   text-decoration: none; flex-shrink: 0;
 }
@@ -65,8 +65,8 @@ body {
 .streak-chip {
   display: flex; align-items: center; gap: 6px;
   padding: 6px 14px; border-radius: 20px;
-  background: rgba(255,58,92,0.12);
-  border: 1px solid rgba(255,58,92,0.25);
+  background: rgba(255,107,157,0.12);
+  border: 1px solid rgba(255,107,157,0.25);
   font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 900;
   color: var(--red);
 }
@@ -75,8 +75,8 @@ body {
 .xp-chip {
   display: flex; align-items: center; gap: 6px;
   padding: 6px 14px; border-radius: 20px;
-  background: rgba(255,215,0,0.1);
-  border: 1px solid rgba(255,215,0,0.25);
+  background: rgba(96,165,250,0.1);
+  border: 1px solid rgba(96,165,250,0.25);
   font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 900;
   color: var(--gold);
 }
@@ -85,8 +85,8 @@ body {
 .mochi-chip {
   display: flex; align-items: center; gap: 6px;
   padding: 6px 14px; border-radius: 20px;
-  background: rgba(0,230,118,0.08);
-  border: 1px solid rgba(0,230,118,0.2);
+  background: rgba(52,211,153,0.08);
+  border: 1px solid rgba(52,211,153,0.2);
   font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 900;
   color: var(--green);
 }
@@ -94,19 +94,19 @@ body {
 /* Avatar btn */
 .avatar-btn {
   width: 38px; height: 38px; border-radius: 50%;
-  background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,58,92,0.2));
-  border: 2px solid rgba(255,215,0,0.4);
+  background: linear-gradient(135deg, rgba(96,165,250,0.3), rgba(255,107,157,0.2));
+  border: 2px solid rgba(96,165,250,0.4);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.1rem; cursor: pointer; flex-shrink: 0;
   transition: all 0.2s; position: relative;
 }
-.avatar-btn:hover { transform: scale(1.1); box-shadow: 0 0 16px rgba(255,215,0,0.3); }
+.avatar-btn:hover { transform: scale(1.1); box-shadow: 0 0 16px rgba(0,87,168,0.3); }
 
 /* Profile Dropdown */
 .profile-dropdown {
   position: fixed; top: calc(var(--header) + 8px); right: 16px;
   width: 280px; z-index: 500;
-  background: #161b22; border: 1px solid rgba(255,215,0,0.2);
+  background: #161b22; border: 1px solid rgba(96,165,250,0.2);
   border-radius: 20px; overflow: hidden;
   box-shadow: 0 16px 48px rgba(0,0,0,0.7);
   opacity: 0; pointer-events: none; transform: translateY(-10px) scale(0.97);
@@ -124,13 +124,13 @@ body {
 }
 .pd-avatar {
   width: 46px; height: 46px; border-radius: 50%; font-size: 1.6rem;
-  background: linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,58,92,0.15));
-  border: 2px solid rgba(255,215,0,0.3);
+  background: linear-gradient(135deg,rgba(96,165,250,0.2),rgba(255,107,157,0.15));
+  border: 2px solid rgba(96,165,250,0.3);
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .pd-name { font-size: 0.9rem; font-weight: 900; color: #fff; margin-bottom: 2px; }
 .pd-plan { font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 10px;
-  background: rgba(0,230,118,0.12); color: var(--green); border: 1px solid rgba(0,230,118,0.25); display: inline-block; }
+  background: rgba(52,211,153,0.12); color: var(--green); border: 1px solid rgba(52,211,153,0.25); display: inline-block; }
 .pd-streak { font-size: 0.7rem; color: var(--gray); margin-top: 3px; }
 
 .pd-stats { display: grid; grid-template-columns: 1fr 1fr 1fr;
@@ -152,7 +152,7 @@ body {
 .pd-item-arrow { margin-left: auto; color: var(--gray); font-size: 0.75rem; }
 .pd-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0; }
 .pd-item.danger { color: var(--red); }
-.pd-item.danger:hover { background: rgba(255,58,92,0.08); }
+.pd-item.danger:hover { background: rgba(255,107,157,0.08); }
 
 /* =====================
    LAYOUT
@@ -188,8 +188,8 @@ body {
 }
 .nav-item:hover { color: var(--white); background: var(--card2); }
 .nav-item.active {
-  color: var(--gold); background: rgba(255,215,0,0.08);
-  border-color: rgba(255,215,0,0.2);
+  color: var(--gold); background: rgba(96,165,250,0.08);
+  border-color: rgba(96,165,250,0.2);
 }
 .nav-item .nav-icon { font-size: 1.2rem; flex-shrink: 0; width: 24px; text-align: center; }
 .nav-label { white-space: nowrap; }
@@ -208,8 +208,8 @@ body {
 
 .sidebar-plan {
   margin-top: auto; padding: 16px;
-  background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(168,85,247,0.05));
-  border: 1px solid rgba(255,215,0,0.15);
+  background: linear-gradient(135deg, rgba(96,165,250,0.08), rgba(129,140,248,0.05));
+  border: 1px solid rgba(96,165,250,0.15);
   border-radius: 16px; text-align: center;
 }
 .sidebar-plan .plan-emoji { font-size: 1.8rem; display: block; margin-bottom: 6px; }
@@ -217,13 +217,13 @@ body {
 .sidebar-plan .plan-sub { font-size: 0.75rem; color: var(--gray); margin-bottom: 12px; }
 .sidebar-plan .upgrade-btn {
   width: 100%; padding: 9px;
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  color: #000; font-family: 'Bangers', cursive;
+  background: linear-gradient(135deg, #0057A8, #004494);
+  color: #fff; font-family: 'Bangers', cursive;
   font-size: 1rem; letter-spacing: 1px;
   border: none; border-radius: 10px; cursor: pointer;
   transition: all 0.2s;
 }
-.sidebar-plan .upgrade-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,215,0,0.3); }
+.sidebar-plan .upgrade-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(0,87,168,0.3); }
 
 /* =====================
    MAIN CONTENT
@@ -239,8 +239,8 @@ body {
    GREETING BANNER
    ===================== */
 .greeting-banner {
-  background: linear-gradient(135deg, rgba(255,215,0,0.07) 0%, rgba(255,58,92,0.05) 50%, rgba(168,85,247,0.05) 100%);
-  border: 1px solid rgba(255,215,0,0.15);
+  background: linear-gradient(135deg, rgba(96,165,250,0.07) 0%, rgba(255,107,157,0.05) 50%, rgba(129,140,248,0.05) 100%);
+  border: 1px solid rgba(96,165,250,0.15);
   border-radius: 24px; padding: 28px 32px;
   display: flex; align-items: center; gap: 24px;
   margin-bottom: 24px; position: relative; overflow: hidden;
@@ -252,11 +252,11 @@ body {
 }
 .greeting-avatar {
   width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
-  background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(255,58,92,0.15));
-  border: 3px solid rgba(255,215,0,0.4);
+  background: linear-gradient(135deg, rgba(96,165,250,0.25), rgba(255,107,157,0.15));
+  border: 3px solid rgba(96,165,250,0.4);
   display: flex; align-items: center; justify-content: center;
   font-size: 2.2rem;
-  box-shadow: 0 0 24px rgba(255,215,0,0.2);
+  box-shadow: 0 0 24px rgba(0,87,168,0.2);
 }
 .greeting-text .hello { font-size: 0.8rem; font-weight: 900; letter-spacing: 2px; color: var(--gray); text-transform: uppercase; }
 .greeting-text .name { font-family: 'Bangers', cursive; font-size: 2rem; letter-spacing: 2px; color: var(--gold); line-height: 1; margin: 2px 0; }
@@ -268,7 +268,7 @@ body {
 .greeting-xp .lv-label { font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; color: var(--gray); text-transform: uppercase; }
 .greeting-xp .lv-num { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1; }
 .xp-bar-wrap { width: 160px; height: 6px; background: var(--border); border-radius: 3px; margin-top: 6px; overflow: hidden; }
-.xp-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--gold), var(--red)); transition: width 1s ease; }
+.xp-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #60A5FA, #FF6B9D); transition: width 1s ease; }
 .xp-bar-txt { font-size: 0.72rem; color: var(--gray); text-align: right; margin-top: 3px; }
 
 /* =====================
@@ -305,7 +305,7 @@ body {
   position: relative; overflow: hidden;
 }
 .quest-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.15); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
-.quest-card.done { border-color: rgba(0,230,118,0.3); background: rgba(0,230,118,0.04); }
+.quest-card.done { border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.04); }
 
 .quest-icon { font-size: 1.8rem; }
 .quest-title { font-weight: 900; font-size: 0.9rem; }
@@ -328,14 +328,14 @@ body {
    CONTINUE STORY
    ===================== */
 .story-banner {
-  background: linear-gradient(135deg, rgba(255,58,92,0.08) 0%, rgba(168,85,247,0.06) 100%);
-  border: 1px solid rgba(255,58,92,0.2);
+  background: linear-gradient(135deg, rgba(255,107,157,0.08) 0%, rgba(129,140,248,0.06) 100%);
+  border: 1px solid rgba(255,107,157,0.2);
   border-radius: 20px; padding: 24px 28px;
   display: flex; align-items: center; gap: 20px;
   margin-bottom: 28px; cursor: pointer; transition: all 0.25s;
   position: relative; overflow: hidden;
 }
-.story-banner:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); border-color: rgba(255,58,92,0.35); }
+.story-banner:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); border-color: rgba(255,107,157,0.35); }
 .story-banner::before {
   content: '⚔️'; position: absolute; right: 24px; top: 50%; transform: translateY(-50%);
   font-size: 5rem; opacity: 0.07; pointer-events: none;
@@ -344,7 +344,7 @@ body {
 .story-chapter-badge {
   padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 900;
   letter-spacing: 1px; text-transform: uppercase;
-  background: rgba(255,58,92,0.15); border: 1px solid rgba(255,58,92,0.3);
+  background: rgba(255,107,157,0.15); border: 1px solid rgba(255,107,157,0.3);
   color: var(--red); white-space: nowrap; flex-shrink: 0;
   display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 16px;
 }
@@ -391,12 +391,12 @@ body {
   opacity: 0; transition: opacity 0.3s;
 }
 .module-card:not(.locked):hover::after { opacity: 1; }
-.module-card.hiragana::after  { background: linear-gradient(135deg, rgba(0,229,255,0.04), transparent); }
-.module-card.kanji::after     { background: linear-gradient(135deg, rgba(255,215,0,0.04), transparent); }
-.module-card.reading::after   { background: linear-gradient(135deg, rgba(255,110,180,0.04), transparent); }
-.module-card.jlpt::after      { background: linear-gradient(135deg, rgba(168,85,247,0.04), transparent); }
-.module-card.culture::after   { background: linear-gradient(135deg, rgba(0,230,118,0.04), transparent); }
-.module-card.review::after    { background: linear-gradient(135deg, rgba(255,58,92,0.04), transparent); }
+.module-card.hiragana::after  { background: linear-gradient(135deg, rgba(56,189,248,0.04), transparent); }
+.module-card.kanji::after     { background: linear-gradient(135deg, rgba(96,165,250,0.04), transparent); }
+.module-card.reading::after   { background: linear-gradient(135deg, rgba(255,107,157,0.04), transparent); }
+.module-card.jlpt::after      { background: linear-gradient(135deg, rgba(129,140,248,0.04), transparent); }
+.module-card.culture::after   { background: linear-gradient(135deg, rgba(52,211,153,0.04), transparent); }
+.module-card.review::after    { background: linear-gradient(135deg, rgba(255,107,157,0.04), transparent); }
 
 .module-top { display: flex; align-items: flex-start; gap: 12px; }
 .module-icon-wrap {
@@ -415,8 +415,8 @@ body {
   font-weight: 900; white-space: nowrap;
 }
 .plan-badge-tag.premium-tag {
-  background: rgba(255,215,0,0.15); color: var(--gold);
-  border: 1px solid rgba(255,215,0,0.3);
+  background: rgba(96,165,250,0.15); color: var(--gold);
+  border: 1px solid rgba(96,165,250,0.3);
 }
 
 .module-progress-row {
@@ -439,12 +439,12 @@ body {
    REVIEW CARDS DUE
    ===================== */
 .review-banner {
-  background: rgba(255,58,92,0.06); border: 1px solid rgba(255,58,92,0.2);
+  background: rgba(255,107,157,0.06); border: 1px solid rgba(255,107,157,0.2);
   border-radius: 18px; padding: 20px 24px;
   display: flex; align-items: center; gap: 16px;
   margin-bottom: 28px; cursor: pointer; transition: all 0.25s;
 }
-.review-banner:hover { border-color: rgba(255,58,92,0.35); transform: translateX(3px); }
+.review-banner:hover { border-color: rgba(255,107,157,0.35); transform: translateX(3px); }
 .review-num {
   font-family: 'Orbitron', sans-serif; font-size: 2.4rem; font-weight: 900;
   color: var(--red); flex-shrink: 0; line-height: 1;
@@ -453,13 +453,13 @@ body {
 .review-info .rv-sub { font-size: 0.82rem; color: var(--gray); }
 .review-go {
   margin-left: auto;
-  padding: 10px 18px; background: rgba(255,58,92,0.15);
-  border: 1px solid rgba(255,58,92,0.3);
+  padding: 10px 18px; background: rgba(255,107,157,0.15);
+  border: 1px solid rgba(255,107,157,0.3);
   border-radius: 10px; color: var(--red);
   font-family: 'Bangers', cursive; font-size: 1rem; letter-spacing: 1px;
   cursor: pointer; transition: all 0.2s;
 }
-.review-go:hover { background: rgba(255,58,92,0.25); }
+.review-go:hover { background: rgba(255,107,157,0.25); }
 
 /* =====================
    TODAY'S STATS
@@ -492,7 +492,7 @@ body {
 .leader-rank { width: 24px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 900; text-align: center; flex-shrink: 0; }
 .leader-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
 .leader-name { font-weight: 800; font-size: 0.9rem; }
-.leader-name .you-badge { font-size: 0.65rem; padding: 1px 6px; border-radius: 8px; background: rgba(255,215,0,0.15); color: var(--gold); margin-left: 6px; font-weight: 900; }
+.leader-name .you-badge { font-size: 0.65rem; padding: 1px 6px; border-radius: 8px; background: rgba(96,165,250,0.15); color: var(--gold); margin-left: 6px; font-weight: 900; }
 .leader-sub { font-size: 0.75rem; color: var(--gray); }
 .leader-xp { margin-left: auto; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 900; flex-shrink: 0; }
 
@@ -554,13 +554,13 @@ body {
 .ms-lbl { font-size: 0.68rem; color: var(--gray); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
 .modal-start-btn {
   width: 100%; padding: 15px;
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  color: #000; font-family: 'Bangers', cursive;
+  background: linear-gradient(135deg, #0057A8, #004494);
+  color: #fff; font-family: 'Bangers', cursive;
   font-size: 1.4rem; letter-spacing: 2px;
   border: none; border-radius: 12px; cursor: pointer;
-  transition: all 0.25s; box-shadow: 0 4px 0 #a07000; margin-bottom: 10px;
+  transition: all 0.25s; box-shadow: 0 4px 0 #002d6b; margin-bottom: 10px;
 }
-.modal-start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #a07000; }
+.modal-start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #002d6b; }
 .modal-cancel { background: none; border: none; color: var(--gray); cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: color 0.2s; }
 .modal-cancel:hover { color: var(--white); }
 
@@ -840,7 +840,7 @@ body {
     </div>
 
     <!-- 12-Month Journey Banner -->
-    <div onclick="window.location.href='progress.html'" style="cursor:pointer;border-radius:16px;padding:16px 18px;margin-bottom:14px;background:linear-gradient(135deg,#1a1200,#0d2010,#1a0d30);border:1px solid rgba(255,215,0,0.2);display:flex;align-items:center;gap:14px;transition:all 0.2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+    <div onclick="window.location.href='progress.html'" style="cursor:pointer;border-radius:16px;padding:16px 18px;margin-bottom:14px;background:linear-gradient(135deg,#1a1200,#0d2010,#1a0d30);border:1px solid rgba(96,165,250,0.2);display:flex;align-items:center;gap:14px;transition:all 0.2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
       <div style="font-size:2rem">🗓️</div>
       <div style="flex:1">
         <div style="font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--gold);margin-bottom:2px">12-MONTH JOURNEY</div>
@@ -853,7 +853,7 @@ body {
       <!-- Hiragana -->
       <div class="module-card hiragana" onclick="openLesson('Hiragana','Master all 50 Hiragana characters with flashcards, audio, and stroke order!','あ','5 new cards · 10 review','~10 min','hiragana.html')">
         <div class="module-top">
-          <div class="module-icon-wrap" style="background:rgba(0,229,255,0.1)">あ</div>
+          <div class="module-icon-wrap" style="background:rgba(56,189,248,0.1)">あ</div>
           <div class="module-info">
             <div class="module-name" style="color:var(--cyan)" data-i18n="mod_hiragana">Hiragana</div>
             <div class="module-sub" data-i18n="mod_hiragana_sub">あいうえお → わをん</div>
@@ -867,9 +867,9 @@ body {
       </div>
 
       <!-- Katakana -->
-      <div class="module-card" style="border-color:rgba(255,110,180,0.15)" onclick="openLesson('Katakana','Learn all 50 Katakana characters used for foreign words and cool effects!','ア','5 new cards','~10 min','katakana.html')">
+      <div class="module-card" style="border-color:rgba(255,107,157,0.15)" onclick="openLesson('Katakana','Learn all 50 Katakana characters used for foreign words and cool effects!','ア','5 new cards','~10 min','katakana.html')">
         <div class="module-top">
-          <div class="module-icon-wrap" style="background:rgba(255,110,180,0.1)">ア</div>
+          <div class="module-icon-wrap" style="background:rgba(255,107,157,0.1)">ア</div>
           <div class="module-info">
             <div class="module-name" style="color:var(--pink)" data-i18n="mod_katakana">Katakana</div>
             <div class="module-sub" data-i18n="mod_katakana_sub">アイウエオ → ワヲン</div>
@@ -885,7 +885,7 @@ body {
       <!-- Kanji -->
       <div class="module-card kanji" id="cardKanji" onclick="window.location.href='kanji.html'">
         <div class="module-top">
-          <div class="module-icon-wrap" style="background:rgba(255,215,0,0.08)">漢</div>
+          <div class="module-icon-wrap" style="background:rgba(96,165,250,0.08)">漢</div>
           <div class="module-info">
             <div class="module-name" style="color:var(--gold)" data-i18n="mod_kanji">Kanji</div>
             <div class="module-sub" data-i18n="mod_kanji_sub">JLPT N5 · 91 characters</div>
@@ -896,9 +896,9 @@ body {
       </div>
 
       <!-- Japan Map -->
-      <div class="module-card" id="cardMap" style="border-color:rgba(0,229,255,0.2);cursor:pointer" onclick="window.location.href='japan-map.html'">
+      <div class="module-card" id="cardMap" style="border-color:rgba(56,189,248,0.2);cursor:pointer" onclick="window.location.href='japan-map.html'">
         <div class="module-top">
-          <div class="module-icon-wrap" style="background:rgba(0,229,255,0.12)">🗾</div>
+          <div class="module-icon-wrap" style="background:rgba(56,189,248,0.12)">🗾</div>
           <div class="module-info">
             <div class="module-name" style="color:var(--cyan)" data-i18n="mod_map">Japan Sightseeing Map</div>
             <div class="module-sub" data-i18n="mod_map_sub">25 landmarks · Illustrated · Learn vocabulary</div>
@@ -911,7 +911,7 @@ body {
       <!-- Culture -->
       <div class="module-card culture" id="cardCulture" onclick="openLesson('Japan Culture','Dive into anime, food, history and travel. Japan is more than a language!','🎌','3 new articles','~5 min read','culture.html')">
         <div class="module-top">
-          <div class="module-icon-wrap" style="background:rgba(0,230,118,0.1)">🎌</div>
+          <div class="module-icon-wrap" style="background:rgba(52,211,153,0.1)">🎌</div>
           <div class="module-info">
             <div class="module-name" style="color:var(--green)" data-i18n="mod_culture">Culture Hub</div>
             <div class="module-sub" data-i18n="mod_culture_sub">Anime · Food · History · Travel</div>
@@ -922,9 +922,9 @@ body {
       </div>
 
       <!-- Vocabulary -->
-      <div class="module-card" id="cardVocab" style="border-color:rgba(255,215,0,0.15)" onclick="window.location.href='vocabulary.html'">
+      <div class="module-card" id="cardVocab" style="border-color:rgba(96,165,250,0.15)" onclick="window.location.href='vocabulary.html'">
         <div class="module-top">
-          <div class="module-icon-wrap" style="background:rgba(255,215,0,0.1)">💬</div>
+          <div class="module-icon-wrap" style="background:rgba(96,165,250,0.1)">💬</div>
           <div class="module-info">
             <div class="module-name" style="color:var(--gold)" data-i18n="mod_vocab">Vocabulary</div>
             <div class="module-sub" data-i18n="mod_vocab_sub">500+ flashcards · Greetings, food, travel</div>
@@ -935,9 +935,9 @@ body {
       </div>
 
       <!-- Story Chapters 3-5 -->
-      <div class="module-card" id="cardStory35" style="border-color:rgba(168,85,247,0.15)" onclick="window.location.href='story3.html'">
+      <div class="module-card" id="cardStory35" style="border-color:rgba(129,140,248,0.15)" onclick="window.location.href='story3.html'">
         <div class="module-top">
-          <div class="module-icon-wrap" style="background:rgba(168,85,247,0.1)">📕</div>
+          <div class="module-icon-wrap" style="background:rgba(129,140,248,0.1)">📕</div>
           <div class="module-info">
             <div class="module-name" style="color:var(--purple)" data-i18n="mod_stories">Story Chapters 3–5</div>
             <div class="module-sub" data-i18n="mod_story35_sub">Continue Kai &amp; Sakura's journey</div>
@@ -985,7 +985,7 @@ body {
     <div class="leaderboard-card">
       <div class="leader-item">
         <div class="leader-rank" style="color:var(--gold)">🥇</div>
-        <div class="leader-avatar" style="background:rgba(255,215,0,0.1)">🌸</div>
+        <div class="leader-avatar" style="background:rgba(96,165,250,0.1)">🌸</div>
         <div>
           <div class="leader-name">Sakura_fan99</div>
           <div class="leader-sub">Level 28 · 🔥 21 days</div>
@@ -994,7 +994,7 @@ body {
       </div>
       <div class="leader-item">
         <div class="leader-rank" style="color:#c0c0c0">🥈</div>
-        <div class="leader-avatar" style="background:rgba(0,229,255,0.1)">🗡️</div>
+        <div class="leader-avatar" style="background:rgba(56,189,248,0.1)">🗡️</div>
         <div>
           <div class="leader-name">KyotoYuki</div>
           <div class="leader-sub">Level 24 · 🔥 14 days</div>
@@ -1003,16 +1003,16 @@ body {
       </div>
       <div class="leader-item">
         <div class="leader-rank" style="color:#cd7f32">🥉</div>
-        <div class="leader-avatar" style="background:rgba(255,110,180,0.1)">🍜</div>
+        <div class="leader-avatar" style="background:rgba(255,107,157,0.1)">🍜</div>
         <div>
           <div class="leader-name">TokyoDream</div>
           <div class="leader-sub">Level 20 · 🔥 9 days</div>
         </div>
         <div class="leader-xp" style="color:var(--text)">9,980 XP</div>
       </div>
-      <div class="leader-item" style="background:rgba(255,215,0,0.03);border-radius:10px;padding-left:8px;padding-right:8px;margin:0 -8px;border-bottom:none">
+      <div class="leader-item" style="background:rgba(96,165,250,0.03);border-radius:10px;padding-left:8px;padding-right:8px;margin:0 -8px;border-bottom:none">
         <div class="leader-rank" style="color:var(--gold)">#7</div>
-        <div class="leader-avatar" style="background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,58,92,0.1));border:2px solid rgba(255,215,0,0.3)">⚡</div>
+        <div class="leader-avatar" style="background:linear-gradient(135deg,rgba(96,165,250,0.2),rgba(255,107,157,0.1));border:2px solid rgba(96,165,250,0.3)">⚡</div>
         <div>
           <div class="leader-name" id="leaderYouName">KAI <span class="you-badge">YOU</span></div>
           <div class="leader-sub" id="leaderYouSub">Level 1 · 🔥 0 days</div>

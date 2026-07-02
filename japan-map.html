@@ -11,10 +11,10 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg: #0d1117;
-  --gold: #ffd700; --gold2: #ffaa00;
-  --red: #ff3a5c; --cyan: #00e5ff;
-  --green: #00e676; --teal: #00bfa5;
-  --purple: #a855f7; --pink: #ff6eb4;
+  --gold: #60A5FA; --gold2: #3B82F6;
+  --red: #FF6B9D; --cyan: #38BDF8;
+  --green: #34D399; --teal: #14B8A6;
+  --purple: #818CF8; --pink: #FF6B9D;
   --white: #fff; --gray: #7a8099; --text: #d0d4e8;
 }
 html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
@@ -24,7 +24,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px;
   background: rgba(13,17,23,0.97); backdrop-filter: blur(20px);
-  border-bottom: 2px solid rgba(255,215,0,0.2);
+  border-bottom: 2px solid rgba(96,165,250,0.2);
 }
 .nav-back {
   display: flex; align-items: center; gap: 6px; padding: 7px 16px;
@@ -46,7 +46,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--
 .nav-spacer { flex: 1; }
 .nav-count {
   padding: 6px 14px; border-radius: 20px;
-  background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25);
+  background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.25);
   font-family: 'Orbitron', sans-serif; font-size: 0.78rem; font-weight: 900;
   color: var(--gold);
 }
@@ -106,7 +106,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--
   font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: all 0.2s;
 }
-.panel-close:hover { background: rgba(255,58,92,0.2); color: var(--red); }
+.panel-close:hover { background: rgba(255,107,157,0.2); color: var(--red); }
 
 /* ── POSTCARD ILLUSTRATION ── */
 .postcard {
@@ -162,11 +162,11 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--
 
 .fun-fact {
   display: flex; gap: 10px; align-items: flex-start;
-  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.18);
+  background: rgba(96,165,250,0.06); border: 1px solid rgba(96,165,250,0.18);
   border-radius: 12px; padding: 12px; margin-bottom: 16px;
 }
 .fun-fact-icon { font-size: 1.4rem; flex-shrink: 0; }
-.fun-fact-text { font-size: 0.82rem; line-height: 1.6; color: rgba(255,215,0,0.9); font-weight: 700; }
+.fun-fact-text { font-size: 0.82rem; line-height: 1.6; color: rgba(96,165,250,0.9); font-weight: 700; }
 
 /* ── VOCABULARY ── */
 .vocab-section { margin-bottom: 10px; }
@@ -190,7 +190,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--
 .intro-card {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
   z-index: 400; background: rgba(13,17,23,0.96); backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,215,0,0.25); border-radius: 20px;
+  border: 1px solid rgba(96,165,250,0.25); border-radius: 20px;
   padding: 16px 22px; max-width: 400px; width: calc(100% - 32px);
   display: flex; align-items: center; gap: 14px;
   box-shadow: 0 8px 40px rgba(0,0,0,0.6); animation: introSlide 0.6s cubic-bezier(0.34,1.56,0.64,1);
@@ -199,8 +199,8 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--
 .intro-emoji { font-size: 2.2rem; flex-shrink: 0; }
 .intro-text h3 { font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 2px; color: var(--gold); margin-bottom: 3px; }
 .intro-text p { font-size: 0.78rem; line-height: 1.5; color: var(--text); }
-.intro-close { flex-shrink: 0; padding: 7px 16px; border-radius: 20px; background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); font-size: 0.78rem; font-weight: 900; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-.intro-close:hover { background: rgba(255,215,0,0.22); }
+.intro-close { flex-shrink: 0; padding: 7px 16px; border-radius: 20px; background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.3); color: var(--gold); font-size: 0.78rem; font-weight: 900; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.intro-close:hover { background: rgba(96,165,250,0.22); }
 
 /* ── MOBILE ── */
 @media(max-width: 640px) {

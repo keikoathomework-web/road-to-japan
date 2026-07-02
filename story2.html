@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,13 +10,13 @@
 
 :root {
   --bg: #08090f;
-  --gold: #ffd700;
-  --gold2: #ffaa00;
-  --red: #ff3a5c;
-  --cyan: #00e5ff;
-  --purple: #a855f7;
-  --pink: #ff6eb4;
-  --green: #00e676;
+  --gold: #60A5FA;
+  --gold2: #3B82F6;
+  --red: #FF6B9D;
+  --cyan: #38BDF8;
+  --purple: #818CF8;
+  --pink: #FF6B9D;
+  --green: #34D399;
   --white: #ffffff;
   --gray: #7a8099;
   --text: #d0d4e8;
@@ -89,7 +89,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
   0%,95%{opacity:0} 96%{opacity:0.5} 97%{opacity:0} 98%{opacity:0.7} 100%{opacity:0}
 }
 .lightning-overlay {
-  position:absolute; inset:0; background: rgba(168,85,247,0.2);
+  position:absolute; inset:0; background: rgba(129,140,248,0.2);
   animation: lightning 3s infinite; pointer-events:none; z-index:2;
 }
 
@@ -111,7 +111,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .chapter-badge {
   display: flex; align-items: center; gap: 8px;
   padding: 7px 16px; border-radius: 20px;
-  background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.3);
+  background: rgba(129,140,248,0.15); border: 1px solid rgba(129,140,248,0.3);
   font-size: 0.8rem; font-weight: 900; color: var(--purple);
   letter-spacing: 1px; text-transform: uppercase;
 }
@@ -123,7 +123,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .hud-xp {
   display: flex; align-items: center; gap: 6px;
   padding: 7px 14px; border-radius: 20px;
-  background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2);
+  background: rgba(129,140,248,0.1); border: 1px solid rgba(129,140,248,0.2);
   font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 900; color: var(--purple);
 }
 .hud-menu { width: 36px; height: 36px; border-radius: 10px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; transition: all 0.2s; }
@@ -159,7 +159,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .speaker-name { font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
 .speaker-tag { font-size: 0.65rem; font-weight: 900; padding: 2px 10px; border-radius: 10px; letter-spacing: 1px; text-transform: uppercase; }
 .dialogue-text { font-size: clamp(0.95rem, 2.5vw, 1.1rem); line-height: 1.65; color: var(--text); min-height: 3.3em; }
-.jp-word { color: var(--gold); font-weight: 900; cursor: pointer; border-bottom: 2px dashed rgba(255,215,0,0.5); transition: all 0.2s; display: inline-block; }
+.jp-word { color: var(--gold); font-weight: 900; cursor: pointer; border-bottom: 2px dashed rgba(96,165,250,0.5); transition: all 0.2s; display: inline-block; }
 .jp-word:hover { color: var(--gold2); border-bottom-color: var(--gold2); }
 .continue-hint { position: absolute; bottom: 16px; right: 20px; display: flex; align-items: center; gap: 5px; font-size: 0.72rem; font-weight: 800; color: rgba(255,255,255,0.3); letter-spacing: 1px; animation: blink 1.2s ease-in-out infinite; }
 .continue-hint.hidden { display: none; }
@@ -172,16 +172,16 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .choice-panel.hidden { display: none; }
 .choice-title { font-size: 0.75rem; font-weight: 900; letter-spacing: 2px; color: var(--gray); text-transform: uppercase; text-align: center; margin-bottom: 4px; }
 .choice-btn { padding: 14px 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; color: var(--white); font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.25s; text-align: left; display: flex; align-items: center; gap: 12px; }
-.choice-btn:hover { background: rgba(168,85,247,0.06); border-color: rgba(168,85,247,0.3); transform: translateX(6px); }
+.choice-btn:hover { background: rgba(129,140,248,0.06); border-color: rgba(129,140,248,0.3); transform: translateX(6px); }
 .choice-btn .choice-num { width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-family: 'Bangers', cursive; font-size: 0.9rem; }
-.choice-btn:hover .choice-num { background: rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.3); color: var(--purple); }
+.choice-btn:hover .choice-num { background: rgba(129,140,248,0.15); border-color: rgba(129,140,248,0.3); color: var(--purple); }
 
 /* ===================== QUIZ OVERLAY ===================== */
 .quiz-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.9); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; padding: 24px; animation: fadeIn 0.3s; }
 .quiz-overlay.hidden { display: none; }
 @keyframes fadeIn { from{opacity:0} to{opacity:1} }
 
-.quiz-card { background: #0d0f1e; border: 1px solid rgba(168,85,247,0.25); border-radius: 28px; padding: 40px 36px; max-width: 500px; width: 100%; text-align: center; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 0 60px rgba(168,85,247,0.1); }
+.quiz-card { background: #0d0f1e; border: 1px solid rgba(129,140,248,0.25); border-radius: 28px; padding: 40px 36px; max-width: 500px; width: 100%; text-align: center; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 0 60px rgba(129,140,248,0.1); }
 @keyframes popIn { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
 .quiz-label { font-size: 0.7rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: var(--purple); margin-bottom: 8px; }
 .quiz-question { font-family: 'Bangers', cursive; font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 8px; line-height: 1.2; }
@@ -189,9 +189,9 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .quiz-hint { font-size: 0.85rem; color: var(--gray); margin-bottom: 28px; }
 .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
 .quiz-opt { padding: 16px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.25s; font-family: 'Bangers', cursive; font-size: 1.6rem; letter-spacing: 1px; }
-.quiz-opt:hover { background: rgba(168,85,247,0.08); border-color: rgba(168,85,247,0.3); transform: scale(1.03); }
-.quiz-opt.correct { background: rgba(0,230,118,0.15) !important; border-color: var(--green) !important; color: var(--green); animation: correctPop 0.4s ease; }
-.quiz-opt.wrong   { background: rgba(255,58,92,0.12) !important;  border-color: var(--red) !important;   color: var(--red);   animation: wrongShake 0.4s ease; }
+.quiz-opt:hover { background: rgba(129,140,248,0.08); border-color: rgba(129,140,248,0.3); transform: scale(1.03); }
+.quiz-opt.correct { background: rgba(52,211,153,0.15) !important; border-color: var(--green) !important; color: var(--green); animation: correctPop 0.4s ease; }
+.quiz-opt.wrong   { background: rgba(255,107,157,0.12) !important;  border-color: var(--red) !important;   color: var(--red);   animation: wrongShake 0.4s ease; }
 @keyframes correctPop  { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
 @keyframes wrongShake  { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
 .quiz-progress-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-bottom: 20px; overflow: hidden; }
@@ -201,7 +201,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .result-emoji { font-size: 4rem; display: block; margin-bottom: 12px; }
 .result-title { font-family: 'Bangers', cursive; font-size: 2.4rem; letter-spacing: 2px; margin-bottom: 8px; }
 .result-sub { color: var(--text); font-size: 0.9rem; line-height: 1.5; margin-bottom: 24px; }
-.result-xp { display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; border-radius: 20px; background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 900; color: var(--purple); margin-bottom: 20px; }
+.result-xp { display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; border-radius: 20px; background: rgba(129,140,248,0.1); border: 1px solid rgba(129,140,248,0.3); font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 900; color: var(--purple); margin-bottom: 20px; }
 .result-continue-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--purple), #7c3aed); color: #fff; font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 2px; border: none; border-radius: 14px; cursor: pointer; transition: all 0.25s; box-shadow: 0 4px 0 #4c1d95; }
 .result-continue-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #4c1d95; }
 
@@ -209,19 +209,19 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .duel-badge {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 6px 16px; border-radius: 20px; margin-bottom: 16px;
-  background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.3);
+  background: rgba(129,140,248,0.15); border: 1px solid rgba(129,140,248,0.3);
   font-size: 0.75rem; font-weight: 900; letter-spacing: 2px; color: var(--purple);
   text-transform: uppercase;
 }
 .vs-display {
   font-family: 'Bangers', cursive; font-size: 3rem; letter-spacing: 4px;
-  background: linear-gradient(135deg, var(--gold), var(--purple));
+  background: linear-gradient(135deg, #60A5FA, #818CF8);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   margin: 8px 0 20px;
 }
 
 /* ===================== VOCAB POPUP ===================== */
-.vocab-popup { position: fixed; z-index: 200; background: rgba(5,8,20,0.96); border: 1px solid rgba(168,85,247,0.3); border-radius: 16px; padding: 14px 18px; max-width: 240px; backdrop-filter: blur(20px); box-shadow: 0 12px 40px rgba(0,0,0,0.6); animation: fadeIn 0.2s; pointer-events: none; transition: opacity 0.2s; }
+.vocab-popup { position: fixed; z-index: 200; background: rgba(5,8,20,0.96); border: 1px solid rgba(129,140,248,0.3); border-radius: 16px; padding: 14px 18px; max-width: 240px; backdrop-filter: blur(20px); box-shadow: 0 12px 40px rgba(0,0,0,0.6); animation: fadeIn 0.2s; pointer-events: none; transition: opacity 0.2s; }
 .vocab-popup.hidden { display: none; }
 .vp-jp { font-size: 1.8rem; font-weight: 700; color: var(--purple); margin-bottom: 4px; }
 .vp-rom { font-size: 0.85rem; font-weight: 900; color: var(--cyan); margin-bottom: 2px; }
@@ -230,13 +230,13 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 /* ===================== CHAPTER END ===================== */
 .chapter-end { position: fixed; inset: 0; z-index: 150; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; padding: 24px; animation: fadeIn 0.6s; }
 .chapter-end.hidden { display: none; }
-.end-card { background: linear-gradient(135deg, rgba(168,85,247,0.07), rgba(0,229,255,0.05)); border: 1px solid rgba(168,85,247,0.25); border-radius: 28px; padding: 48px 40px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 0 80px rgba(168,85,247,0.1); animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.end-card { background: linear-gradient(135deg, rgba(129,140,248,0.07), rgba(56,189,248,0.05)); border: 1px solid rgba(129,140,248,0.25); border-radius: 28px; padding: 48px 40px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 0 80px rgba(129,140,248,0.1); animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
 .end-stars { font-size: 2.5rem; margin-bottom: 12px; letter-spacing: 4px; }
 .end-label { font-size: 0.75rem; font-weight: 900; letter-spacing: 3px; color: var(--purple); text-transform: uppercase; margin-bottom: 8px; }
 .end-title { font-family: 'Bangers', cursive; font-size: 2.8rem; letter-spacing: 3px; margin-bottom: 6px; background: linear-gradient(135deg, #fff, var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .end-sub { color: var(--text); font-size: 0.9rem; line-height: 1.5; margin-bottom: 28px; }
-.end-rewards { display: flex; gap: 0; border: 1px solid rgba(168,85,247,0.15); border-radius: 16px; overflow: hidden; margin-bottom: 28px; }
-.end-reward { flex: 1; padding: 16px; text-align: center; border-right: 1px solid rgba(168,85,247,0.1); }
+.end-rewards { display: flex; gap: 0; border: 1px solid rgba(129,140,248,0.15); border-radius: 16px; overflow: hidden; margin-bottom: 28px; }
+.end-reward { flex: 1; padding: 16px; text-align: center; border-right: 1px solid rgba(129,140,248,0.1); }
 .end-reward:last-child { border-right: none; }
 .er-num { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--purple); line-height: 1; }
 .er-lbl { font-size: 0.7rem; color: var(--gray); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
@@ -253,7 +253,7 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .menu-btn { width: 100%; padding: 13px; margin-bottom: 10px; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; border: 1px solid var(--border); }
 .menu-btn.primary { background: linear-gradient(135deg, var(--purple), #7c3aed); color: #fff; border: none; }
 .menu-btn.secondary { background: rgba(255,255,255,0.04); color: var(--text); }
-.menu-btn.danger { background: rgba(255,58,92,0.1); color: var(--red); border-color: rgba(255,58,92,0.2); }
+.menu-btn.danger { background: rgba(255,107,157,0.1); color: var(--red); border-color: rgba(255,107,157,0.2); }
 .menu-btn:hover { transform: scale(1.02); }
 
 /* Mobile */
@@ -297,27 +297,27 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
   <div class="scene-area" id="sceneArea">
     <!-- Kai (left) -->
     <div class="char-sprite left hidden" id="spriteKai">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,58,92,0.1))">⚡</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(96,165,250,0.2),rgba(255,107,157,0.1))">⚡</div>
       <div class="sprite-name" style="color:var(--gold)">KAI</div>
     </div>
     <!-- Ryu (right) — rival -->
     <div class="char-sprite right hidden" id="spriteRyu">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(168,85,247,0.25),rgba(0,229,255,0.1))">🐉</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(129,140,248,0.25),rgba(56,189,248,0.1))">🐉</div>
       <div class="sprite-name" style="color:var(--purple)">RYU</div>
     </div>
     <!-- Sakura (center) -->
     <div class="char-sprite center hidden" id="spriteSakura">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(255,110,180,0.2),rgba(168,85,247,0.1))">🌸</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(255,107,157,0.2),rgba(129,140,248,0.1))">🌸</div>
       <div class="sprite-name" style="color:var(--pink)">SAKURA</div>
     </div>
     <!-- Captain Hideo (right side, partially) -->
     <div class="char-sprite hidden" id="spriteHideo" style="right:6%;bottom:0">
-      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(168,85,247,0.1))">🧭</div>
+      <div class="sprite-bubble" style="background:linear-gradient(135deg,rgba(56,189,248,0.15),rgba(129,140,248,0.1))">🧭</div>
       <div class="sprite-name" style="color:var(--cyan)">CAPTAIN HIDEO</div>
     </div>
     <!-- Mochi -->
     <div class="char-sprite hidden" id="spriteMochi" style="right:22%;bottom:0">
-      <div class="sprite-bubble" style="width:70px;height:70px;font-size:3rem;background:linear-gradient(135deg,rgba(0,230,118,0.15),rgba(255,215,0,0.1))">🍡</div>
+      <div class="sprite-bubble" style="width:70px;height:70px;font-size:3rem;background:linear-gradient(135deg,rgba(52,211,153,0.15),rgba(96,165,250,0.1))">🍡</div>
       <div class="sprite-name" style="color:var(--green);font-size:0.8rem">MOCHI</div>
     </div>
   </div>
@@ -410,22 +410,22 @@ const STORY = [
   {
     show: ['kai','sakura'], hide: [],
     speaking: 'sakura',
-    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,110,180,0.12)',
+    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,107,157,0.12)',
     text: '"Kai-kun! Wake up, you\'ve been studying for six hours. Your brain needs rest."',
   },
   {
     speaking: 'kai',
-    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(255,215,0,0.15)',
+    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(96,165,250,0.15)',
     text: '"I can\'t stop, Sakura. There\'s a whole alphabet of <span class="jp-word" data-jp="カタカナ" data-rom="Katakana" data-en="Japanese syllabary used for foreign words">Katakana</span> I haven\'t touched yet. How does anyone learn this stuff so fast?"',
   },
   {
     speaking: 'sakura',
-    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,110,180,0.12)',
+    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,107,157,0.12)',
     text: '"The secret? <span class="jp-word" data-jp="カタカナ" data-rom="Katakana" data-en="Japanese syllabary for loanwords">Katakana</span> is used for foreign words — words like コーヒー (<em>coffee</em>), テレビ (<em>television</em>). You already KNOW these words!"',
   },
   {
     speaking: 'kai',
-    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(255,215,0,0.15)',
+    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(96,165,250,0.15)',
     text: '"Wait — Japanese borrows words from English?! Then I\'m already halfway there! Let me see... ア・イ・ウ・エ・オ..."',
   },
   // ---- STORM HITS ----
@@ -433,23 +433,23 @@ const STORY = [
     bg: 'bg-storm',
     show: ['hideo'], hide: [],
     speaking: 'hideo',
-    speaker: 'CAPTAIN HIDEO', speakerColor: 'var(--cyan)', tag: 'Ship Captain', tagColor: 'rgba(0,229,255,0.12)',
+    speaker: 'CAPTAIN HIDEO', speakerColor: 'var(--cyan)', tag: 'Ship Captain', tagColor: 'rgba(56,189,248,0.12)',
     text: '"ALL HANDS ON DECK! Storm approaching from the east — Category 4! This is no ordinary squall!"',
     particles: 'storm',
   },
   {
     speaking: 'kai',
-    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(255,215,0,0.15)',
+    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(96,165,250,0.15)',
     text: '"Captain! What do we do?! The ship is shaking like crazy!"',
   },
   {
     speaking: 'hideo',
-    speaker: 'CAPTAIN HIDEO', speakerColor: 'var(--cyan)', tag: 'Ship Captain', tagColor: 'rgba(0,229,255,0.12)',
+    speaker: 'CAPTAIN HIDEO', speakerColor: 'var(--cyan)', tag: 'Ship Captain', tagColor: 'rgba(56,189,248,0.12)',
     text: '"I\'ve weathered worse! But the ship\'s navigation system just crashed — it\'s displayed in <span class="jp-word" data-jp="カタカナ" data-rom="Katakana" data-en="Japanese syllabary for foreign words">Katakana</span>. I need someone who can read it!"',
   },
   {
     speaking: 'sakura',
-    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,110,180,0.12)',
+    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,107,157,0.12)',
     text: '"Kai! This is your moment. The display shows ア・イ・ウ・エ・オ — navigate by reading these coordinates!"',
   },
   // CHOICE
@@ -464,14 +464,14 @@ const STORY = [
   {
     id: 'goKatakana',
     speaking: 'kai',
-    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(255,215,0,0.15)',
+    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(96,165,250,0.15)',
     text: '"ア sounds like \'a\', イ like \'i\', ウ like \'u\'... Captain, turn 30 degrees starboard — I can read the course!"',
   },
   // Path B — review
   {
     id: 'reviewFirst',
     speaking: 'sakura',
-    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,110,180,0.12)',
+    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,107,157,0.12)',
     text: '"Smart move! Quick — ア=a, イ=i, ウ=u, エ=e, オ=o. Same sounds as Hiragana! Now go read those coordinates!"',
   },
   // Merge → quiz
@@ -493,18 +493,18 @@ const STORY = [
     bg: 'bg-ship-night',
     show: ['mochi'], hide: ['hideo'],
     speaking: 'mochi',
-    speaker: 'MOCHI', speakerColor: 'var(--green)', tag: 'Mascot', tagColor: 'rgba(0,230,118,0.12)',
+    speaker: 'MOCHI', speakerColor: 'var(--green)', tag: 'Mascot', tagColor: 'rgba(52,211,153,0.12)',
     text: '"<span class="jp-word" data-jp="やった！" data-rom="Yatta!" data-en="We did it! / Yes!">やった！</span> Kai-kun saved the ship! もちもち！ Extra MochiCoins for this legend!"',
     particles: 'purple',
   },
   {
     speaking: 'kai',
-    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(255,215,0,0.15)',
+    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(96,165,250,0.15)',
     text: '"I... I actually did it. カタカナ— I can read it! ア・イ・ウ・エ・オ — that\'s the same vowel row as Hiragana!"',
   },
   {
     speaking: 'sakura',
-    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,110,180,0.12)',
+    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,107,157,0.12)',
     text: '"Exactly! That\'s the breakthrough moment. Once you see the pattern, both alphabets click at once. <span class="jp-word" data-jp="すごい！" data-rom="Sugoi!" data-en="Amazing! / Incredible!">すごい</span>、Kai-kun!"',
   },
   // ---- RYU APPEARS ----
@@ -512,34 +512,34 @@ const STORY = [
     bg: 'bg-duel',
     show: ['ryu'], hide: ['mochi','sakura'],
     speaking: 'ryu',
-    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(168,85,247,0.15)',
+    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(129,140,248,0.15)',
     text: '"...Impressive. For a <em>beginner</em>."',
     particles: 'purple',
   },
   {
     speaking: 'kai',
-    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(255,215,0,0.15)',
+    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(96,165,250,0.15)',
     text: '"Who are you?! You\'ve been on this ship the whole time?!"',
   },
   {
     speaking: 'ryu',
-    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(168,85,247,0.15)',
+    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(129,140,248,0.15)',
     text: '"My name is <span class="jp-word" data-jp="竜" data-rom="Ryū" data-en="Dragon">Ryu</span>. I\'ve been studying Japanese for three years. And I\'m also looking for the <span class="jp-word" data-jp="大和の書" data-rom="Yamato no Sho" data-en="The Grand Scroll of Japan">Grand Scroll</span>."',
   },
   {
     speaking: 'ryu',
-    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(168,85,247,0.15)',
+    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(129,140,248,0.15)',
     text: '"You got lucky with the navigation. But luck runs out. Only the most skilled linguist will reach the Scroll first — and that\'s me."',
   },
   {
     show: ['sakura'], hide: [],
     speaking: 'sakura',
-    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,110,180,0.12)',
+    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,107,157,0.12)',
     text: '"Ryu! Don\'t provoke him — we\'re all on the same ship."',
   },
   {
     speaking: 'ryu',
-    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(168,85,247,0.15)',
+    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(129,140,248,0.15)',
     text: '"Then let\'s make it official. A duel. Five Katakana questions — whoever scores higher is the true scholar. The loser turns back at the next port."',
   },
   // CHOICE 2
@@ -553,13 +553,13 @@ const STORY = [
   {
     id: 'acceptDuel',
     speaking: 'kai',
-    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(255,215,0,0.15)',
+    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(96,165,250,0.15)',
     text: '"DEAL. I just learned ア-row under a Category 4 storm. You think THAT\'s gonna scare me?! Let\'s go!"',
   },
   {
     id: 'refuseDuel',
     speaking: 'kai',
-    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(255,215,0,0.15)',
+    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(96,165,250,0.15)',
     text: '"I\'m not competing, Ryu — but I\'ll still take your quiz. Not to beat you. To prove to MYSELF that I\'ve got this."',
   },
   // DUEL QUIZ
@@ -581,23 +581,23 @@ const STORY = [
     bg: 'bg-ship-night',
     show: ['ryu'], hide: ['sakura'],
     speaking: 'ryu',
-    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(168,85,247,0.15)',
+    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(129,140,248,0.15)',
     text: '"...You\'ve got potential, kid. More than I expected."',
   },
   {
     show: ['sakura'], hide: [],
     speaking: 'sakura',
-    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,110,180,0.12)',
+    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,107,157,0.12)',
     text: '"You both scored well! You know what this means — two rivals AND allies on this journey. The scroll needs both of you."',
   },
   {
     speaking: 'kai',
-    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(255,215,0,0.15)',
+    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(96,165,250,0.15)',
     text: '"Fine. Truce — for now. But next time we hit a quiz, you\'re going down, Ryu."',
   },
   {
     speaking: 'ryu',
-    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(168,85,247,0.15)',
+    speaker: 'RYU', speakerColor: 'var(--purple)', tag: 'Rival', tagColor: 'rgba(129,140,248,0.15)',
     text: '"<span class="jp-word" data-jp="楽しみにしている" data-rom="Tanoshimi ni shite iru" data-en="I\'m looking forward to it">楽しみにしているよ</span>... I\'m looking forward to it."',
   },
   // ---- MYSTERIOUS ISLAND ----
@@ -611,17 +611,17 @@ const STORY = [
   {
     show: ['mochi'], hide: [],
     speaking: 'mochi',
-    speaker: 'MOCHI', speakerColor: 'var(--green)', tag: 'Mascot', tagColor: 'rgba(0,230,118,0.12)',
+    speaker: 'MOCHI', speakerColor: 'var(--green)', tag: 'Mascot', tagColor: 'rgba(52,211,153,0.12)',
     text: '"<span class="jp-word" data-jp="あれは何？" data-rom="Are wa nan?" data-en="What is that?">あれは何？</span> もちもち! Mochi smells something ancient... and delicious?"',
   },
   {
     speaking: 'sakura',
-    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,110,180,0.12)',
+    speaker: 'SAKURA', speakerColor: 'var(--pink)', tag: 'Navigator', tagColor: 'rgba(255,107,157,0.12)',
     text: '"This island... it\'s not on any of our charts. The Captain\'s log mentions a legend — an island that only appears to those who can read both <span class="jp-word" data-jp="ひらがな" data-rom="Hiragana" data-en="Japanese phonetic alphabet">Hiragana</span> AND <span class="jp-word" data-jp="カタカナ" data-rom="Katakana" data-en="Japanese syllabary for loanwords">Katakana</span>."',
   },
   {
     speaking: 'kai',
-    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(255,215,0,0.15)',
+    speaker: 'KAI', speakerColor: 'var(--gold)', tag: 'Hero', tagColor: 'rgba(96,165,250,0.15)',
     text: '"Then it appeared for US. We did this, Sakura. Two alphabets in and the world is already opening up for me..."',
   },
   {
@@ -665,9 +665,9 @@ function buildParticles(type = 'default') {
   const p = document.getElementById('particles');
   p.innerHTML = '';
   const configs = {
-    default: { count: 10, colors: ['rgba(0,229,255,0.2)','rgba(168,85,247,0.2)'], sizes: [2,5] },
-    storm: { count: 30, colors: ['rgba(168,85,247,0.5)','rgba(0,229,255,0.4)','rgba(255,255,255,0.6)'], sizes: [2,6] },
-    purple: { count: 20, colors: ['rgba(168,85,247,0.7)','rgba(255,255,255,0.4)','rgba(0,229,255,0.5)'], sizes: [3,8] },
+    default: { count: 10, colors: ['rgba(56,189,248,0.2)','rgba(129,140,248,0.2)'], sizes: [2,5] },
+    storm: { count: 30, colors: ['rgba(129,140,248,0.5)','rgba(56,189,248,0.4)','rgba(255,255,255,0.6)'], sizes: [2,6] },
+    purple: { count: 20, colors: ['rgba(129,140,248,0.7)','rgba(255,255,255,0.4)','rgba(56,189,248,0.5)'], sizes: [3,8] },
   };
   const c = configs[type] || configs.default;
 
