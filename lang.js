@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Road to Japan — i18n Translation System
  * Languages: EN (English), ES (Español), FR (Français), DE (Deutsch), KO (한국어)
  * Scope: UI text only. Japanese learning content stays in English (shared base language).
@@ -66,6 +66,29 @@ const RTJLang = (() => {
       mod_phrases:    'Phrases',
       mod_stories:    'Stories',
       mod_map:        'Japan Map',
+      mod_hiragana_sub: 'あいうえお → わをん',
+      mod_katakana_sub: 'アイウエオ → ワヲン',
+      mod_kanji_sub:    'JLPT N5 · 91 characters',
+      mod_map_sub:      '25 landmarks · Illustrated · Learn vocabulary',
+      mod_culture_sub:  'Anime · Food · History · Travel',
+      mod_vocab_sub:    '500+ flashcards · Greetings, food, travel',
+      mod_story35_sub:  'Continue Kai & Sakura\'s journey',
+      mod_unlock:       'Unlock with Premium',
+      mod_next_ha:      'Next: は行 (ha-hi-fu-he-ho)',
+      mod_next_a:       'Next: ア行 (a-i-u-e-o)',
+      mod_map_next:     '🗺️ Sapporo to Okinawa · Tap pins to explore Japan!',
+      mod_culture_next: 'Latest: One Piece — Real Japan Connections',
+      mod_story35_next: 'Chapters 1–2 are free · 3–5 unlock with Premium',
+
+      // Hiragana lesson
+      hira_not_studied: 'Not studied yet · Study now to begin!',
+      hira_quiz_q:      'What sound does this make?',
+      hira_quiz_q2:     'Pick the correct hiragana for:',
+      hira_perfect:     'PERFECT!',
+      hira_great:       'GREAT!',
+      hira_keep_going:  'KEEP GOING!',
+      hira_perfect_toast: 'PERFECT SCORE!',
+      hira_great_toast: 'Great job!',
       mod_culture:    'Culture Hub',
       mod_progress:   '12-Month Journey',
 
@@ -263,6 +286,29 @@ const RTJLang = (() => {
       mod_phrases:    'Frases',
       mod_stories:    'Historias',
       mod_map:        'Mapa de Japón',
+      mod_hiragana_sub: 'あいうえお → わをん',
+      mod_katakana_sub: 'アイウエオ → ワヲン',
+      mod_kanji_sub:    'JLPT N5 · 91 caracteres',
+      mod_map_sub:      '25 lugares · Ilustrado · Aprende vocabulario',
+      mod_culture_sub:  'Anime · Comida · Historia · Viajes',
+      mod_vocab_sub:    '500+ tarjetas · Saludos, comida, viajes',
+      mod_story35_sub:  'Continúa la aventura de Kai y Sakura',
+      mod_unlock:       'Desbloquear con Premium',
+      mod_next_ha:      'Siguiente: は行 (ha-hi-fu-he-ho)',
+      mod_next_a:       'Siguiente: ア行 (a-i-u-e-o)',
+      mod_map_next:     '🗺️ Sapporo a Okinawa · ¡Toca los pines para explorar Japón!',
+      mod_culture_next: 'Último: One Piece — Conexiones reales con Japón',
+      mod_story35_next: 'Capítulos 1-2 gratis · 3-5 con Premium',
+
+      // Hiragana lesson
+      hira_not_studied: 'Aún no estudiado · ¡Empieza a estudiar ahora!',
+      hira_quiz_q:      '¿Qué sonido tiene?',
+      hira_quiz_q2:     'Elige el hiragana correcto para:',
+      hira_perfect:     '¡PERFECTO!',
+      hira_great:       '¡EXCELENTE!',
+      hira_keep_going:  '¡SIGUE ADELANTE!',
+      hira_perfect_toast: '¡PUNTUACIÓN PERFECTA!',
+      hira_great_toast: '¡Buen trabajo!',
       mod_culture:    'Centro Cultural',
       mod_progress:   'Viaje de 12 Meses',
 

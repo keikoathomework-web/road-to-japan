@@ -786,7 +786,7 @@ function selectChar(ch) {
   }[s.status] || '<span class="srs-tag srs-new">🆕 New</span>';
 
   const statsEl = document.getElementById('heroStats');
-  if (s.status === 'new') statsEl.textContent = 'Not studied yet · Study now to begin!';
+  if (s.status === 'new') statsEl.textContent = (window.RTJLang ? RTJLang.t('hira_not_studied') : 'Not studied yet · Study now to begin!');
   else statsEl.textContent = `✅ ${s.correct} correct · ❌ ${s.wrong} wrong`;
 
   // Mark as learning if new
@@ -918,7 +918,7 @@ function renderQuizQ() {
   document.getElementById('aqXP').textContent = qXP;
 
   if (isC2R) {
-    document.getElementById('aqQuestion').textContent = 'What sound does this make?';
+    document.getElementById('aqQuestion').textContent = (window.RTJLang ? RTJLang.t('hira_quiz_q') : 'What sound does this make?');
     document.getElementById('aqChar').textContent = q.c;
     document.getElementById('aqHint').textContent = 'Choose the correct romanization';
 
@@ -993,7 +993,7 @@ function showQuizResult() {
   const bonus = perfect ? 30 : 0;
 
   document.getElementById('qrEmoji').textContent = perfect ? '🏆' : acc >= 70 ? '⭐' : '💪';
-  document.getElementById('qrTitle').textContent = perfect ? 'PERFECT!' : acc >= 70 ? 'GREAT!' : 'KEEP GOING!';
+  document.getElementById('qrTitle').textContent = perfect ? (window.RTJLang ? RTJLang.t('hira_perfect') : 'PERFECT!') : acc >= 70 ? (window.RTJLang ? RTJLang.t('hira_great') : 'GREAT!') : (window.RTJLang ? RTJLang.t('hira_keep_going') : 'KEEP GOING!');
   document.getElementById('qrSub').textContent = `${qCorrect}/${total} correct · ${acc}% accuracy${perfect ? ' · Perfect bonus +30 XP!' : ''}`;
   document.getElementById('qrScore').textContent = `${qCorrect}/${total}`;
   document.getElementById('qrAcc').textContent = acc + '%';
@@ -1001,8 +1001,8 @@ function showQuizResult() {
   totalXP += qXP + bonus;
   if (window.RTJProgress && (qXP + bonus) > 0) RTJProgress.addXP(qXP + bonus);
 
-  if (perfect) showToast('🏆', 'PERFECT SCORE!', `+${qXP + bonus} XP earned!`);
-  else if (acc >= 70) showToast('⭐', 'Great job!', `${qCorrect}/${total} correct · +${qXP} XP`);
+  if (perfect) showToast('🏆', window.RTJLang ? RTJLang.t('hira_perfect_toast') : 'PERFECT SCORE!', `+${qXP + bonus} XP earned!`);
+  else if (acc >= 70) showToast('⭐', window.RTJLang ? RTJLang.t('hira_great_toast') : 'Great job!', `${qCorrect}/${total} correct · +${qXP} XP`);
 }
 
 // =====================================================================
