@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    GOJUON WIDGET — 50音表フローティングボタン
    どのページにも <script src="gojuon-widget.js"></script> で追加可能
    ============================================================ */
@@ -23,16 +23,16 @@
   const style = document.createElement('style');
   style.textContent = `
     #rtj-gojuon-btn {
-      position: fixed; bottom: 80px; right: 16px; z-index: 9990;
+      position: fixed; bottom: 20px; right: 16px; z-index: 9990;
       width: 52px; height: 52px; border-radius: 50%;
-      background: linear-gradient(135deg, #ffd700, #ff6b2b);
+      background: linear-gradient(135deg, #0057A8, #FF6B9D);
       border: none; cursor: pointer; font-size: 1.4rem;
-      box-shadow: 0 4px 20px rgba(255,215,0,0.4);
+      box-shadow: 0 4px 20px rgba(0,87,168,0.45);
       transition: transform 0.2s, box-shadow 0.2s;
       display: flex; align-items: center; justify-content: center;
-      color: #000; font-weight: 900;
+      color: #fff; font-weight: 900;
     }
-    #rtj-gojuon-btn:hover { transform: scale(1.12); box-shadow: 0 6px 28px rgba(255,215,0,0.6); }
+    #rtj-gojuon-btn:hover { transform: scale(1.12); box-shadow: 0 6px 28px rgba(0,87,168,0.6); }
 
     #rtj-gojuon-overlay {
       display: none; position: fixed; inset: 0; z-index: 9991;
@@ -42,10 +42,10 @@
     #rtj-gojuon-overlay.open { display: flex; }
 
     #rtj-gojuon-modal {
-      background: #0d1117; border: 1px solid rgba(255,215,0,0.25);
+      background: #0d1117; border: 1px solid rgba(0,87,168,0.3);
       border-radius: 20px; padding: 24px 20px 20px;
       width: min(96vw, 480px); max-height: 90vh; overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 40px rgba(255,215,0,0.07);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 40px rgba(0,87,168,0.1);
       animation: gojuonIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
     }
     @keyframes gojuonIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -53,7 +53,7 @@
     #rtj-gojuon-modal h2 {
       font-family: 'Bangers', cursive, sans-serif;
       font-size: 1.6rem; letter-spacing: 3px;
-      background: linear-gradient(90deg,#ffd700,#ff6b2b);
+      background: linear-gradient(90deg,#60A5FA,#FF6B9D);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       text-align: center; margin-bottom: 4px;
     }
@@ -65,19 +65,19 @@
     .gj-table { width: 100%; border-collapse: collapse; }
     .gj-table th {
       font-size: 0.62rem; font-weight: 900; letter-spacing: 1px;
-      color: #ffd700; padding: 4px 2px; text-align: center;
-      border-bottom: 1px solid rgba(255,215,0,0.15);
+      color: #60A5FA; padding: 4px 2px; text-align: center;
+      border-bottom: 1px solid rgba(96,165,250,0.2);
     }
     .gj-cell {
       text-align: center; padding: 5px 3px; cursor: pointer;
       border-radius: 8px; transition: background 0.15s, transform 0.1s;
       user-select: none;
     }
-    .gj-cell:hover { background: rgba(255,215,0,0.12); transform: scale(1.08); }
+    .gj-cell:hover { background: rgba(96,165,250,0.15); transform: scale(1.08); }
     .gj-cell:active { transform: scale(0.95); }
     .gj-cell.empty { cursor: default; opacity: 0; }
     .gj-kana { font-size: 1.25rem; line-height: 1; color: #ffffff; display: block; }
-    .gj-romaji { font-size: 0.6rem; color: #ffd700; font-weight: 900; letter-spacing: 0.5px; margin-top: 2px; display: block; }
+    .gj-romaji { font-size: 0.6rem; color: #60A5FA; font-weight: 900; letter-spacing: 0.5px; margin-top: 2px; display: block; }
 
     .gj-close-btn {
       display: block; margin: 14px auto 0;
@@ -88,10 +88,10 @@
     .gj-close-btn:hover { background: rgba(255,255,255,0.12); }
 
     .gj-voice-badge {
-      position: fixed; bottom: 140px; right: 16px; z-index: 9995;
-      background: rgba(13,17,23,0.95); border: 1px solid rgba(255,215,0,0.3);
+      position: fixed; bottom: 80px; right: 16px; z-index: 9995;
+      background: rgba(13,17,23,0.95); border: 1px solid rgba(96,165,250,0.35);
       border-radius: 20px; padding: 6px 14px;
-      font-size: 0.75rem; font-weight: 800; color: #ffd700;
+      font-size: 0.75rem; font-weight: 800; color: #60A5FA;
       opacity: 0; transform: translateY(8px);
       transition: all 0.3s; pointer-events: none;
     }
