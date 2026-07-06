@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Road to Japan — Learn Japanese with games, stories & real culture. Start free today.">
+<meta property="og:title" content="Road to Japan — Learn Japanese the Fun Way">
+<meta property="og:description" content="Master Hiragana in 7 days. Learn Kanji through stories. 90-day fluency challenge.">
+<meta property="og:image" content="https://keikoathomework-web.github.io/road-to-japan/og-image.png">
+<title>Road to Japan — Learn Japanese the Fun Way</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #0057A8;
+  --blue-dark: #004494;
+  --blue-light: #EEF2FF;
+  --pink: #FF6B9D;
+  --gold: #F59E0B;
+  --green: #10B981;
+  --white: #ffffff;
+  --dark: #0F172A;
+  --gray: #64748B;
+  --bg: #F8FAFF;
+  --border: rgba(0,87,168,0.15);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--dark); line-height: 1.6; }
+
+/* ── LANG ── */
+[data-lang] { display: none; }
+body.en [data-lang="en"] { display: block; }
+body.en [data-lang="en-inline"] { display: inline; }
+body.es [data-lang="es"] { display: block; }
+body.es [data-lang="es-inline"] { display: inline; }
+body.en [data-lang="en-flex"] { display: flex; }
+body.es [data-lang="es-flex"] { display: flex; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px; display: flex; align-items: center; gap: 12px;
+}
+.nav-logo { font-family: 'Bangers', cursive; font-size: 1.5rem; letter-spacing: 2px; color: var(--blue); text-decoration: none; }
+.nav-logo span { color: var(--pink); }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.lang-toggle {
+  display: flex; border: 1.5px solid var(--border); border-radius: 20px; overflow: hidden;
+}
+.lang-btn {
+  padding: 5px 14px; font-size: 0.78rem; font-weight: 900; cursor: pointer;
+  border: none; background: transparent; color: var(--gray); transition: all 0.2s;
+  font-family: 'Nunito', sans-serif;
+}
+.lang-btn.active { background: var(--blue); color: #fff; }
+.nav-cta {
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: #fff; border: none; border-radius: 20px;
+  padding: 8px 20px; font-size: 0.85rem; font-weight: 900;
+  cursor: pointer; text-decoration: none; font-family: 'Nunito', sans-serif;
+  transition: all 0.2s; box-shadow: 0 3px 10px rgba(0,87,168,0.3);
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,87,168,0.35); }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, #03082b 0%, #0a1a4a 45%, #0d1f1a 100%);
+  padding: 120px 24px 80px; text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,87,168,0.25), transparent 60%),
+              radial-gradient(ellipse at 70% 20%, rgba(255,107,157,0.15), transparent 50%);
+  pointer-events: none;
+}
+.hero-kana {
+  position: absolute; font-family: 'Bangers', cursive;
+  opacity: 0.04; pointer-events: none; font-size: 8rem; font-weight: 900;
+}
+.hero-kana.k1 { top: 10%; left: 3%; font-size: 10rem; }
+.hero-kana.k2 { bottom: 5%; right: 5%; font-size: 9rem; }
+.hero-kana.k3 { top: 40%; left: 60%; font-size: 6rem; }
+.pre-head {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,107,157,0.15); border: 1px solid rgba(255,107,157,0.4);
+  color: var(--pink); border-radius: 20px; padding: 6px 18px;
+  font-size: 0.78rem; font-weight: 900; letter-spacing: 1px;
+  text-transform: uppercase; margin-bottom: 24px; position: relative; z-index: 1;
+}
+.hero h1 {
+  font-family: 'Bangers', cursive;
+  font-size: clamp(2.6rem, 8vw, 5rem);
+  letter-spacing: 3px; color: #fff; line-height: 1.05;
+  margin-bottom: 10px; position: relative; z-index: 1;
+}
+.hero h1 .accent { color: var(--pink); }
+.hero h1 .gold { background: linear-gradient(90deg, #F59E0B, #FBBF24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-sub {
+  font-size: clamp(1rem, 3vw, 1.2rem); color: rgba(255,255,255,0.78);
+  max-width: 560px; margin: 0 auto 36px; position: relative; z-index: 1; line-height: 1.7;
+}
+.hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--pink), #e0558a);
+  color: #fff; border: none; border-radius: 16px;
+  padding: 16px 36px; font-size: 1.05rem; font-weight: 900;
+  cursor: pointer; text-decoration: none; font-family: 'Nunito', sans-serif;
+  box-shadow: 0 6px 24px rgba(255,107,157,0.4); transition: all 0.25s;
+  display: inline-block;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(255,107,157,0.5); }
+.btn-secondary {
+  background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.3);
+  color: #fff; border-radius: 16px;
+  padding: 16px 36px; font-size: 1.05rem; font-weight: 900;
+  cursor: pointer; text-decoration: none; font-family: 'Nunito', sans-serif;
+  transition: all 0.25s; display: inline-block;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+.hero-trust {
+  display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+  margin-top: 40px; position: relative; z-index: 1;
+}
+.trust-pill {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px; padding: 8px 16px;
+  font-size: 0.8rem; color: rgba(255,255,255,0.8); font-weight: 800;
+}
+.hero-stats {
+  display: flex; gap: 0; justify-content: center; flex-wrap: wrap;
+  max-width: 600px; margin: 48px auto 0;
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden;
+  position: relative; z-index: 1;
+}
+.hero-stat {
+  flex: 1; padding: 20px 16px; text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  min-width: 120px;
+}
+.hero-stat:last-child { border-right: none; }
+.stat-num { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; font-weight: 900; color: #fff; }
+.stat-num .unit { font-size: 1rem; color: var(--pink); }
+.stat-lbl { font-size: 0.68rem; color: rgba(255,255,255,0.5); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+/* ── SECTIONS SHARED ── */
+section { padding: 80px 24px; }
+.container { max-width: 860px; margin: 0 auto; }
+.section-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--blue-light); border: 1.5px solid rgba(0,87,168,0.25);
+  color: var(--blue); border-radius: 20px; padding: 5px 16px;
+  font-size: 0.72rem; font-weight: 900; letter-spacing: 1px;
+  text-transform: uppercase; margin-bottom: 14px;
+}
+.section-title {
+  font-family: 'Bangers', cursive; font-size: clamp(2rem, 6vw, 3rem);
+  letter-spacing: 2px; color: var(--dark); line-height: 1.1; margin-bottom: 14px;
+}
+.section-title .accent { color: var(--blue); }
+.section-title .pink { color: var(--pink); }
+.section-sub { color: var(--gray); font-size: 1rem; max-width: 560px; line-height: 1.7; }
+
+/* ── PAIN ── */
+.pain { background: #fff; }
+.pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 36px; }
+.pain-card {
+  background: #FFF5F8; border: 1.5px solid rgba(255,107,157,0.3);
+  border-radius: 18px; padding: 22px 24px;
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.pain-icon { font-size: 1.8rem; flex-shrink: 0; margin-top: 2px; }
+.pain-text { font-size: 0.92rem; font-weight: 800; color: var(--dark); line-height: 1.5; }
+.pain-cta { text-align: center; margin-top: 36px; }
+.pain-cta p { color: var(--gray); font-size: 0.92rem; margin-bottom: 14px; font-weight: 700; }
+
+/* ── FEAR ── */
+.fear { background: linear-gradient(160deg, #0a0519, #160a2a); color: #fff; }
+.fear .section-title { color: #fff; }
+.fear .section-sub { color: rgba(255,255,255,0.7); }
+.fear-list { margin-top: 32px; display: flex; flex-direction: column; gap: 14px; }
+.fear-item {
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(255,107,157,0.08); border: 1px solid rgba(255,107,157,0.2);
+  border-radius: 14px; padding: 16px 20px;
+}
+.fear-year {
+  font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 900;
+  color: var(--pink); min-width: 60px; text-align: center;
+  background: rgba(255,107,157,0.12); border-radius: 8px; padding: 4px 8px;
+}
+.fear-text { font-size: 0.9rem; color: rgba(255,255,255,0.85); font-weight: 700; }
+.fear-hope {
+  text-align: center; margin-top: 36px;
+  background: rgba(16,185,129,0.08); border: 1.5px solid rgba(16,185,129,0.25);
+  border-radius: 18px; padding: 24px;
+}
+.fear-hope p { color: rgba(255,255,255,0.9); font-weight: 800; font-size: 1rem; line-height: 1.6; }
+.fear-hope .highlight { color: var(--green); }
+
+/* ── SOLUTION ── */
+.solution { background: var(--bg); }
+.solution-intro {
+  background: linear-gradient(135deg, #fff, var(--blue-light));
+  border: 1.5px solid rgba(0,87,168,0.2); border-radius: 24px;
+  padding: 36px 32px; margin-top: 32px; text-align: center;
+}
+.solution-logo { font-family: 'Bangers', cursive; font-size: 2.8rem; letter-spacing: 4px; color: var(--blue); margin-bottom: 10px; }
+.solution-logo span { color: var(--pink); }
+.solution-tagline { font-size: 1rem; color: var(--gray); font-weight: 700; }
+.why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 28px; }
+.why-card {
+  background: #fff; border: 1.5px solid rgba(0,87,168,0.25);
+  border-radius: 18px; padding: 22px; text-align: center;
+}
+.why-icon { font-size: 2.2rem; margin-bottom: 10px; }
+.why-title { font-weight: 900; font-size: 0.92rem; color: var(--dark); margin-bottom: 6px; }
+.why-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.5; }
+
+/* ── HOW IT WORKS ── */
+.how { background: #fff; }
+.steps { display: flex; flex-direction: column; gap: 20px; margin-top: 36px; }
+.step {
+  display: flex; align-items: flex-start; gap: 20px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 24px;
+}
+.step-num {
+  width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: #fff; font-family: 'Bangers', cursive; font-size: 1.4rem;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,87,168,0.3);
+}
+.step-body h3 { font-weight: 900; font-size: 1rem; color: var(--dark); margin-bottom: 6px; }
+.step-body p { font-size: 0.88rem; color: var(--gray); line-height: 1.6; }
+
+/* ── FEATURES ── */
+.features { background: linear-gradient(160deg, #03082b, #0a1a4a 60%, #0d1f1a); }
+.features .section-title { color: #fff; }
+.features .section-sub { color: rgba(255,255,255,0.7); }
+.feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 36px; }
+.feat-card {
+  background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 20px; padding: 26px 22px; transition: all 0.25s;
+}
+.feat-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(96,165,250,0.4); transform: translateY(-3px); }
+.feat-emoji { font-size: 2.4rem; margin-bottom: 12px; }
+.feat-title { font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 1px; color: #fff; margin-bottom: 8px; }
+.feat-desc { font-size: 0.85rem; color: rgba(255,255,255,0.65); line-height: 1.6; }
+.feat-badge {
+  display: inline-block; margin-top: 10px;
+  background: rgba(255,107,157,0.15); border: 1px solid rgba(255,107,157,0.3);
+  color: var(--pink); border-radius: 10px; padding: 2px 10px;
+  font-size: 0.68rem; font-weight: 900; letter-spacing: 0.5px;
+}
+
+/* ── TESTIMONIALS ── */
+.testimonials { background: var(--bg); }
+.testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 36px; }
+.testi-card {
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 24px;
+}
+.testi-stars { color: #F59E0B; font-size: 1rem; margin-bottom: 12px; letter-spacing: 2px; }
+.testi-text { font-size: 0.9rem; color: var(--dark); line-height: 1.7; font-style: italic; margin-bottom: 16px; }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0,87,168,0.2), rgba(255,107,157,0.2));
+  border: 2px solid rgba(0,87,168,0.2);
+  display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;
+}
+.testi-name { font-weight: 900; font-size: 0.88rem; color: var(--dark); }
+.testi-role { font-size: 0.72rem; color: var(--gray); margin-top: 2px; }
+
+/* ── PRICING ── */
+.pricing { background: #fff; }
+.price-note { color: var(--gray); font-size: 0.9rem; margin-top: 10px; }
+.price-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 20px; margin-top: 36px; }
+.price-card {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 24px; padding: 32px 28px; position: relative; text-align: center;
+}
+.price-card.featured {
+  background: linear-gradient(160deg, #03082b, #0a1a4a);
+  border-color: rgba(96,165,250,0.4);
+  box-shadow: 0 8px 40px rgba(0,87,168,0.25);
+}
+.price-badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--pink), #e0558a);
+  color: #fff; border-radius: 20px; padding: 4px 18px;
+  font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; white-space: nowrap;
+}
+.price-plan { font-weight: 900; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gray); margin-bottom: 10px; }
+.price-card.featured .price-plan { color: rgba(255,255,255,0.6); }
+.price-amount {
+  font-family: 'Orbitron', sans-serif; font-size: 3rem; font-weight: 900;
+  color: var(--dark); line-height: 1;
+}
+.price-card.featured .price-amount { color: #fff; }
+.price-amount .currency { font-size: 1.4rem; vertical-align: super; }
+.price-period { font-size: 0.82rem; color: var(--gray); margin-top: 4px; margin-bottom: 20px; }
+.price-card.featured .price-period { color: rgba(255,255,255,0.6); }
+.price-features { list-style: none; text-align: left; display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.price-features li { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: var(--dark); font-weight: 700; }
+.price-card.featured .price-features li { color: rgba(255,255,255,0.85); }
+.check { color: var(--green); font-size: 1rem; flex-shrink: 0; }
+.price-cta {
+  width: 100%; padding: 14px; border-radius: 14px; border: none; cursor: pointer;
+  font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 1px;
+  text-decoration: none; display: block; text-align: center; transition: all 0.2s;
+}
+.price-cta.free { background: var(--bg); border: 1.5px solid var(--border); color: var(--dark); }
+.price-cta.free:hover { border-color: var(--blue); color: var(--blue); }
+.price-cta.premium { background: linear-gradient(135deg, var(--pink), #e0558a); color: #fff; box-shadow: 0 4px 16px rgba(255,107,157,0.35); }
+.price-cta.premium:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,157,0.45); }
+.price-cta.annual { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: #fff; box-shadow: 0 4px 16px rgba(0,87,168,0.3); }
+.price-cta.annual:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,87,168,0.4); }
+.price-guarantee { text-align: center; margin-top: 20px; color: var(--gray); font-size: 0.82rem; font-weight: 700; }
+
+/* ── FAQ ── */
+.faq { background: var(--bg); }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 36px; }
+.faq-item {
+  background: #fff; border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden;
+}
+.faq-q {
+  padding: 18px 22px; font-weight: 900; font-size: 0.92rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  color: var(--dark); user-select: none; transition: background 0.2s;
+}
+.faq-q:hover { background: var(--blue-light); }
+.faq-q .arrow { color: var(--blue); font-size: 1.1rem; transition: transform 0.2s; flex-shrink: 0; }
+.faq-item.open .faq-q .arrow { transform: rotate(180deg); }
+.faq-a {
+  display: none; padding: 0 22px 18px;
+  font-size: 0.88rem; color: var(--gray); line-height: 1.7;
+}
+.faq-item.open .faq-a { display: block; }
+
+/* ── GUARANTEE ── */
+.guarantee {
+  background: linear-gradient(135deg, #03082b, #0d1f1a);
+  text-align: center; color: #fff;
+}
+.guarantee-box {
+  background: rgba(16,185,129,0.08); border: 1.5px solid rgba(16,185,129,0.3);
+  border-radius: 28px; padding: 48px 36px; max-width: 600px; margin: 0 auto;
+}
+.guarantee-icon { font-size: 4rem; margin-bottom: 16px; }
+.guarantee h2 { font-family: 'Bangers', cursive; font-size: 2.4rem; letter-spacing: 2px; color: #fff; margin-bottom: 14px; }
+.guarantee p { color: rgba(255,255,255,0.75); line-height: 1.8; margin-bottom: 28px; font-size: 0.95rem; }
+
+/* ── CTA ── */
+.final-cta { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 50%, #1a0d3a 100%); text-align: center; padding: 80px 24px; }
+.final-cta h2 { font-family: 'Bangers', cursive; font-size: clamp(2rem, 7vw, 3.5rem); letter-spacing: 3px; color: #fff; margin-bottom: 14px; line-height: 1.1; }
+.final-cta p { color: rgba(255,255,255,0.75); font-size: 1rem; margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; }
+.ps-box {
+  max-width: 560px; margin: 40px auto 0;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 18px; padding: 22px 28px; text-align: left;
+}
+.ps-box p { color: rgba(255,255,255,0.75); font-size: 0.88rem; line-height: 1.8; }
+.ps-box strong { color: var(--pink); }
+
+/* ── FOOTER ── */
+footer {
+  background: #060b1a; padding: 32px 24px;
+  text-align: center; border-top: 1px solid rgba(255,255,255,0.05);
+}
+.footer-logo { font-family: 'Bangers', cursive; font-size: 1.5rem; letter-spacing: 2px; color: rgba(255,255,255,0.6); margin-bottom: 12px; }
+.footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+.footer-links a { color: rgba(255,255,255,0.4); font-size: 0.8rem; text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: rgba(255,255,255,0.8); }
+.footer-copy { color: rgba(255,255,255,0.25); font-size: 0.75rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  nav { padding: 12px 16px; }
+  .nav-logo { font-size: 1.2rem; }
+  .lang-btn { padding: 5px 10px; font-size: 0.72rem; }
+  .nav-cta { padding: 7px 14px; font-size: 0.78rem; }
+  .hero { padding: 100px 16px 60px; }
+  section { padding: 60px 16px; }
+  .hero-stats { flex-direction: row; }
+  .hero-stat { min-width: 0; padding: 14px 10px; }
+  .stat-num { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body class="en">
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Road <span>to</span> Japan</a>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+    </div>
+    <a href="auth.html" class="nav-cta">
+      <span data-lang="en-inline">Start Free</span>
+      <span data-lang="es-inline">Comenzar Gratis</span>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-kana k1">あ</div>
+  <div class="hero-kana k2">日</div>
+  <div class="hero-kana k3">ア</div>
+
+  <!-- EN HERO -->
+  <div data-lang="en">
+    <div class="pre-head">🎯 90-Day Japanese Challenge</div>
+    <h1>Learn Japanese<br><span class="accent">the Fun Way</span> —<br>in Just <span class="gold">90 Days</span></h1>
+    <p class="hero-sub">Master Hiragana in 7 days. Read Katakana in 2 weeks. Build real conversation skills through games, stories & Japanese culture — no boring textbooks.</p>
+    <div class="hero-btns">
+      <a href="auth.html" class="btn-primary">🎮 Start Free Today</a>
+      <a href="#how" class="btn-secondary">See How It Works ↓</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-pill">✅ No credit card required</div>
+      <div class="trust-pill">🔒 Secure & private</div>
+      <div class="trust-pill">📱 Mobile-friendly</div>
+    </div>
+  </div>
+
+  <!-- ES HERO -->
+  <div data-lang="es">
+    <div class="pre-head">🎯 Desafío Japonés de 90 Días</div>
+    <h1>Aprende Japonés<br><span class="accent">de Forma Divertida</span> —<br>en Solo <span class="gold">90 Días</span></h1>
+    <p class="hero-sub">Domina Hiragana en 7 días. Lee Katakana en 2 semanas. Desarrolla habilidades reales de conversación a través de juegos, historias y cultura japonesa — sin aburridos libros de texto.</p>
+    <div class="hero-btns">
+      <a href="auth.html" class="btn-primary">🎮 Comenzar Gratis Hoy</a>
+      <a href="#how" class="btn-secondary">Ver Cómo Funciona ↓</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-pill">✅ Sin tarjeta de crédito</div>
+      <div class="trust-pill">🔒 Seguro y privado</div>
+      <div class="trust-pill">📱 Compatible con móvil</div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="stat-num">46<span class="unit">+</span></div>
+      <div data-lang="en"><div class="stat-lbl">Hiragana chars</div></div>
+      <div data-lang="es"><div class="stat-lbl">Caracteres Hiragana</div></div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num">12<span class="unit">mo</span></div>
+      <div data-lang="en"><div class="stat-lbl">Full curriculum</div></div>
+      <div data-lang="es"><div class="stat-lbl">Plan completo</div></div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num">$9<span class="unit">.99</span></div>
+      <div data-lang="en"><div class="stat-lbl">Per month</div></div>
+      <div data-lang="es"><div class="stat-lbl">Por mes</div></div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num">7<span class="unit">day</span></div>
+      <div data-lang="en"><div class="stat-lbl">Free trial</div></div>
+      <div data-lang="es"><div class="stat-lbl">Prueba gratis</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section class="pain">
+  <div class="container">
+
+    <div data-lang="en">
+      <div class="section-tag">😤 Sound familiar?</div>
+      <h2 class="section-title">Learning Japanese Feels<br><span class="pink">Impossible</span> — Until Now</h2>
+      <p class="section-sub">Most people give up Japanese within 3 months. Not because they're not smart — because the tools are broken.</p>
+      <div class="pain-grid">
+        <div class="pain-card"><div class="pain-icon">😴</div><div class="pain-text">You tried apps that felt like flashcards — boring, repetitive, and easy to quit</div></div>
+        <div class="pain-card"><div class="pain-icon">😵</div><div class="pain-text">Hiragana, Katakana, Kanji… the writing systems felt overwhelming before you even started speaking</div></div>
+        <div class="pain-card"><div class="pain-icon">🗺️</div><div class="pain-text">You're planning a trip to Japan but can't read a single sign or menu</div></div>
+        <div class="pain-card"><div class="pain-icon">🎌</div><div class="pain-text">You love anime, manga, or J-culture but understand nothing without subtitles</div></div>
+        <div class="pain-card"><div class="pain-icon">⏰</div><div class="pain-text">You don't have hours to study — you need something that fits in 10–15 minutes a day</div></div>
+        <div class="pain-card"><div class="pain-icon">💸</div><div class="pain-text">You paid for courses that sat unused, making you feel guilty every time you saw them</div></div>
+      </div>
+      <div class="pain-cta">
+        <p>If even one of these sounds like you — you're exactly who Road to Japan was built for.</p>
+        <a href="auth.html" class="btn-primary">Yes, This Is Me — Start Free</a>
+      </div>
+    </div>
+
+    <div data-lang="es">
+      <div class="section-tag">😤 ¿Te suena familiar?</div>
+      <h2 class="section-title">Aprender Japonés Parece<br><span class="pink">Imposible</span> — Hasta Ahora</h2>
+      <p class="section-sub">La mayoría abandona el japonés en 3 meses. No porque no sean inteligentes — sino porque las herramientas están rotas.</p>
+      <div class="pain-grid">
+        <div class="pain-card"><div class="pain-icon">😴</div><div class="pain-text">Probaste apps que parecían tarjetas de memoria — aburridas, repetitivas y fáciles de abandonar</div></div>
+        <div class="pain-card"><div class="pain-icon">😵</div><div class="pain-text">Hiragana, Katakana, Kanji… los sistemas de escritura te abrumaron antes de hablar</div></div>
+        <div class="pain-card"><div class="pain-icon">🗺️</div><div class="pain-text">Planeas un viaje a Japón pero no puedes leer ningún cartel ni menú</div></div>
+        <div class="pain-card"><div class="pain-icon">🎌</div><div class="pain-text">Amas el anime, manga o la cultura japonesa pero no entiendes nada sin subtítulos</div></div>
+        <div class="pain-card"><div class="pain-icon">⏰</div><div class="pain-text">No tienes horas para estudiar — necesitas algo que quepa en 10–15 minutos al día</div></div>
+        <div class="pain-card"><div class="pain-icon">💸</div><div class="pain-text">Pagaste cursos que nunca usaste y que te hacen sentir culpable cada vez que los ves</div></div>
+      </div>
+      <div class="pain-cta">
+        <p>Si aunque sea uno de estos te describe — eres exactamente para quien se creó Road to Japan.</p>
+        <a href="auth.html" class="btn-primary">Sí, Soy Yo — Empezar Gratis</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEAR -->
+<section class="fear">
+  <div class="container">
+
+    <div data-lang="en">
+      <div class="section-tag" style="background:rgba(255,107,157,0.12);border-color:rgba(255,107,157,0.3);color:var(--pink);">⚠️ The cost of waiting</div>
+      <h2 class="section-title" style="color:#fff;">What Happens If You<br><span class="accent" style="color:var(--pink);">Keep Putting It Off</span></h2>
+      <p class="section-sub">Every month without progress is a month further from the Japan you dream about.</p>
+      <div class="fear-list">
+        <div class="fear-item"><div class="fear-year">6 months</div><div class="fear-text">Your trip to Japan arrives — you're lost, embarrassed, relying on Google Translate for everything</div></div>
+        <div class="fear-item"><div class="fear-year">1 year</div><div class="fear-text">You've said "I'll start Japanese this year" for the 3rd time. Your goal feels more distant than ever</div></div>
+        <div class="fear-item"><div class="fear-year">2 years</div><div class="fear-text">Friends who started the same time as you are already reading manga and holding conversations — you're still at zero</div></div>
+      </div>
+      <div class="fear-hope">
+        <p>But there's still time. <span class="highlight">Starting today means you'll read your first Japanese sentence in 7 days.</span> Not months. Not years. 7 days.</p>
+      </div>
+    </div>
+
+    <div data-lang="es">
+      <div class="section-tag" style="background:rgba(255,107,157,0.12);border-color:rgba(255,107,157,0.3);color:var(--pink);">⚠️ El costo de esperar</div>
+      <h2 class="section-title" style="color:#fff;">Qué Pasa Si Sigues<br><span class="accent" style="color:var(--pink);">Postergándolo</span></h2>
+      <p class="section-sub">Cada mes sin progreso es un mes más lejos del Japón que sueñas.</p>
+      <div class="fear-list">
+        <div class="fear-item"><div class="fear-year">6 meses</div><div class="fear-text">Tu viaje a Japón llega — estás perdido, avergonzado, dependiendo de Google Translate para todo</div></div>
+        <div class="fear-item"><div class="fear-year">1 año</div><div class="fear-text">Has dicho "empezaré japonés este año" por tercera vez. Tu objetivo parece más lejano que nunca</div></div>
+        <div class="fear-item"><div class="fear-year">2 años</div><div class="fear-text">Amigos que empezaron al mismo tiempo ya leen manga y mantienen conversaciones — tú sigues en cero</div></div>
+      </div>
+      <div class="fear-hope">
+        <p>Pero aún hay tiempo. <span class="highlight">Empezar hoy significa que leerás tu primera frase en japonés en 7 días.</span> No meses. No años. 7 días.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution">
+  <div class="container">
+
+    <div data-lang="en">
+      <div class="section-tag">✨ The solution</div>
+      <h2 class="section-title">Introducing<br><span class="accent">Road to Japan</span></h2>
+      <p class="section-sub">The first Japanese learning app built around adventure, culture, and real motivation — not memorization.</p>
+      <div class="solution-intro">
+        <div class="solution-logo">Road <span>to</span> Japan</div>
+        <div class="solution-tagline">Your adventure into Japanese language & culture starts here</div>
+      </div>
+      <div class="why-grid">
+        <div class="why-card"><div class="why-icon">🎮</div><div class="why-title">Learn through games</div><div class="why-desc">XP, streaks, levels — your brain stays hooked because it feels like playing, not studying</div></div>
+        <div class="why-card"><div class="why-icon">📖</div><div class="why-title">Real Japanese stories</div><div class="why-desc">Interactive story adventures set in Japan — you learn language in real cultural context</div></div>
+        <div class="why-card"><div class="why-icon">🗾</div><div class="why-title">Cultural immersion</div><div class="why-desc">Explore Japan's regions, customs, festivals and daily life while learning the language</div></div>
+        <div class="why-card"><div class="why-icon">📊</div><div class="why-title">Track real progress</div><div class="why-desc">See exactly how many characters you've mastered, your XP, and your 90-day journey</div></div>
+      </div>
+    </div>
+
+    <div data-lang="es">
+      <div class="section-tag">✨ La solución</div>
+      <h2 class="section-title">Te Presentamos<br><span class="accent">Road to Japan</span></h2>
+      <p class="section-sub">La primera app de japonés construida alrededor de la aventura, la cultura y la motivación real — no la memorización.</p>
+      <div class="solution-intro">
+        <div class="solution-logo">Road <span>to</span> Japan</div>
+        <div class="solution-tagline">Tu aventura en el idioma y la cultura japonesa comienza aquí</div>
+      </div>
+      <div class="why-grid">
+        <div class="why-card"><div class="why-icon">🎮</div><div class="why-title">Aprende con juegos</div><div class="why-desc">XP, rachas, niveles — tu cerebro se engancha porque se siente como jugar, no estudiar</div></div>
+        <div class="why-card"><div class="why-icon">📖</div><div class="why-title">Historias reales en japonés</div><div class="why-desc">Aventuras interactivas en Japón — aprendes el idioma en contexto cultural real</div></div>
+        <div class="why-card"><div class="why-icon">🗾</div><div class="why-title">Inmersión cultural</div><div class="why-desc">Explora regiones, costumbres, festivales y la vida cotidiana de Japón mientras aprendes</div></div>
+        <div class="why-card"><div class="why-icon">📊</div><div class="why-title">Progreso real</div><div class="why-desc">Ve exactamente cuántos caracteres has dominado, tu XP y tu camino de 90 días</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+
+    <div data-lang="en">
+      <div class="section-tag">🗺️ Simple 3-step process</div>
+      <h2 class="section-title">How Road to Japan <span class="accent">Works</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><h3>Create your free account (60 seconds)</h3><p>Sign up with Google or email. No credit card needed. You get instant access to the Hiragana quest — the fastest way to learn Japan's first alphabet.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><h3>Follow your 90-day quest map</h3><p>Each month unlocks a new challenge: Hiragana → Katakana → Kanji basics → Grammar → Culture. Spend just 10–15 minutes a day and watch your XP grow.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><h3>Read, speak & experience Japan</h3><p>By month 3, you'll read signs, understand basic conversations, and feel the difference between a tourist and a real Japan explorer.</p></div></div>
+      </div>
+    </div>
+
+    <div data-lang="es">
+      <div class="section-tag">🗺️ Proceso simple de 3 pasos</div>
+      <h2 class="section-title">Cómo <span class="accent">Funciona</span> Road to Japan</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><h3>Crea tu cuenta gratuita (60 segundos)</h3><p>Regístrate con Google o email. Sin tarjeta de crédito. Acceso inmediato a la misión Hiragana — la forma más rápida de aprender el primer alfabeto de Japón.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><h3>Sigue tu mapa de misiones de 90 días</h3><p>Cada mes desbloquea un nuevo desafío: Hiragana → Katakana → Kanji básico → Gramática → Cultura. Solo 10–15 minutos al día y verás crecer tu XP.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><h3>Lee, habla y vive Japón</h3><p>Para el mes 3, leerás carteles, entenderás conversaciones básicas y sentirás la diferencia entre ser turista y un verdadero explorador de Japón.</p></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="container">
+
+    <div data-lang="en">
+      <div class="section-tag" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);">🚀 Everything included</div>
+      <h2 class="section-title">All the Tools You Need<br>to <span style="color:var(--pink)">Actually</span> Learn Japanese</h2>
+      <p class="section-sub">Not flashcards. Not grammar tables. A full adventure system.</p>
+      <div class="feat-grid">
+        <div class="feat-card"><div class="feat-emoji">あ</div><div class="feat-title">Hiragana Quest</div><div class="feat-desc">Master all 46 Hiragana characters with flip cards, quizzes, and memory games. Average learner finishes in 7 days.</div><div class="feat-badge">Week 1 unlock</div></div>
+        <div class="feat-card"><div class="feat-emoji">ア</div><div class="feat-title">Katakana Quest</div><div class="feat-desc">All 46 Katakana characters — used for foreign words, brands, and modern Japanese. Unlock in Week 2.</div><div class="feat-badge">Week 2 unlock</div></div>
+        <div class="feat-card"><div class="feat-emoji">日</div><div class="feat-title">Kanji Journey</div><div class="feat-desc">Start with the 100 most-used Kanji. Learn meaning through stories, not rote memorization.</div><div class="feat-badge">Month 3+</div></div>
+        <div class="feat-card"><div class="feat-emoji">⚔️</div><div class="feat-title">Story Adventures</div><div class="feat-desc">Interactive stories set in Japan. Make choices, learn vocabulary in context, and unlock Japan lore.</div><div class="feat-badge">Premium</div></div>
+        <div class="feat-card"><div class="feat-emoji">🗾</div><div class="feat-title">Japan Culture Map</div><div class="feat-desc">Explore 47 prefectures. Discover food, festivals, language dialects, and hidden gems across Japan.</div><div class="feat-badge">Free</div></div>
+        <div class="feat-card"><div class="feat-emoji">🏆</div><div class="feat-title">XP & Leaderboard</div><div class="feat-desc">Earn XP, level up, maintain your streak. See where you rank against other Japan learners worldwide.</div><div class="feat-badge">Free</div></div>
+      </div>
+    </div>
+
+    <div data-lang="es">
+      <div class="section-tag" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);">🚀 Todo incluido</div>
+      <h2 class="section-title">Todas las Herramientas<br>para <span style="color:var(--pink)">Realmente</span> Aprender Japonés</h2>
+      <p class="section-sub">No tarjetas de memoria. No tablas de gramática. Un sistema de aventura completo.</p>
+      <div class="feat-grid">
+        <div class="feat-card"><div class="feat-emoji">あ</div><div class="feat-title">Misión Hiragana</div><div class="feat-desc">Domina los 46 caracteres Hiragana con tarjetas giratorias, cuestionarios y juegos de memoria. El estudiante promedio termina en 7 días.</div><div class="feat-badge">Semana 1</div></div>
+        <div class="feat-card"><div class="feat-emoji">ア</div><div class="feat-title">Misión Katakana</div><div class="feat-desc">Los 46 caracteres Katakana — usados para palabras extranjeras, marcas y japonés moderno. Desbloquea en la Semana 2.</div><div class="feat-badge">Semana 2</div></div>
+        <div class="feat-card"><div class="feat-emoji">日</div><div class="feat-title">Viaje Kanji</div><div class="feat-desc">Empieza con los 100 Kanji más usados. Aprende el significado a través de historias, no memorización.</div><div class="feat-badge">Mes 3+</div></div>
+        <div class="feat-card"><div class="feat-emoji">⚔️</div><div class="feat-title">Aventuras de Historia</div><div class="feat-desc">Historias interactivas en Japón. Toma decisiones, aprende vocabulario en contexto y desbloquea lore japonés.</div><div class="feat-badge">Premium</div></div>
+        <div class="feat-card"><div class="feat-emoji">🗾</div><div class="feat-title">Mapa Cultural de Japón</div><div class="feat-desc">Explora 47 prefecturas. Descubre comida, festivales, dialectos y tesoros ocultos de Japón.</div><div class="feat-badge">Gratis</div></div>
+        <div class="feat-card"><div class="feat-emoji">🏆</div><div class="feat-title">XP y Tabla de Clasificación</div><div class="feat-desc">Gana XP, sube de nivel, mantén tu racha. Ve dónde estás entre estudiantes de japonés del mundo.</div><div class="feat-badge">Gratis</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="container">
+
+    <div data-lang="en">
+      <div class="section-tag">💬 Real learners, real results</div>
+      <h2 class="section-title">What Our Early <span class="accent">Adventurers</span> Say</h2>
+      <div class="testi-grid">
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"I downloaded 4 apps before Road to Japan. This is the only one I've stuck with past week 1. The story missions are genuinely fun."</div><div class="testi-author"><div class="testi-avatar">🇺🇸</div><div><div class="testi-name">Sarah M.</div><div class="testi-role">Designer, Los Angeles</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"I learned Hiragana in 6 days. SIX DAYS. I've been 'trying to learn Japanese' for 3 years and never got past that. Game changer."</div><div class="testi-author"><div class="testi-avatar">🇬🇧</div><div><div class="testi-name">James K.</div><div class="testi-role">Software Engineer, London</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Perfect for someone like me who loves anime but never knew where to start. I can already read some words in my favorite shows!"</div><div class="testi-author"><div class="testi-avatar">🇧🇷</div><div><div class="testi-name">Ana L.</div><div class="testi-role">Student, São Paulo</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"The culture map blew my mind. I'm learning the language AND planning my trip at the same time. Worth every penny of premium."</div><div class="testi-author"><div class="testi-avatar">🇨🇦</div><div><div class="testi-name">Mark T.</div><div class="testi-role">Teacher, Toronto</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"I was skeptical about another language app. But the XP system actually keeps me coming back every single day. 42-day streak now!"</div><div class="testi-author"><div class="testi-avatar">🇩🇪</div><div><div class="testi-name">Julia F.</div><div class="testi-role">Marketing Manager, Berlin</div></div></div></div>
+      </div>
+    </div>
+
+    <div data-lang="es">
+      <div class="section-tag">💬 Estudiantes reales, resultados reales</div>
+      <h2 class="section-title">Lo Que Dicen Nuestros<br>Primeros <span class="accent">Aventureros</span></h2>
+      <div class="testi-grid">
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Descargué 4 apps antes de Road to Japan. Esta es la única con la que seguí más allá de la primera semana. Las misiones de historia son genuinamente divertidas."</div><div class="testi-author"><div class="testi-avatar">🇺🇸</div><div><div class="testi-name">Sarah M.</div><div class="testi-role">Diseñadora, Los Ángeles</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Aprendí Hiragana en 6 días. SEIS DÍAS. Llevaba 3 años 'intentando aprender japonés' y nunca lo lograba. Un cambio radical."</div><div class="testi-author"><div class="testi-avatar">🇬🇧</div><div><div class="testi-name">James K.</div><div class="testi-role">Ingeniero de Software, Londres</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Perfecto para alguien como yo que ama el anime pero no sabía por dónde empezar. ¡Ya puedo leer algunas palabras en mis series favoritas!"</div><div class="testi-author"><div class="testi-avatar">🇲🇽</div><div><div class="testi-name">Ana L.</div><div class="testi-role">Estudiante, Ciudad de México</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"El mapa cultural me sorprendió. Aprendo el idioma Y planifico mi viaje al mismo tiempo. Vale cada centavo del premium."</div><div class="testi-author"><div class="testi-avatar">🇨🇦</div><div><div class="testi-name">Mark T.</div><div class="testi-role">Profesor, Toronto</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Era escéptico sobre otra app de idiomas. Pero el sistema de XP realmente me hace volver cada día. ¡42 días de racha ahora!"</div><div class="testi-author"><div class="testi-avatar">🇪🇸</div><div><div class="testi-name">Julia F.</div><div class="testi-role">Gerente de Marketing, Madrid</div></div></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+
+    <div data-lang="en">
+      <div class="section-tag">💎 Simple pricing</div>
+      <h2 class="section-title">Start Free. <span class="accent">Upgrade Anytime.</span></h2>
+      <p class="section-sub">No hidden fees. No surprise charges. Cancel anytime in one click.</p>
+    </div>
+    <div data-lang="es">
+      <div class="section-tag">💎 Precios simples</div>
+      <h2 class="section-title">Empieza Gratis. <span class="accent">Mejora Cuando Quieras.</span></h2>
+      <p class="section-sub">Sin cargos ocultos. Sin sorpresas. Cancela en cualquier momento con un clic.</p>
+    </div>
+
+    <div class="price-cards">
+      <!-- FREE -->
+      <div class="price-card">
+        <div data-lang="en"><div class="price-plan">Free Forever</div></div>
+        <div data-lang="es"><div class="price-plan">Gratis Para Siempre</div></div>
+        <div class="price-amount"><span class="currency">$</span>0</div>
+        <div data-lang="en"><div class="price-period">No credit card needed</div></div>
+        <div data-lang="es"><div class="price-period">Sin tarjeta de crédito</div></div>
+        <ul class="price-features">
+          <div data-lang="en">
+            <li><span class="check">✅</span> Full Hiragana quest (46 chars)</li>
+            <li><span class="check">✅</span> Full Katakana quest (46 chars)</li>
+            <li><span class="check">✅</span> XP & streak tracking</li>
+            <li><span class="check">✅</span> Japan culture map</li>
+            <li><span class="check">✅</span> Story chapter 1</li>
+          </div>
+          <div data-lang="es">
+            <li><span class="check">✅</span> Misión Hiragana completa (46 chars)</li>
+            <li><span class="check">✅</span> Misión Katakana completa (46 chars)</li>
+            <li><span class="check">✅</span> XP y seguimiento de rachas</li>
+            <li><span class="check">✅</span> Mapa cultural de Japón</li>
+            <li><span class="check">✅</span> Capítulo 1 de historia</li>
+          </div>
+        </ul>
+        <a href="auth.html" class="price-cta free">
+          <span data-lang="en-inline">Start Free</span>
+          <span data-lang="es-inline">Comenzar Gratis</span>
+        </a>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="price-card featured">
+        <div data-lang="en"><div class="price-badge">⭐ Most Popular</div></div>
+        <div data-lang="es"><div class="price-badge">⭐ Más Popular</div></div>
+        <div data-lang="en"><div class="price-plan">Premium Monthly</div></div>
+        <div data-lang="es"><div class="price-plan">Premium Mensual</div></div>
+        <div class="price-amount" style="color:#fff;"><span class="currency">$</span>9<span style="font-size:1.6rem">.99</span></div>
+        <div data-lang="en"><div class="price-period" style="color:rgba(255,255,255,0.55);">per month · cancel anytime</div></div>
+        <div data-lang="es"><div class="price-period" style="color:rgba(255,255,255,0.55);">por mes · cancela cuando quieras</div></div>
+        <ul class="price-features">
+          <div data-lang="en">
+            <li><span class="check">✅</span> Everything in Free</li>
+            <li><span class="check">✅</span> All 5 story adventures</li>
+            <li><span class="check">✅</span> Full Kanji course (100 chars)</li>
+            <li><span class="check">✅</span> Grammar deep-dives</li>
+            <li><span class="check">✅</span> Vocabulary by topic</li>
+            <li><span class="check">✅</span> Phrases & pronunciation guide</li>
+            <li><span class="check">✅</span> 12-month full curriculum</li>
+          </div>
+          <div data-lang="es">
+            <li><span class="check">✅</span> Todo lo de Gratis</li>
+            <li><span class="check">✅</span> Las 5 aventuras de historia</li>
+            <li><span class="check">✅</span> Curso completo de Kanji (100 chars)</li>
+            <li><span class="check">✅</span> Gramática en profundidad</li>
+            <li><span class="check">✅</span> Vocabulario por tema</li>
+            <li><span class="check">✅</span> Guía de frases y pronunciación</li>
+            <li><span class="check">✅</span> Plan completo de 12 meses</li>
+          </div>
+        </ul>
+        <a href="payment.html?plan=premium" class="price-cta premium">
+          <span data-lang="en-inline">🎌 Start 7-Day Free Trial</span>
+          <span data-lang="es-inline">🎌 Prueba Gratis 7 Días</span>
+        </a>
+      </div>
+
+      <!-- ANNUAL -->
+      <div class="price-card">
+        <div data-lang="en"><div class="price-badge" style="background:linear-gradient(135deg,var(--gold),#d97706);">🔥 Save 34%</div></div>
+        <div data-lang="es"><div class="price-badge" style="background:linear-gradient(135deg,var(--gold),#d97706);">🔥 Ahorra 34%</div></div>
+        <div data-lang="en"><div class="price-plan">Annual Plan</div></div>
+        <div data-lang="es"><div class="price-plan">Plan Anual</div></div>
+        <div class="price-amount"><span class="currency">$</span>79</div>
+        <div data-lang="en"><div class="price-period">per year ($6.58/mo) · best value</div></div>
+        <div data-lang="es"><div class="price-period">por año ($6.58/mes) · mejor valor</div></div>
+        <ul class="price-features">
+          <div data-lang="en">
+            <li><span class="check">✅</span> Everything in Premium</li>
+            <li><span class="check">✅</span> 34% cheaper than monthly</li>
+            <li><span class="check">✅</span> Priority new content access</li>
+            <li><span class="check">✅</span> Annual learner badge</li>
+          </div>
+          <div data-lang="es">
+            <li><span class="check">✅</span> Todo lo de Premium</li>
+            <li><span class="check">✅</span> 34% más barato que mensual</li>
+            <li><span class="check">✅</span> Acceso prioritario a contenido nuevo</li>
+            <li><span class="check">✅</span> Insignia de estudiante anual</li>
+          </div>
+        </ul>
+        <a href="payment.html?plan=annual" class="price-cta annual">
+          <span data-lang="en-inline">🏆 Get Annual Plan</span>
+          <span data-lang="es-inline">🏆 Obtener Plan Anual</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="price-guarantee">
+      <div data-lang="en">🔒 Secure payment · 7-day money-back guarantee · Cancel anytime · Powered by Stripe</div>
+      <div data-lang="es">🔒 Pago seguro · Garantía de devolución de 7 días · Cancela cuando quieras · Powered by Stripe</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container">
+
+    <div data-lang="en">
+      <div class="section-tag">❓ Got questions?</div>
+      <h2 class="section-title">Frequently Asked <span class="accent">Questions</span></h2>
+      <div class="faq-list">
+        <div class="faq-item"><div class="faq-q">Is Road to Japan good for absolute beginners? <span class="arrow">▼</span></div><div class="faq-a">Yes — 100%. Road to Japan was designed for people who know zero Japanese. You start with the very first character (あ) and build from there. No prior knowledge needed at all.</div></div>
+        <div class="faq-item"><div class="faq-q">How much time do I need per day? <span class="arrow">▼</span></div><div class="faq-a">Just 10–15 minutes a day is enough to make solid progress. Our daily quests are designed to fit into a lunch break or your morning coffee. Consistency beats marathon sessions every time.</div></div>
+        <div class="faq-item"><div class="faq-q">Will I really learn Hiragana in 7 days? <span class="arrow">▼</span></div><div class="faq-a">Most of our learners do — when they complete the daily Hiragana quests consistently. Some take 10 days, others 5. The system adapts to your pace using spaced repetition logic.</div></div>
+        <div class="faq-item"><div class="faq-q">What's the difference between free and premium? <span class="arrow">▼</span></div><div class="faq-a">Free gives you full access to Hiragana, Katakana, XP tracking, and the Japan culture map — that alone is more than most apps charge for. Premium unlocks all 5 story adventures, Kanji, full grammar, vocabulary, and the complete 12-month curriculum.</div></div>
+        <div class="faq-item"><div class="faq-q">Can I cancel my subscription anytime? <span class="arrow">▼</span></div><div class="faq-a">Yes, absolutely. No questions asked, no exit surveys, no guilt trips. Cancel in one click from your account settings. Your free access remains forever.</div></div>
+        <div class="faq-item"><div class="faq-q">Is my payment information secure? <span class="arrow">▼</span></div><div class="faq-a">Your card is processed by Stripe — one of the world's most trusted payment platforms, used by Amazon, Google, and Shopify. We never see or store your card details. All data is encrypted end-to-end.</div></div>
+        <div class="faq-item"><div class="faq-q">I'm not tech-savvy. Is this easy to use? <span class="arrow">▼</span></div><div class="faq-a">Very easy. Road to Japan works in any browser on any device — no downloads or installs needed. If you can use a smartphone, you can use Road to Japan.</div></div>
+        <div class="faq-item"><div class="faq-q">What if it doesn't work for me? <span class="arrow">▼</span></div><div class="faq-a">We offer a 7-day money-back guarantee on all paid plans. If you're not satisfied within 7 days of your first payment, email us and we'll refund 100% — no questions asked.</div></div>
+      </div>
+    </div>
+
+    <div data-lang="es">
+      <div class="section-tag">❓ ¿Tienes preguntas?</div>
+      <h2 class="section-title">Preguntas <span class="accent">Frecuentes</span></h2>
+      <div class="faq-list">
+        <div class="faq-item"><div class="faq-q">¿Road to Japan es bueno para principiantes absolutos? <span class="arrow">▼</span></div><div class="faq-a">Sí — al 100%. Road to Japan fue diseñado para personas que no saben nada de japonés. Comienzas con el primer carácter (あ) y construyes desde ahí. No necesitas conocimiento previo.</div></div>
+        <div class="faq-item"><div class="faq-q">¿Cuánto tiempo necesito por día? <span class="arrow">▼</span></div><div class="faq-a">Solo 10–15 minutos al día es suficiente para progresar de manera sólida. Nuestras misiones diarias están diseñadas para caber en un descanso de almuerzo o tu café matutino. La consistencia siempre supera a las sesiones maratónicas.</div></div>
+        <div class="faq-item"><div class="faq-q">¿Realmente aprenderé Hiragana en 7 días? <span class="arrow">▼</span></div><div class="faq-a">La mayoría de nuestros estudiantes lo logra — cuando completan las misiones diarias de Hiragana de forma consistente. Algunos tardan 10 días, otros 5. El sistema se adapta a tu ritmo usando lógica de repetición espaciada.</div></div>
+        <div class="faq-item"><div class="faq-q">¿Cuál es la diferencia entre gratis y premium? <span class="arrow">▼</span></div><div class="faq-a">Gratis te da acceso completo a Hiragana, Katakana, seguimiento de XP y el mapa cultural de Japón — eso solo ya es más de lo que la mayoría de apps cobran. Premium desbloquea las 5 aventuras de historia, Kanji, gramática completa, vocabulario y el plan de 12 meses.</div></div>
+        <div class="faq-item"><div class="faq-q">¿Puedo cancelar mi suscripción en cualquier momento? <span class="arrow">▼</span></div><div class="faq-a">Sí, absolutamente. Sin preguntas, sin encuestas de salida, sin culpa. Cancela con un clic desde la configuración de tu cuenta. Tu acceso gratuito permanece para siempre.</div></div>
+        <div class="faq-item"><div class="faq-q">¿Es segura mi información de pago? <span class="arrow">▼</span></div><div class="faq-a">Tu tarjeta es procesada por Stripe — una de las plataformas de pago más confiables del mundo, usada por Amazon, Google y Shopify. Nunca vemos ni almacenamos los datos de tu tarjeta. Todos los datos están cifrados de extremo a extremo.</div></div>
+        <div class="faq-item"><div class="faq-q">No soy muy técnico/a. ¿Es fácil de usar? <span class="arrow">▼</span></div><div class="faq-a">Muy fácil. Road to Japan funciona en cualquier navegador en cualquier dispositivo — sin descargas ni instalaciones. Si puedes usar un smartphone, puedes usar Road to Japan.</div></div>
+        <div class="faq-item"><div class="faq-q">¿Qué pasa si no funciona para mí? <span class="arrow">▼</span></div><div class="faq-a">Ofrecemos una garantía de devolución de 7 días en todos los planes de pago. Si no estás satisfecho dentro de los 7 días de tu primer pago, escríbenos y te devolvemos el 100% — sin preguntas.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section class="guarantee">
+  <div class="container">
+    <div data-lang="en">
+      <div class="guarantee-box">
+        <div class="guarantee-icon">🛡️</div>
+        <h2>7-Day Money-Back Guarantee</h2>
+        <p>Try Road to Japan Premium completely risk-free for 7 days. If you don't see the value — if you don't feel the progress — if it's simply not right for you — send us one email and we'll refund 100% of your payment. No forms, no delays, no fine print. The risk is entirely ours.</p>
+        <a href="auth.html" class="btn-primary">Start Your Free Trial Now</a>
+      </div>
+    </div>
+    <div data-lang="es">
+      <div class="guarantee-box">
+        <div class="guarantee-icon">🛡️</div>
+        <h2>Garantía de Devolución de 7 Días</h2>
+        <p>Prueba Road to Japan Premium completamente sin riesgo durante 7 días. Si no ves el valor — si no sientes el progreso — si simplemente no es para ti — envíanos un email y te devolvemos el 100% de tu pago. Sin formularios, sin demoras, sin letra pequeña. El riesgo es completamente nuestro.</p>
+        <a href="auth.html" class="btn-primary">Empezar Tu Prueba Gratuita Ahora</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div data-lang="en">
+    <h2>Your Journey to Japan<br>Starts <span style="color:var(--pink)">Today</span></h2>
+    <p>Join thousands of adventurers learning Japanese the fun way. Start free — upgrade when you're ready.</p>
+    <a href="auth.html" class="btn-primary" style="font-size:1.1rem;padding:18px 48px;">🎌 Begin My Adventure — Free</a>
+    <div class="ps-box">
+      <p><strong>P.S.</strong> — Every day you wait is a day further from reading your first Japanese sentence, exploring your first Japanese city, and experiencing Japan the way locals do.<br><br>The free plan costs you nothing. There's no reason not to start <strong>right now</strong>. Your adventure is waiting.</p>
+    </div>
+  </div>
+  <div data-lang="es">
+    <h2>Tu Viaje a Japón<br>Empieza <span style="color:var(--pink)">Hoy</span></h2>
+    <p>Únete a miles de aventureros aprendiendo japonés de la manera divertida. Empieza gratis — mejora cuando estés listo.</p>
+    <a href="auth.html" class="btn-primary" style="font-size:1.1rem;padding:18px 48px;">🎌 Comenzar Mi Aventura — Gratis</a>
+    <div class="ps-box">
+      <p><strong>P.D.</strong> — Cada día que esperas es un día más lejos de leer tu primera frase en japonés, explorar tu primera ciudad japonesa, y vivir Japón como los locales.<br><br>El plan gratuito no te cuesta nada. No hay razón para no empezar <strong>ahora mismo</strong>. Tu aventura te está esperando.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Road to Japan</div>
+  <div class="footer-links">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="auth.html">Log In</a>
+    <a href="mailto:keikoathomework@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 Road to Japan. All rights reserved. Made with 🎌 by Keiko Sato.</div>
+</footer>
+
+<script>
+// Lang toggle
+function setLang(lang) {
+  document.body.className = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase()));
+  localStorage.setItem('rtj_lp_lang', lang);
+}
+
+// URL param: lp.html?lang=es
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const saved = params.get('lang') || localStorage.getItem('rtj_lp_lang') || 'en';
+  setLang(saved);
+})();
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>
