@@ -445,6 +445,12 @@ html, body {
 <script src="gojuon-widget.js"></script>
 </head>
 <body>
+<!-- WebView detection banner -->
+<div class="webview-banner" id="webviewBanner">
+  ⚠️ アプリ内ブラウザではGoogleログインがブロックされます。<br>
+  <span style="font-weight:400">Please open in Chrome or Safari to sign in with Google.</span>
+  <a href="" id="openBrowserLink">🌐 ブラウザで開く / Open in Browser →</a>
+</div>
 
 <!-- BACKGROUND -->
 <div class="bg-wrap">
@@ -1217,6 +1223,19 @@ function showToast(msg, type) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+// ── WebView / in-app browser detection ──
+(function () {
+  const ua = navigator.userAgent || '';
+  const webview =
+    (/iPhone|iPad|iPod/.test(ua) && !/Safari/.test(ua)) ||
+    (/Android/.test(ua) && /wv\b/.test(ua)) ||
+    /FBAN|FBAV|Instagram|Line\/|Twitter\/|Snapchat|MicroMessenger/.test(ua);
+  if (!webview) return;
+  const b = document.getElementById('webviewBanner');
+  if (b) b.classList.add('show');
+  const lk = document.getElementById('openBrowserLink');
+  if (lk) lk.href = window.location.href;
+})();
 // Init
 applyLang('en');
 </script>
