@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — X Marketing Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #F8FAFF; --card: #fff; --border: rgba(0,87,168,0.12);
+  --blue: #0057A8; --pink: #FF6B9D; --green: #34D399;
+  --gray: #64748B; --text: #1E293B;
+}
+body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+header {
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 60px; display: flex; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 100;
+}
+header a { text-decoration: none; color: var(--gray); font-size: 0.85rem; font-weight: 800; }
+.logo { font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 2px;
+  background: linear-gradient(135deg, #0057A8, #FF6B9D);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-right: auto; }
+
+.wrap { max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; }
+
+h1 { font-family: 'Bangers', cursive; font-size: 2.2rem; letter-spacing: 3px;
+  background: linear-gradient(135deg, #0057A8, #FF6B9D);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+.subtitle { color: var(--gray); font-size: 0.9rem; margin-bottom: 32px; }
+
+/* CATEGORY TABS */
+.cat-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.cat-tab {
+  padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: #fff; color: var(--gray); font-weight: 800; font-size: 0.82rem;
+  cursor: pointer; transition: all 0.2s;
+}
+.cat-tab.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+.cat-tab:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+
+/* LANG TABS */
+.lang-row { display: flex; gap: 8px; margin-bottom: 20px; align-items: center; }
+.lang-row label { font-size: 0.78rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-right: 4px; }
+.lang-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: #fff; font-size: 0.8rem; font-weight: 900; cursor: pointer; transition: all 0.2s; }
+.lang-btn.active { background: var(--pink); color: #fff; border-color: var(--pink); }
+
+/* TWEET CARD */
+.tweet-card {
+  background: #fff; border: 1.5px solid var(--border); border-radius: 20px;
+  padding: 24px; margin-bottom: 16px; transition: all 0.25s;
+  box-shadow: 0 2px 12px rgba(0,87,168,0.06);
+}
+.tweet-card:hover { box-shadow: 0 6px 24px rgba(0,87,168,0.1); border-color: rgba(0,87,168,0.25); }
+.tweet-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.tweet-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, #0057A8, #FF6B9D);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; flex-shrink: 0;
+}
+.tweet-handle { font-weight: 900; font-size: 0.9rem; }
+.tweet-handle span { display: block; color: var(--gray); font-size: 0.78rem; font-weight: 600; }
+.tweet-tag {
+  margin-left: auto; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 900;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.tag-tip { background: rgba(0,87,168,0.08); color: var(--blue); }
+.tag-culture { background: rgba(255,107,157,0.1); color: var(--pink); }
+.tag-promo { background: rgba(52,211,153,0.1); color: #059669; }
+.tag-fact { background: rgba(251,191,36,0.12); color: #d97706; }
+.tag-lesson { background: rgba(129,140,248,0.12); color: #6366f1; }
+
+.tweet-body { font-size: 1rem; line-height: 1.65; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+.tweet-char { font-size: 0.75rem; color: var(--gray); margin-top: 10px; text-align: right; }
+.tweet-char.over { color: #ef4444; font-weight: 900; }
+
+.tweet-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.btn-post {
+  padding: 10px 22px; background: #000; color: #fff;
+  border: none; border-radius: 20px; font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem; font-weight: 900; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.btn-post:hover { background: #1a1a1a; transform: translateY(-1px); }
+.btn-copy {
+  padding: 10px 22px; background: #fff; color: var(--text);
+  border: 1.5px solid var(--border); border-radius: 20px;
+  font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 900;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-copy:hover { border-color: var(--blue); color: var(--blue); }
+.btn-copy.copied { background: var(--green); color: #fff; border-color: var(--green); }
+.btn-edit {
+  padding: 10px 18px; background: #fff; color: var(--gray);
+  border: 1.5px solid var(--border); border-radius: 20px;
+  font-size: 0.88rem; font-weight: 900; cursor: pointer; transition: all 0.2s;
+}
+.btn-edit:hover { border-color: var(--pink); color: var(--pink); }
+.btn-schedule {
+  padding: 10px 18px; background: rgba(0,87,168,0.06); color: var(--blue);
+  border: 1.5px solid rgba(0,87,168,0.2); border-radius: 20px;
+  font-size: 0.88rem; font-weight: 900; cursor: pointer; transition: all 0.2s;
+  margin-left: auto;
+}
+.btn-schedule:hover { background: var(--blue); color: #fff; }
+
+/* EDIT AREA */
+.edit-area {
+  width: 100%; margin-top: 14px; padding: 14px;
+  border: 1.5px solid rgba(0,87,168,0.2); border-radius: 14px;
+  font-family: 'Nunito', sans-serif; font-size: 0.95rem; line-height: 1.6;
+  color: var(--text); resize: vertical; min-height: 100px; outline: none;
+  background: #F8FAFF;
+}
+.edit-area:focus { border-color: var(--blue); background: #fff; }
+
+/* CALENDAR STRIP */
+.cal-strip { display: flex; gap: 8px; margin-bottom: 28px; overflow-x: auto; padding-bottom: 4px; }
+.cal-day {
+  flex-shrink: 0; width: 60px; text-align: center; padding: 10px 6px;
+  border-radius: 14px; border: 1.5px solid var(--border); background: #fff;
+  cursor: pointer; transition: all 0.2s;
+}
+.cal-day.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.cal-day:hover:not(.active) { border-color: var(--blue); }
+.cal-day-name { font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; }
+.cal-day-num { font-family: 'Bangers', cursive; font-size: 1.3rem; }
+.cal-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); margin: 4px auto 0; }
+.cal-day:not(.active) .cal-dot { opacity: 0.5; }
+
+/* STATS BAR */
+.stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+.stat-box {
+  background: #fff; border: 1px solid var(--border); border-radius: 16px;
+  padding: 16px; text-align: center;
+  box-shadow: 0 2px 8px rgba(0,87,168,0.04);
+}
+.stat-num { font-family: 'Bangers', cursive; font-size: 1.8rem; color: var(--blue); }
+.stat-lbl { font-size: 0.72rem; font-weight: 800; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+/* SCHEDULE MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+  z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.hidden { display: none; }
+.modal-box { background: #fff; border-radius: 24px; padding: 32px; max-width: 420px; width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+.modal-box h3 { font-family: 'Bangers', cursive; font-size: 1.5rem; letter-spacing: 2px; margin-bottom: 16px; color: var(--blue); }
+.modal-box label { display: block; font-size: 0.78rem; font-weight: 900; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; margin-top: 14px; }
+.modal-box input, .modal-box select {
+  width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 12px;
+  font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--text); outline: none;
+}
+.modal-box input:focus, .modal-box select:focus { border-color: var(--blue); }
+.modal-btn-row { display: flex; gap: 10px; margin-top: 20px; }
+.modal-confirm { flex: 1; padding: 13px; background: var(--blue); color: #fff; border: none;
+  border-radius: 14px; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.95rem; cursor: pointer; }
+.modal-cancel { padding: 13px 20px; background: #fff; color: var(--gray); border: 1.5px solid var(--border);
+  border-radius: 14px; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.95rem; cursor: pointer; }
+
+/* TOAST */
+.x-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(60px);
+  background: #1a1a1a; color: #fff; padding: 12px 24px; border-radius: 20px;
+  font-weight: 800; font-size: 0.9rem; z-index: 999; transition: all 0.35s; opacity: 0; }
+.x-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 600px) {
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .tweet-actions { flex-direction: column; }
+  .btn-schedule { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">Road to Japan</span>
+  <a href="home.html">← Back to App</a>
+</header>
+
+<div class="wrap">
+
+  <h1>🐦 X Marketing Tool</h1>
+  <p class="subtitle">Auto-generate and post Japanese learning content to X (Twitter) — EN / ES / JA</p>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-box">
+      <div class="stat-num" id="statPosted">0</div>
+      <div class="stat-lbl">Posted This Week</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" id="statScheduled">0</div>
+      <div class="stat-lbl">Scheduled</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">7</div>
+      <div class="stat-lbl">Templates</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">3</div>
+      <div class="stat-lbl">Languages</div>
+    </div>
+  </div>
+
+  <!-- CALENDAR STRIP -->
+  <div class="cal-strip" id="calStrip"></div>
+
+  <!-- LANG SELECTOR -->
+  <div class="lang-row">
+    <label>Language:</label>
+    <button class="lang-btn active" id="langEN" onclick="setLang('en')">🇺🇸 EN</button>
+    <button class="lang-btn" id="langES" onclick="setLang('es')">🇪🇸 ES</button>
+    <button class="lang-btn" id="langJA" onclick="setLang('ja')">🇯🇵 JA</button>
+  </div>
+
+  <!-- CATEGORY TABS -->
+  <div class="cat-tabs">
+    <button class="cat-tab active" onclick="filterCat('all', this)">✨ All</button>
+    <button class="cat-tab" onclick="filterCat('tip', this)">💡 Learning Tips</button>
+    <button class="cat-tab" onclick="filterCat('culture', this)">🎌 Culture</button>
+    <button class="cat-tab" onclick="filterCat('lesson', this)">📚 Lesson Preview</button>
+    <button class="cat-tab" onclick="filterCat('fact', this)">🗾 Japan Facts</button>
+    <button class="cat-tab" onclick="filterCat('promo', this)">🚀 Promo</button>
+  </div>
+
+  <!-- TWEET CARDS -->
+  <div id="tweetFeed"></div>
+
+</div>
+
+<!-- SCHEDULE MODAL -->
+<div class="modal-overlay hidden" id="scheduleModal">
+  <div class="modal-box">
+    <h3>📅 Schedule Tweet</h3>
+    <label>Date & Time</label>
+    <input type="datetime-local" id="schedDate">
+    <label>Repeat</label>
+    <select id="schedRepeat">
+      <option value="once">Once</option>
+      <option value="daily">Daily</option>
+      <option value="weekly">Weekly</option>
+    </select>
+    <p id="schedPreview" style="margin-top:14px;font-size:0.82rem;color:var(--gray);line-height:1.5;background:#F8FAFF;border-radius:10px;padding:12px"></p>
+    <div class="modal-btn-row">
+      <button class="modal-cancel" onclick="document.getElementById('scheduleModal').classList.add('hidden')">Cancel</button>
+      <button class="modal-confirm" onclick="confirmSchedule()">✅ Save Schedule</button>
+    </div>
+  </div>
+</div>
+
+<div class="x-toast" id="xToast"></div>
+
+<script>
+const APP_URL = 'https://keikoathomework-web.github.io/road-to-japan/';
+
+// ── TWEET TEMPLATES ──
+const TWEETS = [
+  {
+    cat: 'tip', icon: '💡',
+    en: `💡 Japanese learning tip of the day!\n\nStart with Hiragana — the 46 basic characters that unlock reading every menu, sign, and manga in Japan 🎌\n\nMaster them in 2 weeks with Road to Japan:\n${APP_URL}\n\n#LearnJapanese #Hiragana #日本語学習`,
+    es: `💡 ¡Consejo del día para aprender japonés!\n\nEmpieza por el Hiragana — los 46 caracteres básicos que te abren la puerta a leer todo en Japón 🎌\n\nDomínalos en 2 semanas:\n${APP_URL}\n\n#AprenderJaponés #Hiragana #日本語`,
+    ja: `💡 今日の日本語学習Tips！\n\nまずはひらがな46文字をマスターしよう 🎌\nメニュー・看板・漫画が読めるようになる第一歩！\n\n2週間で完全習得：\n${APP_URL}\n\n#日本語学習 #ひらがな #LearnJapanese`,
+  },
+  {
+    cat: 'culture', icon: '🎌',
+    en: `🗾 Did you know?\n\nJapan has over 6,800 islands — and each one has its own dialect, food, and culture 🍜🍣\n\nLearn the language and discover it all 👇\n${APP_URL}\n\n#Japan #JapanTravel #LearnJapanese #日本`,
+    es: `🗾 ¿Sabías que?\n\nJapón tiene más de 6,800 islas — cada una con su propio dialecto, comida y cultura 🍜🍣\n\nAprende el idioma y descúbrelas todas 👇\n${APP_URL}\n\n#Japón #ViajarAJapón #AprenderJaponés`,
+    ja: `🗾 知ってた？\n\n日本には6,800以上の島があり、それぞれ独自の方言・料理・文化がある 🍜🍣\n\n言語を学んで全部体験しよう 👇\n${APP_URL}\n\n#日本 #日本語学習 #JapanTravel`,
+  },
+  {
+    cat: 'lesson', icon: '📚',
+    en: `📚 Today's free lesson: Hiragana あいうえお!\n\nあ (a) · い (i) · う (u) · え (e) · お (o)\n\nSay it out loud 3 times — your brain will thank you 🧠✨\n\nStart your free journey:\n${APP_URL}\n\n#LearnJapanese #Hiragana #FreeLesson`,
+    es: `📚 Lección gratis de hoy: ¡Hiragana あいうえお!\n\nあ (a) · い (i) · う (u) · え (e) · お (o)\n\nDílo 3 veces en voz alta — tu cerebro te lo agradecerá 🧠✨\n\nEmpieza gratis:\n${APP_URL}\n\n#AprenderJaponés #Hiragana #LecciónGratis`,
+    ja: `📚 今日の無料レッスン：ひらがなあいうえお！\n\nあ・い・う・え・お\n\n3回声に出して読もう — 脳が喜ぶ 🧠✨\n\n無料で始める：\n${APP_URL}\n\n#日本語学習 #ひらがな #無料レッスン`,
+  },
+  {
+    cat: 'fact', icon: '🗾',
+    en: `🎋 Japan fact: The word "Anime" comes from the English word "Animation" — and Japan produces 60% of the world's animated content!\n\nLearn Japanese to watch anime without subtitles 🎌\n${APP_URL}\n\n#Anime #LearnJapanese #Japan #アニメ`,
+    es: `🎋 Dato sobre Japón: La palabra "Anime" viene del inglés "Animation" — ¡y Japón produce el 60% del contenido animado del mundo!\n\nAprende japonés para ver anime sin subtítulos 🎌\n${APP_URL}\n\n#Anime #AprenderJaponés #Japón`,
+    ja: `🎋 日本トリビア：「アニメ」は英語の"Animation"から来ている — 日本は世界のアニメコンテンツの60%を制作！\n\n字幕なしでアニメを楽しもう 🎌\n${APP_URL}\n\n#アニメ #日本語学習 #Anime`,
+  },
+  {
+    cat: 'promo', icon: '🚀',
+    en: `🚀 Road to Japan is the most exciting way to learn Japanese!\n\n✅ 5 playable characters (Shiba, Fox, Tanuki & more!)\n✅ Story-based lessons\n✅ XP, streaks & leaderboard\n✅ Free to start!\n\n👇 Join 10,000+ learners:\n${APP_URL}\n\n#LearnJapanese #LanguageApp #日本語`,
+    es: `🚀 ¡Road to Japan es la forma más emocionante de aprender japonés!\n\n✅ 5 personajes jugables (Shiba, Zorro, Tanuki ¡y más!)\n✅ Lecciones basadas en historia\n✅ XP, rachas y clasificación\n✅ ¡Gratis para empezar!\n\n👇 Únete a +10,000 estudiantes:\n${APP_URL}\n\n#AprenderJaponés #AppIdiomas`,
+    ja: `🚀 Road to Japanは最もワクワクする日本語学習アプリ！\n\n✅ 5キャラクター（柴犬・キツネ・タヌキ他）\n✅ ストーリー形式のレッスン\n✅ XP・ストリーク・リーダーボード\n✅ 無料スタート！\n\n👇 1万人以上が参加中：\n${APP_URL}\n\n#日本語学習 #語学アプリ #LearnJapanese`,
+  },
+  {
+    cat: 'tip', icon: '💡',
+    en: `💡 The secret to learning Japanese fast:\n\n1️⃣ Learn Hiragana first (2 weeks)\n2️⃣ Learn 100 common words (1 month)\n3️⃣ Read simple sentences (2 months)\n4️⃣ Watch anime without subs (6 months)\n\nStart today — free:\n${APP_URL}\n\n#LearnJapanese #LanguageLearning #JLPT`,
+    es: `💡 El secreto para aprender japonés rápido:\n\n1️⃣ Aprende Hiragana primero (2 semanas)\n2️⃣ Aprende 100 palabras comunes (1 mes)\n3️⃣ Lee oraciones simples (2 meses)\n4️⃣ Ve anime sin subtítulos (6 meses)\n\nEmpieza hoy — gratis:\n${APP_URL}\n\n#AprenderJaponés #IdiomasOnline #JLPT`,
+    ja: `💡 日本語を速く学ぶ秘訣：\n\n1️⃣ まずひらがな（2週間）\n2️⃣ よく使う100単語（1ヶ月）\n3️⃣ 簡単な文章を読む（2ヶ月）\n4️⃣ 字幕なしアニメ（6ヶ月）\n\n今日から無料スタート：\n${APP_URL}\n\n#日本語学習 #JLPT #語学`,
+  },
+  {
+    cat: 'culture', icon: '🎌',
+    en: `🍜 In Japan, slurping noodles is a compliment to the chef — it means the food is delicious! 😄\n\nLearn the cultural secrets of Japan while learning the language:\n${APP_URL}\n\n#JapanCulture #Japan #LearnJapanese #Ramen #日本文化`,
+    es: `🍜 ¡En Japón, sorber los fideos es un cumplido al chef — significa que la comida está deliciosa! 😄\n\nAprende los secretos culturales de Japón mientras aprendes el idioma:\n${APP_URL}\n\n#CulturaJaponesa #Japón #AprenderJaponés #Ramen`,
+    ja: `🍜 日本ではラーメンをすする音は料理人への褒め言葉 — 美味しいという意味！😄\n\n言語を学びながら日本の文化の秘密を発見：\n${APP_URL}\n\n#日本文化 #日本 #日本語学習 #ラーメン`,
+  },
+];
+
+let currentLang = 'en';
+let currentCat = 'all';
+let scheduledTweet = null;
+let scheduledItems = JSON.parse(localStorage.getItem('rtj_x_scheduled') || '[]');
+let postedCount = parseInt(localStorage.getItem('rtj_x_posted') || '0');
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded', () => {
+  buildCalendar();
+  renderTweets();
+  document.getElementById('statPosted').textContent = postedCount;
+  document.getElementById('statScheduled').textContent = scheduledItems.length;
+  // Set default schedule time to tomorrow 9am
+  const tm = new Date(); tm.setDate(tm.getDate() + 1); tm.setHours(9, 0, 0, 0);
+  document.getElementById('schedDate').value = tm.toISOString().slice(0, 16);
+});
+
+function buildCalendar() {
+  const strip = document.getElementById('calStrip');
+  const today = new Date();
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  for (let i = -3; i <= 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    const el = document.createElement('div');
+    el.className = 'cal-day' + (i === 0 ? ' active' : '');
+    el.innerHTML = `<div class="cal-day-name">${days[d.getDay()]}</div><div class="cal-day-num">${d.getDate()}</div><div class="cal-dot"></div>`;
+    el.onclick = () => { document.querySelectorAll('.cal-day').forEach(c => c.classList.remove('active')); el.classList.add('active'); };
+    strip.appendChild(el);
+  }
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  ['EN','ES','JA'].forEach(l => document.getElementById('lang'+l).classList.toggle('active', l.toLowerCase() === lang));
+  renderTweets();
+}
+
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderTweets();
+}
+
+const TAG_LABELS = { tip:'💡 TIP', culture:'🎌 CULTURE', promo:'🚀 PROMO', fact:'🗾 FACT', lesson:'📚 LESSON' };
+const TAG_CLS    = { tip:'tag-tip', culture:'tag-culture', promo:'tag-promo', fact:'tag-fact', lesson:'tag-lesson' };
+
+function renderTweets() {
+  const feed = document.getElementById('tweetFeed');
+  const filtered = currentCat === 'all' ? TWEETS : TWEETS.filter(t => t.cat === currentCat);
+  feed.innerHTML = '';
+  filtered.forEach((t, i) => {
+    const text = t[currentLang] || t.en;
+    const charCount = text.length;
+    const over = charCount > 280;
+    feed.innerHTML += `
+    <div class="tweet-card" id="tc${i}">
+      <div class="tweet-header">
+        <div class="tweet-avatar">${t.icon}</div>
+        <div class="tweet-handle">Road to Japan 🎌<span>@RoadToJapanApp</span></div>
+        <span class="tweet-tag ${TAG_CLS[t.cat]}">${TAG_LABELS[t.cat]}</span>
+      </div>
+      <div class="tweet-body" id="tbody${i}">${text}</div>
+      <div class="tweet-char ${over ? 'over' : ''}" id="tchar${i}">${charCount}/280 characters${over ? ' ⚠️ too long' : ''}</div>
+      <textarea class="edit-area" id="tedit${i}" style="display:none" oninput="updateChar(${i})">${text}</textarea>
+      <div class="tweet-actions">
+        <button class="btn-post" onclick="postToX(${i})">𝕏 Post Now</button>
+        <button class="btn-copy" id="bcopy${i}" onclick="copyTweet(${i})">📋 Copy</button>
+        <button class="btn-edit" onclick="toggleEdit(${i})">✏️ Edit</button>
+        <button class="btn-schedule" onclick="openSchedule(${i})">📅 Schedule</button>
+      </div>
+    </div>`;
+  });
+}
+
+function getTweetText(i) {
+  const edit = document.getElementById('tedit' + i);
+  return edit && edit.style.display !== 'none' ? edit.value : document.getElementById('tbody' + i).textContent;
+}
+
+function postToX(i) {
+  const text = getTweetText(i);
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank', 'width=600,height=500');
+  postedCount++;
+  localStorage.setItem('rtj_x_posted', postedCount);
+  document.getElementById('statPosted').textContent = postedCount;
+  showToast('✅ Opening X — paste & post!');
+}
+
+function copyTweet(i) {
+  navigator.clipboard.writeText(getTweetText(i)).then(() => {
+    const btn = document.getElementById('bcopy' + i);
+    btn.textContent = '✓ Copied!'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+    showToast('📋 Tweet copied to clipboard!');
+  });
+}
+
+function toggleEdit(i) {
+  const body = document.getElementById('tbody' + i);
+  const edit = document.getElementById('tedit' + i);
+  const showing = edit.style.display !== 'none';
+  edit.style.display = showing ? 'none' : 'block';
+  body.style.display = showing ? '' : 'none';
+  if (!showing) { edit.value = body.textContent; edit.focus(); }
+  else { body.textContent = edit.value; updateChar(i); }
+}
+
+function updateChar(i) {
+  const edit = document.getElementById('tedit' + i);
+  const cc = document.getElementById('tchar' + i);
+  const len = edit.value.length;
+  cc.textContent = len + '/280 characters' + (len > 280 ? ' ⚠️ too long' : '');
+  cc.className = 'tweet-char' + (len > 280 ? ' over' : '');
+}
+
+function openSchedule(i) {
+  scheduledTweet = i;
+  document.getElementById('schedPreview').textContent = getTweetText(i).slice(0, 120) + '…';
+  document.getElementById('scheduleModal').classList.remove('hidden');
+}
+
+function confirmSchedule() {
+  const dt = document.getElementById('schedDate').value;
+  const repeat = document.getElementById('schedRepeat').value;
+  if (!dt) { showToast('⚠️ Please select a date & time'); return; }
+  const item = { idx: scheduledTweet, date: dt, repeat, text: getTweetText(scheduledTweet), lang: currentLang };
+  scheduledItems.push(item);
+  localStorage.setItem('rtj_x_scheduled', JSON.stringify(scheduledItems));
+  document.getElementById('statScheduled').textContent = scheduledItems.length;
+  document.getElementById('scheduleModal').classList.add('hidden');
+  showToast(`📅 Scheduled for ${new Date(dt).toLocaleString()}!`);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('xToast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
