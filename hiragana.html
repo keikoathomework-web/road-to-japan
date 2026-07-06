@@ -130,6 +130,42 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .srs-review{background:rgba(129,140,248,0.1);color:var(--purple);border:1px solid rgba(129,140,248,0.2)}
 .srs-mastered{background:rgba(52,211,153,0.1);color:var(--green);border:1px solid rgba(52,211,153,0.2)}
 
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes popIn {
+  0%   { opacity:0; transform:scale(0.7); }
+  70%  { transform:scale(1.08); }
+  100% { opacity:1; transform:scale(1); }
+}
+@keyframes correctFlash {
+  0%,100% { background:#fff; }
+  40%     { background:rgba(52,211,153,0.25); border-color:rgba(52,211,153,0.6); }
+}
+@keyframes wrongShake {
+  0%,100% { transform:translateX(0); }
+  20%     { transform:translateX(-6px); }
+  40%     { transform:translateX(6px); }
+  60%     { transform:translateX(-4px); }
+  80%     { transform:translateX(4px); }
+}
+@keyframes masteredPulse {
+  0%,100% { box-shadow:0 0 0 0 rgba(52,211,153,0); }
+  50%     { box-shadow:0 0 0 6px rgba(52,211,153,0.2); }
+}
+@keyframes shimmer {
+  0%   { background-position:-400px 0; }
+  100% { background-position:400px 0; }
+}
+.hero-card  { animation:fadeInUp 0.5s cubic-bezier(0.34,1.4,0.64,1) both; }
+.info-card  { animation:fadeInUp 0.45s ease both; animation-delay:0.1s; }
+.char-tile  { animation:popIn 0.35s cubic-bezier(0.34,1.4,0.64,1) both; }
+.char-tile.mastered { animation:masteredPulse 2.5s ease-in-out infinite; }
+.char-tile.correct-anim { animation:correctFlash 0.5s ease; }
+.char-tile.wrong-anim   { animation:wrongShake 0.45s ease; }
+
 /* ===== CHAR GRID ===== */
 .section-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .section-head h2{font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px}
