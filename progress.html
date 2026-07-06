@@ -314,6 +314,16 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
 
 <script>
 // ── MONTH DATA ──
+function enrichMonths(months) {
+  if (!window.RTJProgress) return months;
+  const hira = RTJProgress.getStats('hiragana', 46);
+  const kata = RTJProgress.getStats('katakana', 46);
+  const combinedPct = Math.round((hira.mastered + kata.mastered) / 92 * 100);
+  months[0].progress = combinedPct;
+  months[0].status = combinedPct >= 100 ? 'completed' : combinedPct > 0 ? 'current' : 'unlocked';
+  return months;
+}
+
 const MONTHS = [
   {
     num: 1, emoji: '🔤', color: '#00bfa5',

@@ -1162,7 +1162,8 @@ function startQuest() {
     ? '🎌 ¡Comenzando el Capítulo 1!'
     : '🎌 Starting Chapter 1: Port of Departure!';
   showToast(msg, 'success');
-  setTimeout(() => { window.location.href = 'home.html'; }, 1200);
+  const _nextDest = new URLSearchParams(window.location.search).get('next') || 'home.html';
+  setTimeout(() => { window.location.href = _nextDest; }, 1200);
 }
 
 // ===== HELPERS =====

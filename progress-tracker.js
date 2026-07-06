@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    PROGRESS TRACKER — shared real progress storage
    Used by hiragana.html / katakana.html / kanji.html / vocabulary.html
    to persist per-character mastery, and by profile.html / home.html
@@ -80,6 +80,50 @@
     return true;
   }
 
+  /* ── Level-up system ── */
+  const XP_PER_LEVEL = 300;
+  function getLevel(xp) { return Math.floor(xp / XP_PER_LEVEL) + 1; }
+
+  function checkLevelUp(prevXP, newXP) {
+    const prevLevel = getLevel(prevXP);
+    const newLevel  = getLevel(newXP);
+    if (newLevel > prevLevel) showLevelUpToast(newLevel);
+  }
+
+  function showLevelUpToast(level) {
+    const badge = { 1:'🌱', 2:'⚔️', 3:'🔥', 4:'🏆', 5:'👑', 6:'💎', 7:'🌟', 8:'🚀', 9:'🦋', 10:'🎌' };
+    const icon  = badge[Math.min(level, 10)] || '⭐';
+    const msg   = ${icon} Level Up! You reached Level !;
+
+    // Try to use an existing toast element on the page, or create a floating one
+    let toast = document.getElementById('rtjLevelToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'rtjLevelToast';
+      toast.style.cssText = [
+        'position:fixed','bottom:90px','left:50%','transform:translateX(-50%) translateY(40px)',
+        'background:linear-gradient(135deg,#0057A8,#FF6B9D)','color:#fff',
+        'font-weight:700','font-size:1rem','padding:14px 28px','border-radius:50px',
+        'box-shadow:0 4px 20px rgba(0,0,0,0.3)','z-index:9999',
+        'opacity:0','transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1)',
+        'pointer-events:none','text-align:center'
+      ].join(';');
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    requestAnimationFrame(() => {
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+    });
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(-50%) translateY(40px)';
+    }, 3500);
+
+    // Dispatch event so other scripts can react
+    window.dispatchEvent(new CustomEvent('rtj:levelup', { detail: { level } }));
+  }
+
   /* ── Public API ── */
   window.RTJProgress = {
 
@@ -117,7 +161,8 @@
      */
     addXP(amount) {
       const profile   = loadProfile();
-      profile.xp      = (profile.xp || 0) + amount;
+      const prevXP    = profile.xp || 0;
+      profile.xp      = prevXP + amount;
 
       const todayStr  = new Date().toISOString().split('T')[0];
       profile.dailyXP = profile.dailyXP || {};
@@ -137,6 +182,7 @@
 
       saveProfile(profile);
       syncToSupabase();
+      checkLevelUp(prevXP, profile.xp);
       return profile.xp;
     },
 

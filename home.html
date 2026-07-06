@@ -858,8 +858,8 @@ body {
           </div>
         </div>
         <div class="module-progress-row">
-          <div class="mod-bar-wrap"><div class="mod-bar-fill" style="width:62%;background:var(--cyan)"></div></div>
-          <span class="mod-pct" style="color:var(--cyan)">62%</span>
+          <div class="mod-bar-wrap"><div class="mod-bar-fill" id="hiraBarFill" style="width:0%;background:var(--cyan)"></div></div>
+          <span class="mod-pct" style="color:var(--cyan)" id="hiraPct">0%</span>
         </div>
         <div class="module-next" data-i18n="mod_next_ha">Next: は行 (ha-hi-fu-he-ho)</div>
       </div>
@@ -874,8 +874,8 @@ body {
           </div>
         </div>
         <div class="module-progress-row">
-          <div class="mod-bar-wrap"><div class="mod-bar-fill" style="width:20%;background:var(--pink)"></div></div>
-          <span class="mod-pct" style="color:var(--pink)">20%</span>
+          <div class="mod-bar-wrap"><div class="mod-bar-fill" id="kataBarFill" style="width:0%;background:var(--pink)"></div></div>
+          <span class="mod-pct" style="color:var(--pink)" id="kataPct">0%</span>
         </div>
         <div class="module-next" data-i18n="mod_next_a">Next: ア行 (a-i-u-e-o)</div>
       </div>
@@ -1090,11 +1090,27 @@ window.addEventListener('load', () => {
     document.getElementById('storyBar').style.width = '40%';
   }, 500);
 
-  // Counter stats
-  animateNum('todayXP', 50);
-  animateNum('todayCards', 5);
-  animateNum('todayTime', 12);
-  setTimeout(() => { document.getElementById('todayAccuracy').textContent = '88%'; }, 800);
+  // Real module progress from RTJProgress
+  if (window.RTJProgress) {
+    const _hira = RTJProgress.getStats('hiragana', 46);
+    const _kata = RTJProgress.getStats('katakana', 46);
+    const _hf = document.getElementById('hiraBarFill');
+    const _kf = document.getElementById('kataBarFill');
+    if (_hf) { _hf.style.width = _hira.pct + '%'; document.getElementById('hiraPct').textContent = _hira.pct + '%'; }
+    if (_kf) { _kf.style.width = _kata.pct + '%'; document.getElementById('kataPct').textContent = _kata.pct + '%'; }
+  }
+  // Real today stats from localStorage
+  const _tp = JSON.parse(localStorage.getItem('rtj_profile') || '{}');
+  const _ts = new Date().toISOString().split('T')[0];
+  animateNum('todayXP', (_tp.dailyXP || {})[_ts] || 0);
+  const _kd = JSON.parse(localStorage.getItem('rtj_kana_progress') || '{}');
+  const _allC = [...Object.values(_kd.hiragana || {}), ...Object.values(_kd.katakana || {})];
+  const _done = _allC.filter(s => s.lastStudied === _ts).length;
+  animateNum('todayCards', _done);
+  animateNum('todayTime', Math.max(0, Math.round(_done * 0.5)));
+  const _tot = _allC.reduce((a, s) => a + (s.correct || 0) + (s.wrong || 0), 0);
+  const _cor = _allC.reduce((a, s) => a + (s.correct || 0), 0);
+  setTimeout(() => { const _ae = document.getElementById('todayAccuracy'); if (_ae) _ae.textContent = (_tot > 0 ? Math.round(_cor/_tot*100) : 0) + '%'; }, 800);
 
   // Review count
   let rv = 0;

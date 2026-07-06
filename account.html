@@ -277,9 +277,9 @@ function showMsg(text, ok) {
 }
 
 const PLAN_INFO = {
-  free:     { emoji: '🌱', label: 'Free Plan',     price: '$0', class: 'free' },
-  standard: { emoji: '⚔️', label: 'Standard Plan', price: '$15/mo', class: 'standard' },
-  premium:  { emoji: '👑', label: 'Premium Plan',  price: '$30/mo', class: 'premium' },
+  free:    { emoji: '🌱', label: 'Free Plan',    price: '\',       class: 'free' },
+  premium: { emoji: '👑', label: 'Premium Plan', price: '\.99/mo', class: 'premium' },
+  annual:  { emoji: '🏆', label: 'Annual Plan',  price: '$79/yr',   class: 'premium' },
 };
 
 const LEVEL_LABELS = {
@@ -428,7 +428,8 @@ async function cancelSubscription() {
   }
 }
 
-function logoutAccount() {
+async function logoutAccount() {
+  if (window.RTJAuth) await RTJAuth.signOut().catch(() => {});
   window.location.href = 'auth.html';
 }
 

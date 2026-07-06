@@ -202,6 +202,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; }
 }
 </style>
 <script src="gojuon-widget.js"></script>
+<script src="lang.js"></script>
 </head>
 <body>
 
@@ -455,6 +456,12 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; }
 </div>
 
 <script>
+// ── LANG INIT ──
+window.addEventListener('rtjauth:ready', () => {
+  if (window.RTJLang) RTJLang.apply();
+});
+if (window.RTJLang) RTJLang.apply();
+
 // ── STRIPE CONFIG ──
 // ⚠️ Replace with your Stripe test publishable key (pk_test_...)
 const STRIPE_PK = 'pk_test_51ToE6OQTSGTc7shotMEB8ASCsEf8DQo0689xQ6qIYVZiV9G415GDsVBBCIVGWQUI5z0zybEl74IcwXN9w8lFWqC700CDk0atuI';
