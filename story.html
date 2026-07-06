@@ -277,6 +277,32 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
 .continue-hint.hidden { display: none; }
 @keyframes blink { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
 
+/* TTS controls */
+.tts-bar {
+  display: flex; align-items: center; gap: 6px;
+  position: absolute; top: 14px; right: 52px;
+}
+.tts-btn {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px; padding: 4px 10px; font-size: 0.75rem; font-weight: 900;
+  cursor: pointer; color: rgba(255,255,255,0.45); transition: all 0.2s;
+  display: flex; align-items: center; gap: 5px; white-space: nowrap;
+  font-family: 'Nunito', sans-serif;
+}
+.tts-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); }
+.tts-btn.active { background: rgba(0,87,168,0.35); border-color: rgba(96,165,250,0.5); color: #93C5FD; }
+.tts-lang {
+  display: flex; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; overflow: hidden;
+}
+.tts-lang-btn {
+  padding: 4px 8px; font-size: 0.65rem; font-weight: 900; cursor: pointer;
+  border: none; background: transparent; color: rgba(255,255,255,0.3);
+  font-family: 'Nunito', sans-serif; transition: all 0.2s;
+}
+.tts-lang-btn.active { background: rgba(0,87,168,0.4); color: #93C5FD; }
+@keyframes speakPulse { 0%,100%{box-shadow:0 0 0 0 rgba(96,165,250,0)} 50%{box-shadow:0 0 0 6px rgba(96,165,250,0.2)} }
+.tts-btn.speaking { animation: speakPulse 1s ease-in-out infinite; }
+
 /* =====================
    CHOICE PANEL
    ===================== */
@@ -565,6 +591,14 @@ html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; 
   <div class="dialogue-wrap" id="dialogueWrap">
     <div class="dialogue-box" id="dialogueBox" onclick="advanceStory()">
       <div class="speed-indicator" onclick="toggleAuto(event)" id="speedBtn">AUTO: OFF</div>
+      <!-- TTS Controls -->
+      <div class="tts-bar" onclick="event.stopPropagation()">
+        <div class="tts-lang" id="ttsLangBar" style="display:none">
+          <button class="tts-lang-btn active" id="ttsEN" onclick="setTTSLang('en')">EN</button>
+          <button class="tts-lang-btn" id="ttsES" onclick="setTTSLang('es')">ES</button>
+        </div>
+        <button class="tts-btn" id="ttsBtn" onclick="toggleTTS()">🔊 Voice: OFF</button>
+      </div>
       <div class="speaker-name" id="speakerName">
         <span id="speakerNameText">...</span>
         <span class="speaker-tag" id="speakerTag"></span>
@@ -1179,6 +1213,109 @@ document.addEventListener('keydown', e => {
   if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); advanceStory(); }
   if (e.key === 'Escape') { toggleMenu(); }
 });
+
+// ══════════════════════════════════
+//  TTS — Text-to-Speech
+// ══════════════════════════════════
+let ttsEnabled = false;
+let ttsLang    = localStorage.getItem('rtj_tts_lang') || 'en';
+let ttsSpeaking = false;
+
+const TTS_VOICES = { en: 'en-US', es: 'es-ES' };
+
+function getVoice(lang) {
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  const code   = TTS_VOICES[lang] || 'en-US';
+  return voices.find(v => v.lang === code)
+      || voices.find(v => v.lang.startsWith(lang === 'es' ? 'es' : 'en'))
+      || null;
+}
+
+function stripHTML(html) {
+  const d = document.createElement('div');
+  d.innerHTML = html;
+  return d.textContent || d.innerText || '';
+}
+
+function ttsSpeak(html) {
+  if (!ttsEnabled || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+
+  const text = stripHTML(html).trim();
+  if (!text) return;
+
+  const u    = new SpeechSynthesisUtterance(text);
+  u.lang     = TTS_VOICES[ttsLang] || 'en-US';
+  u.rate     = 0.92;
+  u.pitch    = 1.0;
+  const voice = getVoice(ttsLang);
+  if (voice) u.voice = voice;
+
+  const btn = document.getElementById('ttsBtn');
+  u.onstart = () => { ttsSpeaking = true;  btn && btn.classList.add('speaking'); };
+  u.onend   = () => { ttsSpeaking = false; btn && btn.classList.remove('speaking'); };
+  u.onerror = () => { ttsSpeaking = false; btn && btn.classList.remove('speaking'); };
+
+  window.speechSynthesis.speak(u);
+}
+
+function toggleTTS() {
+  ttsEnabled = !ttsEnabled;
+  const btn     = document.getElementById('ttsBtn');
+  const langBar = document.getElementById('ttsLangBar');
+
+  if (ttsEnabled) {
+    btn.textContent  = '🔊 Voice: ON';
+    btn.classList.add('active');
+    langBar.style.display = 'flex';
+    // Speak current dialogue immediately
+    const current = document.getElementById('dialogueText');
+    if (current && current.innerHTML) ttsSpeak(current.innerHTML);
+  } else {
+    window.speechSynthesis && window.speechSynthesis.cancel();
+    btn.textContent = '🔊 Voice: OFF';
+    btn.classList.remove('active', 'speaking');
+    langBar.style.display = 'none';
+  }
+}
+
+function setTTSLang(lang) {
+  ttsLang = lang;
+  localStorage.setItem('rtj_tts_lang', lang);
+  document.getElementById('ttsEN').classList.toggle('active', lang === 'en');
+  document.getElementById('ttsES').classList.toggle('active', lang === 'es');
+  // Re-speak current text in new language
+  if (ttsEnabled) {
+    const current = document.getElementById('dialogueText');
+    if (current && current.innerHTML) ttsSpeak(current.innerHTML);
+  }
+}
+
+// Hook into typeText — speak when new line starts
+const _origTypeText = typeText;
+typeText = function(html, isNarration = false) {
+  _origTypeText.call(this, html, isNarration);
+  if (ttsEnabled) {
+    // Slight delay so typewriter has started visually
+    setTimeout(() => ttsSpeak(html), 120);
+  }
+};
+
+// Stop TTS on manual advance
+const _origAdvanceStory = advanceStory;
+advanceStory = function() {
+  if (ttsEnabled && window.speechSynthesis) window.speechSynthesis.cancel();
+  _origAdvanceStory.call(this);
+};
+
+// Preload voices (required by some browsers)
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
+
+// Restore lang indicator on load
+setTTSLang(ttsLang);
 </script>
 </body>
 </html>

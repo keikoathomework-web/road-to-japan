@@ -221,87 +221,100 @@ section { padding: 80px 24px; }
 .why-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.5; }
 
 /* ── CHARACTERS ── */
-.characters {
-  background: linear-gradient(160deg, #03082b 0%, #0d1440 50%, #0a1f1a 100%);
-  overflow: hidden; position: relative;
-}
-.characters::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 20% 50%, rgba(0,87,168,0.18), transparent 55%),
-              radial-gradient(ellipse at 80% 30%, rgba(255,107,157,0.12), transparent 50%);
-}
-.characters .section-title { color: #fff; }
-.characters .section-sub { color: rgba(255,255,255,0.65); }
+.characters { background: #F0F4FF; }
 .char-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px; margin-top: 40px; position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px; margin-top: 40px;
 }
+
+/* Duolingo-style card */
 .char-card {
-  background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1);
-  border-radius: 24px; padding: 28px 22px; text-align: center;
-  transition: all 0.3s; position: relative; overflow: hidden; cursor: default;
+  background: #fff;
+  border-radius: 24px; text-align: center;
+  border: 2px solid #E2E8F0;
+  box-shadow: 0 4px 0 #CBD5E1;
+  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+  position: relative; overflow: visible;
+  user-select: none;
 }
-.char-card:hover {
-  background: rgba(255,255,255,0.08); transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+.char-card:active { transform: translateY(4px); box-shadow: 0 0 0 #CBD5E1; }
+.char-card:hover  { transform: translateY(-4px); box-shadow: 0 8px 0 #CBD5E1; }
+
+/* Colour header strip */
+.char-header {
+  border-radius: 22px 22px 0 0;
+  padding: 28px 16px 0; position: relative;
 }
-.char-card::before {
-  content: ''; position: absolute; inset: 0; border-radius: 24px; opacity: 0;
-  transition: opacity 0.3s;
+.char-card.kai   .char-header { background: linear-gradient(160deg,#DBEAFE,#EEF2FF); }
+.char-card.hana  .char-header { background: linear-gradient(160deg,#EDE9FE,#F5F3FF); }
+.char-card.lucas .char-header { background: linear-gradient(160deg,#FEF3C7,#FFFBEB); }
+.char-card.miko  .char-header { background: linear-gradient(160deg,#F1F5F9,#E2E8F0); }
+.char-card.yuki  .char-header { background: linear-gradient(160deg,#D1FAE5,#ECFDF5); }
+.char-card.lin   .char-header { background: linear-gradient(160deg,#FCE7F3,#FDF2F8); }
+
+/* Speech bubble */
+.char-bubble {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: #fff; border: 2px solid #E2E8F0; border-radius: 14px;
+  padding: 6px 14px; white-space: nowrap; font-size: 0.8rem; font-weight: 900;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s; min-width: 90px;
 }
-.char-card:hover::before { opacity: 1; }
-.char-card.kai   { --c1:#3B82F6; --c2:#60A5FA; }
-.char-card.hana  { --c1:#8B5CF6; --c2:#A78BFA; }
-.char-card.lucas { --c1:#F59E0B; --c2:#FBBF24; }
-.char-card.miko  { --c1:#6B7280; --c2:#9CA3AF; }
-.char-card.yuki  { --c1:#10B981; --c2:#34D399; }
-.char-card.lin   { --c1:#EC4899; --c2:#F472B6; }
-.char-card::before { background: linear-gradient(135deg, rgba(var(--c1-raw),0.06), transparent); }
+.char-bubble::after {
+  content: ''; position: absolute; bottom: -9px; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: #E2E8F0;
+}
+.char-bubble::before {
+  content: ''; position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: #fff; z-index: 1;
+}
+.char-card.kai   .char-bubble { border-color: #93C5FD; }
+.char-card.kai   .char-bubble::after  { border-top-color: #93C5FD; }
+.char-card.hana  .char-bubble { border-color: #C4B5FD; }
+.char-card.hana  .char-bubble::after  { border-top-color: #C4B5FD; }
+.char-card.lucas .char-bubble { border-color: #FCD34D; }
+.char-card.lucas .char-bubble::after  { border-top-color: #FCD34D; }
+.char-card.miko  .char-bubble { border-color: #94A3B8; }
+.char-card.miko  .char-bubble::after  { border-top-color: #94A3B8; }
+.char-card.yuki  .char-bubble { border-color: #6EE7B7; }
+.char-card.yuki  .char-bubble::after  { border-top-color: #6EE7B7; }
+.char-card.lin   .char-bubble { border-color: #F9A8D4; }
+.char-card.lin   .char-bubble::after  { border-top-color: #F9A8D4; }
+
+.bubble-jp { font-size: 1rem; display: block; }
+.bubble-en { font-size: 0.62rem; color: var(--gray); font-weight: 700; }
+
+/* Avatar */
 .char-avatar {
-  width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 16px;
+  width: 100px; height: 100px; border-radius: 50%;
+  margin: 0 auto; font-size: 3.5rem;
   display: flex; align-items: center; justify-content: center;
-  font-size: 2.8rem; position: relative;
-  border: 2.5px solid rgba(255,255,255,0.15);
+  position: relative;
 }
-.char-card.kai   .char-avatar { background: linear-gradient(135deg,rgba(59,130,246,0.25),rgba(96,165,250,0.15)); border-color: rgba(96,165,250,0.4); }
-.char-card.hana  .char-avatar { background: linear-gradient(135deg,rgba(139,92,246,0.25),rgba(167,139,250,0.15)); border-color: rgba(167,139,250,0.4); }
-.char-card.lucas .char-avatar { background: linear-gradient(135deg,rgba(245,158,11,0.25),rgba(251,191,36,0.15)); border-color: rgba(251,191,36,0.4); }
-.char-card.miko  .char-avatar { background: linear-gradient(135deg,rgba(107,114,128,0.25),rgba(156,163,175,0.15)); border-color: rgba(156,163,175,0.4); }
-.char-card.yuki  .char-avatar { background: linear-gradient(135deg,rgba(16,185,129,0.25),rgba(52,211,153,0.15)); border-color: rgba(52,211,153,0.4); }
-.char-card.lin   .char-avatar { background: linear-gradient(135deg,rgba(236,72,153,0.25),rgba(244,114,182,0.15)); border-color: rgba(244,114,182,0.4); }
-.char-title-tag {
-  display: inline-block; font-size: 0.62rem; font-weight: 900; letter-spacing: 1px;
-  text-transform: uppercase; border-radius: 10px; padding: 3px 10px; margin-bottom: 8px;
+.char-card.kai   .char-avatar { filter: drop-shadow(0 4px 12px rgba(59,130,246,0.35)); }
+.char-card.hana  .char-avatar { filter: drop-shadow(0 4px 12px rgba(139,92,246,0.35)); }
+.char-card.lucas .char-avatar { filter: drop-shadow(0 4px 12px rgba(245,158,11,0.35)); }
+.char-card.miko  .char-avatar { filter: drop-shadow(0 4px 12px rgba(100,116,139,0.3)); }
+.char-card.yuki  .char-avatar { filter: drop-shadow(0 4px 12px rgba(16,185,129,0.35)); }
+.char-card.lin   .char-avatar { filter: drop-shadow(0 4px 12px rgba(236,72,153,0.35)); }
+
+/* Body */
+.char-body { padding: 12px 16px 20px; }
+.char-name { font-family: 'Bangers', cursive; font-size: 1.25rem; letter-spacing: 1.5px; color: var(--dark); margin-bottom: 2px; }
+.char-role { font-size: 0.7rem; color: var(--gray); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+.char-tap-hint {
+  display: inline-block; margin-top: 10px;
+  font-size: 0.65rem; font-weight: 900; color: #94A3B8;
+  letter-spacing: 0.5px; text-transform: uppercase;
 }
-.char-card.kai   .char-title-tag { background: rgba(96,165,250,0.15); color: #93C5FD; border: 1px solid rgba(96,165,250,0.3); }
-.char-card.hana  .char-title-tag { background: rgba(167,139,250,0.15); color: #C4B5FD; border: 1px solid rgba(167,139,250,0.3); }
-.char-card.lucas .char-title-tag { background: rgba(251,191,36,0.15); color: #FDE68A; border: 1px solid rgba(251,191,36,0.3); }
-.char-card.miko  .char-title-tag { background: rgba(156,163,175,0.15); color: #D1D5DB; border: 1px solid rgba(156,163,175,0.3); }
-.char-card.yuki  .char-title-tag { background: rgba(52,211,153,0.15); color: #6EE7B7; border: 1px solid rgba(52,211,153,0.3); }
-.char-card.lin   .char-title-tag { background: rgba(244,114,182,0.15); color: #FBCFE8; border: 1px solid rgba(244,114,182,0.3); }
-.char-name { font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 2px; color: #fff; margin-bottom: 4px; }
-.char-role { font-size: 0.75rem; color: rgba(255,255,255,0.45); font-weight: 700; margin-bottom: 14px; }
-.char-quote {
-  font-size: 0.82rem; color: rgba(255,255,255,0.7); line-height: 1.65;
-  font-style: italic; border-top: 1px solid rgba(255,255,255,0.08);
-  padding-top: 12px; text-align: left;
-  max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s;
-  opacity: 0;
-}
-.char-card:hover .char-quote { max-height: 200px; opacity: 1; }
-.char-quote-hint {
-  font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-top: 8px;
-  font-weight: 700; letter-spacing: 0.5px;
-}
-.char-card:hover .char-quote-hint { display: none; }
 
 /* Float animations */
-@keyframes floatA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-@keyframes floatB { 0%,100%{transform:translateY(-4px)} 50%{transform:translateY(4px)} }
-@keyframes floatC { 0%,100%{transform:translateY(-2px)} 50%{transform:translateY(6px)} }
-@keyframes floatD { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-@keyframes floatE { 0%,100%{transform:translateY(-6px)} 50%{transform:translateY(2px)} }
-@keyframes floatF { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+@keyframes floatA { 0%,100%{transform:translateY(0)}    50%{transform:translateY(-7px)} }
+@keyframes floatB { 0%,100%{transform:translateY(-3px)} 50%{transform:translateY(4px)} }
+@keyframes floatC { 0%,100%{transform:translateY(-1px)} 50%{transform:translateY(6px)} }
+@keyframes floatD { 0%,100%{transform:translateY(0)}    50%{transform:translateY(-9px)} }
+@keyframes floatE { 0%,100%{transform:translateY(-5px)} 50%{transform:translateY(2px)} }
+@keyframes floatF { 0%,100%{transform:translateY(0)}    50%{transform:translateY(-5px)} }
 .char-card.kai   .char-avatar { animation: floatA 3.2s ease-in-out infinite; }
 .char-card.hana  .char-avatar { animation: floatB 2.8s ease-in-out infinite; }
 .char-card.lucas .char-avatar { animation: floatC 3.5s ease-in-out infinite; }
@@ -309,9 +322,17 @@ section { padding: 80px 24px; }
 .char-card.yuki  .char-avatar { animation: floatE 2.6s ease-in-out infinite; }
 .char-card.lin   .char-avatar { animation: floatF 3.3s ease-in-out infinite; }
 
+/* Bounce on click */
+@keyframes bounce { 0%,100%{transform:scale(1)} 30%{transform:scale(1.18)} 60%{transform:scale(0.93)} 80%{transform:scale(1.05)} }
+.char-avatar.bouncing { animation: bounce 0.5s ease both !important; }
+
+/* Bubble pop */
+@keyframes bubblePop { 0%{transform:translateX(-50%) scale(0.7);opacity:0} 60%{transform:translateX(-50%) scale(1.08)} 100%{transform:translateX(-50%) scale(1);opacity:1} }
+.char-bubble.popping { animation: bubblePop 0.35s cubic-bezier(0.34,1.5,0.64,1) both; }
+
 /* Card entrance */
-@keyframes charIn { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-.char-card { animation: charIn 0.5s cubic-bezier(0.34,1.4,0.64,1) both; }
+@keyframes charIn { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.char-card { animation: charIn 0.45s cubic-bezier(0.34,1.4,0.64,1) both; }
 .char-card:nth-child(1){animation-delay:0.05s}
 .char-card:nth-child(2){animation-delay:0.12s}
 .char-card:nth-child(3){animation-delay:0.19s}
@@ -421,6 +442,86 @@ section { padding: 80px 24px; }
 .price-cta.annual { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: #fff; box-shadow: 0 4px 16px rgba(0,87,168,0.3); }
 .price-cta.annual:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,87,168,0.4); }
 .price-guarantee { text-align: center; margin-top: 20px; color: var(--gray); font-size: 0.82rem; font-weight: 700; }
+
+/* ── JAPAN TOUR ── */
+.japan-tour {
+  background: linear-gradient(160deg, #0a1a3e 0%, #0d2a1a 50%, #1a0a2e 100%);
+  color: #fff;
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+.japan-tour::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.japan-tour .section-tag { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.15); }
+.japan-tour .section-title { color: #fff; }
+.japan-tour .section-sub { color: rgba(255,255,255,0.7); }
+
+.tour-hero { margin: 40px 0 36px; text-align: center; }
+.tour-emoji-row {
+  display: flex; justify-content: center; gap: 18px;
+  font-size: 2.8rem; margin-bottom: 24px;
+}
+.tour-spot {
+  display: inline-block;
+  animation: tourFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px rgba(255,200,100,0.3));
+}
+.tour-spot:nth-child(1) { animation-delay: 0s; }
+.tour-spot:nth-child(2) { animation-delay: 0.4s; }
+.tour-spot:nth-child(3) { animation-delay: 0.8s; }
+.tour-spot:nth-child(4) { animation-delay: 1.2s; }
+.tour-spot:nth-child(5) { animation-delay: 1.6s; }
+.tour-spot:nth-child(6) { animation-delay: 2.0s; }
+@keyframes tourFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.tour-badge-strip { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.tour-chip {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  backdrop-filter: blur(6px);
+}
+
+.tour-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin: 36px 0;
+}
+.tour-card {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 28px 24px;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s, background 0.2s;
+}
+.tour-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.11); }
+.tour-card-icon { font-size: 2.2rem; margin-bottom: 14px; }
+.tour-card-title { font-weight: 900; font-size: 1.05rem; margin-bottom: 8px; color: #fff; }
+.tour-card-desc { font-size: 0.85rem; color: rgba(255,255,255,0.72); line-height: 1.6; }
+
+.tour-cta-box {
+  text-align: center;
+  margin-top: 20px;
+}
+.tour-cta-note {
+  color: rgba(255,255,255,0.65);
+  font-size: 0.88rem;
+  margin-bottom: 24px;
+  line-height: 1.7;
+}
 
 /* ── FAQ ── */
 .faq { background: var(--bg); }
@@ -718,133 +819,103 @@ footer {
 <!-- CHARACTERS -->
 <section class="characters">
   <div class="container">
+    <div class="section-tag">🧭 <span data-lang="en-inline">Your adventure crew</span><span data-lang="es-inline">Tu equipo de aventura</span></div>
+    <h2 class="section-title"><span data-lang="en-inline">Meet Your <span class="pink">Guides</span></span><span data-lang="es-inline">Conoce a Tus <span class="pink">Guías</span></span></h2>
+    <p class="section-sub"><span data-lang="en-inline">Tap any character to hear them speak Japanese — with audio!</span><span data-lang="es-inline">¡Toca cualquier personaje para escucharlos hablar japonés — con audio!</span></p>
 
-    <div data-lang="en">
-      <div class="section-tag" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);">🧭 Your adventure crew</div>
-      <h2 class="section-title">Meet Your <span style="color:var(--pink)">Guides</span></h2>
-      <p class="section-sub">Six companions will join you on the Road to Japan. Each one masters a different part of the language — and the world.</p>
-      <div class="char-grid">
+    <div class="char-grid">
 
-        <div class="char-card kai">
+      <div class="char-card kai" onclick="charSpeak(this)" data-idx="0">
+        <div class="char-header">
+          <div class="char-bubble" id="bubble-0">
+            <span class="bubble-jp">こんにちは</span>
+            <span class="bubble-en">Konnichiwa · Hello</span>
+          </div>
           <div class="char-avatar">🧭</div>
-          <div class="char-title-tag">Kotodama Seeker</div>
+        </div>
+        <div class="char-body">
           <div class="char-name">Kai Alden</div>
-          <div class="char-role">The Hero — that's you</div>
-          <div class="char-quote-hint">✦ Hover to hear his story</div>
-          <div class="char-quote">"My name is Kai. I'm searching for a legendary place called Nihon Island, where the greatest Kotodama power sleeps. I don't know much Japanese yet — but every word I learn is a step closer to the truth. Will you travel with me?"</div>
+          <div class="char-role"><span data-lang="en-inline">The Hero · Kotodama Seeker</span><span data-lang="es-inline">El Héroe · Buscador de Kotodama</span></div>
+          <div class="char-tap-hint">🔊 <span data-lang="en-inline">Tap to speak</span><span data-lang="es-inline">Toca para hablar</span></div>
         </div>
-
-        <div class="char-card hana">
-          <div class="char-avatar">📚</div>
-          <div class="char-title-tag">Letter Archivist</div>
-          <div class="char-name">Hana Mizuki</div>
-          <div class="char-role">Hiragana & Katakana guide</div>
-          <div class="char-quote-hint">✦ Hover to hear her story</div>
-          <div class="char-quote">"I am Hana Mizuki, keeper of the Letter Archives on Hirashima Island. Words are not merely sounds — they are living things. I will teach you their true forms. But be warned: a single stroke out of place can change everything."</div>
-        </div>
-
-        <div class="char-card lucas">
-          <div class="char-avatar">🎸</div>
-          <div class="char-title-tag">Sound Wanderer</div>
-          <div class="char-name">Lucas Pérez</div>
-          <div class="char-role">Pronunciation & music guide</div>
-          <div class="char-quote-hint">✦ Hover to hear his story</div>
-          <div class="char-quote">"¡Hola! — oops, I mean… hey! I'm Lucas. Music connects all languages, you know? Japanese has this amazing rhythm to it. Once you feel the beat of the words, you'll never forget them. Let's learn through music, amigo!"</div>
-        </div>
-
-        <div class="char-card miko">
-          <div class="char-avatar">⚔️</div>
-          <div class="char-title-tag">Descendant of Bushido</div>
-          <div class="char-name">Miko Takeda</div>
-          <div class="char-role">Kanji & philosophy guide</div>
-          <div class="char-quote-hint">✦ Hover to hear his story</div>
-          <div class="char-quote">"I am Miko Takeda. Kanji are not just characters — each one carries a history, a philosophy, a way of life. If you are serious about learning them, I will guide you. If you are not… do not waste my time."</div>
-        </div>
-
-        <div class="char-card yuki">
-          <div class="char-avatar">🗺️</div>
-          <div class="char-title-tag">Culture Navigator</div>
-          <div class="char-name">Yuki Matsumoto</div>
-          <div class="char-role">Culture & travel guide</div>
-          <div class="char-quote-hint">✦ Hover to hear her story</div>
-          <div class="char-quote">"Welcome, welcome! I'm Yuki, and Japan — I mean, Nihon Island — is my absolute passion! Do you want to know about samurai? Cherry blossoms? Ramen? Anime? I know it ALL. Come, let me show you the wonders of this world!"</div>
-        </div>
-
-        <div class="char-card lin">
-          <div class="char-avatar">📋</div>
-          <div class="char-title-tag">Guardian of the Trials</div>
-          <div class="char-name">Lin Shen</div>
-          <div class="char-role">JLPT & exam guide</div>
-          <div class="char-quote-hint">✦ Hover to hear her story</div>
-          <div class="char-quote">"I am Lin Shen, Guardian of the Trials on Shiken Island. The path to true mastery is tested here. N5 is where you begin — N1 is where you prove your worth. I will assess you fairly. Are you ready to be tested?"</div>
-        </div>
-
       </div>
-    </div>
 
-    <div data-lang="es">
-      <div class="section-tag" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);">🧭 Tu equipo de aventura</div>
-      <h2 class="section-title">Conoce a Tus <span style="color:var(--pink)">Guías</span></h2>
-      <p class="section-sub">Seis compañeros te acompañarán en el Camino a Japón. Cada uno domina una parte diferente del idioma — y del mundo.</p>
-      <div class="char-grid">
-
-        <div class="char-card kai">
-          <div class="char-avatar">🧭</div>
-          <div class="char-title-tag">Buscador de Kotodama</div>
-          <div class="char-name">Kai Alden</div>
-          <div class="char-role">El héroe — ese eres tú</div>
-          <div class="char-quote-hint">✦ Pasa el cursor para conocerlo</div>
-          <div class="char-quote">"Me llamo Kai. Estoy buscando un lugar legendario llamado Isla Nihon, donde duerme el poder supremo del Kotodama. Todavía no sé mucho japonés, pero cada palabra que aprendo es un paso más cerca de la verdad. ¿Viajarás conmigo?"</div>
-        </div>
-
-        <div class="char-card hana">
+      <div class="char-card hana" onclick="charSpeak(this)" data-idx="1">
+        <div class="char-header">
+          <div class="char-bubble" id="bubble-1">
+            <span class="bubble-jp">あいうえお</span>
+            <span class="bubble-en">A-I-U-E-O · The vowels</span>
+          </div>
           <div class="char-avatar">📚</div>
-          <div class="char-title-tag">Archivista de Letras</div>
+        </div>
+        <div class="char-body">
           <div class="char-name">Hana Mizuki</div>
-          <div class="char-role">Guía de Hiragana y Katakana</div>
-          <div class="char-quote-hint">✦ Pasa el cursor para conocerla</div>
-          <div class="char-quote">"Soy Hana Mizuki, guardiana de los Archivos de Letras en la Isla Hirashima. Las palabras no son simples sonidos; son seres vivos. Te enseñaré sus formas verdaderas. Pero recuerda: un trazo fuera de lugar puede cambiarlo todo."</div>
+          <div class="char-role"><span data-lang="en-inline">Letter Archivist · Hiragana guide</span><span data-lang="es-inline">Archivista de Letras · Guía Hiragana</span></div>
+          <div class="char-tap-hint">🔊 <span data-lang="en-inline">Tap to speak</span><span data-lang="es-inline">Toca para hablar</span></div>
         </div>
-
-        <div class="char-card lucas">
-          <div class="char-avatar">🎸</div>
-          <div class="char-title-tag">Viajero del Sonido</div>
-          <div class="char-name">Lucas Pérez</div>
-          <div class="char-role">Guía de pronunciación y música</div>
-          <div class="char-quote-hint">✦ Pasa el cursor para conocerlo</div>
-          <div class="char-quote">"¡Hola! Soy Lucas. La música conecta todos los idiomas. El japonés tiene un ritmo increíble. Una vez que sientas el compás de las palabras, nunca las olvidarás. ¡Aprendamos juntos con música, amigo!"</div>
-        </div>
-
-        <div class="char-card miko">
-          <div class="char-avatar">⚔️</div>
-          <div class="char-title-tag">Descendiente del Bushido</div>
-          <div class="char-name">Miko Takeda</div>
-          <div class="char-role">Guía de Kanji y filosofía</div>
-          <div class="char-quote-hint">✦ Pasa el cursor para conocerlo</div>
-          <div class="char-quote">"Soy Miko Takeda. Los kanji no son simples caracteres; cada uno lleva consigo una historia, una filosofía, una forma de vivir. Si estás decidido a aprenderlos, te guiaré. Si no lo estás… no me hagas perder el tiempo."</div>
-        </div>
-
-        <div class="char-card yuki">
-          <div class="char-avatar">🗺️</div>
-          <div class="char-title-tag">Navegadora Cultural</div>
-          <div class="char-name">Yuki Matsumoto</div>
-          <div class="char-role">Guía de cultura y viajes</div>
-          <div class="char-quote-hint">✦ Pasa el cursor para conocerla</div>
-          <div class="char-quote">"¡Bienvenido, bienvenido! Soy Yuki, ¡y Japón — digo, la Isla Nihon — es mi absoluta pasión! ¿Quieres saber sobre samuráis? ¿Flores de cerezo? ¿Ramen? ¡Lo sé TODO! Ven, déjame mostrarte las maravillas de este mundo."</div>
-        </div>
-
-        <div class="char-card lin">
-          <div class="char-avatar">📋</div>
-          <div class="char-title-tag">Guardiana de las Pruebas</div>
-          <div class="char-name">Lin Shen</div>
-          <div class="char-role">Guía de JLPT y exámenes</div>
-          <div class="char-quote-hint">✦ Pasa el cursor para conocerla</div>
-          <div class="char-quote">"Soy Lin Shen, Guardiana de las Pruebas en la Isla Shiken. El camino hacia la maestría verdadera se prueba aquí. Comenzarás en N5 y demostrarás tu valor en N1. Te evaluaré con justicia. ¿Estás listo para ser examinado?"</div>
-        </div>
-
       </div>
-    </div>
 
+      <div class="char-card lucas" onclick="charSpeak(this)" data-idx="2">
+        <div class="char-header">
+          <div class="char-bubble" id="bubble-2">
+            <span class="bubble-jp">おんがく</span>
+            <span class="bubble-en">Ongaku · Music</span>
+          </div>
+          <div class="char-avatar">🎸</div>
+        </div>
+        <div class="char-body">
+          <div class="char-name">Lucas Pérez</div>
+          <div class="char-role"><span data-lang="en-inline">Sound Wanderer · Pronunciation guide</span><span data-lang="es-inline">Viajero del Sonido · Pronunciación</span></div>
+          <div class="char-tap-hint">🔊 <span data-lang="en-inline">Tap to speak</span><span data-lang="es-inline">Toca para hablar</span></div>
+        </div>
+      </div>
+
+      <div class="char-card miko" onclick="charSpeak(this)" data-idx="3">
+        <div class="char-header">
+          <div class="char-bubble" id="bubble-3">
+            <span class="bubble-jp">日本語</span>
+            <span class="bubble-en">Nihongo · Japanese</span>
+          </div>
+          <div class="char-avatar">⚔️</div>
+        </div>
+        <div class="char-body">
+          <div class="char-name">Miko Takeda</div>
+          <div class="char-role"><span data-lang="en-inline">Bushido Descendant · Kanji guide</span><span data-lang="es-inline">Descendiente Bushido · Guía Kanji</span></div>
+          <div class="char-tap-hint">🔊 <span data-lang="en-inline">Tap to speak</span><span data-lang="es-inline">Toca para hablar</span></div>
+        </div>
+      </div>
+
+      <div class="char-card yuki" onclick="charSpeak(this)" data-idx="4">
+        <div class="char-header">
+          <div class="char-bubble" id="bubble-4">
+            <span class="bubble-jp">いただきます</span>
+            <span class="bubble-en">Itadakimasu · Let's eat!</span>
+          </div>
+          <div class="char-avatar">🗺️</div>
+        </div>
+        <div class="char-body">
+          <div class="char-name">Yuki Matsumoto</div>
+          <div class="char-role"><span data-lang="en-inline">Culture Navigator · Japan expert</span><span data-lang="es-inline">Navegadora Cultural · Experta en Japón</span></div>
+          <div class="char-tap-hint">🔊 <span data-lang="en-inline">Tap to speak</span><span data-lang="es-inline">Toca para hablar</span></div>
+        </div>
+      </div>
+
+      <div class="char-card lin" onclick="charSpeak(this)" data-idx="5">
+        <div class="char-header">
+          <div class="char-bubble" id="bubble-5">
+            <span class="bubble-jp">ごうかく！</span>
+            <span class="bubble-en">Gōkaku! · You passed!</span>
+          </div>
+          <div class="char-avatar">📋</div>
+        </div>
+        <div class="char-body">
+          <div class="char-name">Lin Shen</div>
+          <div class="char-role"><span data-lang="en-inline">Guardian of Trials · JLPT guide</span><span data-lang="es-inline">Guardiana de Pruebas · Guía JLPT</span></div>
+          <div class="char-tap-hint">🔊 <span data-lang="en-inline">Tap to speak</span><span data-lang="es-inline">Toca para hablar</span></div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -977,6 +1048,8 @@ footer {
             <li><span class="check">✅</span> Vocabulary by topic</li>
             <li><span class="check">✅</span> Phrases & pronunciation guide</li>
             <li><span class="check">✅</span> 12-month full curriculum</li>
+            <li><span class="check">✅</span> <strong>Discord community</strong> — study groups, live Q&amp;A, Japan travel tips</li>
+            <li><span class="check">🗾</span> <strong>Japan Tour priority waitlist</strong> — 2 exclusive tours/year</li>
           </div>
           <div data-lang="es">
             <li><span class="check">✅</span> Todo lo de Gratis</li>
@@ -986,6 +1059,8 @@ footer {
             <li><span class="check">✅</span> Vocabulario por tema</li>
             <li><span class="check">✅</span> Guía de frases y pronunciación</li>
             <li><span class="check">✅</span> Plan completo de 12 meses</li>
+            <li><span class="check">✅</span> <strong>Comunidad Discord</strong> — grupos de estudio, Q&amp;A en vivo, consejos de viaje</li>
+            <li><span class="check">🗾</span> <strong>Lista de espera prioritaria para Tour Japón</strong> — 2 tours exclusivos/año</li>
           </div>
         </ul>
         <a href="payment.html?plan=premium" class="price-cta premium">
@@ -1009,12 +1084,14 @@ footer {
             <li><span class="check">✅</span> 34% cheaper than monthly</li>
             <li><span class="check">✅</span> Priority new content access</li>
             <li><span class="check">✅</span> Annual learner badge</li>
+            <li><span class="check">🗾</span> <strong>Japan Immersion Tour — top priority access</strong><br><span style="font-size:0.78rem;opacity:0.8">2 tours/year · EN &amp; ES interpreters · luxury itinerary</span></li>
           </div>
           <div data-lang="es">
             <li><span class="check">✅</span> Todo lo de Premium</li>
             <li><span class="check">✅</span> 34% más barato que mensual</li>
             <li><span class="check">✅</span> Acceso prioritario a contenido nuevo</li>
             <li><span class="check">✅</span> Insignia de estudiante anual</li>
+            <li><span class="check">🗾</span> <strong>Tour de Inmersión en Japón — acceso prioritario</strong><br><span style="font-size:0.78rem;opacity:0.8">2 tours/año · intérpretes EN &amp; ES · itinerario de lujo</span></li>
           </div>
         </ul>
         <a href="payment.html?plan=annual" class="price-cta annual">
@@ -1027,6 +1104,80 @@ footer {
     <div class="price-guarantee">
       <div data-lang="en">🔒 Secure payment · 7-day money-back guarantee · Cancel anytime · Powered by Stripe</div>
       <div data-lang="es">🔒 Pago seguro · Garantía de devolución de 7 días · Cancela cuando quieras · Powered by Stripe</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- JAPAN TOUR -->
+<section class="japan-tour" id="tour">
+  <div class="container">
+    <div data-lang="en">
+      <div class="section-tag">🗾 Exclusive Experience</div>
+      <h2 class="section-title">Go Beyond the App — <span class="accent">Experience Japan</span></h2>
+      <p class="section-sub">Twice a year, Premium members get access to a fully curated Japan Immersion Tour — designed exclusively for Road to Japan learners.</p>
+    </div>
+    <div data-lang="es">
+      <div class="section-tag">🗾 Experiencia Exclusiva</div>
+      <h2 class="section-title">Más Allá de la App — <span class="accent">Vive Japón</span></h2>
+      <p class="section-sub">Dos veces al año, los miembros Premium acceden a un Tour de Inmersión en Japón curado exclusivamente para estudiantes de Road to Japan.</p>
+    </div>
+
+    <div class="tour-hero">
+      <div class="tour-hero-visual">
+        <div class="tour-emoji-row">
+          <span class="tour-spot">⛩️</span>
+          <span class="tour-spot">🍣</span>
+          <span class="tour-spot">🌸</span>
+          <span class="tour-spot">🏔️</span>
+          <span class="tour-spot">🎎</span>
+          <span class="tour-spot">🍵</span>
+        </div>
+        <div class="tour-badge-strip">
+          <span class="tour-chip" data-lang="en-inline">✈️ 2 Tours / Year</span>
+          <span class="tour-chip" data-lang="es-inline">✈️ 2 Tours / Año</span>
+          <span class="tour-chip" data-lang="en-inline">🎙️ EN &amp; ES Interpreters</span>
+          <span class="tour-chip" data-lang="es-inline">🎙️ Intérpretes EN &amp; ES</span>
+          <span class="tour-chip" data-lang="en-inline">👑 Luxury Itinerary</span>
+          <span class="tour-chip" data-lang="es-inline">👑 Itinerario de Lujo</span>
+          <span class="tour-chip" data-lang="en-inline">🔒 Members Only</span>
+          <span class="tour-chip" data-lang="es-inline">🔒 Solo Miembros</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tour-cards">
+      <div class="tour-card">
+        <div class="tour-card-icon">🌸</div>
+        <div data-lang="en"><div class="tour-card-title">Spring Tour</div><div class="tour-card-desc">Cherry blossom season in Kyoto &amp; Tokyo. Tea ceremony, kimono experience, Nishiki Market, Mount Fuji day trip.</div></div>
+        <div data-lang="es"><div class="tour-card-title">Tour de Primavera</div><div class="tour-card-desc">Temporada de sakura en Kyoto y Tokio. Ceremonia del té, experiencia con kimono, Mercado Nishiki, excursión al Monte Fuji.</div></div>
+      </div>
+      <div class="tour-card">
+        <div class="tour-card-icon">🍂</div>
+        <div data-lang="en"><div class="tour-card-title">Autumn Tour</div><div class="tour-card-desc">Fall foliage &amp; harvest festivals. Osaka street food, Hiroshima peace tour, Nara deer park, samurai district Kanazawa.</div></div>
+        <div data-lang="es"><div class="tour-card-title">Tour de Otoño</div><div class="tour-card-desc">Follaje de otoño y festivales de cosecha. Comida callejera de Osaka, tour de paz en Hiroshima, parque de ciervos de Nara, Kanazawa.</div></div>
+      </div>
+      <div class="tour-card">
+        <div class="tour-card-icon">🎙️</div>
+        <div data-lang="en"><div class="tour-card-title">Full Interpretation</div><div class="tour-card-desc">Dedicated EN &amp; ES interpreters throughout. Every conversation, temple guide, and restaurant menu — fully accessible to you.</div></div>
+        <div data-lang="es"><div class="tour-card-title">Interpretación Completa</div><div class="tour-card-desc">Intérpretes EN y ES dedicados en todo momento. Cada conversación, guía de templo y menú de restaurante — completamente accesible.</div></div>
+      </div>
+      <div class="tour-card">
+        <div class="tour-card-icon">👑</div>
+        <div data-lang="en"><div class="tour-card-title">Luxury, Not Rushed</div><div class="tour-card-desc">Small groups (max 12). Boutique ryokan stays. Private transport. Curated by a Japan-based expert — no generic tourist traps.</div></div>
+        <div data-lang="es"><div class="tour-card-title">Lujo, Sin Prisas</div><div class="tour-card-desc">Grupos pequeños (máx. 12). Alojamiento en ryokan boutique. Transporte privado. Curado por experto basado en Japón — sin trampas turísticas.</div></div>
+      </div>
+    </div>
+
+    <div class="tour-cta-box">
+      <div data-lang="en">
+        <p class="tour-cta-note">🔒 Tour access is exclusive to Premium &amp; Annual members.<br>Spots are limited — waitlist opens 60 days before each tour.</p>
+        <a href="payment.html?plan=premium" class="price-cta premium" style="max-width:360px;margin:0 auto;display:block;">🗾 Join Premium to Reserve Your Spot</a>
+      </div>
+      <div data-lang="es">
+        <p class="tour-cta-note">🔒 El acceso al tour es exclusivo para miembros Premium y Anual.<br>Los cupos son limitados — la lista de espera abre 60 días antes de cada tour.</p>
+        <a href="payment.html?plan=premium" class="price-cta premium" style="max-width:360px;margin:0 auto;display:block;">🗾 Únete Premium para Reservar tu Lugar</a>
+      </div>
     </div>
 
   </div>
@@ -1147,6 +1298,104 @@ document.querySelectorAll('.faq-q').forEach(q => {
     if (!wasOpen) item.classList.add('open');
   });
 });
+
+// ── CHARACTER WORDS ──
+const CHAR_WORDS = [
+  // Kai
+  [
+    { jp:'こんにちは', sub:'Konnichiwa · Hello' },
+    { jp:'はじめまして', sub:'Hajimemashite · Nice to meet you' },
+    { jp:'がんばれ！', sub:'Ganbare! · You can do it!' },
+    { jp:'ありがとう', sub:'Arigatou · Thank you' },
+  ],
+  // Hana
+  [
+    { jp:'あいうえお', sub:'A-I-U-E-O · The vowels' },
+    { jp:'ひらがな', sub:'Hiragana · Japan\'s first alphabet' },
+    { jp:'かきかた', sub:'Kakikata · How to write' },
+    { jp:'すごい！', sub:'Sugoi! · Amazing!' },
+  ],
+  // Lucas
+  [
+    { jp:'おんがく', sub:'Ongaku · Music' },
+    { jp:'リズム', sub:'Rizumu · Rhythm' },
+    { jp:'うた', sub:'Uta · Song' },
+    { jp:'メロディー', sub:'Merodii · Melody' },
+  ],
+  // Miko
+  [
+    { jp:'日本語', sub:'Nihongo · Japanese language' },
+    { jp:'漢字', sub:'Kanji · Chinese characters' },
+    { jp:'道', sub:'Michi / Dō · Path / Way' },
+    { jp:'武道', sub:'Budō · Martial arts' },
+  ],
+  // Yuki
+  [
+    { jp:'いただきます', sub:'Itadakimasu · Let\'s eat!' },
+    { jp:'さくら', sub:'Sakura · Cherry blossom' },
+    { jp:'たのしい！', sub:'Tanoshii! · So fun!' },
+    { jp:'ようこそ', sub:'Youkoso · Welcome' },
+  ],
+  // Lin
+  [
+    { jp:'ごうかく！', sub:'Gōkaku! · You passed!' },
+    { jp:'べんきょう', sub:'Benkyō · Study' },
+    { jp:'もんだい', sub:'Mondai · Question' },
+    { jp:'N5→N1', sub:'Start N5 · Reach N1' },
+  ],
+];
+
+const charIndexes = [0, 0, 0, 0, 0, 0];
+
+// TTS: speak Japanese text
+function speakJP(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ja-JP';
+  u.rate = 0.85;
+  u.pitch = 1.1;
+  // prefer a Japanese voice if available
+  const voices = window.speechSynthesis.getVoices();
+  const jpVoice = voices.find(v => v.lang.startsWith('ja'));
+  if (jpVoice) u.voice = jpVoice;
+  window.speechSynthesis.speak(u);
+}
+
+function charSpeak(card) {
+  const idx = parseInt(card.dataset.idx);
+  const words = CHAR_WORDS[idx];
+
+  // Advance word index
+  charIndexes[idx] = (charIndexes[idx] + 1) % words.length;
+  const word = words[charIndexes[idx]];
+
+  // Update bubble
+  const bubble = document.getElementById('bubble-' + idx);
+  bubble.querySelector('.bubble-jp').textContent = word.jp;
+  bubble.querySelector('.bubble-en').textContent = word.sub;
+
+  // Animate bubble pop
+  bubble.classList.remove('popping');
+  void bubble.offsetWidth; // reflow
+  bubble.classList.add('popping');
+
+  // Bounce avatar
+  const avatar = card.querySelector('.char-avatar');
+  avatar.classList.remove('bouncing');
+  void avatar.offsetWidth;
+  avatar.classList.add('bouncing');
+  avatar.addEventListener('animationend', () => avatar.classList.remove('bouncing'), { once: true });
+
+  // Speak the Japanese word
+  speakJP(word.jp.replace('→', 'から'));
+}
+
+// Preload voices
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
 </script>
 </body>
 </html>
