@@ -109,12 +109,12 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
 .months-grid { display: flex; flex-direction: column; gap: 16px; }
 
 .month-card {
-  border-radius: 20px; border: 1px solid rgba(0,87,168,0.12); background: #EEF2FF;
+  border-radius: 20px; border: 1.5px solid rgba(0,87,168,0.35); background: #EEF2FF;
   overflow: hidden; transition: all 0.3s; cursor: default;
   position: relative;
 }
-.month-card.completed { border-color: rgba(52,211,153,0.2); }
-.month-card.current { border-color: rgba(96,165,250,0.35); box-shadow: 0 0 0 1px rgba(0,87,168,0.15), 0 8px 32px rgba(0,0,0,0.4); }
+.month-card.completed { border-color: rgba(52,211,153,0.55); }
+.month-card.current { border-color: rgba(96,165,250,0.65); box-shadow: 0 0 0 1px rgba(0,87,168,0.25), 0 8px 32px rgba(0,0,0,0.2); }
 .month-card.locked { opacity: 0.55; }
 .month-card.unlocked { border-color: rgba(0,87,168,0.12); }
 .month-card:not(.locked):hover { transform: translateY(-2px); box-shadow: 0 2px 12px rgba(0,87,168,0.1); }
@@ -177,7 +177,7 @@ html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: va
 .current-spotlight {
   border-radius: 20px; padding: 20px; margin-bottom: 24px;
   background: linear-gradient(135deg, #1a1200, #0d2010, #1a0d30);
-  border: 1px solid rgba(96,165,250,0.2);
+  border: 1.5px solid rgba(96,165,250,0.45);
   position: relative; overflow: hidden;
 }
 .current-spotlight::before {
