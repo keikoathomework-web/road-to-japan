@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0A1628">
+<title>Road to Japan 🗾</title>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SSK05YE77M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SSK05YE77M');
+</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ==================== SPLASH ==================== -->
+  <div class="screen" id="screen-splash">
+    <div class="splash-stars" id="splash-stars"></div>
+
+    <div class="splash-title-area">
+      <div class="splash-logo">⛵ Yamato Pirates · Official App ⛵</div>
+      <div class="splash-title">
+        <span class="road">Road</span><br>
+        <span class="to">to</span><br>
+        <span class="japan">JAPAN</span>
+      </div>
+      <div class="splash-jp">日本への道</div>
+
+      <div class="splash-chars">
+        <div class="char-portrait kai">🧑</div>
+        <div class="char-portrait mochi">🍡</div>
+        <div class="char-portrait sakura">👧</div>
+        <div class="char-portrait taro">🧔</div>
+      </div>
+
+      <button class="btn-primary" onclick="APP.gotoScreen('onboarding')" style="margin-bottom:16px;min-width:220px">
+        ⛵ Begin Your Journey!
+      </button>
+      <br>
+      <button class="btn-secondary" onclick="APP.gotoScreen('home')" style="min-width:220px">
+        → Continue Adventure
+      </button>
+
+      <div style="margin-top:24px;font-size:12px;color:rgba(255,255,255,0.3)">
+        Learn Japanese · Discover Japan · Master the Grand Scroll
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ONBOARDING ==================== -->
+  <div class="screen" id="screen-onboarding">
+
+    <!-- Step 1: Language -->
+    <div class="onboard-step active" id="ob-step-1">
+      <div style="font-size:48px;text-align:center">🌍</div>
+      <div class="onboard-title">Choose your language</div>
+      <p style="color:rgba(255,255,255,0.6);font-size:14px">Select the language you're most comfortable with</p>
+      <div class="lang-selector">
+        <div class="lang-btn selected" id="lang-en" onclick="APP.selectLang('en')">
+          <span class="flag">🇺🇸</span>
+          <span class="lang-name">English</span>
+        </div>
+        <div class="lang-btn" id="lang-es" onclick="APP.selectLang('es')">
+          <span class="flag">🇲🇽</span>
+          <span class="lang-name">Español</span>
+        </div>
+      </div>
+      <button class="btn-primary w-full" onclick="APP.obNext(2)">Next →</button>
+    </div>
+
+    <!-- Step 2: Name -->
+    <div class="onboard-step" id="ob-step-2">
+      <div style="font-size:48px;text-align:center">🧑</div>
+      <div class="onboard-title">What's your name, adventurer?</div>
+      <p style="color:rgba(255,255,255,0.6);font-size:14px">Kai and Sakura want to know who's joining the crew!</p>
+      <input type="text" class="name-input" id="player-name-input" placeholder="Enter your name..." maxlength="20">
+      <button class="btn-primary w-full" onclick="APP.setPlayerName()">Join the Crew! →</button>
+    </div>
+
+    <!-- Step 3: Meet characters -->
+    <div class="onboard-step" id="ob-step-3">
+      <div class="scene-box">
+        <div class="scene-speaker-row">
+          <div class="scene-avatar captain">👴</div>
+          <div class="scene-speaker-name">Captain Hideo</div>
+        </div>
+        <div class="scene-text" id="ob-capt-text">
+          "Welcome aboard, young adventurer! I am Captain Hideo. The Grand Scroll of Japan awaits those brave enough to learn its language and culture!"
+        </div>
+      </div>
+      <div class="scene-box">
+        <div class="scene-speaker-row">
+          <div class="scene-avatar sakura">👧</div>
+          <div class="scene-speaker-name">Sakura</div>
+        </div>
+        <div class="scene-text" id="ob-sakura-text">
+          "Let's learn together! がんばろう！ (Ganbarou!) — I'll guide you through hiragana, katakana, and everything Japanese!"
+        </div>
+      </div>
+      <div class="scene-box">
+        <div class="scene-speaker-row">
+          <div class="scene-avatar mochi">🍡</div>
+          <div class="scene-speaker-name">Mochi</div>
+        </div>
+        <div class="scene-text">
+          "もちもち！ (Mochimochi!) I'm Mochi — your lucky charm! Earn Mochi Coins 🍡 as you learn!"
+        </div>
+      </div>
+      <button class="btn-primary w-full" onclick="APP.finishOnboarding()">
+        ⛵ Set Sail for Japan!
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ==================== HOME ==================== -->
+  <div class="screen" id="screen-home">
+
+    <div class="home-header">
+      <div>
+        <div class="home-greeting" id="home-greeting">Good morning</div>
+        <div class="home-name" id="home-player-name">Adventurer</div>
+      </div>
+      <div class="home-avatar" onclick="APP.gotoScreen('profile')">🧑</div>
+    </div>
+
+    <div class="xp-bar-container">
+      <div class="xp-level-badge" id="xp-level">Lv.1</div>
+      <div class="xp-bar-wrap">
+        <div class="xp-label" id="xp-label">0 / 200 XP</div>
+        <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+      </div>
+      <div class="xp-coin">🍡 <span id="mochi-coins">100</span></div>
+    </div>
+
+    <div class="streak-banner">
+      <div class="streak-fire">🔥</div>
+      <div class="streak-info">
+        <div><span class="streak-count" id="streak-count">0</span> <span style="font-size:14px;color:rgba(255,255,255,0.7)">day streak</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5)">Keep learning every day!</div>
+      </div>
+      <div class="streak-days" id="streak-days">
+        <div class="streak-day done"></div>
+        <div class="streak-day done"></div>
+        <div class="streak-day"></div>
+        <div class="streak-day"></div>
+        <div class="streak-day"></div>
+        <div class="streak-day"></div>
+        <div class="streak-day"></div>
+      </div>
+    </div>
+
+    <!-- Story Progress -->
+    <div class="section-title">Current Chapter</div>
+    <div class="story-progress-card" onclick="APP.gotoScreen('story')">
+      <div class="story-bg-text">⛵</div>
+      <div class="story-chapter-label" id="story-ch-num">Chapter 1</div>
+      <div class="story-chapter-title" id="story-ch-title">The Port of Departure</div>
+      <div class="story-chapter-jp" id="story-ch-jp">出発の港</div>
+      <div class="story-progress-bar">
+        <div class="story-progress-fill" id="story-ch-progress" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Daily Quests -->
+    <div class="section-title">Daily Quests</div>
+    <div class="daily-quests" id="daily-quests"></div>
+
+    <!-- Quick Actions -->
+    <div class="section-title">Quick Practice</div>
+    <div style="padding:0 20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:8px">
+      <div onclick="APP.startLesson('hiragana')" style="background:var(--navy3);border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,0.07)">
+        <div style="font-size:28px">あ</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">Hiragana</div>
+      </div>
+      <div onclick="APP.startLesson('katakana')" style="background:var(--navy3);border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,0.07)">
+        <div style="font-size:28px">ア</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">Katakana</div>
+      </div>
+      <div onclick="APP.startLesson('greetings')" style="background:var(--navy3);border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,0.07)">
+        <div style="font-size:28px">👋</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">Greetings</div>
+      </div>
+    </div>
+
+    <!-- Character of the Day -->
+    <div class="section-title">Character of the Day</div>
+    <div style="margin:0 20px;background:var(--navy3);border-radius:var(--radius);padding:20px;border:1px solid rgba(255,255,255,0.07);display:flex;gap:16px;align-items:center">
+      <div style="font-size:64px;text-align:center;min-width:72px">あ</div>
+      <div>
+        <div style="font-size:20px;font-weight:700;color:var(--gold)">a</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px">The first character of the Japanese syllabary. Every journey starts with あ!</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:6px">Mnemonic: "An A shape"</div>
+      </div>
+    </div>
+
+    <div class="bottom-space"></div>
+
+    <!-- Nav -->
+    <nav class="nav-bar">
+      <button class="nav-item active" data-screen="home">
+        <span class="nav-icon">🏠</span>Home
+      </button>
+      <button class="nav-item" data-screen="learn">
+        <span class="nav-icon">📚</span>Learn
+      </button>
+      <button class="nav-item" data-screen="story">
+        <span class="nav-icon">⛵</span>Story
+      </button>
+      <button class="nav-item" data-screen="culture">
+        <span class="nav-icon">🗾</span>Culture
+      </button>
+      <button class="nav-item" data-screen="profile">
+        <span class="nav-icon">🧑</span>Profile
+      </button>
+    </nav>
+  </div>
+
+  <!-- ==================== LEARN ==================== -->
+  <div class="screen" id="screen-learn">
+
+    <div class="learn-header">
+      <div class="learn-title">Learning Modules 📚</div>
+      <div class="learn-sub">Master Japanese step by step</div>
+    </div>
+
+    <!-- Hiragana Chart Quick View -->
+    <div style="margin:16px 20px 0;background:var(--navy3);border-radius:var(--radius);padding:16px;border:1px solid rgba(255,255,255,0.07)">
+      <div style="font-size:12px;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:10px">HIRAGANA TABLE</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">
+        <!-- a-row -->
+        <div style="text-align:center;font-size:22px;cursor:pointer" onclick="APP.startLesson('hiragana')">あ</div>
+        <div style="text-align:center;font-size:22px">い</div>
+        <div style="text-align:center;font-size:22px">う</div>
+        <div style="text-align:center;font-size:22px">え</div>
+        <div style="text-align:center;font-size:22px">お</div>
+        <div style="text-align:center;font-size:22px">か</div>
+        <div style="text-align:center;font-size:22px">き</div>
+        <div style="text-align:center;font-size:22px">く</div>
+        <div style="text-align:center;font-size:22px">け</div>
+        <div style="text-align:center;font-size:22px">こ</div>
+        <div style="text-align:center;font-size:22px">さ</div>
+        <div style="text-align:center;font-size:22px">し</div>
+        <div style="text-align:center;font-size:22px">す</div>
+        <div style="text-align:center;font-size:22px">せ</div>
+        <div style="text-align:center;font-size:22px">そ</div>
+      </div>
+      <div style="text-align:center;margin-top:10px">
+        <span style="font-size:12px;color:rgba(255,255,255,0.4)">Tap any row to start learning →</span>
+      </div>
+    </div>
+
+    <div class="module-grid" id="module-grid"></div>
+
+    <div class="bottom-space"></div>
+
+    <nav class="nav-bar">
+      <button class="nav-item" data-screen="home"><span class="nav-icon">🏠</span>Home</button>
+      <button class="nav-item active" data-screen="learn"><span class="nav-icon">📚</span>Learn</button>
+      <button class="nav-item" data-screen="story"><span class="nav-icon">⛵</span>Story</button>
+      <button class="nav-item" data-screen="culture"><span class="nav-icon">🗾</span>Culture</button>
+      <button class="nav-item" data-screen="profile"><span class="nav-icon">🧑</span>Profile</button>
+    </nav>
+  </div>
+
+  <!-- ==================== LESSON ==================== -->
+  <div class="screen" id="screen-lesson">
+
+    <div class="lesson-topbar">
+      <button class="lesson-back" onclick="APP.gotoScreen('learn')">✕</button>
+      <div class="lesson-progress">
+        <div class="lesson-progress-fill" id="lesson-progress-fill" style="width:0%"></div>
+      </div>
+      <div class="lesson-count" id="lesson-count">0/10</div>
+    </div>
+
+    <div class="lesson-content" id="lesson-content">
+      <!-- Rendered by JS -->
+    </div>
+
+  </div>
+
+  <!-- ==================== STORY ==================== -->
+  <div class="screen" id="screen-story">
+
+    <div style="padding:20px 20px 0">
+      <div style="font-size:26px;font-weight:700">Story Mode ⛵</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.5);margin-top:2px">Follow Kai on the Road to Japan</div>
+    </div>
+
+    <!-- Characters banner -->
+    <div style="padding:16px 20px;display:flex;gap:12px;overflow-x:auto;scrollbar-width:none">
+      <div style="flex-shrink:0;text-align:center">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(204,0,0,0.2);border:2px solid var(--red);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto">🧑</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px">Kai</div>
+      </div>
+      <div style="flex-shrink:0;text-align:center">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,183,197,0.2);border:2px solid var(--pink);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto">👧</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px">Sakura</div>
+      </div>
+      <div style="flex-shrink:0;text-align:center">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(249,115,22,0.2);border:2px solid #F97316;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto">🧔</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px">Taro</div>
+      </div>
+      <div style="flex-shrink:0;text-align:center">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(96,165,250,0.2);border:2px solid #60A5FA;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto">👩</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px">Yuki</div>
+      </div>
+      <div style="flex-shrink:0;text-align:center">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,215,0,0.2);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto">🍡</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px">Mochi</div>
+      </div>
+      <div style="flex-shrink:0;text-align:center">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,165,0,0.2);border:2px solid #FFA500;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto">👴</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px">Captain</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="padding:8px 20px;font-size:13px;font-weight:700;letter-spacing:1.5px;color:rgba(255,255,255,0.4);text-transform:uppercase">Chapters</div>
+    <div class="story-chapter-list" id="story-chapter-list"></div>
+
+    <div class="bottom-space"></div>
+
+    <nav class="nav-bar">
+      <button class="nav-item" data-screen="home"><span class="nav-icon">🏠</span>Home</button>
+      <button class="nav-item" data-screen="learn"><span class="nav-icon">📚</span>Learn</button>
+      <button class="nav-item active" data-screen="story"><span class="nav-icon">⛵</span>Story</button>
+      <button class="nav-item" data-screen="culture"><span class="nav-icon">🗾</span>Culture</button>
+      <button class="nav-item" data-screen="profile"><span class="nav-icon">🧑</span>Profile</button>
+    </nav>
+  </div>
+
+  <!-- ==================== CULTURE ==================== -->
+  <div class="screen" id="screen-culture">
+
+    <div style="padding:20px 20px 0">
+      <div style="font-size:26px;font-weight:700">Japan Encyclopedia 🗾</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.5);margin-top:2px">History · Landmarks · Music · Manga · People</div>
+    </div>
+
+    <div class="culture-tabs">
+      <div class="culture-tab active" data-tab="history" onclick="APP.renderCulture('history')">🏺 History</div>
+      <div class="culture-tab" data-tab="landmarks" onclick="APP.renderCulture('landmarks')">🗼 Landmarks</div>
+      <div class="culture-tab" data-tab="music" onclick="APP.renderCulture('music')">🎵 Music</div>
+      <div class="culture-tab" data-tab="manga" onclick="APP.renderCulture('manga')">📖 Manga</div>
+      <div class="culture-tab" data-tab="people" onclick="APP.renderCulture('people')">⭐ People</div>
+    </div>
+
+    <div class="culture-content" id="culture-content"></div>
+
+    <div class="bottom-space"></div>
+
+    <nav class="nav-bar">
+      <button class="nav-item" data-screen="home"><span class="nav-icon">🏠</span>Home</button>
+      <button class="nav-item" data-screen="learn"><span class="nav-icon">📚</span>Learn</button>
+      <button class="nav-item" data-screen="story"><span class="nav-icon">⛵</span>Story</button>
+      <button class="nav-item active" data-screen="culture"><span class="nav-icon">🗾</span>Culture</button>
+      <button class="nav-item" data-screen="profile"><span class="nav-icon">🧑</span>Profile</button>
+    </nav>
+  </div>
+
+  <!-- ==================== PROFILE ==================== -->
+  <div class="screen" id="screen-profile">
+
+    <div class="profile-header">
+      <div class="profile-avatar-lg">🧑</div>
+      <div class="profile-name" id="profile-name">Adventurer</div>
+      <div class="profile-level" id="profile-level">Level 1</div>
+      <div class="profile-title" id="profile-title">Beginner Sailor</div>
+    </div>
+
+    <div class="stats-grid" id="profile-stats"></div>
+
+    <div class="section-title" style="padding-top:16px">Badges</div>
+    <div class="badges-grid" id="profile-badges"></div>
+
+    <!-- Plan Card -->
+    <div class="plan-card" onclick="APP.showUpgrade('standard')">
+      <div class="plan-tier" id="plan-tier-label">FREE PLAN</div>
+      <div style="font-size:17px;font-weight:700;margin-bottom:4px">Upgrade to unlock everything!</div>
+      <div class="plan-desc">Get full kanji, culture encyclopedia, story chapters, and JLPT prep</div>
+      <button class="btn-primary" style="font-size:14px;padding:12px 24px">View Plans →</button>
+    </div>
+
+    <!-- Leaderboard teaser -->
+    <div style="margin:0 20px 8px;background:var(--navy3);border-radius:var(--radius);padding:16px;border:1px solid rgba(255,255,255,0.07)">
+      <div style="font-size:12px;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:10px">🏆 WEEKLY LEADERBOARD</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="font-size:16px">🥇</div>
+          <div style="flex:1;font-size:14px">Hiroshi_M</div>
+          <div style="font-size:13px;color:var(--gold);font-weight:700">4,280 XP</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="font-size:16px">🥈</div>
+          <div style="flex:1;font-size:14px">Maria_Sakura</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6)">3,950 XP</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="font-size:16px">🥉</div>
+          <div style="flex:1;font-size:14px">KaiSensei</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6)">3,120 XP</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;opacity:0.5">
+          <div style="font-size:16px">🔒</div>
+          <div style="flex:1;font-size:14px">You</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.4)">— XP</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-space"></div>
+
+    <nav class="nav-bar">
+      <button class="nav-item" data-screen="home"><span class="nav-icon">🏠</span>Home</button>
+      <button class="nav-item" data-screen="learn"><span class="nav-icon">📚</span>Learn</button>
+      <button class="nav-item" data-screen="story"><span class="nav-icon">⛵</span>Story</button>
+      <button class="nav-item" data-screen="culture"><span class="nav-icon">🗾</span>Culture</button>
+      <button class="nav-item active" data-screen="profile"><span class="nav-icon">🧑</span>Profile</button>
+    </nav>
+  </div>
+
+  <!-- ==================== UPGRADE MODAL ==================== -->
+  <div class="modal-overlay" id="upgrade-modal" onclick="event.target===this&&APP.closeUpgrade()">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:32px">🗾</div>
+        <div style="font-size:24px;font-weight:800;margin-top:8px">Unlock Japan</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-top:4px">Choose your adventure plan</div>
+      </div>
+
+      <!-- Free -->
+      <div class="plan-option" onclick="APP.selectPlan('free')" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:start">
+          <div>
+            <div class="plan-name">🆓 Free</div>
+            <div class="plan-price" style="font-size:24px">$0 <span>/ forever</span></div>
+          </div>
+          <div style="font-size:11px;background:rgba(107,114,128,0.3);color:#9CA3AF;padding:3px 10px;border-radius:6px;font-weight:700">CURRENT</div>
+        </div>
+        <div class="plan-features">
+          <div class="plan-feature">Hiragana (46 chars)</div>
+          <div class="plan-feature">Katakana (first half)</div>
+          <div class="plan-feature">Basic greetings</div>
+          <div class="plan-feature">Chapter 1-2 story</div>
+          <div class="plan-feature">Tokyo & Mt. Fuji landmarks</div>
+          <div class="plan-locked">Kanji · Full culture · JLPT</div>
+        </div>
+      </div>
+
+      <!-- Standard -->
+      <div class="plan-option highlighted" onclick="APP.selectPlan('standard')" style="margin-bottom:12px">
+        <div class="plan-popular">⭐ MOST POPULAR</div>
+        <div style="display:flex;justify-content:space-between;align-items:start">
+          <div>
+            <div class="plan-name">⚓ Standard</div>
+            <div class="plan-price">$15 <span>/ month</span></div>
+          </div>
+        </div>
+        <div class="plan-features">
+          <div class="plan-feature">Everything in Free</div>
+          <div class="plan-feature">Full Katakana + loanwords</div>
+          <div class="plan-feature">Kanji Grade 1–6 (1,006 kanji)</div>
+          <div class="plan-feature">Intermediate reading</div>
+          <div class="plan-feature">Chapter 3–7 story</div>
+          <div class="plan-feature">Full Japan encyclopedia</div>
+          <div class="plan-feature">Manga · Music · People</div>
+          <div class="plan-locked">JLPT prep · Business Japanese</div>
+        </div>
+      </div>
+
+      <!-- Premium -->
+      <div class="plan-option" onclick="APP.selectPlan('premium')" style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:start">
+          <div>
+            <div class="plan-name">⚔️ Premium</div>
+            <div class="plan-price">$30 <span>/ month</span></div>
+          </div>
+          <div style="font-size:11px;background:rgba(139,92,246,0.3);color:#A78BFA;padding:3px 10px;border-radius:6px;font-weight:700">JLPT MASTER</div>
+        </div>
+        <div class="plan-features">
+          <div class="plan-feature">Everything in Standard</div>
+          <div class="plan-feature">JLPT N5 → N1 full prep</div>
+          <div class="plan-feature">Mock exams with timer</div>
+          <div class="plan-feature">Business Japanese</div>
+          <div class="plan-feature">Chapter 8–10 (Final chapters)</div>
+          <div class="plan-feature">Progress analytics</div>
+          <div class="plan-feature">Priority support</div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;color:rgba(255,255,255,0.35);text-align:center">
+        Cancel anytime · Secure payment · 7-day free trial for paid plans
+      </div>
+    </div>
+  </div>
+
+</div><!-- #app -->
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+// Onboarding helpers
+APP.selectLang = function(lang) {
+  this.state.lang = lang;
+  document.getElementById('lang-en').classList.toggle('selected', lang === 'en');
+  document.getElementById('lang-es').classList.toggle('selected', lang === 'es');
+
+  const captText = {
+    en: '"Welcome aboard, young adventurer! I am Captain Hideo. The Grand Scroll of Japan awaits those brave enough to learn its language and culture!"',
+    es: '"¡Bienvenido a bordo, joven aventurero! Soy el Capitán Hideo. ¡El Gran Pergamino de Japón aguarda a quienes sean valientes para aprender su idioma y cultura!"'
+  };
+  const sakuraText = {
+    en: '"Let\'s learn together! がんばろう！ (Ganbarou!) — I\'ll guide you through hiragana, katakana, and everything Japanese!"',
+    es: '"¡Aprendamos juntos! がんばろう！ (Ganbarou!) — ¡Te guiaré por el hiragana, katakana y todo lo japonés!"'
+  };
+  const ct = document.getElementById('ob-capt-text');
+  const st = document.getElementById('ob-sakura-text');
+  if (ct) ct.textContent = captText[lang];
+  if (st) st.textContent = sakuraText[lang];
+};
+
+APP.obNext = function(step) {
+  document.querySelectorAll('.onboard-step').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('ob-step-' + step);
+  if (target) target.classList.add('active');
+};
+
+APP.setPlayerName = function() {
+  const input = document.getElementById('player-name-input');
+  const name = (input ? input.value.trim() : '') || 'Adventurer';
+  this.state.playerName = name;
+  this.obNext(3);
+};
+
+APP.finishOnboarding = function() {
+  this.state.streak = 1;
+  this.addXP(50);
+  this.earnBadge('first_lesson');
+  this.save();
+  this.showToast('Welcome! +50 XP 🎌');
+  this.spawnSakura();
+  this.gotoScreen('home');
+};
+</script>
+</body>
+</html>
