@@ -1,8 +1,19 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#FF6B9D">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Road to Japan">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="description" content="Learn Japanese through epic adventure stories. Hiragana, Katakana, Kanji, JLPT prep — all in one quest.">
+<meta property="og:title" content="Road to Japan — Learn Japanese">
+<meta property="og:description" content="Adventure story meets language learning. Master Japanese from N5 to N1.">
+<meta property="og:image" content="icon-512.svg">
 <meta name="description" content="Road to Japan — Learn Japanese with games, stories & real culture. Start free today.">
 <meta property="og:title" content="Road to Japan — Learn Japanese the Fun Way">
 <meta property="og:description" content="Master Hiragana in 7 days. Learn Kanji through stories. 90-day fluency challenge.">
@@ -592,7 +603,7 @@ footer {
   .stat-num { font-size: 1.2rem; }
 }
 </style>
-</head>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}</script></head>
 <body class="en">
 
 <!-- NAV -->
@@ -1399,3 +1410,4 @@ if (window.speechSynthesis) {
 </script>
 </body>
 </html>
+

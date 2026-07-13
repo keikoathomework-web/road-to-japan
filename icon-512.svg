@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FF8FAB"/>
+      <stop offset="100%" stop-color="#C2185B"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF6B9D" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#FF6B9D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="256" cy="256" r="256" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="240" fill="url(#glow)"/>
+  <!-- Torii gate -->
+  <rect x="145" y="310" width="222" height="22" rx="11" fill="white" opacity="0.95"/>
+  <rect x="138" y="275" width="236" height="22" rx="11" fill="white"/>
+  <rect x="168" y="297" width="28" height="110" rx="14" fill="white" opacity="0.95"/>
+  <rect x="316" y="297" width="28" height="110" rx="14" fill="white" opacity="0.95"/>
+  <path d="M138 286 Q256 228 374 286" stroke="white" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <!-- Character あ -->
+  <text x="256" y="248" text-anchor="middle" font-family="Georgia,serif" font-size="110" font-weight="bold" fill="white" opacity="0.92">あ</text>
+  <!-- Sakura petals -->
+  <text x="68" y="130" font-size="48" fill="white" opacity="0.65">🌸</text>
+  <text x="390" y="110" font-size="38" fill="white" opacity="0.6">🌸</text>
+  <text x="418" y="380" font-size="30" fill="white" opacity="0.45">🌸</text>
+  <text x="55" y="395" font-size="26" fill="white" opacity="0.4">🌸</text>
+  <text x="220" y="82" font-size="22" fill="white" opacity="0.5">🌸</text>
+</svg>

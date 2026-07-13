@@ -3,6 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#FF6B9D">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Road to Japan">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="description" content="Learn Japanese through epic adventure stories. Hiragana, Katakana, Kanji, JLPT prep — all in one quest.">
+<meta property="og:title" content="Road to Japan — Learn Japanese">
+<meta property="og:description" content="Adventure story meets language learning. Master Japanese from N5 to N1.">
+<meta property="og:image" content="icon-512.svg">
 <title>Road to Japan — Katakana Master</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
@@ -370,7 +381,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 </style>
 <script src="gojuon-widget.js"></script>
 <script src="progress-tracker.js"></script>
-</head>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}</script></head>
 <body>
 
 <!-- TOP BAR -->
@@ -1280,4 +1291,5 @@ setTimeout(() => showToast('✨', 'Katakana Unlocked!', 'Foreign words in Japan 
 </script>
 </body>
 </html>
+
 

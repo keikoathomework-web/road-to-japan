@@ -3,9 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#FF6B9D">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Road to Japan">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="description" content="Learn Japanese through epic adventure stories. Hiragana, Katakana, Kanji, JLPT prep — all in one quest.">
+<meta property="og:title" content="Road to Japan — Learn Japanese">
+<meta property="og:description" content="Adventure story meets language learning. Master Japanese from N5 to N1.">
+<meta property="og:image" content="icon-512.svg">
 <title>Road to Japan — Upgrade to Premium</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-<script src="https://js.stripe.com/v3/"></script>
+<!-- Paddle.js — Handles all payment UI securely (no card data touches our server) -->
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <script src="supabase-client.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -203,7 +215,7 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; }
 </style>
 <script src="gojuon-widget.js"></script>
 <script src="lang.js"></script>
-</head>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}</script></head>
 <body>
 
 <!-- NAV -->
@@ -335,24 +347,33 @@ button { font-family: 'Nunito', sans-serif; cursor: pointer; }
           <input class="form-input" id="emailField" type="email" placeholder="your@email.com" value="keikoathomework@gmail.com" autocomplete="email">
         </div>
 
-        <div class="form-full">
-          <label class="form-label">Card Details</label>
-          <div class="square-card-wrap">
-            <div id="card-container"></div>
+        <!-- Paddle hosts the card form — no card data on our server -->
+        <div class="form-full" style="margin-top:8px">
+          <div style="background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.2);border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:14px">
+            <span style="font-size:1.6rem;flex-shrink:0">🔒</span>
+            <div>
+              <div style="font-weight:900;color:var(--white);font-size:0.9rem;margin-bottom:4px">Secure checkout via Paddle</div>
+              <div style="font-size:0.78rem;color:var(--gray);line-height:1.5">Clicking the button below opens Paddle's secure hosted checkout. Enter your card details there — we <strong style="color:var(--white)">never</strong> see or store your payment info. Visa, Mastercard, PayPal &amp; more accepted worldwide.</div>
+            </div>
           </div>
-          <div class="sq-notice">🔒 Card details are encrypted by Stripe. We never store your card number.</div>
+          <div style="display:flex;gap:10px;margin-top:12px;justify-content:center;flex-wrap:wrap">
+            <img src="https://img.shields.io/badge/Visa-✓-blue?style=flat-square" alt="Visa" style="height:22px;opacity:0.7">
+            <img src="https://img.shields.io/badge/Mastercard-✓-red?style=flat-square" alt="MC" style="height:22px;opacity:0.7">
+            <img src="https://img.shields.io/badge/PayPal-✓-003087?style=flat-square" alt="PayPal" style="height:22px;opacity:0.7">
+            <img src="https://img.shields.io/badge/Apple%20Pay-✓-black?style=flat-square" alt="Apple Pay" style="height:22px;opacity:0.7">
+          </div>
         </div>
 
         <div id="error-msg" class="error-msg"></div>
 
-        <button class="pay-btn" id="pay-btn" onclick="handlePayment()">
+        <button class="pay-btn" id="pay-btn" onclick="openPaddleCheckout()">
           <div class="pay-btn-shine"></div>
           <span id="pay-btn-text">🔒 START PREMIUM — $9.99 / month</span>
         </button>
 
         <div class="secure-row">
           <div class="secure-item">🔒 SSL Encrypted</div>
-          <div class="secure-item">💳 Powered by Stripe</div>
+          <div class="secure-item">🌍 Powered by Paddle</div>
           <div class="secure-item">🔄 Cancel Anytime</div>
         </div>
         <p style="text-align:center;margin-top:14px;font-size:0.72rem;color:var(--gray)">
@@ -462,12 +483,21 @@ window.addEventListener('rtjauth:ready', () => {
 });
 if (window.RTJLang) RTJLang.apply();
 
-// ── STRIPE CONFIG ──
-// ⚠️ Replace with your Stripe test publishable key (pk_test_...)
-const STRIPE_PK = 'pk_test_51ToE6OQTSGTc7shotMEB8ASCsEf8DQo0689xQ6qIYVZiV9G415GDsVBBCIVGWQUI5z0zybEl74IcwXN9w8lFWqC700CDk0atuI';
-const EDGE_FN_BASE = 'https://bskvxjlbywangxdiqhfi.supabase.co';
+// ══════════════════════════════════════════════════════
+//  PADDLE CONFIG
+//  ① Sign up at https://paddle.com  (個人事業主でOK)
+//  ② Dashboard → Catalog → Products → 価格を作成して
+//     priceId をここに貼り付ける
+//  ③ Dashboard → Developer Tools → Authentication →
+//     Client-side token (tok_...) をここに貼り付ける
+// ══════════════════════════════════════════════════════
+const PADDLE_ENV        = 'sandbox';   // 'sandbox' でテスト / 本番は 'production'
+const PADDLE_TOKEN      = 'tok_REPLACE_ME';   // ← Paddle Client-side token
+const PADDLE_PRICES = {
+  premium: 'pri_REPLACE_ME_MONTHLY',  // ← Monthly $9.99/mo price ID
+  annual:  'pri_REPLACE_ME_ANNUAL',   // ← Annual  $79/yr  price ID
+};
 
-let stripe, cardElement;
 let currentPlan = 'premium';
 
 const PLANS = {
@@ -510,102 +540,60 @@ function updateOrderTotal() {
   document.getElementById('pay-btn-text').textContent = p.btnText;
 }
 
-// ── STRIPE INIT ──
-function initStripe() {
-  if (!window.Stripe) {
-    showError('Payment system unavailable. Please refresh and try again.');
-    return;
-  }
-  stripe = Stripe(STRIPE_PK);
-  const elements = stripe.elements();
-  cardElement = elements.create('card', {
-    style: {
-      base: {
-        color: '#ffffff',
-        fontFamily: 'Nunito, sans-serif',
-        fontSize: '15px',
-        '::placeholder': { color: '#7a8099' },
-        iconColor: '#a855f7',
-      },
-      invalid: { color: '#ff3a5c', iconColor: '#ff3a5c' },
+// ── PADDLE INIT ──
+function initPaddle() {
+  if (!window.Paddle) { console.warn('Paddle.js not loaded'); return; }
+  Paddle.Environment.set(PADDLE_ENV);
+  Paddle.Initialize({
+    token: PADDLE_TOKEN,
+    checkout: {
+      settings: {
+        displayMode: 'overlay',
+        theme: 'dark',
+        locale: 'en',
+        successUrl: window.location.origin + window.location.pathname + '?success=1',
+      }
+    },
+    eventCallback(data) {
+      if (data.name === 'checkout.completed') {
+        const email = data.data?.customer?.email || document.getElementById('emailField').value.trim();
+        showSuccess(email, null);
+      }
     }
-  });
-  cardElement.mount('#card-container');
-  cardElement.on('change', (e) => {
-    if (e.error) showError(e.error.message);
-    else hideError();
   });
 }
 
-// ── HANDLE PAYMENT ──
-async function handlePayment() {
-  if (!stripe || !cardElement) {
-    showError('Payment form is not ready. Please wait a moment and try again.');
+// ── OPEN PADDLE CHECKOUT ──
+async function openPaddleCheckout() {
+  if (currentPlan === 'free') {
+    window.location.href = 'home.html';
     return;
   }
 
-  const firstName = document.getElementById('firstName').value.trim();
-  const lastName  = document.getElementById('lastName').value.trim();
-  const email     = document.getElementById('emailField').value.trim();
+  const priceId = PADDLE_PRICES[currentPlan];
+  if (!priceId || priceId.includes('REPLACE_ME')) {
+    showError('Payment not configured yet. Please contact keikoathomework@gmail.com to upgrade.');
+    return;
+  }
 
-  if (!firstName || !lastName) { showError('Please enter your first and last name.'); return; }
+  const email = document.getElementById('emailField').value.trim();
   if (!email || !email.includes('@')) { showError('Please enter a valid email address.'); return; }
 
   const btn = document.getElementById('pay-btn');
   const btnText = document.getElementById('pay-btn-text');
   btn.classList.add('loading');
-  btnText.textContent = '⏳ Processing...';
+  btnText.textContent = '⏳ Opening checkout...';
   hideError();
 
   try {
-    // 1. Create PaymentMethod via Stripe.js
-    const { paymentMethod, error } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement,
-      billing_details: { name: `${firstName} ${lastName}`, email },
+    await Paddle.Checkout.open({
+      items: [{ priceId, quantity: 1 }],
+      customer: { email },
     });
-
-    if (error) {
-      showError(error.message);
-      btn.classList.remove('loading');
-      btnText.textContent = PLANS[currentPlan].btnText;
-      return;
-    }
-
-    // 2. Get Supabase session token
-    const session = await RTJAuth.getSession();
-    if (!session) {
-      showError('Please sign in to continue.');
-      btn.classList.remove('loading');
-      btnText.textContent = PLANS[currentPlan].btnText;
-      return;
-    }
-
-    // 3. Call Edge Function
-    const res = await fetch(`${EDGE_FN_BASE}/functions/v1/charge-subscription`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.access_token}`,
-      },
-      body: JSON.stringify({
-        paymentMethodId: paymentMethod.id,
-        plan: currentPlan,
-        email,
-        firstName,
-        lastName,
-      }),
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Payment failed');
-
-    // 4. Show success
-    showSuccess(email, data.renewDate);
-
   } catch (e) {
-    console.error('Payment error:', e);
-    showError(e.message || 'Something went wrong. Please try again.');
+    console.error('Paddle error:', e);
+    showError('Could not open checkout. Please try again or contact support.');
+  } finally {
     btn.classList.remove('loading');
     btnText.textContent = PLANS[currentPlan].btnText;
   }
@@ -677,21 +665,26 @@ window.addEventListener('rtjauth:ready', () => {
 });
 
 // ── INIT ──
-let stripeInited = false;
-function maybeInitStripe() {
-  if (stripeInited) return;
-  stripeInited = true;
-  initStripe();
+let paddleInited = false;
+function maybeInitPaddle() {
+  if (paddleInited) return;
+  paddleInited = true;
+  initPaddle();
 }
-window.addEventListener('rtjauth:ready', maybeInitStripe);
+window.addEventListener('rtjauth:ready', maybeInitPaddle);
 window.addEventListener('load', () => {
-  selectPlan('premium'); // ensure payment form is visible and order total is set
-  // RTJAuth already ready (sync load) or wait up to 3s for async Supabase SDK
-  if (window.RTJAuth) { maybeInitStripe(); return; }
-  const t = setTimeout(() => maybeInitStripe(), 3000);
+  selectPlan('premium');
+  // Check for ?success=1 redirect from Paddle hosted checkout
+  if (new URLSearchParams(location.search).get('success') === '1') {
+    const email = document.getElementById('emailField')?.value || '';
+    showSuccess(email, null);
+  }
+  if (window.RTJAuth) { maybeInitPaddle(); return; }
+  const t = setTimeout(() => maybeInitPaddle(), 3000);
   window.addEventListener('rtjauth:ready', () => clearTimeout(t), { once: true });
 });
 </script>
 </body>
 </html>
+
 

@@ -1,0 +1,44 @@
+{
+  "name": "Road to Japan — Learn Japanese",
+  "short_name": "Road to Japan",
+  "description": "Learn Japanese through epic adventure stories. Hiragana, Katakana, Kanji, JLPT prep — all in one quest.",
+  "start_url": "/road-to-japan/home.html",
+  "scope": "/road-to-japan/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFF5F8",
+  "theme_color": "#FF6B9D",
+  "lang": "en",
+  "categories": ["education", "games"],
+  "icons": [
+    {
+      "src": "icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Adventure Story",
+      "short_name": "Story",
+      "description": "Continue Kai's adventure",
+      "url": "/road-to-japan/story.html",
+      "icons": [{ "src": "icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Learn Hiragana",
+      "short_name": "Hiragana",
+      "description": "Practice hiragana characters",
+      "url": "/road-to-japan/hiragana.html",
+      "icons": [{ "src": "icon-192.svg", "sizes": "192x192" }]
+    }
+  ]
+}
