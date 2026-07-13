@@ -515,6 +515,7 @@
 // Onboarding helpers
 APP.selectLang = function(lang) {
   this.state.lang = lang;
+  if (typeof gtag !== 'undefined') gtag('event', 'language_switch', { event_category: 'engagement', event_label: lang });
   document.getElementById('lang-en').classList.toggle('selected', lang === 'en');
   document.getElementById('lang-es').classList.toggle('selected', lang === 'es');
 

@@ -887,11 +887,13 @@ const APP = {
       this.showToast('Standard plan activated! +100 XP 🎉');
       this.addXP(100);
       this.spawnSakura();
+      if (typeof gtag !== 'undefined') gtag('event', 'upgrade', { event_category: 'purchase', event_label: 'standard' });
     } else if (plan === 'premium') {
       this.state.plan = 'premium';
       this.showToast('Premium plan activated! +200 XP 🎉');
       this.addXP(200);
       this.spawnSakura();
+      if (typeof gtag !== 'undefined') gtag('event', 'upgrade', { event_category: 'purchase', event_label: 'premium' });
     }
     this.save();
     this.closeUpgrade();
