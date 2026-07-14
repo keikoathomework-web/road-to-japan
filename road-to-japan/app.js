@@ -306,13 +306,21 @@ const APP = {
       const pct = m.total > 0 ? Math.round((m.progress / m.total) * 100) : 0;
       const tierLabel = m.tier === 'free' ? 'FREE' : m.tier === 'standard' ? '$15' : '$30';
       const tierClass = `tier-${m.tier}`;
-      return `<div class="module-card ${isLocked ? 'locked' : ''}" onclick="${isLocked ? `APP.showUpgrade('${m.tier}')` : `APP.startLesson('${m.id}')`}">
+      const gradeReady = !isLocked && pct >= 80 && m.progress > 0;
+      const mistakeCount = JSON.parse(localStorage.getItem(`rtj_mistakes_${m.id}`) || '[]').length;
+      return `<div class="module-card ${isLocked ? 'locked' : ''} ${gradeReady ? 'grade-ready' : ''}" onclick="${isLocked ? `APP.showUpgrade('${m.tier}')` : `APP.startLesson('${m.id}')`}">
         ${isLocked ? '<div class="lock-badge">🔒</div>' : ''}
+        ${gradeReady ? '<div class="grade-up-badge">EXAM READY</div>' : ''}
         <div class="module-icon" style="color:${m.color}">${m.icon}</div>
         <div class="module-name">${m.name}</div>
         <div class="module-detail">${m.detail}</div>
         <div class="module-progress"><div class="module-progress-fill" style="width:${pct}%;background:${m.color}"></div></div>
-        <span class="tier-badge ${tierClass}">${tierLabel}</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+          <span class="tier-badge ${tierClass}">${tierLabel}</span>
+          <span style="font-size:11px;color:rgba(255,255,255,0.4)">${pct}%</span>
+        </div>
+        ${gradeReady ? `<button class="grade-up-btn" onclick="event.stopPropagation();APP.startGradeUp('${m.id}')">🎓 Grade Up!</button>` : ''}
+        ${mistakeCount > 0 && !isLocked ? `<div class="review-badge" onclick="event.stopPropagation();APP.startReviewFor('${m.id}')">🔄 ${mistakeCount} to review</div>` : ''}
       </div>`;
     }).join('');
   },
@@ -457,13 +465,25 @@ const APP = {
           </div>
           <div class="result-xp">+${xpEarned} ${this.t('xp_earned')} 🌟</div>
           <div style="margin-top:8px;font-size:28px">もちもち！🍡</div>
-          <button class="btn-primary" style="margin-top:16px;width:240px" onclick="APP.finishLesson(${xpEarned})">
+          ${ls.mistakes && ls.mistakes.length > 0 ? `
+          <button class="btn-ghost" style="margin-top:8px;width:240px;border-color:rgba(239,68,68,0.4);color:#FCA5A5" onclick="APP.startReview()">
+            🔄 Review ${ls.mistakes.length} Mistake${ls.mistakes.length > 1 ? 's' : ''}
+          </button>` : ''}
+          <button class="btn-primary" style="margin-top:8px;width:240px" onclick="APP.finishLesson(${xpEarned})">
             ${this.t('continue')} →
           </button>
         </div>
       `;
 
       this.addXP(xpEarned, content);
+
+      // Save mistakes to localStorage for review banner
+      if (ls.mistakes && ls.mistakes.length > 0) {
+        const key = `rtj_mistakes_${ls.type}`;
+        const existing = JSON.parse(localStorage.getItem(key) || '[]');
+        ls.mistakes.forEach(m => { if (!existing.find(e => e.id === m.id)) existing.push(m); });
+        localStorage.setItem(key, JSON.stringify(existing));
+      }
 
       if (ls.questId) {
         if (!this.state.progress.questsDone.includes(ls.questId)) {
@@ -528,6 +548,9 @@ const APP = {
       this.addXP(10);
     } else {
       ls.wrong++;
+      const wrongItem = ls.quizItems[ls.quizIdx];
+      if (!ls.mistakes) ls.mistakes = [];
+      if (!ls.mistakes.find(m => m.id === wrongItem.id)) ls.mistakes.push(wrongItem);
     }
 
     ls.quizIdx++;
@@ -537,6 +560,59 @@ const APP = {
       }
       this.renderLesson();
     }, 1200);
+  },
+
+  startReviewFor(type) {
+    const items = JSON.parse(localStorage.getItem(`rtj_mistakes_${type}`) || '[]');
+    if (items.length === 0) { this.showToast('No mistakes to review! 🎉'); return; }
+    localStorage.removeItem(`rtj_mistakes_${type}`);
+    this.state.lessonState = {
+      type, questId: null,
+      allItems: items, flashItems: items, quizItems: items,
+      phase: 'flash', flashIdx: 0, quizIdx: 0,
+      correct: 0, wrong: 0, revealed: false,
+      isReview: true, mistakes: []
+    };
+    this.showToast(`📚 Reviewing ${items.length} mistake${items.length > 1 ? 's' : ''}!`);
+    this.gotoScreen('lesson');
+    this.renderLesson();
+  },
+
+  startReview() {
+    const ls = this.state.lessonState;
+    if (!ls || !ls.mistakes || ls.mistakes.length === 0) return;
+    const items = ls.mistakes;
+    this.state.lessonState = {
+      type: ls.type, questId: null,
+      allItems: items,
+      flashItems: items,
+      quizItems: items,
+      phase: 'flash', flashIdx: 0, quizIdx: 0,
+      correct: 0, wrong: 0, revealed: false,
+      isReview: true, mistakes: []
+    };
+    this.gotoScreen('lesson');
+    this.renderLesson();
+  },
+
+  startGradeUp(type) {
+    let items = [];
+    if (type === 'hiragana') items = RTJ_DATA.hiragana.map(h => ({ front:h.char, back:h.romaji, hint:h.mnemonic, type:'hiragana', id:h.romaji }));
+    else if (type === 'katakana') items = RTJ_DATA.katakana.map(k => ({ front:k.char, back:k.romaji, hint:'', type:'katakana', id:k.romaji+'_k' }));
+    else if (type === 'greetings') items = RTJ_DATA.greetings.map(g => ({ front:g.japanese, back:g.romaji, hint:g.english, type:'greetings', id:g.romaji }));
+    else if (type === 'kanji_g1') items = RTJ_DATA.kanjiGrade1.map(k => ({ front:k.kanji, back:k.meaning, hint:'', type:'kanji', id:k.kanji }));
+
+    const sample = items.sort(() => Math.random() - 0.5).slice(0, 12);
+    this.state.lessonState = {
+      type, questId: null,
+      allItems: sample, flashItems: [], quizItems: sample,
+      phase: 'quiz', flashIdx: 0, quizIdx: 0,
+      correct: 0, wrong: 0, revealed: false,
+      isGradeUp: true, mistakes: []
+    };
+    this.showToast('🎓 Grade Up Exam — No hints! Good luck!', 3000);
+    this.gotoScreen('lesson');
+    this.renderLesson();
   },
 
   finishLesson(xp) {
@@ -828,6 +904,35 @@ const APP = {
         <div class="stat-box"><div class="stat-num">${this.state.progress.katakana.length}</div><div class="stat-label">Katakana</div></div>
         <div class="stat-box"><div class="stat-num">${this.state.progress.kanji_g1.length}</div><div class="stat-label">Kanji</div></div>
       `;
+    }
+
+    // Progress rings
+    const ringsEl = document.getElementById('profile-rings');
+    if (ringsEl) {
+      const rings = [
+        { label:'Hiragana', pct: Math.round((this.state.progress.hiragana.length / RTJ_DATA.hiragana.length) * 100), color:'#EF4444' },
+        { label:'Katakana', pct: Math.round((this.state.progress.katakana.length / (RTJ_DATA.katakana.slice(0,25).length)) * 100), color:'#3B82F6' },
+        { label:'Greetings', pct: Math.round((this.state.progress.greetings.length / RTJ_DATA.greetings.length) * 100), color:'#10B981' },
+        { label:'Kanji G1', pct: Math.round((this.state.progress.kanji_g1.length / RTJ_DATA.kanjiGrade1.length) * 100), color:'#F59E0B' },
+        { label:'Story', pct: Math.round((this.state.progress.story_chapter / 9) * 100), color:'#8B5CF6' },
+        { label:'Badges', pct: Math.round((this.state.badges.length / RTJ_DATA.badges.length) * 100), color:'#EC4899' },
+      ];
+      const r = 28, c = 36;
+      const circ = 2 * Math.PI * r;
+      ringsEl.innerHTML = rings.map(ring => {
+        const p = Math.min(ring.pct, 100);
+        const offset = circ - (p / 100) * circ;
+        return `<div class="ring-item">
+          <svg class="ring-svg" viewBox="0 0 72 72">
+            <circle class="ring-track" cx="${c}" cy="${c}" r="${r}"/>
+            <circle class="ring-fill" cx="${c}" cy="${c}" r="${r}" stroke="${ring.color}"
+              stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+            <text x="${c}" y="${c+1}" text-anchor="middle" dominant-baseline="middle"
+              font-size="13" font-weight="800" fill="white">${p}%</text>
+          </svg>
+          <div class="ring-label">${ring.label}</div>
+        </div>`;
+      }).join('');
     }
 
     const badgesEl = document.getElementById('profile-badges');

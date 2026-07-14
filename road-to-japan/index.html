@@ -36,10 +36,22 @@
       <div class="splash-jp">日本への道</div>
 
       <div class="splash-chars">
-        <div class="char-portrait kai">🧑</div>
-        <div class="char-portrait mochi">🍡</div>
-        <div class="char-portrait sakura">👧</div>
-        <div class="char-portrait taro">🧔</div>
+        <div class="char-card">
+          <div class="char-portrait kai">🧑<div class="char-speech">Let's go!</div></div>
+          <div class="char-name">Kai</div>
+        </div>
+        <div class="char-card">
+          <div class="char-portrait sakura">👧<div class="char-speech">がんばろう!</div></div>
+          <div class="char-name">Sakura</div>
+        </div>
+        <div class="char-card">
+          <div class="char-portrait mochi">🍡<div class="char-speech">もちもち!</div></div>
+          <div class="char-name">Mochi</div>
+        </div>
+        <div class="char-card">
+          <div class="char-portrait taro">🧔<div class="char-speech">Yarr!</div></div>
+          <div class="char-name">Taro</div>
+        </div>
       </div>
 
       <button class="btn-primary" onclick="APP.gotoScreen('onboarding')" style="margin-bottom:16px;min-width:220px">
@@ -381,6 +393,8 @@
     </div>
 
     <div class="stats-grid" id="profile-stats"></div>
+    <div class="section-title">Learning Progress</div>
+    <div class="progress-rings" id="profile-rings"></div>
 
     <div class="section-title" style="padding-top:16px">Badges</div>
     <div class="badges-grid" id="profile-badges"></div>
