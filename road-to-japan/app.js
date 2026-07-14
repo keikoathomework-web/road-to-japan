@@ -1043,6 +1043,36 @@ const APP = {
       }
     }
 
+    // Spawn falling sakura petals on splash
+    const petalsEl = document.getElementById('splash-petals');
+    if (petalsEl) {
+      const petals = ['🌸','🌺','✿','🌷'];
+      for (let i = 0; i < 14; i++) {
+        const p = document.createElement('div');
+        p.className = 'petal';
+        p.textContent = petals[i % petals.length];
+        p.style.left = (Math.random() * 100) + '%';
+        p.style.fontSize = (10 + Math.random() * 10) + 'px';
+        p.style.animationDuration = (6 + Math.random() * 8) + 's';
+        p.style.animationDelay = (Math.random() * 6) + 's';
+        petalsEl.appendChild(p);
+      }
+    }
+
+    // Tap characters to make them react
+    const kaiSvg = document.querySelector('#splash-kai .splash-char-svg');
+    const sakSvg = document.querySelector('#splash-sak .splash-char-svg');
+    if (kaiSvg) kaiSvg.addEventListener('click', () => {
+      kaiSvg.style.animation = 'none'; void kaiSvg.offsetWidth;
+      kaiSvg.style.animation = 'correct-jump 0.8s ease-out';
+      setTimeout(() => kaiSvg.style.animation = '', 900);
+    });
+    if (sakSvg) sakSvg.addEventListener('click', () => {
+      sakSvg.style.animation = 'none'; void sakSvg.offsetWidth;
+      sakSvg.style.animation = 'correct-jump 0.8s ease-out';
+      setTimeout(() => sakSvg.style.animation = '', 900);
+    });
+
     // Decide starting screen
     const isNew = !localStorage.getItem('rtj_state');
     if (isNew) {
