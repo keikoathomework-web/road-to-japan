@@ -585,10 +585,19 @@ async function openPaddleCheckout() {
   btnText.textContent = '⏳ Opening checkout...';
   hideError();
 
+  // Identify the signed-in user so the Paddle webhook can map this
+  // subscription back to the correct Supabase account (custom_data.user_id).
+  let userId = null;
+  try {
+    const session = await RTJAuth.getSession();
+    userId = session?.user?.id || null;
+  } catch (_) { /* not signed in — auth guard should have redirected */ }
+
   try {
     await Paddle.Checkout.open({
       items: [{ priceId, quantity: 1 }],
       customer: { email },
+      customData: { user_id: userId, plan: currentPlan },
     });
   } catch (e) {
     console.error('Paddle error:', e);
@@ -626,6 +635,20 @@ function showSuccess(email, renewDateISO) {
     s.premiumRenew = renew.toISOString();
     localStorage.setItem('rtj_profile', JSON.stringify(s));
   } catch(e) { console.error('localStorage update failed:', e); }
+
+  // Optimistic Supabase update so Premium reflects instantly on the user's
+  // other devices too. The Paddle webhook remains the source of truth and
+  // will reconcile this (e.g. downgrade on cancel / payment failure).
+  try {
+    if (window.RTJAuth) {
+      RTJAuth.updateProfile({
+        plan:          'premium',
+        billing_cycle: PLANS[currentPlan].annual ? 'annual' : 'monthly',
+        premium_start: now.toISOString(),
+        premium_renew: renew.toISOString(),
+      }).catch(err => console.warn('Supabase plan update deferred to webhook:', err));
+    }
+  } catch (e) { /* webhook will still set the plan */ }
 }
 
 // ── CONFETTI ──
