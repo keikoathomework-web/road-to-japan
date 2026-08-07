@@ -86,6 +86,18 @@ header {
   border-radius: 20px; cursor: pointer; transition: all 0.2s;
 }
 .lang-btn.active, .lang-btn:hover { background: var(--green); color: #fff; border-color: var(--green); }
+.header-right { display: flex; align-items: center; gap: 14px; }
+.header-login-btn {
+  padding: 6px 20px; border: 2px solid var(--coral); border-radius: 20px;
+  background: var(--coral); color: #fff; font-family: 'Nunito', sans-serif;
+  font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.header-login-btn:hover { background: var(--coral2); border-color: var(--coral2); transform: translateY(-1px); }
+@media (max-width: 480px) {
+  .header-right { gap: 8px; }
+  .header-login-btn { padding: 6px 13px; font-size: 0.75rem; }
+  .lang-btn { padding: 5px 11px; }
+}
 
 /* ── NAV DOTS ── */
 .nav-dots {
@@ -444,15 +456,19 @@ footer a:hover { color:#60A5FA; }
   .cg-face { width: 54px; height: 54px; }
 }
 </style>
+<script src="supabase-client.js"></script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}</script></head>
 <body>
 
 <!-- HEADER -->
 <header>
   <div class="logo">Road to Japan</div>
-  <div class="lang-btns">
-    <button class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  <div class="header-right">
+    <div class="lang-btns">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+    </div>
+    <button class="header-login-btn" id="headerAuthBtn" onclick="goLogin()" data-en="Log In" data-es="Entrar">Log In</button>
   </div>
 </header>
 
@@ -1385,6 +1401,25 @@ function showModal() { document.getElementById('modalOverlay').classList.remove(
 function closeModal() { document.getElementById('modalOverlay').classList.add('hidden'); }
 function closeModalOutside(e) { if (e.target.id === 'modalOverlay') closeModal(); }
 function goSignup(plan) { window.location.href = 'auth.html?signup=1&plan=' + plan; }
+
+// Header auth button: go to the dashboard if already signed in, else the login screen.
+let __rtjSignedIn = false;
+function goLogin() { window.location.href = __rtjSignedIn ? 'home.html' : 'auth.html'; }
+
+// Once Supabase is ready, reflect the real session state in the header button.
+window.addEventListener('rtjauth:ready', async () => {
+  try {
+    const session = await RTJAuth.getSession();
+    if (!session) return;
+    __rtjSignedIn = true;
+    const btn = document.getElementById('headerAuthBtn');
+    if (btn) {
+      btn.setAttribute('data-en', 'Continue →');
+      btn.setAttribute('data-es', 'Continuar →');
+      btn.textContent = (lang === 'es') ? 'Continuar →' : 'Continue →';
+    }
+  } catch (_) { /* stay in logged-out state */ }
+});
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 buildCards();
@@ -1653,7 +1688,7 @@ window.addEventListener('load', function() {
       }, 50);
     });
   });
-})();</script>
+});</script>
 
 <!-- ===== CHARACTER GUIDE WIDGET ===== -->
 <div id="char-guide">

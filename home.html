@@ -925,6 +925,7 @@ body {
 .isoc-btn:hover { background: #0057A8; color: #fff; border-color: #0057A8; }
 .invite-close { background: none; border: none; color: var(--gray); font-size: 0.85rem; cursor: pointer; text-decoration: underline; }
 </style>
+<script src="supabase-client.js"></script>
 <script src="lang.js"></script>
 <script src="gojuon-widget.js"></script>
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}</script></head>
@@ -1735,12 +1736,18 @@ document.addEventListener('click', e => {
   }
 });
 
-function confirmSignOut() {
-  if (confirm('Sign out of Road to Japan?')) {
-    localStorage.removeItem('rtj_profile');
-    showMochiToast('👋 Signed out!', 'See you next time! またね！');
-    document.getElementById('profileDropdown').classList.remove('open');
-  }
+async function confirmSignOut() {
+  if (!confirm('Sign out of Road to Japan?')) return;
+  document.getElementById('profileDropdown')?.classList.remove('open');
+  showMochiToast('👋 Signed out!', 'See you next time! またね！');
+  // End the real Supabase session — not just the local cache — otherwise the
+  // user stays signed in and is silently logged back in on the next visit.
+  try {
+    if (window.RTJAuth) await RTJAuth.signOut();
+  } catch (e) { console.error('signOut error:', e); }
+  localStorage.removeItem('rtj_profile');
+  // Send them back to the landing page in a clean logged-out state.
+  window.location.href = 'index.html';
 }
 
 
