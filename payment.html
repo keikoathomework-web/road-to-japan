@@ -631,19 +631,37 @@ function showSuccess(email, renewDateISO) {
     localStorage.setItem('rtj_profile', JSON.stringify(s));
   } catch(e) { console.error('localStorage update failed:', e); }
 
-  // Optimistic Supabase update so Premium reflects instantly on the user's
-  // other devices too. The Paddle webhook remains the source of truth and
-  // will reconcile this (e.g. downgrade on cancel / payment failure).
+  // Optimistic Supabase update — ensures DB is updated even if the Paddle webhook
+  // fails to match the user (e.g. custom_data.user_id was null at checkout).
+  const profileUpdate = {
+    plan:                'premium',
+    billing_cycle:       PLANS[currentPlan].annual ? 'annual' : 'monthly',
+    subscription_status: 'active',
+    premium_start:       now.toISOString(),
+    premium_renew:       renew.toISOString(),
+    updated_at:          now.toISOString(),
+  };
   try {
     if (window.RTJAuth) {
-      RTJAuth.updateProfile({
-        plan:          'premium',
-        billing_cycle: PLANS[currentPlan].annual ? 'annual' : 'monthly',
-        premium_start: now.toISOString(),
-        premium_renew: renew.toISOString(),
-      }).catch(err => console.warn('Supabase plan update deferred to webhook:', err));
+      const client = RTJAuth.client;
+      // Try to update by user ID (logged-in session)
+      const session = await RTJAuth.getSession().catch(() => null);
+      if (session?.user?.id) {
+        await client.from('profiles').update(profileUpdate).eq('id', session.user.id);
+        console.log('[RTJ] Profile updated by user id.');
+      } else {
+        // Session gone — update by email (matches the Supabase profiles.email column)
+        const { error } = await client.from('profiles').update(profileUpdate).eq('email', email);
+        if (error) {
+          console.warn('[RTJ] Email-based profile update failed:', error.message, '— webhook will reconcile.');
+        } else {
+          console.log('[RTJ] Profile updated by email fallback.');
+        }
+      }
     }
-  } catch (e) { /* webhook will still set the plan */ }
+  } catch (e) {
+    console.warn('[RTJ] Optimistic profile update error — webhook will reconcile:', e);
+  }
 }
 
 // ── CONFETTI ──

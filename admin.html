@@ -107,6 +107,7 @@
       <option value="annual">年払い</option>
     </select>
     <button onclick="loadMembers()">🔄 更新</button>
+    <button onclick="openGrantModal()" style="background:#ffd700;color:#000;font-weight:700;">👑 プレミアム付与</button>
     <span class="refresh" id="lastUpdated"></span>
   </div>
 
@@ -120,12 +121,34 @@
         <th>決済開始日</th>
         <th>次回更新日</th>
         <th>登録日</th>
+        <th>操作</th>
       </tr>
     </thead>
     <tbody id="memberTable">
-      <tr><td colspan="7" class="loading">読み込み中...</td></tr>
+      <tr><td colspan="8" class="loading">読み込み中...</td></tr>
     </tbody>
   </table>
+</div>
+
+<!-- Grant Premium Modal -->
+<div id="grantModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
+  <div style="background:#1a1d2e;border:1px solid rgba(255,215,0,0.3);border-radius:20px;padding:36px;max-width:440px;width:90%;box-shadow:0 40px 80px rgba(0,0,0,0.6);">
+    <h3 style="color:#ffd700;font-size:1.3rem;margin:0 0 8px">👑 プレミアム手動付与</h3>
+    <p style="color:#9aa3c0;font-size:0.85rem;margin:0 0 20px">Webhookが届かなかったユーザーにプレミアムを手動で付与します。</p>
+    <label style="color:#c0c7e0;font-size:0.85rem;display:block;margin-bottom:6px">対象メールアドレス</label>
+    <input id="grantEmail" type="email" placeholder="user@example.com"
+      style="width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:#fff;font-size:0.95rem;margin-bottom:14px;box-sizing:border-box;">
+    <label style="color:#c0c7e0;font-size:0.85rem;display:block;margin-bottom:6px">サイクル</label>
+    <select id="grantCycle" style="width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:#1a1d2e;color:#fff;font-size:0.95rem;margin-bottom:20px;">
+      <option value="monthly">月額 (monthly)</option>
+      <option value="annual">年払い (annual)</option>
+    </select>
+    <p id="grantMsg" style="color:#ffd700;font-size:0.85rem;min-height:1.2em;margin:0 0 14px"></p>
+    <div style="display:flex;gap:10px;">
+      <button onclick="doGrantPremium()" style="flex:1;padding:13px;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;font-weight:900;border:none;border-radius:12px;cursor:pointer;font-size:0.95rem;">✅ 付与する</button>
+      <button onclick="closeGrantModal()" style="flex:1;padding:13px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#9aa3c0;border-radius:12px;cursor:pointer;font-size:0.95rem;">キャンセル</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -217,6 +240,8 @@ function renderTable(members) {
     const plan = m.plan || 'free';
     const cycle = m.billing_cycle || '';
     const status = m.subscription_status || '';
+    const isFree = plan !== 'premium';
+    const emailEsc = (m.email || '').replace(/'/g, "\\'");
     return `<tr>
       <td>${m.email || '—'}</td>
       <td><span class="badge ${plan}">${plan === 'premium' ? '有料' : '無料'}</span></td>
@@ -225,10 +250,69 @@ function renderTable(members) {
       <td>${fmt(m.premium_start)}</td>
       <td>${fmt(m.premium_renew)}</td>
       <td>${fmt(m.created_at)}</td>
+      <td>${isFree ? `<button onclick="openGrantModal('${emailEsc}')" style="padding:5px 10px;background:#ffd700;color:#000;border:none;border-radius:8px;cursor:pointer;font-size:0.78rem;font-weight:700;">👑 付与</button>` : '<span style="color:#4ade80;font-size:0.8rem">✓ Premium</span>'}</td>
     </tr>`;
   }).join('');
 
   document.getElementById('memberTable').innerHTML = rows;
+}
+
+// ── Grant Premium Modal ──
+function openGrantModal(email) {
+  const modal = document.getElementById('grantModal');
+  modal.style.display = 'flex';
+  if (email) document.getElementById('grantEmail').value = email;
+  document.getElementById('grantMsg').textContent = '';
+}
+function closeGrantModal() {
+  document.getElementById('grantModal').style.display = 'none';
+}
+
+async function doGrantPremium() {
+  const email = document.getElementById('grantEmail').value.trim();
+  const cycle = document.getElementById('grantCycle').value;
+  const msg = document.getElementById('grantMsg');
+  if (!email) { msg.textContent = '⚠️ メールアドレスを入力してください'; return; }
+  msg.textContent = '処理中…';
+
+  // Use Supabase RPC or direct update via service_role not possible from anon key.
+  // We update via the admin's own session (must be logged in as admin with RLS allowing update).
+  // This relies on a Supabase policy: "admins can update any profile".
+  // If that policy isn't in place, this will silently fail — use Studio SQL instead.
+  const now = new Date().toISOString();
+  const renewDate = cycle === 'annual'
+    ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+    : new Date(Date.now() + 31 * 24 * 60 * 60 * 1000).toISOString();
+
+  const { data, error } = await sb
+    .from('profiles')
+    .update({
+      plan: 'premium',
+      subscription_status: 'active',
+      billing_cycle: cycle,
+      premium_start: now,
+      premium_renew: renewDate,
+      updated_at: now,
+    })
+    .eq('email', email)
+    .select('email, plan');
+
+  if (error) {
+    msg.style.color = '#f87171';
+    msg.textContent = '❌ エラー: ' + error.message;
+    return;
+  }
+  if (!data || data.length === 0) {
+    msg.style.color = '#facc15';
+    msg.textContent = '⚠️ 該当ユーザーが見つかりません。メールアドレスを確認してください。';
+    return;
+  }
+  msg.style.color = '#4ade80';
+  msg.textContent = `✅ ${email} をプレミアムに更新しました！`;
+  setTimeout(() => {
+    closeGrantModal();
+    loadMembers();
+  }, 1800);
 }
 
 // セッション確認
