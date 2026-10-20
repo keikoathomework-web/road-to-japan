@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road to Japan — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+
+  .header { background: #1e293b; border-bottom: 1px solid #334155; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+  .header h1 { font-size: 20px; font-weight: 700; color: #f1f5f9; }
+  .header .logo { font-size: 24px; }
+
+  .login-wrap { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 60px); }
+  .login-box { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 40px; width: 360px; text-align: center; }
+  .login-box h2 { margin-bottom: 8px; font-size: 20px; }
+  .login-box p { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+  .login-box input { width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: #e2e8f0; font-size: 14px; margin-bottom: 12px; }
+  .login-box input::placeholder { color: #64748b; }
+  .btn { width: 100%; padding: 10px; border-radius: 8px; border: none; background: #3b82f6; color: white; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .btn:hover { background: #2563eb; }
+  .err { color: #f87171; font-size: 13px; margin-top: 8px; }
+
+  .main { padding: 24px; max-width: 1200px; margin: 0 auto; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 28px; }
+  .stat-card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 20px; }
+  .stat-card .label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+  .stat-card .value { font-size: 28px; font-weight: 700; }
+  .stat-card.total .value { color: #60a5fa; }
+  .stat-card.premium .value { color: #34d399; }
+  .stat-card.monthly .value { color: #a78bfa; }
+  .stat-card.annual .value { color: #fbbf24; }
+  .stat-card.free .value { color: #94a3b8; }
+
+  .toolbar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+  .toolbar input[type="text"] { flex: 1; min-width: 200px; padding: 8px 14px; border-radius: 8px; border: 1px solid #475569; background: #1e293b; color: #e2e8f0; font-size: 14px; }
+  .toolbar select { padding: 8px 12px; border-radius: 8px; border: 1px solid #475569; background: #1e293b; color: #e2e8f0; font-size: 14px; cursor: pointer; }
+  .toolbar button { padding: 8px 16px; border-radius: 8px; border: none; background: #334155; color: #e2e8f0; font-size: 14px; cursor: pointer; }
+  .toolbar button:hover { background: #475569; }
+
+  table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 10px; overflow: hidden; }
+  th { background: #0f172a; padding: 12px 16px; text-align: left; font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: .5px; }
+  td { padding: 13px 16px; border-top: 1px solid #1e293b; font-size: 14px; background: #1e293b; }
+  tr:hover td { background: #243044; }
+
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .badge.premium { background: #064e3b; color: #34d399; }
+  .badge.free { background: #1e293b; color: #94a3b8; border: 1px solid #475569; }
+  .badge.active { background: #052e16; color: #4ade80; }
+  .badge.canceled { background: #450a0a; color: #f87171; }
+  .badge.past_due { background: #451a03; color: #fb923c; }
+  .badge.monthly { background: #2e1065; color: #a78bfa; }
+  .badge.annual { background: #422006; color: #fbbf24; }
+  .badge.— { color: #475569; font-size: 12px; }
+
+  .loading { text-align: center; padding: 60px; color: #64748b; }
+  .signout { margin-left: auto; padding: 6px 14px; border-radius: 6px; border: 1px solid #475569; background: transparent; color: #94a3b8; font-size: 13px; cursor: pointer; }
+  .signout:hover { background: #334155; color: #e2e8f0; }
+  .refresh { font-size: 13px; color: #64748b; }
+
+  .empty { text-align: center; padding: 60px; color: #475569; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="logo">🗾</span>
+  <h1>Road to Japan — Admin</h1>
+  <button class="signout" id="signoutBtn" style="display:none" onclick="signOut()">サインアウト</button>
+</div>
+
+<!-- ログイン画面 -->
+<div class="login-wrap" id="loginSection">
+  <div class="login-box">
+    <h2>管理者ログイン</h2>
+    <p>Road to Japan 管理画面</p>
+    <input type="email" id="loginEmail" placeholder="メールアドレス">
+    <input type="password" id="loginPassword" placeholder="パスワード">
+    <button class="btn" onclick="login()">ログイン</button>
+    <div class="err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- メイン画面 -->
+<div class="main" id="mainSection" style="display:none">
+  <div class="stats">
+    <div class="stat-card total"><div class="label">総ユーザー</div><div class="value" id="statTotal">—</div></div>
+    <div class="stat-card premium"><div class="label">有料会員</div><div class="value" id="statPremium">—</div></div>
+    <div class="stat-card monthly"><div class="label">月額</div><div class="value" id="statMonthly">—</div></div>
+    <div class="stat-card annual"><div class="label">年払い</div><div class="value" id="statAnnual">—</div></div>
+    <div class="stat-card free"><div class="label">無料会員</div><div class="value" id="statFree">—</div></div>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" id="searchInput" placeholder="メールで検索..." oninput="filterTable()">
+    <select id="planFilter" onchange="filterTable()">
+      <option value="">すべてのプラン</option>
+      <option value="premium">有料 (Premium)</option>
+      <option value="free">無料 (Free)</option>
+    </select>
+    <select id="cycleFilter" onchange="filterTable()">
+      <option value="">月額・年払い すべて</option>
+      <option value="monthly">月額</option>
+      <option value="annual">年払い</option>
+    </select>
+    <button onclick="loadMembers()">🔄 更新</button>
+    <span class="refresh" id="lastUpdated"></span>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>メールアドレス</th>
+        <th>プラン</th>
+        <th>サイクル</th>
+        <th>ステータス</th>
+        <th>決済開始日</th>
+        <th>次回更新日</th>
+        <th>登録日</th>
+      </tr>
+    </thead>
+    <tbody id="memberTable">
+      <tr><td colspan="7" class="loading">読み込み中...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://bskvxjlbywangxdiqhfi.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJza3Z4amxieXdhbmd4ZGlxaGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3ODAwMTksImV4cCI6MjA5ODM1NjAxOX0.Y3HpuXvOI0YAx0LSyJibRehS3LQo9wjCEH-SKaL8gWc';
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let allMembers = [];
+
+async function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const err = document.getElementById('loginErr');
+  err.textContent = '';
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) { err.textContent = error.message; return; }
+  showMain();
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  document.getElementById('loginSection').style.display = 'flex';
+  document.getElementById('mainSection').style.display = 'none';
+  document.getElementById('signoutBtn').style.display = 'none';
+}
+
+function showMain() {
+  document.getElementById('loginSection').style.display = 'none';
+  document.getElementById('mainSection').style.display = 'block';
+  document.getElementById('signoutBtn').style.display = 'inline-block';
+  loadMembers();
+}
+
+async function loadMembers() {
+  const { data, error } = await sb
+    .from('profiles')
+    .select('email, plan, billing_cycle, subscription_status, premium_start, premium_renew, created_at')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    document.getElementById('memberTable').innerHTML = `<tr><td colspan="7" class="empty">エラー: ${error.message}</td></tr>`;
+    return;
+  }
+
+  allMembers = data || [];
+  updateStats(allMembers);
+  renderTable(allMembers);
+  document.getElementById('lastUpdated').textContent = '最終更新: ' + new Date().toLocaleTimeString('ja-JP');
+}
+
+function updateStats(members) {
+  const premium = members.filter(m => m.plan === 'premium');
+  document.getElementById('statTotal').textContent = members.length;
+  document.getElementById('statPremium').textContent = premium.length;
+  document.getElementById('statMonthly').textContent = premium.filter(m => m.billing_cycle === 'monthly').length;
+  document.getElementById('statAnnual').textContent = premium.filter(m => m.billing_cycle === 'annual').length;
+  document.getElementById('statFree').textContent = members.filter(m => m.plan === 'free' || !m.plan).length;
+}
+
+function filterTable() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const plan = document.getElementById('planFilter').value;
+  const cycle = document.getElementById('cycleFilter').value;
+
+  const filtered = allMembers.filter(m => {
+    const emailMatch = !search || (m.email || '').toLowerCase().includes(search);
+    const planMatch = !plan || m.plan === plan;
+    const cycleMatch = !cycle || m.billing_cycle === cycle;
+    return emailMatch && planMatch && cycleMatch;
+  });
+
+  renderTable(filtered);
+}
+
+function fmt(ts) {
+  if (!ts) return '<span class="badge —">—</span>';
+  return new Date(ts).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' });
+}
+
+function renderTable(members) {
+  if (!members.length) {
+    document.getElementById('memberTable').innerHTML = '<tr><td colspan="7" class="empty">該当するメンバーがいません</td></tr>';
+    return;
+  }
+
+  const rows = members.map(m => {
+    const plan = m.plan || 'free';
+    const cycle = m.billing_cycle || '';
+    const status = m.subscription_status || '';
+    return `<tr>
+      <td>${m.email || '—'}</td>
+      <td><span class="badge ${plan}">${plan === 'premium' ? '有料' : '無料'}</span></td>
+      <td>${cycle ? `<span class="badge ${cycle}">${cycle === 'monthly' ? '月額' : '年払い'}</span>` : '<span class="badge —">—</span>'}</td>
+      <td>${status ? `<span class="badge ${status}">${status}</span>` : '<span class="badge —">—</span>'}</td>
+      <td>${fmt(m.premium_start)}</td>
+      <td>${fmt(m.premium_renew)}</td>
+      <td>${fmt(m.created_at)}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('memberTable').innerHTML = rows;
+}
+
+// セッション確認
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (session) showMain();
+});
+</script>
+</body>
+</html>
