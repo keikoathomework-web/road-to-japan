@@ -141,6 +141,23 @@ nav {
   border-radius: 20px; padding: 8px 16px;
   font-size: 0.8rem; color: rgba(255,255,255,0.8); font-weight: 800;
 }
+/* ── HERO CHARACTERS ── */
+.hero-chars-wrap {
+  position: relative; z-index: 1;
+  max-width: 480px; margin: 0 auto 32px;
+  border-radius: 24px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+  animation: heroFloat 4s ease-in-out infinite;
+}
+.hero-chars-img {
+  width: 100%; display: block;
+  max-height: 400px; object-fit: cover; object-position: center 20%;
+}
+@keyframes heroFloat {
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-8px); }
+}
+
 .hero-stats {
   display: flex; gap: 0; justify-content: center; flex-wrap: wrap;
   max-width: 600px; margin: 48px auto 0;
@@ -627,6 +644,11 @@ footer {
   <div class="hero-kana k2">日</div>
   <div class="hero-kana k3">ア</div>
 
+  <!-- Characters hero image -->
+  <div class="hero-chars-wrap">
+    <img src="images/chars-hero.png" alt="Ren and Hana — Road to Japan characters" class="hero-chars-img">
+  </div>
+
   <!-- EN HERO -->
   <div data-lang="en">
     <div class="pre-head">🎯 90-Day Japanese Challenge</div>
@@ -691,6 +713,15 @@ footer {
       <div class="section-tag">😤 Sound familiar?</div>
       <h2 class="section-title">Learning Japanese Feels<br><span class="pink">Impossible</span> — Until Now</h2>
       <p class="section-sub">Most people give up Japanese within 3 months. Not because they're not smart — because the tools are broken.</p>
+      <!-- Confused character image -->
+      <div style="display:flex;gap:20px;align-items:center;margin:20px 0 28px;background:rgba(255,107,157,0.04);border:1px solid rgba(255,107,157,0.12);border-radius:20px;overflow:hidden">
+        <img src="images/chars-confused.png" alt="Ren confused about Japanese" style="width:130px;height:170px;object-fit:cover;object-position:center 15%;flex-shrink:0">
+        <div style="padding:16px 16px 16px 0">
+          <div style="font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;color:var(--pink);margin-bottom:6px">Sound like you? 👀</div>
+          <div style="font-size:0.88rem;color:var(--gray);line-height:1.6">"I've tried three apps and still can't read a single Japanese word. It feels impossible..."</div>
+          <div style="font-size:0.78rem;color:var(--gray);margin-top:8px;font-weight:700">— Ren, before discovering Road to Japan</div>
+        </div>
+      </div>
       <div class="pain-grid">
         <div class="pain-card"><div class="pain-icon">😴</div><div class="pain-text">You tried apps that felt like flashcards — boring, repetitive, and easy to quit</div></div>
         <div class="pain-card"><div class="pain-icon">😵</div><div class="pain-text">Hiragana, Katakana, Kanji… the writing systems felt overwhelming before you even started speaking</div></div>
@@ -769,6 +800,13 @@ footer {
       <div class="section-tag">✨ The solution</div>
       <h2 class="section-title">Introducing<br><span class="accent">Road to Japan</span></h2>
       <p class="section-sub">The first Japanese learning app built around adventure, culture, and real motivation — not memorization.</p>
+      <!-- Characters celebrate banner -->
+      <div style="border-radius:20px;overflow:hidden;margin:28px 0;box-shadow:0 12px 40px rgba(0,0,0,0.12);max-height:260px;position:relative">
+        <img src="images/chars-celebrate.png" alt="Ren and Hana celebrate learning" style="width:100%;object-fit:cover;object-position:center 5%;max-height:260px;display:block">
+        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(10,26,40,0.85));padding:20px 24px">
+          <div style="color:#fff;font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px">EARN XP · KEEP STREAKS · UNLOCK BADGES 🏆</div>
+        </div>
+      </div>
       <div class="solution-intro">
         <div class="solution-logo">Road <span>to</span> Japan</div>
         <div class="solution-tagline">Your adventure into Japanese language & culture starts here</div>
@@ -1364,8 +1402,8 @@ function speakJP(text) {
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'ja-JP';
-  u.rate = 0.85;
-  u.pitch = 1.1;
+  u.rate = 0.9;
+  u.pitch = 1.25;
   // prefer a Japanese voice if available
   const voices = window.speechSynthesis.getVoices();
   const jpVoice = voices.find(v => v.lang.startsWith('ja'));

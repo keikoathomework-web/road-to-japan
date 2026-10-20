@@ -430,6 +430,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       </div>
       <div id="quizResult" style="display:none">
         <div class="quiz-result">
+          <img src="images/chars-kanji.png" alt="Ren teaches kanji" style="width:100%;max-width:280px;border-radius:16px;margin:0 auto 12px;display:block;object-fit:cover;object-position:center 15%;max-height:200px;box-shadow:0 8px 24px rgba(0,0,0,0.15)">
           <span class="qr-emoji" id="qrEmoji">🏆</span>
           <div class="qr-title" id="qrTitle">PERFECT!</div>
           <p class="qr-sub" id="qrSub"></p>
@@ -983,7 +984,7 @@ function playAudio() {
   btn.classList.add('playing'); btn.textContent = '🔊 Playing...';
   if ('speechSynthesis' in window) {
     const u = new SpeechSynthesisUtterance(selectedK);
-    u.lang = 'ja-JP'; u.rate = 0.7;
+    u.lang = 'ja-JP'; u.rate = 0.8; u.pitch = 1.25;
     u.onend = () => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Reading'; };
     speechSynthesis.speak(u);
   } else { setTimeout(() => { btn.classList.remove('playing'); btn.textContent = '🔊 Play Reading'; }, 700); }
@@ -992,7 +993,7 @@ function playAudio() {
 function speakWord(word) {
   if ('speechSynthesis' in window) {
     const u = new SpeechSynthesisUtterance(word);
-    u.lang = 'ja-JP'; u.rate = 0.75;
+    u.lang = 'ja-JP'; u.rate = 0.82; u.pitch = 1.25;
     speechSynthesis.speak(u);
   }
 }

@@ -581,6 +581,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       </div>
       <div id="quizResult" style="display:none">
         <div class="quiz-result">
+          <img src="images/chars-celebrate.png" alt="Ren and Hana celebrate" style="width:100%;max-width:280px;border-radius:16px;margin:0 auto 12px;display:block;object-fit:cover;object-position:center 10%;max-height:200px;box-shadow:0 8px 24px rgba(0,0,0,0.15)">
           <span class="qr-emoji" id="qrEmoji">🏆</span>
           <div class="qr-title" id="qrTitle" style="color:var(--cyan)">PERFECT!</div>
           <p class="qr-sub" id="qrSub"></p>
@@ -1237,7 +1238,7 @@ function playAudio() {
   } else {
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(selectedChar);
-    u.lang = 'ja-JP'; u.rate = 0.8;
+    u.lang = 'ja-JP'; u.rate = 0.88; u.pitch = 1.25;
     u.onend = reset;
     u.onerror = reset;
     currentUtterance = u;
