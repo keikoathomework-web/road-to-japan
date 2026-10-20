@@ -153,11 +153,17 @@ serve(async (req) => {
       }
 
       case 'subscription.canceled': {
+        // Keep premium access until the end of the paid period.
+        // When premium_renew passes, access-control.js reconciles against
+        // the server and the user sees the paywall on next visit.
+        const renewsAt = data?.scheduled_change?.effective_at
+          ?? data?.current_billing_period?.ends_at
+          ?? null;
         update = {
-          plan: 'free',
+          plan: 'premium',          // still paid through period end
           subscription_status: 'canceled',
-          paddle_subscription_id: null,
-          premium_renew: null,
+          paddle_subscription_id: data?.id ?? null,
+          premium_renew: renewsAt,  // null → treated as expired already
         };
         break;
       }

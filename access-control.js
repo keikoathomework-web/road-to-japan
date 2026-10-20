@@ -16,7 +16,13 @@
   }
 
   function isPremium() {
-    return getPlan() !== 'free';
+    const profile = getProfile();
+    if ((profile.plan || 'free') === 'free') return false;
+    // Canceled subscriptions: keep access until premium_renew date passes.
+    if (profile.subscription_status === 'canceled' && profile.premium_renew) {
+      return new Date(profile.premium_renew) > new Date();
+    }
+    return true;
   }
 
   function buildPaywall(featureName) {
